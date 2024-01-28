@@ -32,4 +32,5 @@ Name | Email | Development OS/Toolchain
 -:|:-|-|
 Ye Xinjian | e0544100@u.nus.edu | macOS
 Jiang Zhengtao | e0555957@u.nus.edu | macOS
-Tan Zheng Jie, Dickson | e0543463@u.nus.edu | windows
+Raja Sudalaimuthu Mukund | e0544495@u.nus.edu | Windows
+Tan Zheng Jie, Dickson | e0543463@u.nus.edu | Windows
