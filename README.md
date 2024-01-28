@@ -31,5 +31,4 @@ No additional instructions required.
 Name | Email | Development OS/Toolchain
 -:|:-|-|
 Ye Xinjian | e0544100@u.nus.edu | macOS
-Jiang Zhengtao | e0555957@u.nus.edu | macOS
-Tan Zheng Jie, Dickson | e0543463@u.nus.edu | windows
+Jiang Zhengtao | e00555957@u.nus.edu | macOS
