@@ -5,8 +5,8 @@
 #include <string>
 #include <set>
 
-#include <Entity.h>
-#include <Store.h>
+#include "../common/Entity.h"
+#include "Store.h"
 using namespace std;
 
 class EntityManager {

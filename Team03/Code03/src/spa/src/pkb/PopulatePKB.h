@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Entity.h"
+#include "../common/Entity.h"
 #include "EntityManager.h"
 
 using namespace std;
