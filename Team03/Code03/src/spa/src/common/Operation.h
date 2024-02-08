@@ -4,8 +4,7 @@
 
 class Operation : public Expression {
 public:
-    Operation() = default;
-    explicit Operation(string name,
+    Operation(string name,
         string type,
         pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments);
 };
