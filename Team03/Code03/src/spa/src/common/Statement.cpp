@@ -5,8 +5,8 @@ Statement::Statement(
     string statement_type,
     string procedure_name)
     : statement_number(statement_number),
-    statement_type(move(statement_type)),
-    procedure_name(move(procedure_name)) {
+      statement_type(move(statement_type)),
+      procedure_name(move(procedure_name)) {
 }
 
 int Statement::getStatementNumber() const {

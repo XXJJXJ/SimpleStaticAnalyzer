@@ -1,8 +1,8 @@
 #include "PrintStatement.h"
 
 PrintStatement::PrintStatement(int statement_number,
-    Variable var,
-    string procedure_name) : variable(move(var)),
+    Variable variable,
+    string procedure_name) : variable(move(variable)),
     Statement(
         statement_number,
         "print",

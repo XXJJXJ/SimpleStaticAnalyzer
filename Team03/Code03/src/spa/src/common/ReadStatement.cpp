@@ -1,7 +1,7 @@
 #include "ReadStatement.h"
 
-ReadStatement::ReadStatement(int statement_number, Variable var,string procedure_name) 
-    : variable(move(var)), 
+ReadStatement::ReadStatement(int statement_number, Variable variable, string procedure_name) 
+    : variable(move(variable)), 
     Statement(
             statement_number,
             "read",
