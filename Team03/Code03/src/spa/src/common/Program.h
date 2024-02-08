@@ -5,9 +5,10 @@
 
 class Program {
 public:
+	Program();
 	typedef vector<shared_ptr<Procedure>> ProcedureListContainer;
 	void addToProcedureList(shared_ptr<Procedure> procedure);
-	static int getNextStatementNumber();
+	static int getAndIncrementStatementNumber();
 	ProcedureListContainer getProcedureList();
 
 private:

@@ -14,6 +14,6 @@ Program::ProcedureListContainer Program::getProcedureList() {
 	return procedure_list;
 }
 
-int Program::getNextStatementNumber() {
+int Program::getAndIncrementStatementNumber() {
 	return statement_number++;
 }
