@@ -3,3 +3,13 @@
 //
 
 #include "QueryValidator.h"
+
+QueryValidator::QueryValidator() {}
+
+QueryValidator::~QueryValidator() {}
+
+bool QueryValidator::validate(const std::string& parsedQuery) {
+    // Basic validation logic
+
+    return true;
+}

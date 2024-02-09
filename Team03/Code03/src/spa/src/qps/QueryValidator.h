@@ -5,9 +5,15 @@
 #ifndef SPA_QUERYVALIDATOR_H
 #define SPA_QUERYVALIDATOR_H
 
+#include <string>
 
 class QueryValidator {
+public:
+    QueryValidator();
 
+    ~QueryValidator();
+
+    bool validate(const std::string& parsedQuery);
 };
 
 
