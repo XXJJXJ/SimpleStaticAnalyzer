@@ -5,7 +5,7 @@
 
 class ReadStatement : public Statement {
 public:
-	ReadStatement(int statement_number, Variable variable, string procedure_name);
+	ReadStatement(int statementNumber, Variable variable, string procedureName);
 	void accept(shared_ptr<Visitor> visitor) override;
 	Variable getVariable() const;
 

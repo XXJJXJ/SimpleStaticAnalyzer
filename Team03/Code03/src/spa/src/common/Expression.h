@@ -8,7 +8,7 @@ class Expression : public Entity {
 public:
     typedef pair<shared_ptr<Expression>, shared_ptr<Expression>>
         PairOfArguments;
-    explicit Expression(string name, string expression_type);
+    explicit Expression(string name, string expressiontType);
     virtual void accept(shared_ptr<Visitor> visitor) = 0;
     optional<PairOfArguments> getArguments() const;
     string getExpressionType() const;
@@ -20,6 +20,6 @@ protected:
     optional<PairOfArguments> arguments;
 
 private:
-    string expression_type;
+    string expressionType;
     string name;
 };
