@@ -1,12 +1,12 @@
 #include "PrintStatement.h"
 
 PrintStatement::PrintStatement(
-    shared_ptr<int> statementNumber,
+    int statementNumber,
     shared_ptr<Variable> variable,
-    shared_ptr<string> procedureName) : variable(variable),
+    string procedureName) : variable(variable),
     Statement(
         statementNumber,
-        make_shared<string>("print"),
+        "print",
         procedureName) {}
 
 shared_ptr<Variable> PrintStatement::getVariable() const {

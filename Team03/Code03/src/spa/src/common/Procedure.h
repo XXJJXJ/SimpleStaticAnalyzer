@@ -8,13 +8,13 @@
 class Procedure : public Entity {
 public:
 	typedef vector<shared_ptr<Statement>> StatementListContainer;
-	Procedure(shared_ptr<string> procedureName);
+	Procedure(string procedureName);
 	void accept(shared_ptr<Visitor> visitor) override;
 	void addToStatementList(shared_ptr<Statement> statement);
-	shared_ptr<string> getProcedureName() const;
+	string getProcedureName() const;
 	shared_ptr<StatementListContainer> getStatementList() const;
 
 private:
-	shared_ptr<string> procedureName;
+	string procedureName;
 	shared_ptr<StatementListContainer> statementList;
 };

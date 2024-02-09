@@ -1,12 +1,12 @@
 #include "ReadStatement.h"
 
 ReadStatement::ReadStatement(
-    shared_ptr<int> statementNumber, 
+    int statementNumber, 
     shared_ptr<Variable> variable, 
-    shared_ptr<string> procedureName) : variable(variable), 
+    string procedureName) : variable(variable), 
     Statement(
         statementNumber,
-        make_shared<string>("read"),
+       "read",
         procedureName) {}
 
 shared_ptr<Variable> ReadStatement::getVariable() const {

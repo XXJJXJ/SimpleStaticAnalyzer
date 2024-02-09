@@ -2,7 +2,7 @@
 
 #include "Procedure.h"
 
-Procedure::Procedure(shared_ptr<string> procedure_name) : procedureName(move(
+Procedure::Procedure(string procedure_name) : procedureName(move(
     procedureName)), statementList({}) {}
 
 void Procedure::addToStatementList(shared_ptr<Statement> statement) {
@@ -13,7 +13,7 @@ shared_ptr<Procedure::StatementListContainer> Procedure::getStatementList() cons
     return statementList;
 }
 
-shared_ptr<string> Procedure::getProcedureName() const {
+string Procedure::getProcedureName() const {
     return procedureName;
 }
 

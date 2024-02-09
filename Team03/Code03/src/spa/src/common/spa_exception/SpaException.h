@@ -5,9 +5,9 @@
 class SpaException : public std::exception {
 public:
 	SpaException() = default;
-	SpaException(shared_ptr<std::string_view> message);
-	virtual shared_ptr<std::string_view> error() = 0;
+	SpaException(std::string_view message);
+	virtual std::string_view error() = 0;
 
 protected:
-	shared_ptr<std::string> message;
+	std::string message;
 };
