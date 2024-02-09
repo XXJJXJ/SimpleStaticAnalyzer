@@ -1,13 +1,13 @@
 #include "Expression.h"
 
-Expression::Expression(shared_ptr<string> name, shared_ptr<string> expressionType)
+Expression::Expression(string name, string expressionType)
     : name(move(name)), expressionType(move(expressionType)) {}
 
-shared_ptr<string> Expression::getExpressionType() const {
+string Expression::getExpressionType() const {
     return expressionType;
 }
 
-shared_ptr<string> Expression::getName() const {
+string Expression::getName() const {
     return name;
 }
 

@@ -1,7 +1,6 @@
 #include "Variable.h"
 
-Variable::Variable(shared_ptr<string> name) : Expression(move(name),
-    make_shared<string>("variable")) {}
+Variable::Variable(string name) : Expression(move(name),"variable") {}
 
 void Variable::accept(shared_ptr<Visitor> visitor) {
     visitor->visitVariable(make_shared<Variable>(*this));
