@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "../common/Entity.h"
+#include "common/Variable.h"
 #include "EntityManager.h"
 
 using namespace std;
@@ -25,5 +25,6 @@ protected:
     EntityManager* em;
 public:
     QueryMananger ();
-    vector<Constant*> getAllConstants() ;
+    // vector<Constant*> getAllConstants();
+    // vector<shared_ptr<Variable>> getAllVariables();
 };
