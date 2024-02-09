@@ -17,16 +17,15 @@ private:
     static EntityManager* instance;
 
 protected:
-    Store<Constant> constantStore;
+    // Store<Constant> constantStore;
     Store<string> variableStore;
 private:
     void clearStore();
 public:
     // Public method to get the instance of the class
     static EntityManager* getInstance();
-    // Destructor to delete the instance
-    bool addConstant(Constant* c);
-    vector<Constant*> getAllConstants();
+    // bool addConstant(Constant* c);
+    // vector<Constant*> getAllConstants();
     // bool addVariable(string var);
     // vector<string> getAllVariables();
     static void clear();

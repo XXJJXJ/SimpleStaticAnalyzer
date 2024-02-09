@@ -19,15 +19,6 @@ EntityManager::~EntityManager() {
     delete instance;
 }
 
-bool EntityManager::addConstant(Constant* c) {
-    constantStore.add(c);
-    return true;
-}
-
-vector<Constant*> EntityManager::getAllConstants() {
-    return constantStore.getAll();
-}
-
 void EntityManager::clear() {
     if (!instance) {
         return;
@@ -36,6 +27,6 @@ void EntityManager::clear() {
 }
 
 void EntityManager::clearStore() {
-    constantStore.clear();
+    // constantStore.clear();
     variableStore.clear();
 }

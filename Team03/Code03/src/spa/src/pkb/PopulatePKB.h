@@ -4,7 +4,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "../common/Entity.h"
+#include "common/ReadStatement.h"
+#include "common/PrintStatement.h"
+#include "common/Procedure.h"
 #include "EntityManager.h"
 
 using namespace std;
@@ -15,11 +17,12 @@ protected:
 public:
     Populator();
     bool addProcedure(Procedure proc);
-    bool addAssignStatement(Statement stmt);
-    bool addCallStatement(Statement stmt);
-    bool addPrintStatement(Statement stmt);
-    bool addReadStatement(Statement stmt);
-    bool addIfStatement(Statement stmt);
-    bool addWhileStatement(Statement stmt);
-    bool addConstant(Constant* c);
+    bool addPrintStatement(PrintStatement stmt);
+    bool addReadStatement(ReadStatement stmt);
+
+    // bool addAssignStatement(Statement stmt);
+    // bool addCallStatement(Statement stmt);
+    // bool addIfStatement(Statement stmt);
+    // bool addWhileStatement(Statement stmt);
+    // bool addConstant(Constant* c);
 };
