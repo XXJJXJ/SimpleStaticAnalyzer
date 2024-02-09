@@ -1,22 +1,22 @@
 #include "Statement.h"
 
 Statement::Statement(
-    int statementNumber,
-    string statementType,
-    string procedureName)
+    shared_ptr<int> statementNumber,
+    shared_ptr<string> statementType,
+    shared_ptr<string> procedureName)
     : statementNumber(statementNumber),
       statementType(move(statementType)),
       procedureName(move(procedureName)) {
 }
 
-int Statement::getStatementNumber() const {
+shared_ptr<int> Statement::getStatementNumber() const {
     return statementNumber;
 }
 
-string Statement::getStatementType() const {
+shared_ptr<string> Statement::getStatementType() const {
     return statementType;
 }
 
-string Statement::getProcedureName() const {
+shared_ptr<string> Statement::getProcedureName() const {
     return procedureName;
 }
