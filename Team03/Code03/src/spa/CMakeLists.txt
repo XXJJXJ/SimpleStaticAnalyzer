@@ -6,9 +6,7 @@ file(GLOB srcs
 file(GLOB headers 
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/*.h" 
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
-<<<<<<< HEAD
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/common/*.h"
-<<<<<<< HEAD
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/common/SpaException*.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/SP/*.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/SP/Tokenizer*.cpp"
