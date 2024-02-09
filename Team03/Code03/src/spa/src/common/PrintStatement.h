@@ -5,7 +5,7 @@
 
 class PrintStatement : public Statement {
 public:
-	PrintStatement(int statement_number, Variable variable, string procedure_name);
+	PrintStatement(int statement_number, Variable variable, string procedureName);
 	void accept(shared_ptr<Visitor> visitor) override;
 	Variable getVariable() const;
 

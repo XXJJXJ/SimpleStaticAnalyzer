@@ -1,13 +1,13 @@
 #include "ReadStatement.h"
 
 ReadStatement::ReadStatement(
-    int statement_number, 
+    int statementNumber, 
     Variable variable, 
-    string procedure_name) : variable(move(variable)), 
+    string procedureName) : variable(move(variable)), 
     Statement(
-        statement_number,
+        statementNumber,
         "read",
-        procedure_name) {}
+        procedureName) {}
 
 Variable ReadStatement::getVariable() const {
     return variable;

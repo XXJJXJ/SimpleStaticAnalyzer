@@ -1,13 +1,13 @@
 #include "PrintStatement.h"
 
 PrintStatement::PrintStatement(
-    int statement_number,
+    int statementNumber,
     Variable variable,
-    string procedure_name) : variable(move(variable)),
+    string procedureName) : variable(move(variable)),
     Statement(
-        statement_number,
+        statementNumber,
         "print",
-        procedure_name) {}
+        procedureName) {}
 
 Variable PrintStatement::getVariable() const {
     return variable;

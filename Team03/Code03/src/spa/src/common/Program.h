@@ -13,5 +13,5 @@ public:
 
 private:
 	ProcedureListContainer procedure_list;
-	static int statement_number;
+	static int statementNumber;
 };

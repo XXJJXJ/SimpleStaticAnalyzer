@@ -1,10 +1,10 @@
 #include "Expression.h"
 
-Expression::Expression(string name, string expression_type)
-    : name(move(name)), expression_type(move(expression_type)) {}
+Expression::Expression(string name, string expressionType)
+    : name(move(name)), expressionType(move(expressionType)) {}
 
 string Expression::getExpressionType() const {
-    return expression_type;
+    return expressionType;
 }
 
 string Expression::getName() const {
@@ -12,7 +12,7 @@ string Expression::getName() const {
 }
 
 bool Expression::operator==(const Expression& other) const {
-    return expression_type == other.expression_type && name == other.name;
+    return expressionType == other.expressionType && name == other.name;
 }
 
 optional<Expression::PairOfArguments> Expression::getArguments() const {

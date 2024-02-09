@@ -2,19 +2,19 @@
 
 #include "Procedure.h"
 
-Procedure::Procedure(string procedure_name) : procedure_name(move(
-    procedure_name)), statement_list({}) {}
+Procedure::Procedure(string procedure_name) : procedureName(move(
+    procedureName)), statementList({}) {}
 
 void Procedure::addToStatementList(shared_ptr<Statement> statement) {
-    statement_list.push_back(statement);
+    statementList.push_back(statement);
 }
 
 Procedure::StatementListContainer Procedure::getStatementList() const {
-    return statement_list;
+    return statementList;
 }
 
 string Procedure::getProcedureName() const {
-    return procedure_name;
+    return procedureName;
 }
 
 void Procedure::accept(shared_ptr<Visitor> visitor) {
