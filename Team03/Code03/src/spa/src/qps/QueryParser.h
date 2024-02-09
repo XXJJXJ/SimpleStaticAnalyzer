@@ -6,9 +6,9 @@
 #define SPA_PARSER_H
 #include "PKB.h"
 
-
-class Parser {
-
+class QueryParser {
+public:
+	std::string parseQuery(std::string query);
 };
 
 
