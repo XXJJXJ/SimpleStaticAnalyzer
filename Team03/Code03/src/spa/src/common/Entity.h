@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SP/DesignExtractor/Visitor.h"
+#include "../sp/design_extractor/Visitor.h"
 
 class Entity {
 public:

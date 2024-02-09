@@ -6,6 +6,6 @@
 class SyntaxErrorException : public SpaException {
 public:
 	SyntaxErrorException();
-	explicit SyntaxErrorException(std::string_view);
-	std::string_view error();
+	explicit SyntaxErrorException(shared_ptr<std::string_view> message);
+	shared_ptr<std::string_view> error();
 };

@@ -3,11 +3,11 @@
 #include "SemanticErrorException.h"
 
 SemanticErrorException::SemanticErrorException() : SpaException(
-    "Semantic Error") {}
+    make_shared<string>("Semantic Error")) {}
 
 SemanticErrorException::SemanticErrorException(std::string_view message)
-    : SpaException(message) {}
+    : SpaException(make_shared<std::string_view>(message)) {}
 
-std::string_view SemanticErrorException::error() {
+shared_ptr<std::string_view> SemanticErrorException::error() {
     return message;
 }

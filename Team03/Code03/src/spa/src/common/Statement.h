@@ -7,16 +7,16 @@
 class Statement : public Entity {
 public:
     Statement(
-        int statementNumber,
-        string statementType,
-        string procedureName);
+        shared_ptr<int> statementNumber,
+        shared_ptr<string> statementType,
+        shared_ptr<string> procedureName);
     virtual void accept(shared_ptr<Visitor> visitor) = 0;
-    int getStatementNumber() const;
-    string getStatementType() const;
-    string getProcedureName() const;
+    shared_ptr<int> getStatementNumber() const;
+    shared_ptr<string> getStatementType() const;
+    shared_ptr<string> getProcedureName() const;
 
 private:
-    const int statementNumber;
-    string statementType;
-    string procedureName;
+    const shared_ptr<int> statementNumber;
+    shared_ptr<string> statementType;
+    shared_ptr<string> procedureName;
 };

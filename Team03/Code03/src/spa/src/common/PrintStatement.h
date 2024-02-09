@@ -5,10 +5,13 @@
 
 class PrintStatement : public Statement {
 public:
-	PrintStatement(int statement_number, Variable variable, string procedureName);
+	PrintStatement(
+		shared_ptr<int> statement_number, 
+		shared_ptr<Variable> variable, 
+		shared_ptr<string> procedureName);
 	void accept(shared_ptr<Visitor> visitor) override;
-	Variable getVariable() const;
+	shared_ptr<Variable> getVariable() const;
 
 private:
-	const Variable& variable;
+	const shared_ptr<Variable> variable;
 };
