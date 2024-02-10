@@ -4,4 +4,6 @@
 
 #include "Query.h"
 
-std::vector <std::shared_ptr<Strategy>> Query::getStrategies() {}
+std::vector <std::shared_ptr<Strategy>> Query::getStrategies() {
+
+}

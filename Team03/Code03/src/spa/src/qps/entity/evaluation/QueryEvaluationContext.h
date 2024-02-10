@@ -1,17 +1,16 @@
-//
-// Created by ZHENGTAO JIANG on 10/2/24.
-//
+// ai-gen start(gpt, 0, e)
+// prompt: https://chat.openai.com/share/8e7dd4d8-d866-4a69-a89a-abf14f589fa0
+#pragma once
 
-#ifndef SPA_QUERYEVALUATIONCONTEXT_H
-#define SPA_QUERYEVALUATIONCONTEXT_H
+#include "SynonymValues.h"
+#include <list>
 
-/**
- * This class is used to store the evaluation context of the query.
- * The evaluation context includes the remaining output for each synonyms.
- */
 class QueryEvaluationContext {
+private:
+    std::list<SynonymValues> synonymValuesList;
 
+public:
+    void addSynonymValues(const SynonymValues& synonymValues);
+    SynonymValues getSynonymValues(const Synonym& synonym) const;
 };
-
-
-#endif //SPA_QUERYEVALUATIONCONTEXT_H
+// ai-gen end

@@ -5,7 +5,7 @@
 #ifndef SPA_SYNONYM_H
 #define SPA_SYNONYM_H
 
-#include "DesignEntityType.h"
+#include "qps/entity/designEntity/designEntityType.h"
 #include <string>
 
 
@@ -16,9 +16,9 @@ private:
 public:
     Synonym(DesignEntityType type, const std::string& name);
 
-    DesignEntityType getType() const;
+    [[nodiscard]] DesignEntityType getType() const;
 
-    const std::string& getName() const;
+    [[nodiscard]] const std::string& getName() const;
 };
 
 
