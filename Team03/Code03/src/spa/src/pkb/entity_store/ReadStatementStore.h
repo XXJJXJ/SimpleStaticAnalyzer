@@ -1,11 +1,11 @@
 #pragma once
 
 #include "common/ReadStatement.h"
-#include "pkb/StoreInterface.h"
+#include "EntityStoreInterface.h"
 
 using namespace std;
 
-class ReadStatementStore : public StoreInterface<ReadStatement> {
+class ReadStatementStore : public EntityStoreInterface<ReadStatement> {
 private:
     unordered_map<int, shared_ptr<ReadStatement>> lineToReadStatementMap;
 public:

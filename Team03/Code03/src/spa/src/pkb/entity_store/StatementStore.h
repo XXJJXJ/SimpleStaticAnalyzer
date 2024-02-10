@@ -1,10 +1,10 @@
 #pragma once
 
 #include "common/Statement.h"
-#include "pkb/StoreInterface.h"
+#include "EntityStoreInterface.h"
 
 
-class StatementStore : public StoreInterface<Statement> {
+class StatementStore : public EntityStoreInterface<Statement> {
 private:
     unordered_map<int, shared_ptr<Statement>> lineToStatementMap;
 public:
