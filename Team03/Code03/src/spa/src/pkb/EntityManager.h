@@ -1,19 +1,20 @@
 #pragma once
 
-
-#include <iostream>
 #include <string>
-#include <set>
-#include "common/Entity.h"
-#include "Store.h"
-#include "StatementStore.h"
+
+#include "common/Variable.h"
+#include "entity_store/NormalStore.h"
+#include "entity_store/ProcedureStore.h"
+#include "entity_store/StatementStore.h"
+#include "entity_store/PrintStatementStore.h"
+#include "entity_store/ReadStatementStore.h"
 
 using namespace std;
+
 class EntityManager {
 private:
     // Private constructor to prevent external instantiation
     EntityManager() {}
-    // Private static instance of the class
     static EntityManager* instance;
 
 private:
@@ -21,6 +22,7 @@ private:
     NormalStore<Variable> variableStore;
     ProcedureStore procStore;
     // Statement stores
+    StatementStore allStmtStore;
     PrintStatementStore printStore;
     ReadStatementStore readStore;
 private:
@@ -43,6 +45,8 @@ public:
 
     bool addReadStatement(shared_ptr<ReadStatement> readStmt);
     vector<shared_ptr<ReadStatement>> getAllReadStatements();
+
+    vector<shared_ptr<Statement>> getAllStatements();
 
     static void clear();
     ~EntityManager();

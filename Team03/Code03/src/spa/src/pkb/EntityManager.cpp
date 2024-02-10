@@ -1,4 +1,5 @@
 #include <vector>
+
 #include "EntityManager.h"
 
 // Initialize the static instance to nullptr
@@ -16,15 +17,6 @@ EntityManager* EntityManager::getInstance() {
 EntityManager::~EntityManager() {
     delete instance;
 }
-
-// Constants
-// bool EntityManager::addConstant(shared_ptr<Constant> c) {
-//     return constantStore.add(c);
-// }
-
-// vector<shared_ptr<Constant>> EntityManager::getAllConstants() {
-//     return constantStore.getAll();
-// }
 
 // Variables
 bool EntityManager::addVariable(shared_ptr<Variable> var) {
@@ -46,7 +38,10 @@ vector<shared_ptr<Procedure>> EntityManager::getAllProcedures() {
 
 // Print Statements
 bool EntityManager::addPrintStatement(shared_ptr<PrintStatement> printStmt) {
-    return printStore.add(printStmt);
+    if (allStmtStore.add(printStmt)) {
+        return printStore.add(printStmt);
+    }
+    return false;
 }
 
 vector<shared_ptr<PrintStatement>> EntityManager::getAllPrintStatements() {
@@ -55,12 +50,29 @@ vector<shared_ptr<PrintStatement>> EntityManager::getAllPrintStatements() {
 
 // Read Statements
 bool EntityManager::addReadStatement(shared_ptr<ReadStatement> readStmt) {
-    return readStore.add(readStmt);
+    if (allStmtStore.add(readStmt)) {
+        return readStore.add(readStmt);
+    }
+    return false;
 }
 
 vector<shared_ptr<ReadStatement>> EntityManager::getAllReadStatements() {
     return readStore.getAll();
 }
+
+vector<shared_ptr<Statement>> EntityManager::getAllStatements() {
+    return allStmtStore.getAll();
+}
+
+// Constants
+// bool EntityManager::addConstant(shared_ptr<Constant> c) {
+//     return constantStore.add(c);
+// }
+
+// vector<shared_ptr<Constant>> EntityManager::getAllConstants() {
+//     return constantStore.getAll();
+// }
+
 
 void EntityManager::clear() {
     if (!instance) {
@@ -73,4 +85,7 @@ void EntityManager::clearStore() {
     // constantStore.clear();
     variableStore.clear();
     procStore.clear();
+    allStmtStore.clear();
+    readStore.clear();
+    printStore.clear();
 }

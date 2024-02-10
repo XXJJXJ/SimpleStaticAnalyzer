@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+
 #include "common/Procedure.h"
-#include "StoreInterface.h"
+#include "pkb/StoreInterface.h"
 
 class ProcedureStore : public StoreInterface<Procedure> {
 private:

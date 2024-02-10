@@ -23,3 +23,7 @@ vector<shared_ptr<PrintStatement>> QueryMananger::getAllPrintStatements() {
 vector<shared_ptr<ReadStatement>> QueryMananger::getAllReadStatements() {
     return em->getAllReadStatements();
 }
+
+vector<shared_ptr<Statement>> QueryMananger::getAllStatements() {
+    return em->getAllStatements();
+}

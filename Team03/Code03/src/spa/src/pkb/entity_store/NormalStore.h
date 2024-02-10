@@ -3,7 +3,8 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
-#include "StoreInterface.h"
+
+#include "pkb/StoreInterface.h"
 
 using namespace std;
 

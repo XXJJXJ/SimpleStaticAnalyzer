@@ -1,6 +1,6 @@
 #include "PopulatePKB.h"
 
-Populator::Populator()  {
+Populator::Populator() {
     em = EntityManager::getInstance();
 }
 
