@@ -1,6 +1,7 @@
 //
 // Created by Stephanie Chen on 10/2/24.
 //
+
 #include "catch.hpp"
 
 #include "qps/QueryFacade.h"
