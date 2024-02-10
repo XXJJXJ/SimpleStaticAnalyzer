@@ -3,3 +3,5 @@
 //
 
 #include "Query.h"
+
+std::vector <std::shared_ptr<Strategy>> Query::getStrategies() {}

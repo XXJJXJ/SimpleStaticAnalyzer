@@ -4,9 +4,10 @@
 
 #ifndef SPA_DECLARESTRATEGY_H
 #define SPA_DECLARESTRATEGY_H
+#include "Strategy.h"
 
 
-class DeclareStrategy {
+class DeclareStrategy : public Strategy {
 
 };
 

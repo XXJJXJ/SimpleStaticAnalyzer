@@ -6,8 +6,9 @@
 #define SPA_PROJECTIONSTRATEGY_H
 
 
+#include "Strategy.h"
 
-class ProjectionStrategy {
+class ProjectionStrategy : public Strategy {
 
 };
 
