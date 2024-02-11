@@ -3,3 +3,9 @@
 //
 
 #include "Query.h"
+
+class Query {
+	std::cout << declarations;
+
+
+};

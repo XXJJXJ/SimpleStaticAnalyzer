@@ -11,7 +11,6 @@
 class QueryFacade {
 public:
     QueryFacade();
-
     ~QueryFacade();
 
     void processQueries(const std::string& inputFile, const std::string& outputFile);
@@ -22,5 +21,4 @@ private:
     std::string evaluateQuery(const std::string& validatedQuery);
     void writeResults(const std::vector<std::string>& results, const std::string& outputFile);
 };
-
 #endif //SPA_QUERYFACADE_H

@@ -15,7 +15,7 @@ public:
   QueryValidator();
   ~QueryValidator();
   
-	std::string validate(const std::string& parsedQuery);
+	bool validate(const std::string& parsedQuery);
 	bool validateExpressionSpec(std::string expressionSpec);
 };
 

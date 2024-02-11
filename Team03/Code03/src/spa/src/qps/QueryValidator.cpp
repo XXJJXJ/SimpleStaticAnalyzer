@@ -8,16 +8,15 @@
 QueryValidator::QueryValidator() {}
 QueryValidator::~QueryValidator() {}
 
-std::string QueryValidator::validate(const std::string& parsedQuery)
+bool QueryValidator::validate(const std::string& parsedQuery)
 {
     QueryParser qp;
     if (true) {
         //call main validation logic
-        //if valid it should call the query parser
-        return qp.parseQuery(query);
+        return true;
     }
     else {
-        return "Invalid Query";
+        return false;
     }
 }
 

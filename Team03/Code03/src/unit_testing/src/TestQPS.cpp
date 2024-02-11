@@ -8,9 +8,6 @@
 #include <filesystem>
 #include <iostream>
 
-
-using namespace std;
-
 // Tests that QueryFacade can properly read and write the correct files
 TEST_CASE("Test QueryFacade") {
     QueryFacade q;
