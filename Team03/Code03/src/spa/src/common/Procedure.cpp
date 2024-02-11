@@ -1,13 +1,13 @@
 #include "Procedure.h"
 
-Procedure::Procedure(string procedureName) : procedureName(std::move(
-    procedureName)), statementList({}) {}
+Procedure::Procedure(string procedureName) : procedureName(
+    procedureName), statementList({}) {}
 
 void Procedure::addToStatementList(shared_ptr<Statement> statement) {
-    (*statementList).push_back(statement);
+    statementList.push_back(statement);
 }
 
-shared_ptr<Procedure::StatementListContainer> Procedure::getStatementList() const {
+Procedure::StatementListContainer Procedure::getStatementList() const {
     return statementList;
 }
 

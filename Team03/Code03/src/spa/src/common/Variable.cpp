@@ -10,6 +10,16 @@ bool Variable::isLeafNodeExpression() {
     return true;
 }
 
+
 string Variable::getName() const {
     return name;
+}
+
+std::size_t Variable::hash() const {
+    std::hash<string> hasher;
+    return hasher(getName());
+}
+
+bool Variable::operator==(const Variable& other) const {
+    return (getName() == other.getName());
 }
