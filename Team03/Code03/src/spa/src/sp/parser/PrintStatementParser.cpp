@@ -16,7 +16,7 @@ std::string PrintStatementParser::extractVariableName(vector<shared_ptr<Token>> 
     shared_ptr<Token> token1 = tokens[1];
     shared_ptr<Token> token2 = tokens[2];
 
-    if (token0->getValue() != "read") {
+    if (token0->getValue() != "print") {
         throw SyntaxErrorException("Read statement should start with print keyword");
     }
 
