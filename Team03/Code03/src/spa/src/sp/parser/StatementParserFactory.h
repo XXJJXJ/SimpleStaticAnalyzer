@@ -14,5 +14,5 @@ public:
 private:
     static bool checkKeywordType(
         vector<shared_ptr<Token>> tokens,
-        string_view statementType);
+        string statementType);
 };

@@ -28,9 +28,5 @@ std::string ReadStatementParser::extractVariableName(vector<shared_ptr<Token>> t
         throw SyntaxErrorException("Read statement should end with a ;");
     }
 
-    else {
-        tokens.erase(tokens.begin(), tokens.begin() + 3);
-    }
-
     return token1->getValue();
 }

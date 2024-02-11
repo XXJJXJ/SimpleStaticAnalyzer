@@ -28,9 +28,5 @@ std::string PrintStatementParser::extractVariableName(vector<shared_ptr<Token>> 
         throw SyntaxErrorException("Print statement should end with a ;");
     }
 
-    else {
-        tokens.erase(tokens.begin(), tokens.begin() + 3);
-    }
-
     return token1->getValue();
 }

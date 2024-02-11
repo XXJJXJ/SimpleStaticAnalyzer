@@ -8,6 +8,7 @@ shared_ptr<Program> Parser::parseSource(vector<shared_ptr<Token>> tokens) {
     while (!tokens.empty()) {
         try {
             shared_ptr<Procedure> procedure = procedureParser->parseEntity(tokens);
+            tokens.clear();
             program->addToProcedureList(procedure);
         }
         catch (SyntaxErrorException& e) {

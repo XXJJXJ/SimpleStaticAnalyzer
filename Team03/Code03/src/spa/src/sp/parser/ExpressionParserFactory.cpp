@@ -3,6 +3,7 @@
 shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(
     vector<shared_ptr<Token>> tokens, 
     string statementType) {
+
     if (checkExpressionType(tokens.front(), "variable")) {
         return make_shared<VariableParser>();
     }
