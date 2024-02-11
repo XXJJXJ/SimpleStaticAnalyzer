@@ -8,7 +8,11 @@
 
 class QueryParser {
 public:
-	std::string parseQuery(std::string query);
+    QueryParser();
+
+    ~QueryParser();
+
+    std::string parse(const std::string& query);
 };
 
 

@@ -5,7 +5,10 @@
 #include "QueryValidator.h"
 #include "QueryParser.h"
 
-std::string QueryValidator::validateQuery(std::string query)
+QueryValidator::QueryValidator() {}
+QueryValidator::~QueryValidator() {}
+
+std::string QueryValidator::validate(const std::string& parsedQuery)
 {
     QueryParser qp;
     if (true) {

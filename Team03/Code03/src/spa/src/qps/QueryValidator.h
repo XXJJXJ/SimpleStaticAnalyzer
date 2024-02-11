@@ -12,9 +12,11 @@
 
 class QueryValidator {
 public:
-	std::string validateQuery(std::string query);
+  QueryValidator();
+  ~QueryValidator();
+  
+	std::string validate(const std::string& parsedQuery);
 	bool validateExpressionSpec(std::string expressionSpec);
-
 };
 
 
