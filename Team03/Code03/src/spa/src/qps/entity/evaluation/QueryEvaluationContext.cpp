@@ -37,7 +37,7 @@ string QueryEvaluationContext::resultToString() const {
     }
     // ai-gen end
 
-    std::string joinedString = ss.str();
+    return ss.str();
 }
 
 

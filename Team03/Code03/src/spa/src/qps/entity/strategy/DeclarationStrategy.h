@@ -3,7 +3,7 @@
 #include <vector>
 #include "qps/entity/query/Synonym.h"
 #include "Strategy.h"
-#include "../evaluation/QueryEvaluationContext.h"
+#include "qps/entity/evaluation/QueryEvaluationContext.h"
 
 class DeclarationStrategy : public Strategy {
 private:

@@ -4,12 +4,12 @@
 
 #include "Synonym.h"
 
-Synonym::Synonym(DesignEntityType type, const std::string& name) {
+Synonym::Synonym(EntityType type, const std::string& name) {
     this->type = type;
     this->name = name;
 }
 
-DesignEntityType Synonym::getType() const {
+EntityType Synonym::getType() const {
     return this->type;
 }
 

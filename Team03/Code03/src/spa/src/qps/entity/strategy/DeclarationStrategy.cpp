@@ -9,27 +9,27 @@ DeclarationStrategy::DeclarationStrategy(const std::vector<shared_ptr<Synonym>>&
         : synonyms(synonyms) {}
 
 std::vector<std::shared_ptr<Entity>> DeclarationStrategy::getEntitiesByType(EntityType entityType, QueryManager &queryManager) {
-    switch (entityType) {
-        case EntityType::Procedure:
-            return queryManager.getAllProcedures();
-        case EntityType::Stmt:
-            return queryManager.getAllStatements();
-        case EntityType::Assign:
-            return queryManager.getAllAssignStatements();
-        case EntityType::Print:
-            return queryManager.getAllPrintStatements();
-        case EntityType::Read:
-            return queryManager.getAllReadStatements();
-        case EntityType::Call:
-            return queryManager.getAllCallStatements();
-        case EntityType::If:
-            return queryManager.getAllIfStatements();
-        case EntityType::While:
-            return queryManager.getAllWhileStatements();
-        default:
-            // Raise exception for unknown entity type
-            throw std::invalid_argument("Unknown entity type");
-    }
+//    switch (entityType) {
+//        case EntityType::Procedure:
+//            return queryManager.getAllProcedures();
+//        case EntityType::Stmt:
+//            return queryManager.getAllStatements();
+//        case EntityType::Assign:
+//            return queryManager.getAllAssignStatements();
+//        case EntityType::Print:
+//            return queryManager.getAllPrintStatements();
+//        case EntityType::Read:
+//            return queryManager.getAllReadStatements();
+//        case EntityType::Call:
+//            return queryManager.getAllCallStatements();
+//        case EntityType::If:
+//            return queryManager.getAllIfStatements();
+//        case EntityType::While:
+//            return queryManager.getAllWhileStatements();
+//        default:
+//            // Raise exception for unknown entity type
+//            throw std::invalid_argument("Unknown entity type");
+//    }
 }
 
 /**

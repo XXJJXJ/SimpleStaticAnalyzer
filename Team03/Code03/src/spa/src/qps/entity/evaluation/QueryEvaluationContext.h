@@ -3,7 +3,6 @@
 #pragma once
 
 #include "SynonymValues.h"
-#include "qps/entity/strategy/Strategy.h"
 #include "pkb/QueryPKB.h"
 #include <list>
 
@@ -16,7 +15,6 @@ public:
     QueryEvaluationContext();
     void addSynonymValues(const SynonymValues& synonymValues);
     [[nodiscard]] shared_ptr<QueryManager> getQueryManager() const;
-    [[nodiscard]] SynonymValues getSynonymValues(const Synonym& synonym) const;
     [[nodiscard]] string resultToString() const;
 };
 // ai-gen end

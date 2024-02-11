@@ -49,9 +49,9 @@ bool QueryFacade::validateQuery(const std::string& parsedQuery) {
 }
 
 std::string QueryFacade::evaluateQuery(const std::string& validatedQuery) {
-    Query query;
+    shared_ptr<Query> query;
     QueryEvaluator evaluator(query);
-    return evaluator.evaluate(validatedQuery);
+    return evaluator.evaluate(query);
 }
 
 void QueryFacade::writeResults(const std::vector<std::string>& results, const std::string& outputFile) {
