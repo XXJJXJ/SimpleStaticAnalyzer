@@ -1,3 +1,4 @@
+#include "common/Constant.h"
 #include "common/Variable.h"
 #include "NormalStore.h"
 
@@ -30,4 +31,5 @@ NormalStore<T>::~NormalStore() {
 }
 
 template class NormalStore<Variable>;
+template class NormalStore<Constant>;
 // template class NormalStore<float>;
