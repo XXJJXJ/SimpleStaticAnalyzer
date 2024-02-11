@@ -17,10 +17,13 @@ TEST_CASE("Test QueryFacade") {
     std::cout << currentPath << std::endl;
 
     // Relative paths to input and output files
-    std::string inputFile = currentPath.parent_path().parent_path().parent_path() / "tests" / "Sample_queries.txt";
+    std::string inputFile = (currentPath.parent_path().parent_path().parent_path() / "tests" / "Sample_queries.txt").string();
+    //std::string inputFile = currentPath.parent_path().parent_path().parent_path() / "tests" / "Sample_queries.txt";
+    
     std::cout << inputFile << std::endl;
 
-    std::string outputFile = currentPath.parent_path().parent_path().parent_path() / "tests" / "out.xml";
+    std::string outputFile = (currentPath.parent_path().parent_path().parent_path() / "tests" / "out.xml").string();
+    //std::string outputFile = currentPath.parent_path().parent_path().parent_path() / "tests" / "out.xml";
 
     q.processQueries(inputFile, outputFile);
 }
