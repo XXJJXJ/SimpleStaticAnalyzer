@@ -16,11 +16,10 @@
 
 class Query {
 public:
-    std::vector<shared_ptr<Strategy>> getStrategies() const;
-    vector<shared_ptr<DeclarationStrategy>> getDeclarationStrategies() const;
+    [[nodiscard]] vector<shared_ptr<Strategy>> getStrategies() const;
 private:
-    std::vector<shared_ptr<Synonym>> synonyms;  // declared synonyms
-    std::vector<shared_ptr<Clause>> clauses;
+    vector<shared_ptr<Synonym>> synonyms;  // declared synonyms
+    vector<shared_ptr<Clause>> clauses;
 
 };
 
