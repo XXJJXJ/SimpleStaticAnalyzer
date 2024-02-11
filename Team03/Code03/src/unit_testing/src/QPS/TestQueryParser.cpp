@@ -1,7 +1,7 @@
 #include "catch.hpp"
-#include "QPS/QueryParser.h"
+#include "qps/QueryParser.h"
 
 TEST_CASE("queryTokenizer-should-return-valid-tokens") {
-	std::string testString = "variable v;";
+	std::string testString = "variable k; select k;";
 
 };

@@ -1,23 +1,33 @@
-//
-// Created by ZHENGTAO JIANG on 6/2/24.
-//
+/*
+* Created by ZHENGTAO JIANG on 6/2/24.
+* 
+* 
+*/
 
 #include "QueryParser.h"
-#include "Query.h"
 
 QueryParser::QueryParser() {}
 QueryParser::~QueryParser() {}
 
-std::string delimiter = " ";
+// Given a string, it will return a vector of strings split by " "
+std::vector<std::string> tokenizeString(const std::string& query) {
+    std::string delimiter = " ";
+std:vector<std::string> tokens;
 
-std::string QueryParser::parse(const std::string& query) {
-    // Basic parsing logic
+    size_t start = 0, end;
+    while ((end = query.find(delimiter)) != std::string::npos) {
+        tokens.push_back(query.substr(start, end - start));
+        start = end + 1;
+    }
+    tokens.push_back(query.substr(start));
 
-    //vector<std::string> tokens = tokenizeString(query);
-    
-    return query;
+    return tokens;
 }
 
-vector<std::string> tokenizeString(const std::string& query) {
-
+//Main parsing method
+std::string QueryParser::parse(const std::string& query) {
+    
+    std::vector<std::string> tokens = tokenizeString(query);
+    
+    return query;
 }
