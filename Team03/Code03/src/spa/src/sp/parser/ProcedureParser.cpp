@@ -13,6 +13,7 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(vector<shared_ptr<Token>> tok
         tokens.erase(tokens.begin(), tokens.begin() + 3);
         procedure->addToStatementList(statement);
     }
+
     if (isEndOfProcedure(tokens)) {
         tokens.erase(tokens.begin());
     }
@@ -38,5 +39,5 @@ std::string ProcedureParser::extractProcedureName(vector<shared_ptr<Token>> toke
 }
 
 bool ProcedureParser::isEndOfProcedure(vector<shared_ptr<Token>> tokens) {
-    return tokens.front()->getType() == TokenType::RIGHT_BRACE;
+    return tokens.front()->getValue() == "}";
 }
