@@ -13,12 +13,6 @@
 
 std::string QueryFacade::evaluateQuery(std::string query) {
 	QueryValidator qv;
-	QueryParser qp;
 
-	if (qv.validateQuery(query)) {
-		return qp.parseQuery(query);
-	}
-	else {
-		return "invalid query";
-	}
+	return qv.validateQuery(query);
 }

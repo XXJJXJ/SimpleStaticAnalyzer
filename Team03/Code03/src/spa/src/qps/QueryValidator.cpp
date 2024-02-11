@@ -1,14 +1,21 @@
 /*
 * Created by ZHENGTAO JIANG on 8/2/24.
-* 
-* TODO: Milestone 1
 */
 
 #include "QueryValidator.h"
+#include "QueryParser.h"
 
-bool QueryValidator::validateQuery(std::string query)
+std::string QueryValidator::validateQuery(std::string query)
 {
-    return true;
+    QueryParser qp;
+    if (true) {
+        //call main validation logic
+        //if valid it should call the query parser
+        return qp.parseQuery(query);
+    }
+    else {
+        return "Invalid Query";
+    }
 }
 
 bool QueryValidator::validateExpressionSpec(std::string expressionSpec)

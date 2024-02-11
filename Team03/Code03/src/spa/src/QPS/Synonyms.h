@@ -3,7 +3,7 @@
 */
 
 enum SYNONYMS {
-	"procedure", //entity procedure
-	"variable", //entity variable
-	"assign" //assignment
+	procedure, //entity procedure
+	variable, //entity variable
+	assign //assignment
 };

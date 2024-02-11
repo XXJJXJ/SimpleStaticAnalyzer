@@ -1,7 +1,9 @@
 /*
 * Created by ZHENGTAO JIANG on 8/2/24.
 * 
-* Validates user query input based on "Basic PQL"
+* Given a string query, it checks if the query is valid based on the predefined PQL grammar
+* If not valid, returns invalid query string
+* If valid, continues execution by calling parseQuery
 */
 
 #ifndef SPA_QUERYVALIDATOR_H
@@ -10,7 +12,7 @@
 
 class QueryValidator {
 public:
-	bool validateQuery(std::string query);
+	std::string validateQuery(std::string query);
 	bool validateExpressionSpec(std::string expressionSpec);
 
 };
