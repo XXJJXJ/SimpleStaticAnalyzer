@@ -8,10 +8,9 @@
 class DeclarationStrategy : public Strategy {
 private:
     std::vector<shared_ptr<Synonym>> synonyms;
+    static vector<shared_ptr<Entity>> getEntitiesByType(EntityType entityType, QueryManager &queryManager);
 
 public:
     explicit DeclarationStrategy(const std::vector<shared_ptr<Synonym>>& synonyms);
     void execute(QueryEvaluationContext &context) override;
-
-    static vector<shared_ptr<Entity>> getEntitiesByType(EntityType entityType, QueryManager &queryManager);
 };
