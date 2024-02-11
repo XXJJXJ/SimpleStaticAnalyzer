@@ -4,6 +4,8 @@ add_executable(unit_testing ${srcs}
         src/TestQPS.cpp
         ../spa/src/qps/entity/strategy/ProjectionStrategy.h
         ../spa/src/qps/entity/query/Query.cpp
-        ../spa/src/qps/entity/query/designEntityType.h)
+        ../spa/src/common/EntityType.h
+        src/qps/TestQueryEvaluationContext.cpp
+)
 
 target_link_libraries(unit_testing spa)

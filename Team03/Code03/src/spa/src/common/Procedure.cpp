@@ -1,8 +1,6 @@
-#pragma once
-
 #include "Procedure.h"
 
-Procedure::Procedure(string procedure_name) : procedureName(move(
+Procedure::Procedure(string procedureName) : procedureName(std::move(
     procedureName)), statementList({}) {}
 
 void Procedure::addToStatementList(shared_ptr<Statement> statement) {
@@ -13,7 +11,7 @@ shared_ptr<Procedure::StatementListContainer> Procedure::getStatementList() cons
     return statementList;
 }
 
-string Procedure::getProcedureName() const {
+string Procedure::getName() const {
     return procedureName;
 }
 

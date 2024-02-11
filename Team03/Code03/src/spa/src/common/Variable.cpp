@@ -9,3 +9,7 @@ void Variable::accept(shared_ptr<Visitor> visitor) {
 bool Variable::isLeafNodeExpression() {
     return true;
 }
+
+string Variable::getName() const {
+    return name;
+}

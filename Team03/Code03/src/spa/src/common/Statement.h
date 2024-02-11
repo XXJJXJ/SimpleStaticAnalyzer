@@ -10,10 +10,11 @@ public:
         int statementNumber,
         string statementType,
         string procedureName);
-    virtual void accept(shared_ptr<Visitor> visitor) = 0;
+    void accept(shared_ptr<Visitor> visitor) override = 0;
     int getStatementNumber() const;
     string getStatementType() const;
     string getProcedureName() const;
+    string getName() const override;
 
 private:
     const int statementNumber;

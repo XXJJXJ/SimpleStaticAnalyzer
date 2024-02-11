@@ -20,11 +20,11 @@ using namespace std;
 // virtual vector<Statement> getIfStatements() = 0;
 // virtual vector<Statement> getWhileStatements() = 0;
 
-class QueryMananger {
+class QueryManager {
 protected:
     EntityManager* em;
 public:
-    QueryMananger ();
+    QueryManager ();
     // vector<Constant*> getAllConstants();
     // vector<shared_ptr<Variable>> getAllVariables();
 };

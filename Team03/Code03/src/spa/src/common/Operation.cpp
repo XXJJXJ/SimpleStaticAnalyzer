@@ -7,3 +7,7 @@ Operation::Operation(
     : Expression(move(name), type) {
         arguments = arguments;
 }
+
+string Operation::getName() const {
+    return name;
+}

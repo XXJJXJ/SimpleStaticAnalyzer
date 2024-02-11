@@ -1,5 +1,5 @@
 #include "QueryPKB.h"
 
-QueryMananger::QueryMananger () {
+QueryManager::QueryManager () {
     em = EntityManager::getInstance();
 }

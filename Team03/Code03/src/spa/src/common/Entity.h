@@ -5,4 +5,5 @@
 class Entity {
 public:
 	virtual void accept(shared_ptr<Visitor> visitor) = 0;
+    virtual string getName() const = 0;
 };

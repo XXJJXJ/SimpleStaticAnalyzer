@@ -1,6 +1,6 @@
 // ai-gen start(gpt, 0, e)
 // prompt: I can't get the link, got 'Sharing conversations with images is not yet supported'.
-enum class DesignEntityType {
+enum class EntityType {
     Stmt,       // Represents all statements
     Read,       // Represents read statements
     Print,      // Represents print statements
