@@ -12,7 +12,7 @@ TEST_CASE("Store and retrieve Variables") {
     Populator populator;
     shared_ptr<Variable> v = make_shared<Variable>("x");
     populator.addVariable(v);
-    QueryMananger queryM;
+    QueryManager queryM;
     vector<shared_ptr<Variable>> varStore = queryM.getAllVariables();
     REQUIRE(varStore.size() == 1);
     shared_ptr<Variable> v2 = varStore.front();
@@ -28,7 +28,7 @@ TEST_CASE("Store duplicate variables") {
     shared_ptr<Variable> x_dup = make_shared<Variable>("x");
     populator.addVariable(x);
     populator.addVariable(x_dup);
-    QueryMananger queryM;
+    QueryManager queryM;
     vector<shared_ptr<Variable>> varStore = queryM.getAllVariables();
     shared_ptr<Variable> x2 = varStore.front();
     REQUIRE((x2->getName() == "x"));
@@ -44,7 +44,7 @@ TEST_CASE("Store duplicate variables") {
 TEST_CASE("Store and retrieve procedures") {
     EntityManager::clear();
     Populator populator;
-    QueryMananger queryM;
+    QueryManager queryM;
     shared_ptr<Procedure> proc1 = make_shared<Procedure>("main1");
     shared_ptr<Procedure> proc2 = make_shared<Procedure>("main2");
     shared_ptr<Procedure> proc3 = make_shared<Procedure>("main3");
@@ -70,7 +70,7 @@ TEST_CASE("Store and retrieve procedures") {
 TEST_CASE("Store duplicate procedures") {
     EntityManager::clear();
     Populator populator;
-    QueryMananger queryM;
+    QueryManager queryM;
     shared_ptr<Procedure> proc1 = make_shared<Procedure>("main");
     REQUIRE(populator.addProcedure(proc1)); // Successful return true
 
@@ -89,7 +89,7 @@ TEST_CASE("Store duplicate procedures") {
 TEST_CASE("Store and retrieve read statements") {
     EntityManager::clear();
     Populator populator;
-    QueryMananger queryM;
+    QueryManager queryM;
     shared_ptr<Variable> x = make_shared<Variable>("x");
     shared_ptr<Variable> y = make_shared<Variable>("y");
     shared_ptr<ReadStatement> readX = make_shared<ReadStatement>(1, x, "main");
@@ -113,7 +113,7 @@ TEST_CASE("Store and retrieve read statements") {
 TEST_CASE("Store and retrieve print statements") {
     EntityManager::clear();
     Populator populator;
-    QueryMananger queryM;
+    QueryManager queryM;
     shared_ptr<Variable> x = make_shared<Variable>("x");
     shared_ptr<Variable> y = make_shared<Variable>("y");
     shared_ptr<PrintStatement> printX = make_shared<PrintStatement>(1, x, "main");
@@ -137,7 +137,7 @@ TEST_CASE("Store and retrieve print statements") {
 TEST_CASE("Store duplicate statements") {
     EntityManager::clear();
     Populator populator;
-    QueryMananger queryM;
+    QueryManager queryM;
 
     shared_ptr<Variable> x = make_shared<Variable>("x");
     shared_ptr<Variable> y = make_shared<Variable>("y");
@@ -166,7 +166,7 @@ TEST_CASE("Store duplicate statements") {
 TEST_CASE("Clear store") {
     EntityManager::clear(); // Ensure other failed test cases do not affect this case
     Populator populator;
-    QueryMananger queryM;
+    QueryManager queryM;
     REQUIRE(queryM.getAllVariables().size() == 0);
     shared_ptr<Variable> v = make_shared<Variable>("x");
     populator.addVariable(v);

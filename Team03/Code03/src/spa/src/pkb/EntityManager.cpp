@@ -65,13 +65,33 @@ vector<shared_ptr<Statement>> EntityManager::getAllStatements() {
 }
 
 // Constants
-// bool EntityManager::addConstant(shared_ptr<Constant> c) {
-//     return constantStore.add(c);
-// }
+bool EntityManager::addConstant(shared_ptr<Constant> c) {
+    return constantStore.add(c);
+}
 
-// vector<shared_ptr<Constant>> EntityManager::getAllConstants() {
-//     return constantStore.getAll();
-// }
+vector<shared_ptr<Constant>> EntityManager::getAllConstants() {
+    return constantStore.getAll();
+}
+
+vector<shared_ptr<AssignStatement>> EntityManager::getAllAssignStatements() {
+    vector<shared_ptr<AssignStatement>> vec;
+    return vec;
+}
+
+vector<shared_ptr<CallStatement>> EntityManager::getAllCallStatements() {
+    vector<shared_ptr<CallStatement>> vec;
+    return vec;
+}
+
+vector<shared_ptr<IfStatement>> EntityManager::getAllIfStatements() {
+    vector<shared_ptr<IfStatement>> vec;
+    return vec;
+}
+
+vector<shared_ptr<WhileStatement>> EntityManager::getAllWhileStatements() {
+    vector<shared_ptr<WhileStatement>> vec;
+    return vec;
+}
 
 
 void EntityManager::clear() {
