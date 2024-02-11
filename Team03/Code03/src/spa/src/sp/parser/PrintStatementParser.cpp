@@ -2,7 +2,7 @@
 
 shared_ptr<Statement> PrintStatementParser::parseEntity(vector<shared_ptr<Token>> tokens) {
     string variableName = extractVariableName(tokens);
-    Variable variable(variableName);
+    auto variable = make_shared<Variable>(variableName);
     auto printStatement =
         make_shared<PrintStatement>(
             Program::getAndIncrementStatementNumber(),

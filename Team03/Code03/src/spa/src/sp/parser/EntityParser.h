@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "../tokenizer/token.h"
+#include "../tokenizer/Token.h"
 
 template<typename Entity>
 class EntityParser {

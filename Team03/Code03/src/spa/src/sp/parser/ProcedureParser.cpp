@@ -6,7 +6,6 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(vector<shared_ptr<Token>> tok
     string procedureName = extractProcedureName(tokens);
     auto procedure = make_shared<Procedure>(procedureName);
 
-    // Adding Statements of a Procedure
     while (!isEndOfProcedure(tokens)) {
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(procedureName);
