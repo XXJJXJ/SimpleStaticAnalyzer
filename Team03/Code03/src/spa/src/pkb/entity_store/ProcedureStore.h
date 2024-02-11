@@ -1,6 +1,8 @@
 #pragma once
+
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "common/Procedure.h"
 #include "EntityStoreInterface.h"

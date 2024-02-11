@@ -1,8 +1,9 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "common/Statement.h"
 #include "EntityStoreInterface.h"
-
 
 class StatementStore : public EntityStoreInterface<Statement> {
 private:

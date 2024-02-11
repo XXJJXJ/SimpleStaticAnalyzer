@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "common/ReadStatement.h"
 #include "EntityStoreInterface.h"
 
