@@ -9,9 +9,9 @@ public:
 	typedef vector<shared_ptr<Procedure>> ProcedureListContainer;
 	void addToProcedureList(shared_ptr<Procedure> procedure);
 	static int getAndIncrementStatementNumber();
-	shared_ptr<ProcedureListContainer> getProcedureList();
+	ProcedureListContainer getProcedureList();
 
 private:
-	shared_ptr<ProcedureListContainer> procedureList;
+	ProcedureListContainer procedureList;
 	static int statementNumber;
 };
