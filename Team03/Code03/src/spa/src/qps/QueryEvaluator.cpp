@@ -3,3 +3,13 @@
 //
 
 #include "QueryEvaluator.h"
+
+QueryEvaluator::QueryEvaluator() {}
+
+QueryEvaluator::~QueryEvaluator() {}
+
+std::string QueryEvaluator::evaluate(const std::string& validatedQuery) {
+    // Basic evaluation logic
+
+    return validatedQuery;
+}

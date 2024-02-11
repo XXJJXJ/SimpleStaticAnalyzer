@@ -5,9 +5,15 @@
 #ifndef SPA_QUERYEVALUATOR_H
 #define SPA_QUERYEVALUATOR_H
 
+#include <string>
 
 class QueryEvaluator {
+public:
+    QueryEvaluator();
 
+    ~QueryEvaluator();
+
+    std::string evaluate(const std::string& validatedQuery);
 };
 
 
