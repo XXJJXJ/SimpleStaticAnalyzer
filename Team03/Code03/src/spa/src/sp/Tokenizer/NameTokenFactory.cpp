@@ -1,4 +1,6 @@
 #include "NameToken.h"
 #include "NameTokenFactory.h"
 
-Token NameTokenFactory::createToken(std::string value) { return NameToken(value); }
+shared_ptr<Token> NameTokenFactory::createToken(std::string value) {
+	return make_shared<NameToken>(value);
+}

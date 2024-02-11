@@ -2,10 +2,11 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 #include "Token.h"
 
 class TokenFactory {
-	static Token createToken(string value);
+	static std::shared_ptr<Token> createToken(string value);
 };

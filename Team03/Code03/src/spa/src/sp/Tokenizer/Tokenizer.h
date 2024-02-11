@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <string>
 #include <vector>
 #include <regex>
@@ -12,9 +13,7 @@
 
 class Tokenizer {
 public:
-	//std::vector<Token> tokenize(std::ifstream file);
+	std::vector<shared_ptr<Token>> tokenize(std::ifstream& file);
 
-	std::vector<Token> tokenize(std::string str);
-
-	Token stringToToken(std::string value);
+	shared_ptr<Token> stringToToken(std::string value);
 };
