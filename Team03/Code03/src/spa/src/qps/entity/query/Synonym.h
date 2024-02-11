@@ -1,5 +1,3 @@
-
-
 #ifndef SPA_SYNONYM_H
 #define SPA_SYNONYM_H
 

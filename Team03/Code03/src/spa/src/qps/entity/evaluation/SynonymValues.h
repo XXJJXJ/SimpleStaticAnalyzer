@@ -10,13 +10,13 @@
 // Represents a list of possible values for a synonym.
 class SynonymValues {
 private:
-    Synonym synonym;
+    shared_ptr<Synonym> synonym;
     std::vector<std::shared_ptr<Entity>> values;
 
 public:
-    SynonymValues(const Synonym& syn) : synonym(syn) {}
+    explicit SynonymValues(const shared_ptr<Synonym> &syn) : synonym(syn) {}
     void addValue(const std::shared_ptr<Entity>& value);
-    const std::vector<std::shared_ptr<Entity>>& getValues() const;
-    Synonym getSynonym() const { return synonym; }
+    [[nodiscard]] const std::vector<std::shared_ptr<Entity>>& getValues() const;
+    [[nodiscard]] shared_ptr<Synonym> getSynonym() const { return synonym; }
 };
 // ai-gen end

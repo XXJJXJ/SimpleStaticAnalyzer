@@ -1,10 +1,11 @@
 // ai-gen start(gpt, 1, e)
+// prompt: https://chat.openai.com/share/f0da3797-ca97-4fe7-938b-ca4e00bbe8e1
 #include "DeclarationStrategy.h"
 #include <memory>
 #include <vector>
 
 
-DeclarationStrategy::DeclarationStrategy(const std::vector<Synonym>& synonyms)
+DeclarationStrategy::DeclarationStrategy(const std::vector<shared_ptr<Synonym>>& synonyms)
         : synonyms(synonyms) {}
 
 std::vector<std::shared_ptr<Entity>> DeclarationStrategy::getEntitiesByType(EntityType entityType, QueryManager &queryManager) {
@@ -38,7 +39,7 @@ std::vector<std::shared_ptr<Entity>> DeclarationStrategy::getEntitiesByType(Enti
 void DeclarationStrategy::execute(QueryEvaluationContext &context) {
     shared_ptr<QueryManager> queryManager = context.getQueryManager();
     for (const auto& synonym : synonyms) {
-        auto entities = getEntitiesByType(synonym.getType(), *queryManager);
+        auto entities = getEntitiesByType(synonym->getType(), *queryManager);
         SynonymValues synonymValues(synonym);
         for (const auto& entity : entities) {
             synonymValues.addValue(entity);

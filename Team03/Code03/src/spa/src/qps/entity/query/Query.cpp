@@ -1,9 +1,8 @@
-//
-// Created by ZHENGTAO JIANG on 8/2/24.
-//
-
 #include "Query.h"
 
-std::vector<Strategy> Query::getStrategies() const {
-
+std::vector<std::shared_ptr<Strategy>> Query::getStrategies() {
+    std::vector<std::shared_ptr<Strategy>> strategies;
+    strategies.push_back(std::make_shared<DeclarationStrategy>(synonyms));
+    return strategies;
 }
+
