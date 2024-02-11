@@ -1,3 +1,5 @@
+// ai-gen start(gpt, 0, e)
+// prompt: https://chat.openai.com/share/8e7dd4d8-d866-4a69-a89a-abf14f589fa0
 #include <catch.hpp>
 
 #include "common/Entity.h"
@@ -61,3 +63,5 @@ TEST_CASE("QueryEvaluationContext::resultToString handles special characters in 
     std::string result = qec.resultToString();
     REQUIRE(result == "$1, value#2, value, 3");
 }
+
+// ai-gen end
