@@ -7,7 +7,6 @@
 
 
 #include "qps/entity/strategy/Strategy.h"
-#include "Declaration.h"
 #include "Synonym.h"
 #include "qps/entity/clause/Clause.h"
 #include <vector>
@@ -16,10 +15,9 @@
 
 class Query {
 public:
-    std::vector<Strategy> getStrategies();
+    std::vector<Strategy> getStrategies() const;
 private:
-    std::vector<Declaration> declarations;
-    std::vector<Synonym> synonyms;
+    std::vector<Synonym> synonyms;  // declared synonyms
     std::vector<Clause> clauses;
 
 };

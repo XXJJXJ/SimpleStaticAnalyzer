@@ -16,7 +16,7 @@ private:
 public:
     QueryEvaluator(const Query& query);
 
-    ~QueryEvaluator();
+//    ~QueryEvaluator();
 
     std::string evaluate(const std::string& validatedQuery);
 };

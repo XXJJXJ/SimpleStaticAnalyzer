@@ -3,19 +3,20 @@
 #pragma once
 
 #include "qps/entity/query/Synonym.h"
-#include "qps/entity/designEntity/DesignEntity.h"
+#include "common/Entity.h"
 #include <vector>
 #include <memory>
 
+// Represents a list of possible values for a synonym.
 class SynonymValues {
 private:
     Synonym synonym;
-    std::vector<std::shared_ptr<DesignEntity>> values;
+    std::vector<std::shared_ptr<Entity>> values;
 
 public:
     SynonymValues(const Synonym& syn) : synonym(syn) {}
-    void addValue(const std::shared_ptr<DesignEntity>& value);
-    const std::vector<std::shared_ptr<DesignEntity>>& getValues() const;
+    void addValue(const std::shared_ptr<Entity>& value);
+    const std::vector<std::shared_ptr<Entity>>& getValues() const;
     Synonym getSynonym() const { return synonym; }
 };
 // ai-gen end

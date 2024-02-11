@@ -49,7 +49,8 @@ bool QueryFacade::validateQuery(const std::string& parsedQuery) {
 }
 
 std::string QueryFacade::evaluateQuery(const std::string& validatedQuery) {
-    QueryEvaluator evaluator;
+    Query query;
+    QueryEvaluator evaluator(query);
     return evaluator.evaluate(validatedQuery);
 }
 

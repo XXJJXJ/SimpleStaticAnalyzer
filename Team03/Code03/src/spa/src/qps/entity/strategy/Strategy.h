@@ -6,10 +6,11 @@
 #define SPA_STRATEGY_H
 
 
+#include "qps/entity/evaluation/QueryEvaluationContext.h"
 
 class Strategy {
 public:
-    virtual void execute() = 0;
+    virtual void execute(QueryEvaluationContext &context) = 0;
 };
 
 

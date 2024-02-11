@@ -1,15 +1,17 @@
-//
-// Created by ZHENGTAO JIANG on 8/2/24.
-//
+#pragma once
 
-#ifndef SPA_DECLARESTRATEGY_H
-#define SPA_DECLARESTRATEGY_H
+#include <vector>
+#include "qps/entity/query/Synonym.h"
 #include "Strategy.h"
+#include "../evaluation/QueryEvaluationContext.h"
 
+class DeclarationStrategy : public Strategy {
+private:
+    std::vector<Synonym> synonyms;
 
-class DeclareStrategy : public Strategy {
+public:
+    explicit DeclarationStrategy(const std::vector<Synonym>& synonyms);
+    void execute(QueryEvaluationContext &context) override;
 
+    static vector<shared_ptr<Entity>> getEntitiesByType(EntityType entityType, QueryManager &queryManager);
 };
-
-
-#endif //SPA_DECLARESTRATEGY_H

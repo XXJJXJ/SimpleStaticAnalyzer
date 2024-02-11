@@ -7,13 +7,13 @@
 
 QueryEvaluator::QueryEvaluator(const Query& query) {
     // Initialize the list of strategies based on the query
-    std::vector<std::shared_ptr<Strategy>> strategies = query.getStrategies();
+    std::vector<Strategy> strategies = query.getStrategies();
 
     // Create a context with the list of strategies
-    context = std::make_shared<QueryEvaluationContext>(strategies);
+    context = std::make_shared<QueryEvaluationContext>();
 }
 
-QueryEvaluator::~QueryEvaluator() {}
+//QueryEvaluator::~QueryEvaluator() {}
 
 std::string QueryEvaluator::evaluate(const std::string& validatedQuery) {
     // Basic evaluation logic
