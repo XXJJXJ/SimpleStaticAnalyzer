@@ -18,5 +18,6 @@ public:
     void addValue(const std::shared_ptr<Entity>& value);
     [[nodiscard]] const std::vector<std::shared_ptr<Entity>>& getValues() const;
     [[nodiscard]] shared_ptr<Synonym> getSynonym() const { return synonym; }
+    [[nodiscard]] vector<string> toStringList() const;
 };
 // ai-gen end

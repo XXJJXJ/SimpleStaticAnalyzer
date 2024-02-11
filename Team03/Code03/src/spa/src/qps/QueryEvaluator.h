@@ -18,7 +18,7 @@ public:
 
 //    ~QueryEvaluator();
 
-    std::string evaluate(const std::string& validatedQuery);
+    std::string evaluate(const shared_ptr<Query>& query);
 };
 
 

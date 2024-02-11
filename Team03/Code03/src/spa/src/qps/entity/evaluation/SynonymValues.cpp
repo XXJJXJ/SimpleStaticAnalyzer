@@ -10,4 +10,15 @@ void SynonymValues::addValue(const std::shared_ptr<Entity>& value) {
 const std::vector<std::shared_ptr<Entity>>& SynonymValues::getValues() const {
     return values;
 }
+
+
 // ai-gen end
+
+vector<string> SynonymValues::toStringList() const {
+    vector<string> result;
+    result.reserve(values.size());
+for (const auto& value : values) {
+        result.push_back(value->getName());
+    }
+    return result;
+}
