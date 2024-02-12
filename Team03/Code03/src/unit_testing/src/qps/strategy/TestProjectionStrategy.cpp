@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "FakeQueryManager.cpp" // Assumes existence for mock behavior
+#include "FakeQueryManager.cpp"
 #include "qps/entity/evaluation/QueryEvaluationContext.h"
 #include "qps/entity/strategy/ProjectionStrategy.h"
 #include "qps/entity/query/Synonym.h"
