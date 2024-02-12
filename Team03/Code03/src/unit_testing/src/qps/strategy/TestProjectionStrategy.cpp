@@ -1,3 +1,4 @@
+// ai-gen start(gpt, 0, e)
 #include "catch.hpp"
 #include "FakeQueryManager.cpp"
 #include "qps/entity/evaluation/QueryEvaluationContext.h"
@@ -63,3 +64,5 @@ TEST_CASE("ProjectionStrategy with non-existing target synonym does not alter co
         REQUIRE(*(context.getSynonymValues(*nonTargetSynonym).getValues().front()) == *nonTargetEntity);
     }
 }
+
+// ai-gen end
