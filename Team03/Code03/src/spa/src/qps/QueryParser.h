@@ -6,16 +6,17 @@
 #define SPA_PARSER_H
 #include "PKB.h"
 #include "common/EntityType.h"
+#include "qps/entity/query/Query.h"
 
 class QueryParser {
 public:
     QueryParser();
     ~QueryParser();
 
-    static std::vector<std::string> tokenizeString(const std::string& query);
+    static std::pair<std::vector<std::vector<std::string>>, std::vector<std::string>> tokenizeString(const std::string& query);
     std::string removeSemiColon(std::string token);
     EntityType convertStringToEntityType(std::string entity);
-    std::string parse(const std::string& query);
+    std::shared_ptr<Query> parse(const std::string& query);
 
 };
 

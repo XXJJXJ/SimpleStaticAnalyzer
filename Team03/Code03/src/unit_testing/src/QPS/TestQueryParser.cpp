@@ -1,13 +1,13 @@
 #include "catch.hpp"
 #include "qps/QueryParser.h"
+#include "qps/QueryEvaluator.h"
 
 TEST_CASE("queryTokenizer should return valid tokens") {
-	std::string testString = "variable k; select k;";
-	std::vector<std::string> expectedVector = { "variable", "k;", "select", "k;" };
-
-	std::vector<std::string> tokenizedVector = QueryParser::tokenizeString(testString);
-
-	REQUIRE(tokenizedVector == tokenizedVector);
+	QueryParser qp;
+	std::string testString = "variable k; variable h; Select k";
+	std::pair<std::vector<std::vector<std::string>>, std::vector<std::string>> expectedVector = { {{"variable", "k"}, {"variable", "h"}}, {"k"} };
+	std::pair<std::vector<std::vector<std::string>>, std::vector<std::string>> tokenizedVector = qp.tokenizeString(testString);
+	
 	REQUIRE(tokenizedVector == expectedVector);
 };
 
@@ -27,7 +27,7 @@ TEST_CASE("removeSemiColon should remove all instances of ; in string") {
 	REQUIRE(output2 == expectedString2);
 	REQUIRE(output3 == expectedString2);
 }
-
+//
 // ai-gen start(gpt, 0, e)
 //https://chat.openai.com/share/72133ed9-d959-44ae-9c81-143998296122
 
@@ -54,5 +54,40 @@ TEST_CASE("convertStringToEntityType should produce accurate entity type") {
 // ai-gen end
 
 TEST_CASE("parse should produce valid results") {
-	//QueryParser::parse Test cases
+	QueryParser qp;
+	std::string query = "variable x; Select x";
+	std::shared_ptr<Query> result = qp.parse(query);
+
+	std::string expectedResult = "synonyms variable x selected variable x";
+
+	std::string queryResult = "synonyms ";
+
+	vector<shared_ptr<Synonym>> synonyms = result->synonyms;
+	shared_ptr<Synonym> selectedSynonym = result->selectedSynonym;
+
+	for (const auto& synonym : synonyms) {
+		if (synonym->getType() == EntityType::Variable) {
+			queryResult += "variable " + synonym->getName() + " ";
+		}
+	}
+
+	queryResult += "selected ";
+
+	if (selectedSynonym->getType() == EntityType::Variable) {
+		queryResult += "variable " + selectedSynonym->getName();
+	}
+
+	REQUIRE(queryResult == expectedResult);
+}
+
+TEST_CASE("evaluator") {
+	QueryParser qp;
+	QueryEvaluator qe;
+	std::string query = "variable x; Select x";
+	std::shared_ptr<Query> result = qp.parse(query);
+
+	std::string r = qe.evaluate(result);
+	std::cout << r << std::endl;
+
+	REQUIRE(r == "x");
 }

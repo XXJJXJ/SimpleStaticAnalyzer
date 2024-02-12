@@ -15,10 +15,6 @@
 
 
 class Query {
-private:
-    vector<shared_ptr<Synonym>> synonyms;  // declared synonyms
-    shared_ptr<Synonym> selectedSynonym;  // selected synonym
-    vector<shared_ptr<Clause>> clauses;
 public:
     [[nodiscard]] vector<shared_ptr<Strategy>> getStrategies() const;
 
@@ -29,6 +25,10 @@ public:
         this->selectedSynonym = selectedSynonym;
         this->clauses = clauses;
     }
+    vector<shared_ptr<Synonym>> synonyms;  // declared synonyms
+    shared_ptr<Synonym> selectedSynonym;  // selected synonym
+    vector<shared_ptr<Clause>> clauses;
+
 };
 
 

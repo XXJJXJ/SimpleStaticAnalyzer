@@ -19,9 +19,8 @@ void QueryFacade::processQueries(const std::string& inputFile, const std::string
     if (input.is_open()) {
         std::string query;
         while (std::getline(input, query)) {
-            std::string parsedQuery = parseQuery(query);
-
-            if (validateQuery(parsedQuery)) {
+            if (validateQuery(query)){
+                std::shared_ptr<Query> parsedQuery = parseQuery(query);
                 std::string result = evaluateQuery(parsedQuery);
                 results.push_back(result);
             } else {
@@ -37,7 +36,7 @@ void QueryFacade::processQueries(const std::string& inputFile, const std::string
     }
 }
 
-std::string QueryFacade::parseQuery(const std::string& query) {
+std::shared_ptr<Query> QueryFacade::parseQuery(const std::string& query) {
     QueryParser parser;
     return parser.parse(query);
 }
@@ -47,8 +46,7 @@ bool QueryFacade::validateQuery(const std::string& parsedQuery) {
     return validator.validate(parsedQuery);
 }
 
-//deprecated
-std::string QueryFacade::evaluateQuery(const std::string& validatedQuery) {
+std::string QueryFacade::evaluateQuery(const std::shared_ptr<Query> validatedQuery) {
     shared_ptr<Query> query;
     QueryEvaluator evaluator = QueryEvaluator();
     return evaluator.evaluate(query);
