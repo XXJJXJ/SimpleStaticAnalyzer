@@ -5,10 +5,7 @@
 #include "QueryEvaluator.h"
 
 
-QueryEvaluator::QueryEvaluator(const shared_ptr<Query> query) {
-    // Initialize the list of strategies based on the query
-    std::vector<shared_ptr<Strategy>> strategies = query->getStrategies();
-
+QueryEvaluator::QueryEvaluator() {
     // Create a context with the list of strategies
     context = std::make_shared<QueryEvaluationContext>();
 }

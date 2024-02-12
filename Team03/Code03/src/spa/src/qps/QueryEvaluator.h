@@ -14,7 +14,7 @@ class QueryEvaluator {
 private:
     shared_ptr<QueryEvaluationContext> context;
 public:
-    QueryEvaluator(const shared_ptr<Query> query);
+    QueryEvaluator();
 
 //    ~QueryEvaluator();
 
