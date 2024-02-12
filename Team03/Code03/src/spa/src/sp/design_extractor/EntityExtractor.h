@@ -9,7 +9,6 @@
 
 class EntityExtractor : public Visitor {
 public:
-	typedef vector<shared_ptr<Statement>> StatementListContainer;
 	EntityExtractor();
 	void visitProcedure(shared_ptr<Procedure> procedure) override;
 	void visitVariable(shared_ptr<Variable> variable) override;
