@@ -1,10 +1,11 @@
 /*
 * Created by ZHENGTAO JIANG on 6/2/24.
-* 
-* 
 */
 
 #include "QueryParser.h"
+#include "QueryEvaluator.h"
+#include "Query.h"
+#include "Synonym.h"
 #include <sstream>
 
 QueryParser::QueryParser() {}
@@ -25,9 +26,10 @@ std::vector<std::string> QueryParser::tokenizeString(const std::string& query) {
 //Main parsing method
 std::string QueryParser::parse(const std::string& query) {
     
-    std::vector<std::string> tokens = tokenizeString(query);
+    std::vector<Synonym> tokens = tokenizeString(query);
+    std::vector<std::string> synonyms, clauses;
     
+    Query queryObj = Query(synonyms, clauses);
 
-
-    return query;
+    return QueryEvaluator::evaluate();
 }
