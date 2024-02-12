@@ -20,6 +20,7 @@ private:
 public:
     [[nodiscard]] vector<shared_ptr<Strategy>> getStrategies() const;
 
+    //constructor for a Query Object
     Query (vector<shared_ptr<Synonym>> s, vector<shared_ptr<Clause>> c) {
         this->synonyms = s;
         this->clauses = c;

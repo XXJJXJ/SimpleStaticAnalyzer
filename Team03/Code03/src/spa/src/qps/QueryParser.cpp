@@ -5,7 +5,9 @@
 #include "QueryParser.h"
 #include "QueryEvaluator.h"
 #include "Query.h"
-#include "Synonym.h"
+#include "QPS/entity/clause/Clause.h"
+#include "QPS/entity/query/Synonym.h"
+#include "common/EntityType.h"
 #include <sstream>
 
 QueryParser::QueryParser() {}
@@ -23,13 +25,26 @@ std::vector<std::string> QueryParser::tokenizeString(const std::string& query) {
     return tokens;
 }
 
-//Main parsing method
+//Given query string, will create Query object
 std::string QueryParser::parse(const std::string& query) {
-    
-    std::vector<Synonym> tokens = tokenizeString(query);
-    std::vector<std::string> synonyms, clauses;
-    
-    Query queryObj = Query(synonyms, clauses);
+    //Init variables
+    QueryEvaluator qe;
+    std::vector<std::shared_ptr<Synonym>> synonyms;
+    std::vector<std::shared_ptr<Clause>> clauses = {}; //Empty for Sprint 1
 
-    return QueryEvaluator::evaluate();
+    //Tokenize Strings
+    std::vector<std::string> tokens = tokenizeString(query);
+
+    //Convert to Synonyms
+    for (const auto& str : tokens) {
+
+    }
+    
+    //Making a Query object
+    Query queryObj(synonyms, clauses);
+    //Wrapping in a shared_ptr
+    std::shared_ptr<Query> sharedQueryObj = std::make_shared<Query>(queryObj);
+
+    //calling next method which returns a string
+    return qe.evaluate(sharedQueryObj);
 }
