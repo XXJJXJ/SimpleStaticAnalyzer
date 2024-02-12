@@ -5,21 +5,19 @@
 */
 
 #include "QueryParser.h"
+#include <sstream>
 
 QueryParser::QueryParser() {}
 QueryParser::~QueryParser() {}
 
 // Given a string, it will return a vector of strings split by " "
-std::vector<std::string> tokenizeString(const std::string& query) {
-    std::string delimiter = " ";
-std:vector<std::string> tokens;
+std::vector<std::string> QueryParser::tokenizeString(const std::string& query) {
+    // Vector to store tokens
+    std::string str(query);
+    std::vector<std::string> tokens;
 
-    size_t start = 0, end;
-    while ((end = query.find(delimiter)) != std::string::npos) {
-        tokens.push_back(query.substr(start, end - start));
-        start = end + 1;
-    }
-    tokens.push_back(query.substr(start));
+    for (auto i = std::strtok(&str[0], " "); i != NULL; i = std::strtok(NULL, " "))
+        tokens.push_back(i);
 
     return tokens;
 }
@@ -29,5 +27,7 @@ std::string QueryParser::parse(const std::string& query) {
     
     std::vector<std::string> tokens = tokenizeString(query);
     
+
+
     return query;
 }

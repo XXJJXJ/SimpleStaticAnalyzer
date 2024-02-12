@@ -11,7 +11,9 @@ public:
     QueryParser();
     ~QueryParser();
 
+    static std::vector<std::string> tokenizeString(const std::string& query);
     std::string parse(const std::string& query);
+
 };
 
 
