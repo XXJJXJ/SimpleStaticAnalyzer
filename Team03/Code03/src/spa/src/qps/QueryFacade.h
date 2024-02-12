@@ -17,7 +17,6 @@ class QueryFacade {
 public:
     QueryFacade();
     ~QueryFacade();
-
     void processQueries(const std::string& inputFile, const std::string& outputFile);
 
 private:

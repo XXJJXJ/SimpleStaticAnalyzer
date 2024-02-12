@@ -47,12 +47,14 @@ bool QueryFacade::validateQuery(const std::string& parsedQuery) {
     return validator.validate(parsedQuery);
 }
 
+//deprecated
 std::string QueryFacade::evaluateQuery(const std::string& validatedQuery) {
     shared_ptr<Query> query;
     QueryEvaluator evaluator = QueryEvaluator();
     return evaluator.evaluate(query);
 }
 
+//Given a vector of strings, prints the result into an output file
 void QueryFacade::writeResults(const std::vector<std::string>& results, const std::string& outputFile) {
     std::ofstream output(outputFile);
 
