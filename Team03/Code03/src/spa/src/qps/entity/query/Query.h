@@ -8,6 +8,7 @@
 
 #include "qps/entity/strategy/Strategy.h"
 #include "qps/entity/strategy/DeclarationStrategy.h"
+#include "qps/entity/strategy/ProjectionStrategy.h"
 #include "Synonym.h"
 #include "qps/entity/clause/Clause.h"
 #include <vector>
@@ -19,6 +20,7 @@ public:
     [[nodiscard]] vector<shared_ptr<Strategy>> getStrategies() const;
 private:
     vector<shared_ptr<Synonym>> synonyms;  // declared synonyms
+    shared_ptr<Synonym> selectedSynonym;  // selected synonym
     vector<shared_ptr<Clause>> clauses;
 
 };
