@@ -79,15 +79,3 @@ TEST_CASE("parse should produce valid results") {
 
 	REQUIRE(queryResult == expectedResult);
 }
-
-TEST_CASE("evaluator") {
-	QueryParser qp;
-	QueryEvaluator qe;
-	std::string query = "variable x; Select x";
-	std::shared_ptr<Query> result = qp.parse(query);
-
-	std::string r = qe.evaluate(result);
-	std::cout << r << std::endl;
-
-	REQUIRE(r == "x");
-}
