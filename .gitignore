@@ -6,6 +6,9 @@
 # Prerequisites
 *.d
 
+# temp folder
+temp
+
 # Compiled Object files
 *.slo
 *.lo

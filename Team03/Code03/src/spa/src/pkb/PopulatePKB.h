@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 #include "common/ReadStatement.h"
 #include "common/PrintStatement.h"
 #include "common/Procedure.h"
@@ -12,17 +13,17 @@
 using namespace std;
 
 class Populator {
-protected:
+private:
     EntityManager* em;
 public:
     Populator();
-    bool addProcedure(Procedure proc);
-    bool addPrintStatement(PrintStatement stmt);
-    bool addReadStatement(ReadStatement stmt);
-
-    // bool addAssignStatement(Statement stmt);
-    // bool addCallStatement(Statement stmt);
-    // bool addIfStatement(Statement stmt);
-    // bool addWhileStatement(Statement stmt);
-    // bool addConstant(Constant* c);
+    // bool addConstant(shared_ptr<Constant>  c);
+    bool addVariable(shared_ptr<Variable>  var);
+    bool addProcedure(shared_ptr<Procedure> proc);
+    bool addPrintStatement(shared_ptr<PrintStatement> stmt);
+    bool addReadStatement(shared_ptr<ReadStatement> stmt);
+    // bool addAssignStatement(shared_ptr<AssignStatement> stmt);
+    // bool addCallStatement(shared_ptr<CallStatement> stmt);
+    // bool addIfStatement(shared_ptr<IfStatement> stmt);
+    // bool addWhileStatement(shared_ptr<WhileStatement> stmt);
 };

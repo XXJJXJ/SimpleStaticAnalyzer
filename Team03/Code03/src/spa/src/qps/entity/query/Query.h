@@ -10,14 +10,21 @@
 //#include "Clauses.h"
 
 
+#include "qps/entity/strategy/Strategy.h"
+#include "qps/entity/strategy/DeclarationStrategy.h"
+#include "Synonym.h"
+#include "qps/entity/clause/Clause.h"
+#include <vector>
+#include <memory>
+
+
 class Query {
+
+public:
+    [[nodiscard]] vector<shared_ptr<Strategy>> getStrategies() const;
 private:
-	vector<Declaration> declarations;
-	vector<Synonym> selectedSynonyms;
-	//vector<Clauses> clauses;
-
-
-
+    vector<shared_ptr<Synonym>> synonyms;  // declared synonyms
+    vector<shared_ptr<Clause>> clauses;
 
 };
 
