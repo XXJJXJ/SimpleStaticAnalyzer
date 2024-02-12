@@ -5,6 +5,7 @@
 #ifndef SPA_PARSER_H
 #define SPA_PARSER_H
 #include "PKB.h"
+#include "common/EntityType.h"
 
 class QueryParser {
 public:
