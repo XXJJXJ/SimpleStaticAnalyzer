@@ -13,8 +13,9 @@ enum class EntityType {
     Assign,     // Represents assignment statements
     Variable,   // Represents variables
     Constant,   // Represents constants
-    Procedure   // Represents procedures
+    Procedure,   // Represents procedures
+    // ai-gen end
+    Unknown     // Represents unknown entity types
 };
-// ai-gen end
 
 #endif //ENTITYTYPE_H

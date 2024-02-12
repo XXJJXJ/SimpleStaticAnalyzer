@@ -4,7 +4,7 @@
 
 #include "QueryParser.h"
 #include "QueryEvaluator.h"
-#include "Query.h"
+#include "qps/entity/query/Query.h"
 #include "qps/entity/clause/Clause.h"
 #include "qps/entity/query/Synonym.h"
 #include "common/EntityType.h"
@@ -34,7 +34,9 @@ std::string QueryParser::removeSemiColon(std::string token) {
 EntityType QueryParser::convertStringToEntityType(std::string curr) {
     // ai-gen start(gpt, 1, e)
     // https://chat.openai.com/share/56b9766f-27cb-4a36-a0ed-188e5b5a598a
-    EntityType entityType;
+
+    EntityType entityType{};
+
     if (curr == "stmt") {
         entityType = EntityType::Stmt;
     }
@@ -66,9 +68,12 @@ EntityType QueryParser::convertStringToEntityType(std::string curr) {
         entityType = EntityType::Procedure;
     }
     else {
-        // Handle invalid input or unrecognized enum
+        //None of the above, gives a Unknown Entity type
+        entityType = EntityType::Unknown;
     }
     //ai-gen end
+
+    return entityType;
 }
 
 //Given query string, will create Query object
@@ -77,6 +82,7 @@ std::string QueryParser::parse(const std::string& query) {
     QueryEvaluator qe;
     std::vector<std::shared_ptr<Synonym>> synonyms;
     std::vector<std::shared_ptr<Clause>> clauses = {}; //Empty for Sprint 1
+    std::shared_ptr<Synonym> selectedSynonyms;
 
     //Tokenize Strings
     std::vector<std::string> tokens = tokenizeString(query);
@@ -84,10 +90,21 @@ std::string QueryParser::parse(const std::string& query) {
     //Convert to Synonyms
     for (size_t i = 0; i < tokens.size(); ++i) {
     std:string curr = tokens[i];
-        EntityType et = convertStringToEntityType(curr);
-        Synonym synObj(et, removeSemiColon(tokens[i + 1]));
-        std::shared_ptr<Synonym> sharedSynObj = std::make_shared<Synonym>(synObj);
-        synonyms.push_back(sharedSynObj);
+        if (curr == "select") {
+            
+        }
+        else {
+            EntityType et = convertStringToEntityType(curr);
+            if (et == EntityType::Unknown) {
+                return "Error while parsing query: Unknown entity type";
+            }
+            else {
+                Synonym synObj(et, removeSemiColon(tokens[i + 1]));
+                std::shared_ptr<Synonym> sharedSynObj = std::make_shared<Synonym>(synObj);
+                synonyms.push_back(sharedSynObj);
+                i + 1;
+            }
+        }
     }
     
     //Making a Query object

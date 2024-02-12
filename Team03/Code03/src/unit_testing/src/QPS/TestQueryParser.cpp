@@ -29,5 +29,5 @@ TEST_CASE("removeSemiColon should remove all instances of ; in string") {
 }
 
 TEST_CASE("convertStringToEntityType should produce accurate entity type") {
-	
+
 }

@@ -13,5 +13,4 @@ file(GLOB headers
 )
 add_executable(unit_testing ${srcs} ${headers})
 
-
 target_link_libraries(unit_testing spa)
