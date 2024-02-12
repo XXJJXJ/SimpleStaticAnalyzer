@@ -50,7 +50,7 @@ bool QueryFacade::validateQuery(const std::string& parsedQuery) {
 
 std::string QueryFacade::evaluateQuery(const std::string& validatedQuery) {
     shared_ptr<Query> query;
-    QueryEvaluator evaluator(query);
+    QueryEvaluator evaluator = QueryEvaluator();
     return evaluator.evaluate(query);
 }
 
