@@ -5,8 +5,8 @@
 #include "QueryParser.h"
 #include "QueryEvaluator.h"
 #include "Query.h"
-#include "QPS/entity/clause/Clause.h"
-#include "QPS/entity/query/Synonym.h"
+#include "qps/entity/clause/Clause.h"
+#include "qps/entity/query/Synonym.h"
 #include "common/EntityType.h"
 #include <sstream>
 
