@@ -1,3 +1,6 @@
+// ai-gen start(gpt, 0, e)
+// prompt: https://chat.openai.com/share/b4e5ee0e-2ffc-4b9b-810c-871f71f82758
+
 #include "ProjectionStrategy.h"
 #include <algorithm>
 
@@ -19,3 +22,4 @@ void ProjectionStrategy::execute(QueryEvaluationContext &context) {
         context.addSynonymValues(synonymValues);
     }
 }
+// ai-gen end
