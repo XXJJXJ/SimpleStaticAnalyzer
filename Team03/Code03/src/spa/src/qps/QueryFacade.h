@@ -5,6 +5,7 @@
 * Returns a string response with requested data:
 * Statement Numbers e.g 1,3,5,6
 * Variables e.g a,b,c,v
+* 
 */
 
 #ifndef SPA_QUERYFACADE_H
