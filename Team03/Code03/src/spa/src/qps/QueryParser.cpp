@@ -83,6 +83,7 @@ std::string QueryParser::parse(const std::string& query) {
     std::vector<std::shared_ptr<Synonym>> synonyms;
     std::vector<std::shared_ptr<Clause>> clauses = {}; //Empty for Sprint 1
     std::shared_ptr<Synonym> selectedSynonyms;
+    std::shared_ptr<Synonym> sharedSelectedSynObj;
 
     //Tokenize Strings
     std::vector<std::string> tokens = tokenizeString(query);
@@ -90,8 +91,11 @@ std::string QueryParser::parse(const std::string& query) {
     //Convert to Synonyms
     for (size_t i = 0; i < tokens.size(); ++i) {
     std:string curr = tokens[i];
+
         if (curr == "select") {
-            
+            std::string selectedVariable = removeSemiColon(tokens[i + 1]);
+            Synonym selectedSynObj(EntityType::Variable, selectedVariable);
+            sharedSelectedSynObj = std::make_shared<Synonym>(selectedSynObj);
         }
         else {
             EntityType et = convertStringToEntityType(curr);
@@ -108,7 +112,7 @@ std::string QueryParser::parse(const std::string& query) {
     }
     
     //Making a Query object
-    Query queryObj(synonyms, clauses);
+    Query queryObj(synonyms, sharedSelectedSynObj, clauses);
     //Wrapping in a shared_ptr
     std::shared_ptr<Query> sharedQueryObj = std::make_shared<Query>(queryObj);
 

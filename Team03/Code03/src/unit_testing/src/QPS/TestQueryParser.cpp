@@ -28,6 +28,31 @@ TEST_CASE("removeSemiColon should remove all instances of ; in string") {
 	REQUIRE(output3 == expectedString2);
 }
 
-TEST_CASE("convertStringToEntityType should produce accurate entity type") {
+// ai-gen start(gpt, 0, e)
+//https://chat.openai.com/share/72133ed9-d959-44ae-9c81-143998296122
 
+TEST_CASE("convertStringToEntityType should produce accurate entity type") {
+	QueryParser queryParser;
+
+	SECTION("Test valid entity types") {
+		REQUIRE(queryParser.convertStringToEntityType("stmt") == EntityType::Stmt);
+		REQUIRE(queryParser.convertStringToEntityType("read") == EntityType::Read);
+		REQUIRE(queryParser.convertStringToEntityType("print") == EntityType::Print);
+		REQUIRE(queryParser.convertStringToEntityType("call") == EntityType::Call);
+		REQUIRE(queryParser.convertStringToEntityType("while") == EntityType::While);
+		REQUIRE(queryParser.convertStringToEntityType("if") == EntityType::If);
+		REQUIRE(queryParser.convertStringToEntityType("assign") == EntityType::Assign);
+		REQUIRE(queryParser.convertStringToEntityType("variable") == EntityType::Variable);
+		REQUIRE(queryParser.convertStringToEntityType("constant") == EntityType::Constant);
+		REQUIRE(queryParser.convertStringToEntityType("procedure") == EntityType::Procedure);
+	}
+
+	SECTION("Test unknown entity type") {
+		REQUIRE(queryParser.convertStringToEntityType("unknown") == EntityType::Unknown);
+	}
+}
+// ai-gen end
+
+TEST_CASE("parse should produce valid results") {
+	//QueryParser::parse Test cases
 }
