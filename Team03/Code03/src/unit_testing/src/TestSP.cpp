@@ -12,7 +12,7 @@ TEST_CASE("1st SP Test") {
     vector<shared_ptr<ReadStatement>> readStore = qm.getAllReadStatements();
     vector<shared_ptr<PrintStatement>> printStore = qm.getAllPrintStatements();
 
-    std::cout << "Procedure: " << procStore.front()->getProcedureName() << std::endl;
+    std::cout << "Procedure: " << procStore.front()->getName() << std::endl;
     std::cout << "variable: " << varStore.front()->getName() << std::endl;
     std::cout << "read statement no.: " << readStore.front()->getStatementNumber() << std::endl;
     std::cout << "print statement no.: " << printStore.front()->getStatementNumber() << std::endl;
