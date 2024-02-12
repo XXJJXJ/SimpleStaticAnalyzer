@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "common/spa_exception/SemanticErrorException.h"
 #include "common/spa_exception/SyntaxErrorException.h"
