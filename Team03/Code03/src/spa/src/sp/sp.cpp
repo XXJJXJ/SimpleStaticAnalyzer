@@ -1,6 +1,7 @@
-#include "Sp.h"
+#include "sp.h"
 #include "common/Variable.h"
 #include "common/Procedure.h"
+#include <common/spa_exception/SpaException.h>
 
 #include <stdio.h>
 #include <vector>

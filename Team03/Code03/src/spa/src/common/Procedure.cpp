@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Procedure.h"
 
 Procedure::Procedure(string procedureName) : procedureName(
@@ -13,7 +11,7 @@ Procedure::StatementListContainer Procedure::getStatementList() const {
     return statementList;
 }
 
-string Procedure::getProcedureName() const {
+string Procedure::getName() const {
     return procedureName;
 }
 

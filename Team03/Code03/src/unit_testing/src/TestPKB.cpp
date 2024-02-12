@@ -57,7 +57,7 @@ TEST_CASE("Store and retrieve procedures") {
     unordered_set<string> set;
     for (int i = 0; i < 3; i++) {
         shared_ptr<Procedure> proc = procList[i];
-        set.insert(proc->getProcedureName());
+        set.insert(proc->getName());
     }
     REQUIRE(set.size() == 3);
     for (int i = 0; i < 3; i++) {

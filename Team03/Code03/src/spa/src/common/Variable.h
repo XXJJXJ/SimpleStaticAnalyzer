@@ -7,6 +7,8 @@ public:
 	Variable(string name);
 	void accept(shared_ptr<Visitor> visitor) override;
 	bool isLeafNodeExpression() override;
+    string getName() const override;
+
 	std::size_t hash() const;
 	bool operator==(const Variable& other) const;
 };

@@ -4,12 +4,17 @@
 
 #include "QueryEvaluator.h"
 
-QueryEvaluator::QueryEvaluator() {}
 
-QueryEvaluator::~QueryEvaluator() {}
+QueryEvaluator::QueryEvaluator() {
+    // Create a context with the list of strategies
+    context = std::make_shared<QueryEvaluationContext>();
+}
 
-std::string QueryEvaluator::evaluate(const std::string& validatedQuery) {
-    // Basic evaluation logic
+//QueryEvaluator::~QueryEvaluator() {}
 
-    return validatedQuery;
+std::string QueryEvaluator::evaluate(const shared_ptr<Query>& query) {
+    for (const auto& strategy : query->getStrategies()) {
+        strategy->execute(*context);
+    }
+    return context->resultToString();
 }

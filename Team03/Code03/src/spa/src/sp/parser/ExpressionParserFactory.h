@@ -3,7 +3,7 @@
 #include<vector>
 #include "ExpressionParser.h"
 #include "VariableParser.h"
-#include "../Tokenizer/NameToken.h"
+#include "../tokenizer/NameToken.h"
 
 class ExpressionParserFactory {
     typedef vector<shared_ptr<Token>> Line;

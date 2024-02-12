@@ -16,3 +16,8 @@ shared_ptr<Variable> ReadStatement::getVariable() const {
 void ReadStatement::accept(shared_ptr<Visitor> visitor) {
     visitor->visitReadStatement(make_shared<ReadStatement>(*this));
 }
+
+string ReadStatement::getName() const {
+    // A placeholder, not used.
+    return "read statement";
+}

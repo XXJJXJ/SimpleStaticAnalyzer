@@ -2,10 +2,10 @@
 
 bool ProcedureStore::add(shared_ptr<Procedure> procedure) {
     // check if it exists, procedures should not have duplicate 
-    if (nameToProcMap.find(procedure->getProcedureName()) != nameToProcMap.end()) {
+    if (nameToProcMap.find(procedure->getName()) != nameToProcMap.end()) {
         return false;
     }
-    nameToProcMap[procedure->getProcedureName()] = procedure;
+    nameToProcMap[procedure->getName()] = procedure;
     return true;
 }
 

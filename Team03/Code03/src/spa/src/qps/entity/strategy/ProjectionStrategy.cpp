@@ -3,3 +3,7 @@
 //
 
 #include "ProjectionStrategy.h"
+
+void ProjectionStrategy::execute(QueryEvaluationContext &context) {
+
+}
