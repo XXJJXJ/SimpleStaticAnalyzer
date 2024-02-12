@@ -7,7 +7,7 @@ add_executable(unit_testing ${srcs}
         ../spa/src/common/EntityType.h
         src/qps/TestQueryEvaluationContext.cpp
         src/qps/strategy/TestDeclarationStrategy.cpp
-        src/qps/strategy/FakeQueryManager.h
+        src/qps/strategy/FakeQueryManager.cpp
 )
 
 target_link_libraries(unit_testing spa)

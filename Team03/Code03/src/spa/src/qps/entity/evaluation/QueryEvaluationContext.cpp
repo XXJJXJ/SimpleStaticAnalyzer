@@ -40,6 +40,37 @@ string QueryEvaluationContext::resultToString() const {
     return ss.str();
 }
 
+void QueryEvaluationContext::setQueryManager(const shared_ptr<QueryManager>& queryManager1) {
+    this->queryManager = queryManager1;
+}
+
+SynonymValues QueryEvaluationContext::getSynonymValues(const Synonym &synonym) const {
+    for (const auto& synonymValue : synonymValuesList) {
+        if (*synonymValue.getSynonym() == synonym) {
+            return synonymValue;
+        }
+    }
+    throw std::runtime_error("Synonym not found in context");
+}
+
+bool QueryEvaluationContext::containsSynonym(const Synonym &synonym) const {
+    for (const auto& synonymValue : synonymValuesList) {
+        if (*synonymValue.getSynonym() == synonym) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::list<Synonym> QueryEvaluationContext::getSynonyms() const {
+    std::list<Synonym> synonyms;
+    for (const auto& synonymValue : synonymValuesList) {
+        synonyms.push_back(*synonymValue.getSynonym());
+    }
+    return synonyms;
+}
+
+
 
 
 

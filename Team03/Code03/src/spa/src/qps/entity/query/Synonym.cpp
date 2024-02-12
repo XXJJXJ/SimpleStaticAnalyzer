@@ -1,7 +1,3 @@
-//
-// Created by ZHENGTAO JIANG on 8/2/24.
-//
-
 #include "Synonym.h"
 
 Synonym::Synonym(EntityType type, const std::string& name) {
@@ -15,4 +11,8 @@ EntityType Synonym::getType() const {
 
 const std::string& Synonym::getName() const {
     return this->name;
+}
+
+bool Synonym::operator==(const Synonym& other) const {
+    return this->type == other.type && this->name == other.name;
 }

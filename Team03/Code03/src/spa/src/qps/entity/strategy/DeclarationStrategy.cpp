@@ -54,6 +54,11 @@ std::vector<std::shared_ptr<Entity>> DeclarationStrategy::getEntitiesByType(Enti
             baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
             break;
         }
+        case EntityType::Variable: {
+            auto entities = queryManager.getAllVariables();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
         default:
             // Raise exception for unknown entity type
             throw std::invalid_argument("Unknown entity type");

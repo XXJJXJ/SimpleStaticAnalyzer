@@ -15,6 +15,8 @@ public:
     [[nodiscard]] EntityType getType() const;
 
     [[nodiscard]] const std::string& getName() const;
+
+    bool operator==(const Synonym& other) const;
 };
 
 

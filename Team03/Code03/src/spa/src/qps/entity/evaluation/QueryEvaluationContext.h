@@ -14,7 +14,11 @@ private:
 public:
     QueryEvaluationContext();
     void addSynonymValues(const SynonymValues& synonymValues);
+    [[nodiscard]] SynonymValues getSynonymValues(const Synonym& synonym) const;
+    [[nodiscard]] bool containsSynonym(const Synonym& synonym) const;
+    [[nodiscard]] std::list<Synonym> getSynonyms() const;
     [[nodiscard]] shared_ptr<QueryManager> getQueryManager() const;
     [[nodiscard]] string resultToString() const;
+    void setQueryManager(const shared_ptr<QueryManager>& queryManager1);
 };
 // ai-gen end

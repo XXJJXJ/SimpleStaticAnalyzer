@@ -24,15 +24,15 @@ private:
     EntityManager* em;
 public:
     QueryManager ();
-    vector<shared_ptr<Constant>> getAllConstants();
-    vector<shared_ptr<Variable>> getAllVariables();
-    vector<shared_ptr<Procedure>> getAllProcedures();
-    vector<shared_ptr<Statement>> getAllStatements();
-    vector<shared_ptr<AssignStatement>> getAllAssignStatements();
-    vector<shared_ptr<PrintStatement>> getAllPrintStatements();
-    vector<shared_ptr<ReadStatement>> getAllReadStatements();
-    vector<shared_ptr<CallStatement>> getAllCallStatements();
-    vector<shared_ptr<IfStatement>> getAllIfStatements();
-    vector<shared_ptr<WhileStatement>> getAllWhileStatements();
+    virtual vector<shared_ptr<Constant>> getAllConstants();
+    virtual vector<shared_ptr<Variable>> getAllVariables();
+    virtual vector<shared_ptr<Procedure>> getAllProcedures();
+    virtual vector<shared_ptr<Statement>> getAllStatements();
+    virtual vector<shared_ptr<AssignStatement>> getAllAssignStatements();
+    virtual vector<shared_ptr<PrintStatement>> getAllPrintStatements();
+    virtual vector<shared_ptr<ReadStatement>> getAllReadStatements();
+    virtual vector<shared_ptr<CallStatement>> getAllCallStatements();
+    virtual vector<shared_ptr<IfStatement>> getAllIfStatements();
+    virtual vector<shared_ptr<WhileStatement>> getAllWhileStatements();
 };
 

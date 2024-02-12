@@ -19,5 +19,6 @@ public:
     [[nodiscard]] const std::vector<std::shared_ptr<Entity>>& getValues() const;
     [[nodiscard]] shared_ptr<Synonym> getSynonym() const { return synonym; }
     [[nodiscard]] vector<string> toStringList() const;
+    bool operator==(const SynonymValues &rhs) const;
 };
 // ai-gen end
