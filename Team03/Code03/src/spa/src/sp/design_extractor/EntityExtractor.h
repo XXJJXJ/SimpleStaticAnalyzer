@@ -16,6 +16,6 @@ public:
 	void visitReadStatement(shared_ptr<ReadStatement> read_statement) override;
 	void visitPrintStatement(shared_ptr<PrintStatement> print_statement) override;
 private:
-	void processStatements(StatementListContainer &statements);
+	void processStatements(Procedure::StatementListContainer statements);
 	shared_ptr<Populator> pkb_populator;
 };

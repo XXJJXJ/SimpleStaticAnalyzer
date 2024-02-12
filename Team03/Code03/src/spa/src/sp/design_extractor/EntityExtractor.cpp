@@ -4,7 +4,7 @@ EntityExtractor::EntityExtractor() {
 	pkb_populator = make_shared<Populator>();
 }
 
-void EntityExtractor::processStatements(EntityExtractor::StatementListContainer &statements) {
+void EntityExtractor::processStatements(Procedure::StatementListContainer statements) {
 	for (auto s : statements) {
 		s->accept(make_shared<EntityExtractor>(*this));
 	}
