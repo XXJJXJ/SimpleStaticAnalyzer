@@ -6,12 +6,11 @@
 #include <sp/parser/Parser.h>
 #include <common/spa_exception/SpaException.h>
 #include "sp/tokenizer/Tokenizer.h"
-#include "pkb/QueryPKB.h"
 
 using namespace std;
 
 class Sp {
 public:
 	Sp();
-	bool ProcessSIMPLE(string fileName);
+	void ProcessSIMPLE(string fileName);
 };
