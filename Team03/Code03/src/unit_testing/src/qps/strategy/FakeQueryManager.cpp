@@ -3,6 +3,8 @@
 #include <memory>
 #include "pkb/QueryPKB.h"
 
+// ai-gen start(gpt, 0, e)
+// prompt: https://chat.openai.com/share/5a9de667-07bb-4d68-86ec-9b4e16053517
 class FakeQueryManager : public QueryManager {
 private:
     std::map<std::string, std::vector<std::shared_ptr<Entity>>> fakeResponses;
@@ -49,3 +51,5 @@ public:
 
     // Optionally, implement other getAll* methods if needed, returning empty vectors
 };
+
+// ai-gen end
