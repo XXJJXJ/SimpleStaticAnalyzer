@@ -11,8 +11,9 @@ public:
 	Procedure(string procedureName);
 	void accept(shared_ptr<Visitor> visitor) override;
 	void addToStatementList(shared_ptr<Statement> statement);
-	string getProcedureName() const;
+	string getName() const override;
 	StatementListContainer getStatementList() const;
+
 
 private:
 	string procedureName;

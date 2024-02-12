@@ -20,3 +20,7 @@ string Statement::getStatementType() const {
 string Statement::getProcedureName() const {
     return procedureName;
 }
+
+string Statement::getName() const {
+    return to_string(this->getStatementNumber());
+}

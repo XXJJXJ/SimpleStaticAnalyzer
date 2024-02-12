@@ -8,4 +8,5 @@ public:
         string name,
         string type,
         pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments);
+    string getName() const override;
 };

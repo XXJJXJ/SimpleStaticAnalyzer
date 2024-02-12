@@ -1,4 +1,4 @@
-#include "Sp.h"
+#include "sp.h"
 #include <common/Program.h>
 #include <sp/parser/Parser.h>
 #include <common/spa_exception/SpaException.h>
