@@ -12,29 +12,28 @@
 QueryFacade::QueryFacade() {}
 QueryFacade::~QueryFacade() {}
 
-//void QueryFacade::processQueries(const std::string& inputFile, const std::string& outputFile) {
-//    std::ifstream input(inputFile);
-//    std::vector<std::string> results;
-//
-//    if (input.is_open()) {
-//        std::string query;
-//        while (std::getline(input, query)) {
-//            if (validateQuery(query)){
-//                std::shared_ptr<Query> parsedQuery = parseQuery(query);
-//                std::string result = evaluateQuery(parsedQuery);
-//                results.push_back(result);
-//            } else {
-//                results.push_back("Invalid query");
-//            }
-//        }
-//
-//        input.close();
-//
-//        writeResults(results, outputFile);
-//    } else {
-//        std::cerr << "Error: Unable to open input file." << std::endl;
-//    }
-//}
+void QueryFacade::processQueries(const std::string& inputFile, const std::string& outputFile) {
+    std::ifstream input(inputFile);
+    std::vector<std::string> results;
+
+    if (input.is_open()) {
+        std::string query;
+        while (std::getline(input, query)) {
+            if (validateQuery(query)){
+                std::shared_ptr<Query> parsedQuery = parseQuery(query);
+                results = evaluateQuery(parsedQuery);
+            } else {
+                results.emplace_back("Invalid query");
+            }
+        }
+
+        input.close();
+
+        writeResults(results, outputFile);
+    } else {
+        std::cerr << "Error: Unable to open input file." << std::endl;
+    }
+}
 
 std::shared_ptr<Query> QueryFacade::parseQuery(const std::string& query) {
     QueryParser parser;
