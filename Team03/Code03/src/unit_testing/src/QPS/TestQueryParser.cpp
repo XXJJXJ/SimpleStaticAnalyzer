@@ -1,6 +1,8 @@
 #include "catch.hpp"
+#include "sp/sp.h"
 #include "qps/QueryParser.h"
 #include "qps/QueryEvaluator.h"
+#include "pkb/EntityManager.h"
 
 TEST_CASE("queryTokenizer should return valid tokens") {
 	QueryParser qp;
@@ -54,6 +56,8 @@ TEST_CASE("convertStringToEntityType should produce accurate entity type") {
 // ai-gen end
 
 TEST_CASE("parse should produce valid results") {
+	Sp sp = Sp();
+    sp.ProcessSIMPLE("input2.txt");
 	QueryParser qp;
 	std::string query = "variable x; Select x";
 	std::shared_ptr<Query> result = qp.parse(query);
@@ -78,4 +82,7 @@ TEST_CASE("parse should produce valid results") {
 	}
 
 	REQUIRE(queryResult == expectedResult);
+	QueryEvaluator qe;
+	std::cout << qe.evaluate(result) << std::endl;
+	EntityManager::clear();
 }
