@@ -6,4 +6,3 @@ vector<shared_ptr<Strategy>> Query::getStrategies() const{
     strategies.push_back(make_shared<ProjectionStrategy>(selectedSynonym));
     return strategies;
 }
-
