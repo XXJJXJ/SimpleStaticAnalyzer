@@ -12,9 +12,9 @@ QueryEvaluator::QueryEvaluator() {
 
 //QueryEvaluator::~QueryEvaluator() {}
 
-std::string QueryEvaluator::evaluate(const shared_ptr<Query>& query) {
+vector<std::string> QueryEvaluator::evaluate(const shared_ptr<Query>& query) {
     for (const auto& strategy : query->getStrategies()) {
         strategy->execute(*context);
     }
-    return context->resultToString();
+    return context->getResults();
 }

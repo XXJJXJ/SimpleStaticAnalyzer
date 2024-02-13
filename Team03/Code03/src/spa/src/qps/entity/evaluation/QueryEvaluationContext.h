@@ -19,7 +19,7 @@ public:
     [[nodiscard]] bool containsSynonym(const Synonym& synonym) const;
     [[nodiscard]] std::list<Synonym> getSynonyms() const;
     [[nodiscard]] shared_ptr<QueryManager> getQueryManager() const;
-    [[nodiscard]] string resultToString() const;
+    [[nodiscard]] vector<string>getResults() const;
     void setQueryManager(const shared_ptr<QueryManager>& queryManager1);
 };
 // ai-gen end

@@ -19,25 +19,13 @@ shared_ptr<QueryManager> QueryEvaluationContext::getQueryManager() const {
     return queryManager;
 }
 
-string QueryEvaluationContext::resultToString() const {
+vector<string> QueryEvaluationContext::getResults() const {
     // ensures that there's only one synonym list left
     // prompt: https://chat.openai.com/share/b8694b03-2e9e-465e-a3fb-e31d4fbe079a
     if (synonymValuesList.size() != 1) {
         throw std::runtime_error("There should be exactly one synonym list left");
     }
-    vector<string> result = synonymValuesList.front().toStringList();
-
-    // ai-gen start(gpt, 0, e)
-    std::stringstream ss;
-    for(size_t i = 0; i < result.size(); ++i) {
-        ss << result[i];
-        if (i != result.size() - 1) { // To avoid adding a comma after the last element
-            ss << ", ";
-        }
-    }
-    // ai-gen end
-
-    return ss.str();
+    return synonymValuesList.front().toStringList();
 }
 
 void QueryEvaluationContext::setQueryManager(const shared_ptr<QueryManager>& queryManager1) {
