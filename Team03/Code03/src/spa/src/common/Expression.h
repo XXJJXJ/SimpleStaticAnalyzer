@@ -18,8 +18,8 @@ public:
 
 protected:
     optional<PairOfArguments> arguments;
-
     string name;
+
 private:
     string expressionType;
 };
