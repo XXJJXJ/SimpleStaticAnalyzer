@@ -70,6 +70,10 @@ std::list<Synonym> QueryEvaluationContext::getSynonyms() const {
     return synonyms;
 }
 
+void QueryEvaluationContext::clearSynonymValuesList() {
+    synonymValuesList.clear();
+}
+
 
 
 

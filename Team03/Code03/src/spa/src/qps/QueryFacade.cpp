@@ -1,6 +1,6 @@
-//
-// Created by ZHENGTAO JIANG on 8/2/24.
-//
+/*
+* Created by ZHENGTAO JIANG on 8/2/24.
+*/
 
 #include "QueryFacade.h"
 #include "QueryEvaluator.h"
@@ -10,7 +10,6 @@
 #include <iostream>
 
 QueryFacade::QueryFacade() {}
-
 QueryFacade::~QueryFacade() {}
 
 void QueryFacade::processQueries(const std::string& inputFile, const std::string& outputFile) {
@@ -20,9 +19,8 @@ void QueryFacade::processQueries(const std::string& inputFile, const std::string
     if (input.is_open()) {
         std::string query;
         while (std::getline(input, query)) {
-            std::string parsedQuery = parseQuery(query);
-
-            if (validateQuery(parsedQuery)) {
+            if (validateQuery(query)){
+                std::shared_ptr<Query> parsedQuery = parseQuery(query);
                 std::string result = evaluateQuery(parsedQuery);
                 results.push_back(result);
             } else {
@@ -38,7 +36,7 @@ void QueryFacade::processQueries(const std::string& inputFile, const std::string
     }
 }
 
-std::string QueryFacade::parseQuery(const std::string& query) {
+std::shared_ptr<Query> QueryFacade::parseQuery(const std::string& query) {
     QueryParser parser;
     return parser.parse(query);
 }
@@ -48,12 +46,13 @@ bool QueryFacade::validateQuery(const std::string& parsedQuery) {
     return validator.validate(parsedQuery);
 }
 
-std::string QueryFacade::evaluateQuery(const std::string& validatedQuery) {
+std::string QueryFacade::evaluateQuery(const std::shared_ptr<Query> validatedQuery) {
     shared_ptr<Query> query;
     QueryEvaluator evaluator = QueryEvaluator();
     return evaluator.evaluate(query);
 }
 
+//Given a vector of strings, prints the result into an output file
 void QueryFacade::writeResults(const std::vector<std::string>& results, const std::string& outputFile) {
     std::ofstream output(outputFile);
 

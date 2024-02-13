@@ -14,6 +14,7 @@ private:
 public:
     QueryEvaluationContext();
     void addSynonymValues(const SynonymValues& synonymValues);
+    void clearSynonymValuesList();
     [[nodiscard]] SynonymValues getSynonymValues(const Synonym& synonym) const;
     [[nodiscard]] bool containsSynonym(const Synonym& synonym) const;
     [[nodiscard]] std::list<Synonym> getSynonyms() const;
