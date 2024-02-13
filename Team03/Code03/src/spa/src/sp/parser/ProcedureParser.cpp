@@ -5,11 +5,11 @@
 shared_ptr<Procedure> ProcedureParser::parseEntity(vector<shared_ptr<Token>> tokens) {
     string procedureName = extractProcedureName(tokens);
     tokens.erase(tokens.begin(), tokens.begin() + 3);
-    auto procedure = make_shared<Procedure>(procedureName);
+    shared_ptr<Procedure> procedure = make_shared<Procedure>(procedureName);
     while (!isEndOfProcedure(tokens)) {
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(procedureName);
-        auto statement = statementParser->parseEntity(tokens);
+        shared_ptr<Statement> statement = statementParser->parseEntity(tokens);
         tokens.erase(tokens.begin(), tokens.begin() + 3);
         procedure->addToStatementList(statement);
     }
