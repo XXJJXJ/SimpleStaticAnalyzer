@@ -20,6 +20,6 @@ bool ConditionalOperation::operator==(const Expression& other) const {
     }
 
     return 
-        *this->getArguments()->first == *casted->getArguments()->first &&
-        *this->getArguments()->second == *casted->getArguments()->second;
+        this->getArguments()->first->operator==(*casted->getArguments()->first) &&
+        this->getArguments()->second->operator==(*casted->getArguments()->second);
 }
