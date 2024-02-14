@@ -28,3 +28,11 @@ void EntityExtractor::visitProcedure(shared_ptr<Procedure> procedure) {
 void EntityExtractor::visitVariable(shared_ptr<Variable> variable) {
 	pkbPopulator->addVariable(variable);
 }
+
+void EntityExtractor::visitConstant(shared_ptr<Constant> constant) {};
+void EntityExtractor::visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) {};
+void EntityExtractor::visitAssignStatement(shared_ptr<AssignStatement> assignStatement) {};
+void EntityExtractor::visitConditionalOperation(shared_ptr<ConditionalOperation> conditionalOperation) {};
+void EntityExtractor::visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) {};
+void EntityExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement) {};
+void EntityExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatement) {};

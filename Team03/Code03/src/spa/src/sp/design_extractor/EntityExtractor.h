@@ -14,6 +14,15 @@ public:
 	void visitVariable(shared_ptr<Variable> variable) override;
 	void visitReadStatement(shared_ptr<ReadStatement> readStatement) override;
 	void visitPrintStatement(shared_ptr<PrintStatement> printStatement) override;
+	void visitConstant(shared_ptr<Constant> constant) override;
+	void visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) override;
+	void visitAssignStatement(shared_ptr<AssignStatement> assignStatement) override;
+	void visitConditionalOperation(shared_ptr<ConditionalOperation> conditionalOperation) override;
+	void visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) override;
+	void visitIfStatement(shared_ptr<IfStatement> ifStatement) override;
+	void visitWhileStatement(shared_ptr<WhileStatement> whileStatement) override;
+
+
 private:
 	void processStatements(Procedure::StatementListContainer statementList);
 	shared_ptr<Populator> pkbPopulator;
