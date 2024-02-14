@@ -21,10 +21,9 @@ void QueryFacade::processQueries(const std::string& inputFile, const std::string
         while (std::getline(input, query)) {
             if (validateQuery(query)){
                 std::shared_ptr<Query> parsedQuery = parseQuery(query);
-                std::string result = evaluateQuery(parsedQuery);
-                results.push_back(result);
+                results = evaluateQuery(parsedQuery);
             } else {
-                results.push_back("Invalid query");
+                results.emplace_back("Invalid query");
             }
         }
 
@@ -46,10 +45,9 @@ bool QueryFacade::validateQuery(const std::string& parsedQuery) {
     return validator.validate(parsedQuery);
 }
 
-std::string QueryFacade::evaluateQuery(const std::shared_ptr<Query> validatedQuery) {
-    shared_ptr<Query> query;
+vector<std::string> QueryFacade::evaluateQuery(const std::shared_ptr<Query> validatedQuery) {
     QueryEvaluator evaluator = QueryEvaluator();
-    return evaluator.evaluate(query);
+    return evaluator.evaluate(validatedQuery);
 }
 
 //Given a vector of strings, prints the result into an output file
