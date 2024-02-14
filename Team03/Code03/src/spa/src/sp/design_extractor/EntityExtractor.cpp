@@ -1,30 +1,30 @@
 #include "EntityExtractor.h"
 
 EntityExtractor::EntityExtractor() {
-	pkb_populator = make_shared<Populator>();
+	pkbPopulator = make_shared<Populator>();
 }
 
-void EntityExtractor::processStatements(Procedure::StatementListContainer statements) {
-	for (auto s : statements) {
+void EntityExtractor::processStatements(Procedure::StatementListContainer statementList) {
+	for (auto s : statementList) {
 		s->accept(make_shared<EntityExtractor>(*this));
 	}
 }
 
 void EntityExtractor::visitReadStatement(shared_ptr<ReadStatement> readStatement) {
-	pkb_populator->addVariable(readStatement->getVariable());
-	pkb_populator->addReadStatement(readStatement);
+	pkbPopulator->addVariable(readStatement->getVariable());
+	pkbPopulator->addReadStatement(readStatement);
 }
 
 void EntityExtractor::visitPrintStatement(shared_ptr<PrintStatement> printStatement) {
-	pkb_populator->addVariable(printStatement->getVariable());
-	pkb_populator->addPrintStatement(printStatement);
+	pkbPopulator->addVariable(printStatement->getVariable());
+	pkbPopulator->addPrintStatement(printStatement);
 }
 
 void EntityExtractor::visitProcedure(shared_ptr<Procedure> procedure) {
 	processStatements(procedure->getStatementList());
-	pkb_populator->addProcedure(procedure);
+	pkbPopulator->addProcedure(procedure);
 }
 
 void EntityExtractor::visitVariable(shared_ptr<Variable> variable) {
-	pkb_populator->addVariable(variable);
+	pkbPopulator->addVariable(variable);
 }

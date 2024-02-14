@@ -12,9 +12,9 @@ public:
 	EntityExtractor();
 	void visitProcedure(shared_ptr<Procedure> procedure) override;
 	void visitVariable(shared_ptr<Variable> variable) override;
-	void visitReadStatement(shared_ptr<ReadStatement> read_statement) override;
-	void visitPrintStatement(shared_ptr<PrintStatement> print_statement) override;
+	void visitReadStatement(shared_ptr<ReadStatement> readStatement) override;
+	void visitPrintStatement(shared_ptr<PrintStatement> printStatement) override;
 private:
-	void processStatements(Procedure::StatementListContainer statements);
-	shared_ptr<Populator> pkb_populator;
+	void processStatements(Procedure::StatementListContainer statementList);
+	shared_ptr<Populator> pkbPopulator;
 };
