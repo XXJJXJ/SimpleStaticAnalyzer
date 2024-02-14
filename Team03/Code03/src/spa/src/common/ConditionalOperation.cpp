@@ -14,12 +14,12 @@ bool ConditionalOperation::operator==(const Expression& other) const {
         return false;
     }
 
-    auto casted = dynamic_cast<const ConditionalOperation&>(other);
-    if (!casted) {
-        return false;
+    const ConditionalOperation* casted = dynamic_cast<const ConditionalOperation*>(&other);
+    if (casted == nullptr) {
+        return false; 
     }
 
     return 
-        this->getArguments()->first == casted.getArguments()->first &&
-        this->getArguments()->second == casted.getArguments()->second
+        *this->getArguments()->first == *casted->getArguments()->first &&
+        *this->getArguments()->second == *casted->getArguments()->second;
 }

@@ -4,7 +4,7 @@ IfStatement::IfStatement(
     int statementNumber,
     shared_ptr<ConditionalOperation> condition,
     string procedureName) : Statement(
-        statement_number,
+        statementNumber,
         "if",
         move(procedureName)), condition(move(condition)) {}
 
@@ -16,8 +16,8 @@ void IfStatement::addElseStatement(shared_ptr<Statement> statement) {
     elseStatementList.push_back(statement);
 }
 
-void IfStatement::accept(shared_ptr<visitor> visitor) {
-    visitor->VisitIfStatement(make_shared<IfStatement>(*this));
+void IfStatement::accept(shared_ptr<Visitor> visitor) {
+    visitor->visitIfStatement(make_shared<IfStatement>(*this));
 }
 
 shared_ptr<ConditionalOperation> IfStatement::getCondition() const {

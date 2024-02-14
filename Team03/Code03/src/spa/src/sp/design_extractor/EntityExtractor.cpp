@@ -10,14 +10,14 @@ void EntityExtractor::processStatements(Procedure::StatementListContainer statem
 	}
 }
 
-void EntityExtractor::visitReadStatement(shared_ptr<ReadStatement> read_statement) {
-	pkb_populator->addVariable(read_statement->getVariable());
-	pkb_populator->addReadStatement(read_statement);
+void EntityExtractor::visitReadStatement(shared_ptr<ReadStatement> readStatement) {
+	pkb_populator->addVariable(readStatement->getVariable());
+	pkb_populator->addReadStatement(readStatement);
 }
 
-void EntityExtractor::visitPrintStatement(shared_ptr<PrintStatement> print_statement) {
-	pkb_populator->addVariable(print_statement->getVariable());
-	pkb_populator->addPrintStatement(print_statement);
+void EntityExtractor::visitPrintStatement(shared_ptr<PrintStatement> printStatement) {
+	pkb_populator->addVariable(printStatement->getVariable());
+	pkb_populator->addPrintStatement(printStatement);
 }
 
 void EntityExtractor::visitProcedure(shared_ptr<Procedure> procedure) {
