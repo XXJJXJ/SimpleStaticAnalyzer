@@ -14,17 +14,6 @@
 QueryParser::QueryParser() {}
 QueryParser::~QueryParser() {}
 
-// Given a string, it will return a vector of strings split by " "
-//std::vector<std::string> QueryParser::tokenizeString(const std::string& query) {
-//    // Vector to store tokens
-//    std::string str(query);
-//    std::vector<std::string> tokens;
-//
-//    for (auto i = std::strtok(&str[0], " "); i != NULL; i = std::strtok(NULL, " "))
-//        tokens.push_back(i);
-//
-//    return tokens;
-//}
 
 std::pair<std::vector<std::vector<std::string>>, std::vector<std::string>> QueryParser::tokenizeString(const std::string& query) {
     std::istringstream iss(query);
@@ -64,10 +53,6 @@ std::pair<std::vector<std::vector<std::string>>, std::vector<std::string>> Query
     return tokens;
 }
 
-std::string QueryParser::removeSemiColon(std::string token) {
-    token.erase(std::remove(token.begin(), token.end(), ';'), token.end());
-    return token;
-}
 
 EntityType QueryParser::convertStringToEntityType(std::string curr) {
     // ai-gen start(gpt, 1, e)
@@ -122,32 +107,6 @@ std::shared_ptr<Query> QueryParser::parse(const std::string& query) {
     std::vector<std::shared_ptr<Clause>> clauses = {}; //Empty for Sprint 1
     std::shared_ptr<Synonym> selectedSynonyms;
     std::shared_ptr<Synonym> sharedSelectedSynObj;
-
-    //Tokenize Strings
-    //std::vector<std::string> tokens = tokenizeString(query);
-
-    ////Convert to Synonyms
-    //for (size_t i = 0; i < tokens.size(); ++i) {
-    //    std:string curr = tokens[i];
-    //    std::cout << curr << std::endl;
-    //    if (curr == "select") {
-    //        std::string selectedVariable = removeSemiColon(tokens[i + 1]);
-    //        Synonym selectedSynObj(EntityType::Variable, selectedVariable);
-    //        sharedSelectedSynObj = std::make_shared<Synonym>(selectedSynObj);
-    //    }
-    //    else {
-    //        EntityType et = convertStringToEntityType(curr);
-    //        if (et == EntityType::Unknown) {
-    //            return "Error while parsing query: Unknown entity type";
-    //        }
-    //        else {
-    //            Synonym synObj(et, removeSemiColon(tokens[i + 1]));
-    //            std::shared_ptr<Synonym> sharedSynObj = std::make_shared<Synonym>(synObj);
-    //            synonyms.push_back(sharedSynObj);
-    //            i + 1;
-    //        }
-    //    }
-    //}
 
     std::pair<std::vector<std::vector<std::string>>, std::vector<std::string>> tokens = tokenizeString(query);
 
