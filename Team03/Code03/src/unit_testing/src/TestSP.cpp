@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "sp/sp.h"
+#include "pkb/EntityManager.h"
 #include "pkb/QueryPKB.h"
 
 TEST_CASE("1st SP Test") {
@@ -19,4 +20,5 @@ TEST_CASE("1st SP Test") {
 
     bool result = varStore.size() == 1 && procStore.size() == 1 && readStore.size() == 1 && printStore.size() == 1;
     REQUIRE(result);
+    EntityManager::clear();
 }

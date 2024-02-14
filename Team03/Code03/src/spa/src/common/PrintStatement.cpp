@@ -16,8 +16,3 @@ shared_ptr<Variable> PrintStatement::getVariable() const {
 void PrintStatement::accept(shared_ptr<Visitor> visitor) {
     visitor->visitPrintStatement(make_shared<PrintStatement>(*this));
 }
-
-string PrintStatement::getName() const {
-    // A placeholder, not used.
-    return "print statement";
-}

@@ -22,10 +22,9 @@ public:
     ~QueryFacade();
     void processQueries(const std::string& inputFile, const std::string& outputFile);
 
-private:
     std::shared_ptr<Query> parseQuery(const std::string& query);
     bool validateQuery(const std::string& parsedQuery);
-    std::string evaluateQuery(const std::shared_ptr<Query> validatedQuery);
+    vector<std::string> evaluateQuery(const std::shared_ptr<Query> validatedQuery);
     void writeResults(const std::vector<std::string>& results, const std::string& outputFile);
 };
 #endif //SPA_QUERYFACADE_H

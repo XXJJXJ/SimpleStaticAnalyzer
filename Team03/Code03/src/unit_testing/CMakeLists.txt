@@ -12,7 +12,8 @@ file(GLOB headers
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.h"
 )
 
-add_executable(unit_testing ${srcs} ${headers})
+add_executable(unit_testing ${srcs} ${headers}
+        src/qps/TestQueryParser.cpp)
 
 
 target_link_libraries(unit_testing spa)
