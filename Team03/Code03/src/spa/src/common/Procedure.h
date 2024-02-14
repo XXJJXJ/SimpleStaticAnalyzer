@@ -14,7 +14,6 @@ public:
 	string getName() const override;
 	StatementListContainer getStatementList() const;
 
-
 private:
 	string procedureName;
 	StatementListContainer statementList;
