@@ -3,6 +3,8 @@
 QueryTokenizer::QueryTokenizer() {}
 QueryTokenizer::~QueryTokenizer() {}
 
+// ai-gen start(gpt, 1, e)
+// prompt: https://chat.openai.com/share/4ba78f27-8cc9-4e4b-887d-4f9689d236b1
 
 std::vector<std::vector<std::string>> QueryTokenizer::tokenize(const std::string& query) {
     std::vector<std::string> tokens;
@@ -86,3 +88,5 @@ std::vector<std::vector<std::string>> QueryTokenizer::splitTokens(const std::vec
 
     return lists;
 }
+
+// ai-gen end
