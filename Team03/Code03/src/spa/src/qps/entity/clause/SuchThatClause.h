@@ -1,16 +1,20 @@
-//
-// Created by ZHENGTAO JIANG on 8/2/24.
-//
+#ifndef SUCHTHATCLAUSE_H
+#define SUCHTHATCLAUSE_H
 
-#ifndef SPA_SUCHTHATCLAUSE_H
-#define SPA_SUCHTHATCLAUSE_H
+#include "Clause.h"
+#include "RelationshipPredicate.h"
+#include "qps/entity/strategy/Strategy.h"
+#include <vector>
+#include <memory>
 
+class SuchThatClause : public Clause {
+private:
+    std::vector<std::shared_ptr<RelationshipPredicate>> predicates;
 
-
-class SuchThatClause {
-
+public:
+    SuchThatClause() = default;
+    void addPredicate(std::unique_ptr<RelationshipPredicate> predicate);
+    std::vector<std::shared_ptr<Strategy>> getStrategies() const override;
 };
 
-
-
-#endif //SPA_SUCHTHATCLAUSE_H
+#endif // SUCHTHATCLAUSE_H

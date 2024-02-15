@@ -1,14 +1,12 @@
-//
-// Created by ZHENGTAO JIANG on 8/2/24.
-//
+#ifndef CLAUSE_H
+#define CLAUSE_H
 
-#ifndef SPA_CLAUSE_H
-#define SPA_CLAUSE_H
-
+#include "qps/entity/strategy/Strategy.h"
 
 class Clause {
-
+public:
+    virtual ~Clause() = default; // Ensure proper deletion of derived classes
+    [[nodiscard]] virtual vector<shared_ptr<Strategy>> getStrategies() const = 0; // Pure virtual function
 };
 
-
-#endif //SPA_CLAUSE_H
+#endif // CLAUSE_H
