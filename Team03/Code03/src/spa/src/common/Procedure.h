@@ -12,9 +12,9 @@ public:
 	void accept(shared_ptr<Visitor> visitor) override;
 	void addToStatementList(shared_ptr<Statement> statement);
 	string getName() const override;
-	Util::StatementListContainer getStatementList() const;
+	StatementListContainer getStatementList() const;
 
 private:
 	string procedureName;
-	Util::StatementListContainer statementList;
+	StatementListContainer statementList;
 };

@@ -14,11 +14,11 @@ public:
     void addThenStatement(shared_ptr<Statement> statement);
     void addElseStatement(shared_ptr<Statement> statement);
     shared_ptr<ConditionalOperation> getCondition() const;
-    Util::StatementListContainer getThenStatementList() const;
-    Util::StatementListContainer getElseStatementList() const;
+    StatementListContainer getThenStatementList() const;
+    StatementListContainer getElseStatementList() const;
 
 private:
     shared_ptr<ConditionalOperation> condition;
-    Util::StatementListContainer thenStatementList;
-    Util::StatementListContainer elseStatementList;
+    StatementListContainer thenStatementList;
+    StatementListContainer elseStatementList;
 };

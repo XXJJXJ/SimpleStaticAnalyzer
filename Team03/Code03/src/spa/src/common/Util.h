@@ -1,6 +1,7 @@
 #pragma once
 
-class Util {
-public:
-	typedef vector<shared_ptr<Statement>> StatementListContainer;
-};
+#include <vector>
+#include <memory>
+#include "common/Statement.h"
+
+typedef vector<shared_ptr<Statement>> StatementListContainer;

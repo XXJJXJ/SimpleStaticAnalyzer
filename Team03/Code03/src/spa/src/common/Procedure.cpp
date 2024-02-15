@@ -7,7 +7,7 @@ void Procedure::addToStatementList(shared_ptr<Statement> statement) {
     statementList.push_back(statement);
 }
 
-Procedure::StatementListContainer Procedure::getStatementList() const {
+StatementListContainer Procedure::getStatementList() const {
     return statementList;
 }
 

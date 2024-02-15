@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Visitor.h"
+#include "common/Util.h"
 #include "common/Procedure.h"
 #include "common/Variable.h"
 #include "common/ReadStatement.h"
@@ -24,6 +25,6 @@ public:
 
 
 private:
-	void processStatements(Util::StatementListContainer statementList);
+	void processStatements(StatementListContainer statementList);
 	shared_ptr<Populator> pkbPopulator;
 };

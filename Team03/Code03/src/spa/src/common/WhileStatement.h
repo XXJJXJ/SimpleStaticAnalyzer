@@ -13,9 +13,9 @@ public:
     void accept(shared_ptr<Visitor> visitor) override;
     void addStatement(shared_ptr<Statement> statement);
     shared_ptr<ConditionalOperation> getCondition() const;
-    Util::StatementListContainer getStatementList() const;
+    StatementListContainer getStatementList() const;
 
 private:
     shared_ptr<ConditionalOperation> condition;
-    Util::StatementListContainer statementList;
+    StatementListContainer statementList;
 };

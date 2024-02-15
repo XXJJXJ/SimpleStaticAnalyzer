@@ -24,10 +24,10 @@ shared_ptr<ConditionalOperation> IfStatement::getCondition() const {
     return condition;
 }
 
-IfStatement::StatementListContainer IfStatement::getThenStatementList() const {
+StatementListContainer IfStatement::getThenStatementList() const {
     return thenStatementList;
 }
 
-IfStatement::StatementListContainer IfStatement::getElseStatementList() const {
+StatementListContainer IfStatement::getElseStatementList() const {
     return elseStatementList;
 }
