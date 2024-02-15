@@ -27,6 +27,6 @@ void Sp::ProcessSIMPLE(string fileName) {
         }
     }
     catch (SpaException& e) {
-        std::cout << e.what() << std::endl;
+        std::cout << e.error() << std::endl;
     }
 }

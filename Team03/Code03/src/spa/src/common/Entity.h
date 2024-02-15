@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../sp/design_extractor/Visitor.h"
+#include "sp/design_extractor/Visitor.h"
 #include <string>
 
 // In Entity.h
