@@ -1,20 +1,20 @@
 #pragma once
 #include <memory>
 
-class PrintStatement;
-class ReadStatement;
-class Program;
-class Procedure;
-class Statement;
-class Expression;
-class Variable;
-class Constant;
-class ArithmeticOperation;
-class ConditionalOperation;
-class RelationalOperation;
-class AssignStatement;
-class IfStatement;
-class WhileStatement;
+#include "../../common/PrintStatement.h"
+#include "../../common/ReadStatement.h"
+#include "../../common/Program.h"
+#include "../../common/Procedure.h"
+#include "../../common/Statement.h"
+#include "../../common/Expression.h"
+#include "../../common/Variable.h"
+#include "../../common/Constant.h"
+#include "../../common/ArithmeticOperation.h"
+#include "../../common/ConditionalOperation.h"
+#include "../../common/RelationalOperation.h"
+#include "../../common/AssignStatement.h"
+#include "../../common/IfStatement.h"
+#include "../../common/WhileStatement.h"
 
 using namespace std;
 
