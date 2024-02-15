@@ -28,7 +28,8 @@ void TestWrapper::parse(std::string filename) {
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
 // call your evaluator to evaluate the query here
   // ...code to evaluate query...
-    auto parsedQuery = qf.parseQuery(query);
+    auto tokens = qf.tokenizeQuery(query);
+    auto parsedQuery = qf.parseQuery(tokens);
     auto result = qf.evaluateQuery(parsedQuery);
 
     for (const auto& r : result) {

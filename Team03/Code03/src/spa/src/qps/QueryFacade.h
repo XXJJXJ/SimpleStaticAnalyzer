@@ -22,8 +22,8 @@ public:
     ~QueryFacade();
     void processQueries(const std::string& inputFile, const std::string& outputFile);
 
-    std::shared_ptr<Query> parseQuery(const std::string& query);
-    bool validateQuery(const std::string& parsedQuery);
+    std::vector<std::vector<std::string>> tokenizeQuery(const std::string& query);
+    std::shared_ptr<Query> parseQuery(std::vector<std::vector<std::string>> tokens);
     vector<std::string> evaluateQuery(const std::shared_ptr<Query> validatedQuery);
     void writeResults(const std::vector<std::string>& results, const std::string& outputFile);
 };
