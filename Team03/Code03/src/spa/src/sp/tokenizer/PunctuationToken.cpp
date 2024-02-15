@@ -4,10 +4,10 @@ PunctuationToken::PunctuationToken(std::string value) : Token(getTokenTypeFromVa
 
 TokenType PunctuationToken::getTokenTypeFromValue(std::string value) {
 	if (value == "(") {
-		return TokenType::LEFT_PARANTHESIS;
+		return TokenType::LEFT_PARENTHESIS;
 	}
 	else if (value == ")") {
-		return TokenType::RIGHT_PARANTHESIS;
+		return TokenType::RIGHT_PARENTHESIS;
 	}
 	else if (value == "{") {
 		return TokenType::LEFT_BRACE;
