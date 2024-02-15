@@ -1,7 +1,7 @@
 #include "Constant.h"
 
-Constant::Constant(string name) 
-    : Expression(move(name),
+Constant::Constant(string value) 
+    : Expression(move(value),
         "constant") {}
 
 void Constant::accept(shared_ptr<Visitor> visitor) {
