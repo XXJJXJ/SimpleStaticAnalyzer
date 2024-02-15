@@ -1,11 +1,11 @@
 #pragma once
 
+#include "Util.h"
 #include "Statement.h"
 #include "ConditionalOperation.h"
 
 class IfStatement : public Statement {
 public:
-    typedef vector<shared_ptr<Statement>> StatementListContainer;
     IfStatement(
         int statementNumber,
         shared_ptr<ConditionalOperation> condition,
@@ -14,11 +14,11 @@ public:
     void addThenStatement(shared_ptr<Statement> statement);
     void addElseStatement(shared_ptr<Statement> statement);
     shared_ptr<ConditionalOperation> getCondition() const;
-    StatementListContainer getThenStatementList() const;
-    StatementListContainer getElseStatementList() const;
+    Util::StatementListContainer getThenStatementList() const;
+    Util::StatementListContainer getElseStatementList() const;
 
 private:
     shared_ptr<ConditionalOperation> condition;
-    StatementListContainer thenStatementList;
-    StatementListContainer elseStatementList;
+    Util::StatementListContainer thenStatementList;
+    Util::StatementListContainer elseStatementList;
 };

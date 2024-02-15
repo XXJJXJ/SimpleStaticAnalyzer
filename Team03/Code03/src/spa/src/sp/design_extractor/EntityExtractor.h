@@ -24,6 +24,6 @@ public:
 
 
 private:
-	void processStatements(Procedure::StatementListContainer statementList);
+	void processStatements(Util::StatementListContainer statementList);
 	shared_ptr<Populator> pkbPopulator;
 };
