@@ -14,7 +14,9 @@ file(GLOB headers
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.h"
 )
 add_library(spa ${srcs} ${headers}
-		src/qps/entity/clause/RelationshipPredicate.h)
+		src/qps/entity/clause/Predicate.h
+		src/qps/entity/clause/ModifiesPredicate.cpp
+		src/qps/entity/clause/ModifiesPredicate.h)
 # this makes the headers accessible for other projects which uses spa lib
 target_include_directories(spa PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 

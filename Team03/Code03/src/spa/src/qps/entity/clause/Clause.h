@@ -1,3 +1,6 @@
+
+// ai-gen start(gpt, 1, e)
+// prompt: https://chat.openai.com/share/649c7ba0-9712-44e7-aa24-ca6262c5a922
 #ifndef CLAUSE_H
 #define CLAUSE_H
 
@@ -10,3 +13,5 @@ public:
 };
 
 #endif // CLAUSE_H
+
+// ai-gen end
