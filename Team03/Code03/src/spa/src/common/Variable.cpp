@@ -10,7 +10,6 @@ bool Variable::isLeafNodeExpression() {
     return true;
 }
 
-
 string Variable::getName() const {
     return name;
 }
