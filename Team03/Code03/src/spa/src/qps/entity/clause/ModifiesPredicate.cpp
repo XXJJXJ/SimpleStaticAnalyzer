@@ -1,39 +1,44 @@
-// ai-gen start(gpt, 1, e)
-// prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "ModifiesPredicate.h"
+#include <stdexcept>
 
-ModifiesPredicate::ModifiesPredicate(StatementRef lhs, StatementRef rhs) {
-    if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs) || isWildcard(rhs)) {
-        throw std::invalid_argument("Invalid argument for ModifiesPredicate constructor");
+template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
+
+ModifiesPredicate::ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs)
+        : lhs(std::move(lhs)), rhs(std::move(rhs)) { // Explicit initialization
+    // After initializing, you can perform further checks or logic as needed
+    if (!isValidLhs(this->lhs) || !isValidRhs(this->rhs)) {
+        throw std::invalid_argument("Invalid arguments for ModifiesPredicate constructor");
     }
-    this->lhs = std::move(lhs);
-    this->rhs = std::move(rhs);
 }
 
 std::shared_ptr<Strategy> ModifiesPredicate::getStrategy() const {
-    // Implementation logic for returning the appropriate strategy
-    return nullptr; // Placeholder return
+    // Placeholder logic for strategy selection
+    return nullptr;
 }
 
-// Checks the validity of input
-bool ModifiesPredicate::isValidStatementRef(const StatementRef& ref) {
-    if (std::holds_alternative<Synonym>(ref)) {
-        auto synonym = std::get<Synonym>(ref);
-        return synonym.getType() == EntityType::Stmt;
-    } else if (std::holds_alternative<std::string>(ref)) {
-        return std::get<std::string>(ref) == "_";
-    } else if (std::holds_alternative<int>(ref)) {
-        // Assuming int is always a valid statement reference
-        return true;
-    }
-    return false;
+bool ModifiesPredicate::isValidLhs(const ModifiesLhsRef& lhs) {
+    return std::visit(overloaded {
+            [](const int&) { return true; }, // int is always valid for StatementRef
+            [](const Synonym& syn) {
+                // Check if Synonym is of type stmt or procedure
+                return syn.getType() == EntityType::Stmt || syn.getType() == EntityType::Procedure;
+            },
+            [](const std::string& str) { return str == "_"; }, // "_" is valid
+            [](const auto&) { return false; } // Fallback for EntityRef (procedure names, variable names)
+    }, lhs);
 }
 
-// Implement the isWildcard function to check if RHS is a wildcard
-bool ModifiesPredicate::isWildcard(const StatementRef& ref) {
-    return std::holds_alternative<std::string>(ref) && std::get<std::string>(ref) != "_";
-}
-// You can implement additional methods here as needed, for example, methods to
-// help determine if the lhs or rhs is an integer, synonym, or wildcard.
 
-// ai-gen end
+bool ModifiesPredicate::isValidRhs(const EntityRef& rhs) {
+    // EntityRef can be a Synonym of type variable or a variable name (string), or "_"
+    return std::visit(overloaded {
+            [](const Synonym& syn) {
+                // Check if Synonym is of type variable
+                return syn.getType() == EntityType::Variable;
+            },
+            [](const std::string& str) { return !str.empty(); }, // Any non-empty string is valid
+    }, rhs);
+}
+

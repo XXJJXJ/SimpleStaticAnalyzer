@@ -15,6 +15,8 @@ file(GLOB headers
 )
 add_library(spa ${srcs} ${headers}
 		src/qps/entity/clause/Predicate.h
+        src/qps/entity/clause/FollowsPredicate.cpp
+        src/qps/entity/clause/FollowsPredicate.h
 		src/qps/entity/clause/ModifiesPredicate.cpp
 		src/qps/entity/clause/ModifiesPredicate.h)
 # this makes the headers accessible for other projects which uses spa lib
