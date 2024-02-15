@@ -13,7 +13,8 @@ file(GLOB headers
 )
 
 add_executable(unit_testing ${srcs} ${headers}
-        src/qps/TestQueryParser.cpp)
+        src/qps/TestQueryParser.cpp
+        src/qps/predicate/TestPredicateConstructors.cpp)
 
 
 target_link_libraries(unit_testing spa)

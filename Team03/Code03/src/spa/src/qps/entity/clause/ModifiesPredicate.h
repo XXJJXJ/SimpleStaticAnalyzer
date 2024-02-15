@@ -1,3 +1,5 @@
+// ai-gen start(gpt, 1, e)
+// prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #ifndef MODIFIESPREDICATE_H
 #define MODIFIESPREDICATE_H
 
@@ -7,18 +9,12 @@
 
 class Strategy;
 
-// StatementRef: int, Synonym, or "_"
-using StatementRef = std::variant<int, Synonym, std::string>;
-
-// EntityRef: Synonym or string (for procedure names or variable names)
+using ModifiesLhsRef = std::variant<int, Synonym, std::string>; // Combination of procedure and statements ref
 using EntityRef = std::variant<Synonym, std::string>;
-
-// ModifiesLhsRef: Can be either StatementRef or EntityRef
-using ModifiesLhsRef = std::variant<StatementRef, EntityRef>;
 
 class ModifiesPredicate : public Predicate {
 private:
-    ModifiesLhsRef lhs; // Either a StatementRef or an EntityRef
+    ModifiesLhsRef lhs; // Directly holds int, Synonym, or std::string
     EntityRef rhs; // Can be a synonym of type variable, a variable name, or "_"
 public:
     ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs);
@@ -26,10 +22,11 @@ public:
 
     std::shared_ptr<Strategy> getStrategy() const override;
 
-    // Helper methods for validation
     static bool isValidLhs(const ModifiesLhsRef& lhs);
     static bool isValidRhs(const EntityRef& rhs);
 };
 
 #endif // MODIFIESPREDICATE_H
 
+
+// ai-gen end

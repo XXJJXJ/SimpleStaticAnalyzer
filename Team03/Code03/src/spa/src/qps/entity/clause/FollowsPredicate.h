@@ -1,8 +1,8 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 
-#ifndef MODIFIESPREDICATE_H
-#define MODIFIESPREDICATE_H
+#ifndef FOLLOWSPREDICATE_H
+#define FOLLOWSPREDICATE_H
 
 #include "Predicate.h"
 #include <memory>
@@ -30,6 +30,6 @@ public:
     // Additional methods for internal logic as needed
 };
 
-#endif // MODIFIESPREDICATE_H
+#endif // FOLLOWSPREDICATE_H
 
 // ai-gen end

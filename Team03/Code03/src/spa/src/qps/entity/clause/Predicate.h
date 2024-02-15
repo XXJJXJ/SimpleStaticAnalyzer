@@ -6,6 +6,9 @@
 #include <string>
 #include "qps/entity/strategy/Strategy.h"
 
+template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
 /**
  * Base class for all filtering conditions in a query, including relationship, pattern and with
  * clauses. Each predicate has a corresponding strategy that is used to filter the results of the
