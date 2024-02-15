@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Visitor.h"
-#include "../../common/Procedure.h"
-#include "../../common/Variable.h"
-#include "../../common/ReadStatement.h"
-#include "../../common/PrintStatement.h"
-#include "../../pkb/PopulatePKB.h"
+#include "common/Procedure.h"
+#include "common/Variable.h"
+#include "common/ReadStatement.h"
+#include "common/PrintStatement.h"
+#include "pkb/PopulatePKB.h"
 
 class EntityExtractor : public Visitor {
 public:
