@@ -10,7 +10,7 @@ void OperationParser::getNext() {
 }
 
 bool OperationParser::isEndOfStatement() {
-    return token->getType() == TokenType::SEMICOLON;
+    return index == tokens.size();
 }
 
 TokenType OperationParser::getTokenType() {
@@ -50,8 +50,9 @@ void OperationParser::setIsSubExpression(bool isSubExpr) {
     isSubExpression = isSubExpr;
 }
 
-void OperationParser::setup(vector<shared_ptr<Token>>& tokens) {
+void OperationParser::setup(vector<shared_ptr<Token>>& tokens_) {
     if (index == 0) {
+        tokens = tokens_;
         getNext();
     }
 

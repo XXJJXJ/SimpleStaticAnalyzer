@@ -19,4 +19,6 @@ private:
         vector<shared_ptr<Token>>& tokens,
         string statementType,
         bool hasParenthesis);
+    static bool checkAssignment(
+        vector<shared_ptr<Token>>& tokens);
 };

@@ -17,7 +17,7 @@ string PrintStatementParser::extractVariableName(vector<shared_ptr<Token>>& toke
     shared_ptr<Token> token2 = tokens[2];
 
     if (token0->getValue() != "print") {
-        throw SyntaxErrorException("Read statement should start with print keyword");
+        throw SyntaxErrorException("Print statement should start with print keyword");
     }
 
     else if (token1->getType() != TokenType::NAME) {
