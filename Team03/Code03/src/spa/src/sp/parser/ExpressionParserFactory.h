@@ -1,6 +1,5 @@
 #pragma once
 
-#include<vector>
 #include "ExpressionParser.h"
 #include "VariableParser.h"
 #include "ConstantParser.h"
@@ -9,6 +8,8 @@
 #include "../tokenizer/NameToken.h"
 
 class ExpressionParserFactory {
+    typedef vector<shared_ptr<Token>> Tokens;
+
 public:
     static shared_ptr<ExpressionParser> getExpressionParser(
         vector<shared_ptr<Token>>& tokens,

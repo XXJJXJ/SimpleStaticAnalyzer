@@ -42,7 +42,7 @@ shared_ptr<Expression> ArithmeticOperationParser::factor() {
         getNext();
         leafNode = parse();
         if (getTokenType() != TokenType::RIGHT_PARENTHESIS) {
-            throw SyntaxErrorException("Missing )");
+            throw SyntaxErrorException("Missing ) in arithmetic operation");
         }
     }
     else if (getTokenType() == TokenType::INTEGER) {

@@ -38,5 +38,5 @@ std::string ProcedureParser::extractProcedureName(vector<shared_ptr<Token>>& tok
 }
 
 bool ProcedureParser::isEndOfProcedure(vector<shared_ptr<Token>>& tokens) {
-    return tokens.front()->getType() == TokenType::RIGHT_BRACE;
+    return tokens.front()->getValue() == "}";
 }
