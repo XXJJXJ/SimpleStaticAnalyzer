@@ -14,7 +14,7 @@ public:
     ~QueryParser();
 
     EntityType convertStringToEntityType(std::string entity);
-    std::shared_ptr<Query> parse(std::vector<std::vector<std::string>> tokens);
+    std::shared_ptr<Query> parse(std::vector<std::vector<std::vector<std::string>>> tokens);
 };
 
 

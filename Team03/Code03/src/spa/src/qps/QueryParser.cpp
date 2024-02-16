@@ -7,56 +7,62 @@
 #include "qps/entity/query/Query.h"
 #include "qps/entity/clause/Clause.h"
 #include "qps/entity/query/Synonym.h"
-#include "qps/entity/parser/EntityFactory.h"
-#include "qps/entity/parser/EntityFactoryManager.h"
+#include "qps/entity/parser/ClauseFactory.h"
+#include "qps/entity/parser/ClauseFactoryManager.h"
 #include "common/EntityType.h"
+#include "qps/entity/parser/DeclarationsParser.h"
+#include "qps/entity/parser/SelectionsParser.h"
 #include <sstream>
 #include <algorithm>
 
 QueryParser::QueryParser() {}
 QueryParser::~QueryParser() {}
 
-std::shared_ptr<Query> createQuery(const std::vector<std::shared_ptr<EntityObject>>& entityObjects) {
-    std::vector<std::shared_ptr<Synonym>> synonyms;
-    std::vector<std::shared_ptr<Clause>> clauses;
-    std::shared_ptr<Synonym> selectedSynonym = nullptr;
+//Given tokens, will create Query object
+std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
+    std::vector<std::shared_ptr<Synonym>> declarations;
+    std::vector<std::shared_ptr<Synonym>> selections;
+    std::vector<std::shared_ptr<ClauseObject>> clauses;
+    DeclarationsParser dp;
+    SelectionsParser sp;
 
-    for (const auto& entityObject : entityObjects) {
-        if (auto synonym = std::dynamic_pointer_cast<Synonym>(entityObject)) {
-            synonyms.push_back(synonym);
+    std::vector<std::vector<std::string>> declarationsTokens = tokens[0];
+    std::vector<std::vector<std::string>> selectionsTokens = tokens[1];
+    std::vector<std::vector<std::string>> clausesTokens = tokens[2];
+
+    std::vector<std::shared_ptr<ClauseObject>> entityObjects;
+
+    // Create synonym objects for declarations
+    for (size_t i = 0; i < declarationsTokens.size(); i++) {
+        std::vector<std::string> tokens = declarationsTokens[i];
+        std::vector<std::shared_ptr<Synonym>> currentDeclarations = dp.parse(tokens);
+        for (std::shared_ptr<Synonym> synonym : currentDeclarations) {
+            declarations.push_back(synonym);
         }
-        else if (auto clause = std::dynamic_pointer_cast<Clause>(entityObject)) {
-            clauses.push_back(clause);
-        }
-        // need to add in Selected synonym - create a new SelectedSynonym class?
     }
 
-    Query query(synonyms, selectedSynonym, clauses);
+    // Create synonym objects for selections
+    for (size_t i = 0; i < selectionsTokens.size(); i++) {
+        std::vector<std::string> tokens = selectionsTokens[i];
+        std::vector<std::shared_ptr<Synonym>> currentSelections = sp.parse(tokens);
+        for (std::shared_ptr<Synonym> synonym : currentSelections) {
+            selections.push_back(synonym);
+        }
+    }
+    
+    // Create clause objects for clauses
+    for (size_t i = 0; i < clausesTokens.size(); i++) {
+        std::vector<std::string> tokens = clausesTokens[i];
+        std::string firstWord = tokens.front();
+        ClauseFactory* factory = ClauseFactoryManager::getClauseFactory(firstWord);
+        if (factory) {
+            std::shared_ptr<ClauseObject> clauseObject = factory->createClauseObject(tokens);
+            clauses.push_back(clauseObject);
+        }
+    }
+
+    Query query(declarations, selections, clauses);
     std::shared_ptr<Query> sharedQueryObj = std::make_shared<Query>(query);
 
     return sharedQueryObj;
-}
-
-//Given query string, will create Query object
-std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::string>> tokens) {
-    //Init variables
-    std::vector<std::shared_ptr<Synonym>> synonyms;
-    std::shared_ptr<Synonym> selectedSynonym;
-    std::vector<std::shared_ptr<Clause>> clauses = {}; //Empty for Sprint 1
-
-    std::vector<std::shared_ptr<EntityObject>> entityObjects;
-
-    for (size_t i = 0; i < tokens.size(); i++) {
-        std::vector<std::string> token = tokens[i];
-        std::string firstWord = token.front();
-        EntityFactory* factory = EntityFactoryManager::getEntityFactory(firstWord);
-        if (factory) {
-            std::shared_ptr<EntityObject> entityObject = factory->createEntityObject(token);
-            entityObjects.push_back(entityObject);
-        }
-    }
-
-    std::shared_ptr<Query> query = createQuery(entityObjects);
-
-    return query;
 }

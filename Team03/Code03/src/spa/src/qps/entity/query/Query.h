@@ -19,15 +19,15 @@ public:
     [[nodiscard]] vector<shared_ptr<Strategy>> getStrategies() const;
 
     //constructor for a Query Object
-    Query (vector<shared_ptr<Synonym>> synonyms, shared_ptr<Synonym> 
-        selectedSynonym, vector<shared_ptr<Clause>> clauses) {
-        this->synonyms = synonyms;
-        this->selectedSynonym = selectedSynonym;
+    Query (vector<shared_ptr<Synonym>> declarations, vector<shared_ptr<Synonym>>
+        selections, vector<shared_ptr<ClauseObject>> clauses) {
+        this->declarations = declarations;
+        this->selections = selections;
         this->clauses = clauses;
     }
-    vector<shared_ptr<Synonym>> synonyms;  // declared synonyms
-    shared_ptr<Synonym> selectedSynonym;  // selected synonym
-    vector<shared_ptr<Clause>> clauses;
+    vector<shared_ptr<Synonym>> declarations;  // declared synonyms
+    vector<shared_ptr<Synonym>> selections;  // selected synonym
+    vector<shared_ptr<ClauseObject>> clauses;
 
 };
 

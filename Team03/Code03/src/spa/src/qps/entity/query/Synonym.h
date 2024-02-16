@@ -2,11 +2,11 @@
 #define SPA_SYNONYM_H
 
 #include "common/EntityType.h"
-#include "qps/entity/parser/EntityObject.h"
+#include "qps/entity/parser/ClauseObject.h"
 #include <string>
 
 
-class Synonym : public EntityObject {
+class Synonym {
 private:
     EntityType type;
     std::string name;

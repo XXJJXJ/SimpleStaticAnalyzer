@@ -1,12 +1,12 @@
 #pragma once
 
-#include "EntityFactory.h"
+#include "ClauseFactory.h"
 #include "qps/entity/clause/PatternClause.h"
 
-class PatternClauseFactory : public EntityFactory {
+class PatternClauseFactory : public ClauseFactory {
 public:
 	PatternClauseFactory();
 	~PatternClauseFactory();
 
-	std::shared_ptr<EntityObject> createEntityObject(const std::vector<std::string>& token);
+	std::shared_ptr<ClauseObject> createClauseObject(const std::vector<std::string>& token);
 };

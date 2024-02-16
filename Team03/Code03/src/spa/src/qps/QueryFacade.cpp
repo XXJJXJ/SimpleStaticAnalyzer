@@ -14,19 +14,19 @@ QueryFacade::QueryFacade() {}
 QueryFacade::~QueryFacade() {}
 
 std::vector<std::string> QueryFacade::processQuery(std::string query) {
-    std::vector<std::vector<std::string>> tokens = tokenizeQuery(query);
+    std::vector<std::vector<std::vector<std::string>>> tokens = tokenizeQuery(query);
     std::shared_ptr<Query> parsedQuery = parseQuery(tokens);
     std::vector<std::string> results = evaluateQuery(parsedQuery);
     
     return results;
 }
 
-std::vector<std::vector<std::string>> QueryFacade::tokenizeQuery(const std::string& query) {
+std::vector<std::vector<std::vector<std::string>>> QueryFacade::tokenizeQuery(const std::string& query) {
     QueryTokenizer tokenizer;
     return tokenizer.tokenize(query);
 }
 
-std::shared_ptr<Query> QueryFacade::parseQuery(std::vector<std::vector<std::string>> tokens) {
+std::shared_ptr<Query> QueryFacade::parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens) {
     QueryParser parser;
     return parser.parse(tokens);
 }
