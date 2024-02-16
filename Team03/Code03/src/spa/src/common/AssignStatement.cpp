@@ -12,8 +12,8 @@ void AssignStatement::accept(shared_ptr<Visitor> visitor) {
     expression->accept(visitor);
 }
 
-void AssignStatement::addExpression(shared_ptr<Expression> expression) {
-    expression = expression;
+void AssignStatement::addExpression(shared_ptr<Expression> expr) {
+    expression = expr;
 }
 
 Variable AssignStatement::getVariable() const {
