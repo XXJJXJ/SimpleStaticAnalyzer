@@ -20,7 +20,7 @@ class QueryFacade {
 public:
     QueryFacade();
     ~QueryFacade();
-    void processQueries(const std::string& inputFile, const std::string& outputFile);
+    std::vector<std::string> processQuery(std::string query);
 
     std::vector<std::vector<std::string>> tokenizeQuery(const std::string& query);
     std::shared_ptr<Query> parseQuery(std::vector<std::vector<std::string>> tokens);

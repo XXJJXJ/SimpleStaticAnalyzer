@@ -11,5 +11,5 @@ public:
 	~SynonymFactory();
 
 	std::shared_ptr<EntityObject> createEntityObject(const std::vector<std::string>& token);
-	EntityType SynonymFactory::convertStringToEntityType(std::string curr);
+	EntityType convertStringToEntityType(std::string curr);
 };

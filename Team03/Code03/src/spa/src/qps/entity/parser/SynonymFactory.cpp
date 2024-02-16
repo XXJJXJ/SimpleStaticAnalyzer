@@ -52,7 +52,7 @@ EntityType SynonymFactory::convertStringToEntityType(std::string curr) {
         entityType = EntityType::Procedure;
     }
     else if (curr == "Select") {
-        entityType == EntityType::Variable; //temporary
+        entityType = EntityType::Variable; //temporary
     }
     else {
         //None of the above, gives a Unknown Entity type
