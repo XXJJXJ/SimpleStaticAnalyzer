@@ -3,14 +3,15 @@
 #include<vector>
 #include "ExpressionParser.h"
 #include "VariableParser.h"
+#include "ConstantParser.h"
+#include "ArithmeticOperationParser.h"
+#include "ConditionalOperationParser.h"
 #include "../tokenizer/NameToken.h"
 
 class ExpressionParserFactory {
-    typedef vector<shared_ptr<Token>> Line;
-
 public:
     static shared_ptr<ExpressionParser> getExpressionParser(
-        vector<shared_ptr<Token>> tokens,
+        vector<shared_ptr<Token>>& tokens,
         string statementType);
 
 private:

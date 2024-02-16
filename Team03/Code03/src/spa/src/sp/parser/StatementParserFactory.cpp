@@ -8,13 +8,13 @@ shared_ptr<StatementParser> StatementParserFactory::getStatementParser(vector<sh
         return make_shared<ReadStatementParser>();
     }
     else if (checkKeywordType(tokens, "if", true)) {
-        //return make_shared<IfStatementParser>();
+        return make_shared<IfStatementParser>();
     }
     else if (checkKeywordType(tokens, "while", true)) {
-        //return make_shared<WhileStatementParser>();
+        return make_shared<WhileStatementParser>();
     } 
     else if (checkKeywordType(tokens, "assign", false)) {
-        //return make_shared<AssignStatementParser>();
+        return make_shared<AssignStatementParser>();
     }
     throw SemanticErrorException("Unknown Statement Type");
 }
