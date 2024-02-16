@@ -2,7 +2,6 @@
 #define SPA_SYNONYM_H
 
 #include "common/EntityType.h"
-#include "qps/entity/parser/ClauseObject.h"
 #include <string>
 
 

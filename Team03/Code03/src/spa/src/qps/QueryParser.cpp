@@ -22,7 +22,7 @@ QueryParser::~QueryParser() {}
 std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     std::vector<std::shared_ptr<Synonym>> declarations;
     std::vector<std::shared_ptr<Synonym>> selections;
-    std::vector<std::shared_ptr<ClauseObject>> clauses;
+    std::vector<std::shared_ptr<Clause>> clauses;
     DeclarationsParser dp;
     SelectionsParser sp;
 
@@ -30,7 +30,7 @@ std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<st
     std::vector<std::vector<std::string>> selectionsTokens = tokens[1];
     std::vector<std::vector<std::string>> clausesTokens = tokens[2];
 
-    std::vector<std::shared_ptr<ClauseObject>> entityObjects;
+    std::vector<std::shared_ptr<Clause>> entityObjects;
 
     // Create synonym objects for declarations
     for (size_t i = 0; i < declarationsTokens.size(); i++) {
@@ -56,7 +56,7 @@ std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<st
         std::string firstWord = tokens.front();
         ClauseFactory* factory = ClauseFactoryManager::getClauseFactory(firstWord);
         if (factory) {
-            std::shared_ptr<ClauseObject> clauseObject = factory->createClauseObject(tokens);
+            std::shared_ptr<Clause> clauseObject = factory->createClauseObject(tokens);
             clauses.push_back(clauseObject);
         }
     }

@@ -8,5 +8,5 @@ public:
 	PatternClauseFactory();
 	~PatternClauseFactory();
 
-	std::shared_ptr<ClauseObject> createClauseObject(const std::vector<std::string>& token);
+	std::shared_ptr<Clause> createClauseObject(const std::vector<std::string>& token);
 };

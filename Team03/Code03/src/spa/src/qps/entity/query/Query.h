@@ -20,14 +20,14 @@ public:
 
     //constructor for a Query Object
     Query (vector<shared_ptr<Synonym>> declarations, vector<shared_ptr<Synonym>>
-        selections, vector<shared_ptr<ClauseObject>> clauses) {
+        selections, vector<shared_ptr<Clause>> clauses) {
         this->declarations = declarations;
         this->selections = selections;
         this->clauses = clauses;
     }
     vector<shared_ptr<Synonym>> declarations;  // declared synonyms
     vector<shared_ptr<Synonym>> selections;  // selected synonym
-    vector<shared_ptr<ClauseObject>> clauses;
+    vector<shared_ptr<Clause>> clauses;
 
 };
 

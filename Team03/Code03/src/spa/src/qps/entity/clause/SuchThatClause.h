@@ -1,18 +1,24 @@
-//
-// Created by ZHENGTAO JIANG on 8/2/24.
-//
+// ai-gen start(gpt, 1, e)
+// prompt: https://chat.openai.com/share/649c7ba0-9712-44e7-aa24-ca6262c5a922
+#ifndef SUCHTHATCLAUSE_H
+#define SUCHTHATCLAUSE_H
 
-#include "qps/entity/parser/ClauseObject.h"
+#include "Clause.h"
+#include "Predicate.h"
+#include "qps/entity/strategy/Strategy.h"
+#include <vector>
+#include <memory>
 
-#ifndef SPA_SUCHTHATCLAUSE_H
-#define SPA_SUCHTHATCLAUSE_H
+class SuchThatClause : public Clause {
+private:
+    std::vector<std::shared_ptr<Predicate>> predicates;
 
-
-
-class SuchThatClause : public ClauseObject {
-
+public:
+    SuchThatClause() = default;
+    void addPredicate(std::unique_ptr<Predicate> predicate);
+    std::vector<std::shared_ptr<Strategy>> getStrategies() const override;
 };
 
+#endif // SUCHTHATCLAUSE_H
 
-
-#endif //SPA_SUCHTHATCLAUSE_H
+// ai-gen end
