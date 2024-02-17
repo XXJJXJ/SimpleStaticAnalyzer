@@ -19,3 +19,19 @@ private:
     shared_ptr<ConditionalOperation> condition;
     StatementListContainer statementList;
 };
+
+namespace std {
+    template <>
+    struct hash<shared_ptr<WhileStatement>> {
+        std::size_t operator()(const shared_ptr<WhileStatement>& obj) const {
+            return obj->hash();
+        }
+    };
+
+    template <>
+    struct equal_to<shared_ptr<WhileStatement>> {
+        bool operator()(const shared_ptr<WhileStatement>& lhs, const shared_ptr<WhileStatement>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
+}

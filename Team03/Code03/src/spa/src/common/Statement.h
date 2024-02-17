@@ -16,8 +16,27 @@ public:
     string getProcedureName() const;
     string getName() const override;
 
+    std::size_t hash() const;
+	bool operator==(const Statement& other) const;
+
 private:
     const int statementNumber;
     string statementType;
     string procedureName;
 };
+
+namespace std {
+    template <>
+    struct hash<shared_ptr<Statement>> {
+        std::size_t operator()(const shared_ptr<Statement>& obj) const {
+            return obj->hash();
+        }
+    };
+
+    template <>
+    struct equal_to<shared_ptr<Statement>> {
+        bool operator()(const shared_ptr<Statement>& lhs, const shared_ptr<Statement>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
+}

@@ -24,3 +24,12 @@ string Statement::getProcedureName() const {
 string Statement::getName() const {
     return to_string(this->getStatementNumber());
 }
+
+std::size_t Statement::hash() const {
+    std::hash<int> hasher;
+    return hasher(getStatementNumber());
+}
+
+bool Statement::operator==(const Statement& other) const {
+    return getStatementNumber() == other.getStatementNumber();
+}

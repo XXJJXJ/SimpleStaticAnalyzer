@@ -19,3 +19,19 @@ private:
     Variable variable;
     shared_ptr<Expression> expression;
 };
+
+namespace std {
+    template <>
+    struct hash<shared_ptr<AssignStatement>> {
+        std::size_t operator()(const shared_ptr<AssignStatement>& obj) const {
+            return obj->hash();
+        }
+    };
+
+    template <>
+    struct equal_to<shared_ptr<AssignStatement>> {
+        bool operator()(const shared_ptr<AssignStatement>& lhs, const shared_ptr<AssignStatement>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
+}
