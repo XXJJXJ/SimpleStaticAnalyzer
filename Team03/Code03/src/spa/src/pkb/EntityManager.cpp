@@ -3,20 +3,19 @@
 #include "EntityManager.h"
 
 // Initialize the static instance to nullptr
-EntityManager* EntityManager::instance = nullptr;
+shared_ptr<EntityManager> EntityManager::instance = nullptr;
 
 // Implementation of EntityManager methods
-EntityManager* EntityManager::getInstance() {
+shared_ptr<EntityManager> EntityManager::getInstance() {
     if (!instance) {
-        instance = new EntityManager();
+        EntityManager* em = new EntityManager();
+        instance = make_shared<EntityManager>(*em);
     }
     return instance;
 }
 
 
-EntityManager::~EntityManager() {
-    delete instance;
-}
+EntityManager::~EntityManager() {}
 
 // Variables
 bool EntityManager::addVariable(shared_ptr<Variable> var) {
@@ -73,24 +72,50 @@ vector<shared_ptr<Constant>> EntityManager::getAllConstants() {
     return constantStore.getAll();
 }
 
+// Assign statements
+bool EntityManager::addAssignStatement(shared_ptr<AssignStatement> assignStmt) {
+    if (allStmtStore.add(assignStmt)) {
+        return assignStore.add(assignStmt);
+    }
+    return false;
+}
+
 vector<shared_ptr<AssignStatement>> EntityManager::getAllAssignStatements() {
-    vector<shared_ptr<AssignStatement>> vec;
-    return vec;
+    return assignStore.getAll();
 }
 
-vector<shared_ptr<CallStatement>> EntityManager::getAllCallStatements() {
-    vector<shared_ptr<CallStatement>> vec;
-    return vec;
+// If
+bool EntityManager::addIfStatement(shared_ptr<IfStatement> ifStmt) {
+    if (allStmtStore.add(ifStmt)) {
+        return ifStore.add(ifStmt);
+    }
+    return false;
 }
-
 vector<shared_ptr<IfStatement>> EntityManager::getAllIfStatements() {
-    vector<shared_ptr<IfStatement>> vec;
-    return vec;
+    return ifStore.getAll();
 }
 
+// While 
+bool EntityManager::addWhileStatement(shared_ptr<WhileStatement> whileStmt) {
+    if (allStmtStore.add(whileStmt)) {
+        return whileStore.add(whileStmt);
+    }
+    return false;
+}
 vector<shared_ptr<WhileStatement>> EntityManager::getAllWhileStatements() {
-    vector<shared_ptr<WhileStatement>> vec;
-    return vec;
+    return whileStore.getAll();
+}
+
+
+// Call
+bool EntityManager::addCallStatement(shared_ptr<CallStatement> callStmt) {
+    if (allStmtStore.add(callStmt)) {
+        return true;
+    }
+    return false;
+}
+vector<shared_ptr<CallStatement>> EntityManager::getAllCallStatements() {
+    return {};
 }
 
 
@@ -102,10 +127,14 @@ void EntityManager::clear() {
 }
 
 void EntityManager::clearStore() {
-    // constantStore.clear();
+    constantStore.clear();
     variableStore.clear();
     procStore.clear();
+
     allStmtStore.clear();
     readStore.clear();
     printStore.clear();
+    assignStore.clear();
+    ifStore.clear();
+    whileStore.clear();
 }
