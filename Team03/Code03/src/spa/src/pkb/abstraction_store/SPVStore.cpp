@@ -5,17 +5,25 @@ bool SPVStore::add(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
     allStmts[stmt].insert(var);
     // duplicates
     procedureToVar[stmt->getProcedureName()].insert(var);
-    if (stmtType == EntityType::Assign) {
+    switch (stmtType)
+    {
+    case EntityType::Assign:
         assignStmts[stmt].insert(var);
-    } else if (stmtType == EntityType::Print) {
+        break;
+    case EntityType::Print:
         printStmts[stmt].insert(var);
-    } else if (stmtType == EntityType::Call) {
+        break;
+    case EntityType::Call:
         callStmts[stmt].insert(var);
-    } else if (stmtType == EntityType::Read) {
+        break;
+    case EntityType::Read:
         readStmts[stmt].insert(var);
-    } else if (stmtType == EntityType::If || stmtType == EntityType::While) {
+        break;
+    case EntityType::If:
+    case EntityType::While:
         ifWhileStmts[stmt].insert(var);
-    } else {
+        break;
+    default:
         // unknown statement type
         return false;
     }
