@@ -50,13 +50,14 @@ void OperationParser::setIsSubExpression(bool isSubExpr) {
     isSubExpression = isSubExpr;
 }
 
-void OperationParser::setup(vector<shared_ptr<Token>>& tokens_) {
+void OperationParser::setup(vector<shared_ptr<Token>>& t) {
     if (index == 0) {
-        tokens = tokens_;
+        tokens = t;
         getNext();
     }
 
     if (isInheritArguments) {
+        tokens = t;
         token = tokens[index - 1];
         tokenValue = token->getValue();
     }

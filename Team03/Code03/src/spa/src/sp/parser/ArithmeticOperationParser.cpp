@@ -1,5 +1,7 @@
 #include "ArithmeticOperationParser.h"
 
+// solution inspired from https://dev.to/j0nimost/making-a-math-interpreter-parser-52j8
+
 shared_ptr<Expression> ArithmeticOperationParser::parse() {
     shared_ptr<Expression> leftNode = term();
 
@@ -40,11 +42,13 @@ shared_ptr<Expression> ArithmeticOperationParser::factor() {
     shared_ptr<Expression> leafNode = nullptr;
 
     if (getTokenValue() == "(") {
+        addParenthesis(TokenType::LEFT_PARENTHESIS, getTokenValue(), getIndex());
         getNext();
         leafNode = parse();
         if (getTokenValue() != ")") {
             throw SyntaxErrorException("Missing ) in arithmetic operation");
         }
+        addParenthesis(TokenType::RIGHT_PARENTHESIS, getTokenValue(), getIndex());
     }
     else if (getTokenType() == TokenType::INTEGER) {
         leafNode = make_shared<Constant>(getTokenValue());
