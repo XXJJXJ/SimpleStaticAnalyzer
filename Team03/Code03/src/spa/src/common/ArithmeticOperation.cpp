@@ -16,10 +16,10 @@ bool ArithmeticOperation::operator==(const Expression& other) const {
 
     const ArithmeticOperation* casted = dynamic_cast<const ArithmeticOperation*>(&other);
     if (casted == nullptr) {
-        return false; 
+        return false;
     }
 
-    return 
+    return
         this->getArguments()->first->operator==(*casted->getArguments()->first) &&
         this->getArguments()->second->operator==(*casted->getArguments()->second);
 }

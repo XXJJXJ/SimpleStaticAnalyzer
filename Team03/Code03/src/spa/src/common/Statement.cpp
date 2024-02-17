@@ -1,12 +1,12 @@
 #include "Statement.h"
 
 Statement::Statement(
-    int statementNumber,
-    string statementType,
-    string procedureName)
-    : statementNumber(statementNumber),
-      statementType(move(statementType)),
-      procedureName(move(procedureName)) {
+    int statementNumber_,
+    string statementType_,
+    string procedureName_)
+    : statementNumber(statementNumber_),
+      statementType(move(statementType_)),
+      procedureName(move(procedureName_)) {
 }
 
 int Statement::getStatementNumber() const {

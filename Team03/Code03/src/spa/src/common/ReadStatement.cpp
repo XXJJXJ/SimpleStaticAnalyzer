@@ -2,8 +2,8 @@
 
 ReadStatement::ReadStatement(
     int statementNumber, 
-    shared_ptr<Variable> variable, 
-    string procedureName) : variable(variable), 
+    shared_ptr<Variable> variable_, 
+    string procedureName) : variable(variable_), 
     Statement(
         statementNumber,
        "read",

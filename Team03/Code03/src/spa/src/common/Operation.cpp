@@ -3,9 +3,9 @@
 Operation::Operation(
     string name, 
     string type, 
-    pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments)
+    pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments_)
     : Expression(move(name), type) {
-        arguments = arguments;
+        arguments = arguments_;
 }
 
 string Operation::getName() const {
