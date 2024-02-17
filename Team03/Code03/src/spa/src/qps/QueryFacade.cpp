@@ -6,64 +6,32 @@
 #include "QueryEvaluator.h"
 #include "QueryParser.h"
 #include "QueryValidator.h"
+#include "QueryTokenizer.h"
 #include <fstream>
 #include <iostream>
 
 QueryFacade::QueryFacade() {}
 QueryFacade::~QueryFacade() {}
 
-void QueryFacade::processQueries(const std::string& inputFile, const std::string& outputFile) {
-    std::ifstream input(inputFile);
-    std::vector<std::string> results;
-
-    if (input.is_open()) {
-        std::string query;
-        while (std::getline(input, query)) {
-            if (validateQuery(query)){
-                std::shared_ptr<Query> parsedQuery = parseQuery(query);
-                results = evaluateQuery(parsedQuery);
-            } else {
-                results.emplace_back("Invalid query");
-            }
-        }
-
-        input.close();
-
-        writeResults(results, outputFile);
-    } else {
-        std::cerr << "Error: Unable to open input file." << std::endl;
-    }
+std::vector<std::string> QueryFacade::processQuery(std::string query) {
+    std::vector<std::vector<std::vector<std::string>>> tokens = tokenizeQuery(query);
+    std::shared_ptr<Query> parsedQuery = parseQuery(tokens);
+    std::vector<std::string> results = evaluateQuery(parsedQuery);
+    
+    return results;
 }
 
-std::shared_ptr<Query> QueryFacade::parseQuery(const std::string& query) {
+std::vector<std::vector<std::vector<std::string>>> QueryFacade::tokenizeQuery(const std::string& query) {
+    QueryTokenizer tokenizer;
+    return tokenizer.tokenize(query);
+}
+
+std::shared_ptr<Query> QueryFacade::parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens) {
     QueryParser parser;
-    return parser.parse(query);
+    return parser.parse(tokens);
 }
 
-bool QueryFacade::validateQuery(const std::string& parsedQuery) {
-    QueryValidator validator;
-    return validator.validate(parsedQuery);
-}
-
-vector<std::string> QueryFacade::evaluateQuery(const std::shared_ptr<Query> validatedQuery) {
+vector<std::string> QueryFacade::evaluateQuery(const std::shared_ptr<Query> parsedQuery) {
     QueryEvaluator evaluator = QueryEvaluator();
-    return evaluator.evaluate(validatedQuery);
-}
-
-//Given a vector of strings, prints the result into an output file
-void QueryFacade::writeResults(const std::vector<std::string>& results, const std::string& outputFile) {
-    std::ofstream output(outputFile);
-
-    if (output.is_open()) {
-
-        for (const auto& result : results) {
-            output <<  result << std::endl;
-        }
-
-        output.close();
-
-        std::cout << "Results written to: " << outputFile << std::endl;
-    } else {
-        std::cerr << "Error: Unable to open output file." << std::endl;
-    }
+    return evaluator.evaluate(parsedQuery);
 }

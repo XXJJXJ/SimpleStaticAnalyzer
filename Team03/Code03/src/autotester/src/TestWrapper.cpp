@@ -28,8 +28,7 @@ void TestWrapper::parse(std::string filename) {
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
 // call your evaluator to evaluate the query here
   // ...code to evaluate query...
-    auto parsedQuery = qf.parseQuery(query);
-    auto result = qf.evaluateQuery(parsedQuery);
+    auto result = qf.processQuery(query);
 
     for (const auto& r : result) {
         results.push_back(r);
