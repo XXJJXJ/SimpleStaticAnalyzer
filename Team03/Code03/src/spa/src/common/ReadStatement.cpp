@@ -1,4 +1,5 @@
 #include "ReadStatement.h"
+#include "StatementType.h"
 
 ReadStatement::ReadStatement(
     int statementNumber, 
@@ -6,7 +7,7 @@ ReadStatement::ReadStatement(
     string procedureName) : variable(variable), 
     Statement(
         statementNumber,
-       "read",
+        StatementType::readType,
         procedureName) {}
 
 shared_ptr<Variable> ReadStatement::getVariable() const {

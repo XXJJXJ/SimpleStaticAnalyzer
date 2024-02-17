@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Expression.h"
+#include "Util.h"
 
 class Operation : public Expression {
 public:
     Operation(
         string name,
         string type,
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments);
+        PairOfArguments arguments);
     string getName() const override;
 };

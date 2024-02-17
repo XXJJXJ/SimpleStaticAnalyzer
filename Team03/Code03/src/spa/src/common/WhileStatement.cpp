@@ -1,11 +1,12 @@
 #include "WhileStatement.h"
+#include "StatementType.h"
 
 WhileStatement::WhileStatement(
     int statementNumber,
     shared_ptr<ConditionalOperation> condition,
     string procedureName) : Statement(
         statementNumber,
-        "while",
+        StatementType::whileType,
         move(procedureName)), condition(move(condition)) {}
 
 void WhileStatement::addStatement(shared_ptr<Statement> statement) {

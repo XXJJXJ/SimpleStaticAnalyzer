@@ -1,4 +1,5 @@
 #include "PrintStatement.h"
+#include "StatementType.h"
 
 PrintStatement::PrintStatement(
     int statementNumber,
@@ -6,7 +7,7 @@ PrintStatement::PrintStatement(
     string procedureName) : variable(variable),
     Statement(
         statementNumber,
-        "print",
+        StatementType::printType,
         procedureName) {}
 
 shared_ptr<Variable> PrintStatement::getVariable() const {

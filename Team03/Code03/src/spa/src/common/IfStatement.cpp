@@ -1,11 +1,12 @@
 #include "IfStatement.h"
+#include "StatementType.h"
 
 IfStatement::IfStatement(
     int statementNumber,
     shared_ptr<ConditionalOperation> condition,
     string procedureName) : Statement(
         statementNumber,
-        "if",
+        StatementType::ifType,
         move(procedureName)), condition(move(condition)) {}
 
 void IfStatement::addThenStatement(shared_ptr<Statement> statement) {
