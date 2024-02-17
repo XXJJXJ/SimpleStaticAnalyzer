@@ -3,7 +3,7 @@
 #include <set>
 #include <unordered_map>
 #include "common/Statement.h"
-#include "common/StatementType.h"
+#include "common/EntityType.h"
 #include "common/Variable.h"
 
 using namespace std;

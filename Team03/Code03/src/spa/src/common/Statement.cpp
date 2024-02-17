@@ -2,7 +2,7 @@
 
 Statement::Statement(
     int statementNumber,
-    string statementType,
+    EntityType statementType,
     string procedureName)
     : statementNumber(statementNumber),
       statementType(move(statementType)),
@@ -13,7 +13,7 @@ int Statement::getStatementNumber() const {
     return statementNumber;
 }
 
-string Statement::getStatementType() const {
+EntityType Statement::getStatementType() const {
     return statementType;
 }
 

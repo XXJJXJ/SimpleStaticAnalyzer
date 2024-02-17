@@ -3,16 +3,17 @@
 #include <string>
 #include <vector>
 #include "Entity.h"
+#include "EntityType.h"
 
 class Statement : public Entity {
 public:
     Statement(
         int statementNumber,
-        string statementType,
+        EntityType statementType,
         string procedureName);
     void accept(shared_ptr<Visitor> visitor) override = 0;
     int getStatementNumber() const;
-    string getStatementType() const;
+    EntityType getStatementType() const;
     string getProcedureName() const;
     string getName() const override;
 
@@ -21,7 +22,7 @@ public:
 
 private:
     const int statementNumber;
-    string statementType;
+    EntityType statementType;
     string procedureName;
 };
 

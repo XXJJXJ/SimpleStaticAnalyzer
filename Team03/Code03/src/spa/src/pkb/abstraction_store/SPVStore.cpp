@@ -1,19 +1,19 @@
 #include "SPVStore.h"
 
 bool SPVStore::add(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
-    string stmtType = stmt->getStatementType();
+    auto stmtType = stmt->getStatementType();
     allStmts[stmt].insert(var);
     // duplicates
     procedureToVar[stmt->getProcedureName()].insert(var);
-    if (stmtType == StatementType::assignType) {
+    if (stmtType == EntityType::Assign) {
         assignStmts[stmt].insert(var);
-    } else if (stmtType == StatementType::printType) {
+    } else if (stmtType == EntityType::Print) {
         printStmts[stmt].insert(var);
-    } else if (stmtType == StatementType::callType) {
+    } else if (stmtType == EntityType::Call) {
         callStmts[stmt].insert(var);
-    } else if (stmtType == StatementType::readType) {
+    } else if (stmtType == EntityType::Read) {
         readStmts[stmt].insert(var);
-    } else if (stmtType == StatementType::ifType || stmtType == StatementType::whileType) {
+    } else if (stmtType == EntityType::If || stmtType == EntityType::While) {
         ifWhileStmts[stmt].insert(var);
     } else {
         // unknown statement type
