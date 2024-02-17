@@ -9,6 +9,11 @@ bool FollowStore::add(shared_ptr<Statement> follower, shared_ptr<Statement> foll
         // should only have 1 direct follower
         return false;
     }
+    // Detect cycles
+    if (transitiveMap[followed].find(follower) != transitiveMap[followed].end()) {
+        // Cannot have cycles
+        return false;
+    }
     directMap[follower].insert(followed);
     transitiveMap[follower].insert(followed);
     followedToFollowerMap[followed] = follower;
