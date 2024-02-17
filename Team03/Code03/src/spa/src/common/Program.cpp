@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Program.h"
 
 int Program::statementNumber = 1;
