@@ -41,4 +41,5 @@ public:
 	Token(TokenType type, std::string value);
 	std::string getValue();
 	TokenType getType();
+	std::string getTypeAsString();
 };

@@ -18,10 +18,15 @@ void Sp::ProcessSIMPLE(string fileName) {
         else {
             shared_ptr<Tokenizer> tokenizer = make_shared<Tokenizer>();
             vector<shared_ptr<Token>> tokens = tokenizer->tokenize(inputfile);
-            shared_ptr<Parser> parser = make_shared<Parser>();
+            
+            for (shared_ptr<Token> token : tokens) {
+                std::cout << "type: " << token->getTypeAsString() << " value: " << token->getValue() << std::endl;
+            }
+
+            /*shared_ptr<Parser> parser = make_shared<Parser>();
             shared_ptr<Program> program = parser->parseSource(tokens);
             shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>();
-            design_extractor->extractDesign(program);
+            design_extractor->extractDesign(program);*/
             /*Program::ProcedureListContainer procedures = program->getProcedureList();
             vector<shared_ptr<Statement>> statements = procedures[0]->getStatementList();*/
         }
