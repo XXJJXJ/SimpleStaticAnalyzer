@@ -1,25 +1,25 @@
 #include "OperationParser.h"
 
 void OperationParser::getNext() {
-    if (index < tokens.size()) {
-        token = tokens[index];
+    if (*indexPointer < tokens.size()) {
+        token = tokens[*indexPointer];
         tokenValue = token->getValue();
-        isProcessedToken = false;
-        index++;
+        (*isProcessedTokenPointer) = false;
+        (*indexPointer)++;
     }
 }
 
 bool OperationParser::isEndOfStatement() {
-    return index == tokens.size();
+    return *indexPointer == tokens.size();
 }
 
 TokenType OperationParser::getTokenType() {
-    isProcessedToken = true;
+    (*isProcessedTokenPointer) = true;
     return token->getType();
 }
 
 string OperationParser::getTokenValue() {
-    isProcessedToken = true;
+    (*isProcessedTokenPointer) = true;
     return tokenValue;
 }
 
@@ -27,8 +27,17 @@ shared_ptr<ExpressionParser::Tokens> OperationParser::getTokens() {
     return make_shared<ExpressionParser::Tokens>(tokens);
 }
 
+void OperationParser::updateToken() {
+    token = tokens[static_cast<size_t>(*indexPointer) - 1];
+    tokenValue = token->getValue();
+}
+
 int OperationParser::getIndex() {
-    return index;
+    return (*indexPointer) - 1;
+}
+
+shared_ptr<int> OperationParser::getIndexPointer() {
+    return indexPointer;
 }
 
 shared_ptr<Expression> OperationParser::parseEntity(vector<shared_ptr<Token>>& tokens) {
@@ -42,62 +51,61 @@ bool OperationParser::getIsProcessedToken() {
     return isProcessedToken;
 }
 
+shared_ptr<bool> OperationParser::getIsProcessedTokenPointer() {
+    return isProcessedTokenPointer;
+}
+
 bool OperationParser::getIsSubExpression() {
     return isSubExpression;
 }
 
-void OperationParser::setIsSubExpression(bool isSubExpr) {
-    isSubExpression = isSubExpr;
+void OperationParser::setIsSubExpression(bool isSubExpression_) {
+    isSubExpression = isSubExpression_;
 }
 
-void OperationParser::setup(vector<shared_ptr<Token>>& t) {
-    if (index == 0) {
-        tokens = t;
+void OperationParser::setup(vector<shared_ptr<Token>>& tokens_) {
+    if (*indexPointer == 0) {
+        tokens = tokens_;
         getNext();
     }
 
     if (isInheritArguments) {
-        tokens = t;
-        token = tokens[index - 1];
+        tokens = tokens_;
+        token = tokens[static_cast<size_t>(*indexPointer) - 1];
         tokenValue = token->getValue();
     }
 }
 
-void OperationParser::updateToken() {
-    token = tokens[index - 1];
-    tokenValue = token->getValue();
-}
-
-void OperationParser::inheritArguments(int i, bool isSubExpr, bool isProcessedT) {
+void OperationParser::inheritArguments(shared_ptr<int> index, bool isSubExpression_, shared_ptr<bool> isProcessedToken) {
     isInheritArguments = true;
-    index = i;
-    isSubExpression = isSubExpr;
-    isProcessedToken = isProcessedT;
+    indexPointer = index;
+    isSubExpression = isSubExpression_;
+    isProcessedTokenPointer = isProcessedToken;
 }
 
-void OperationParser::addParenthesis(TokenType type, string value, int index) {
-    if (parenthesesIndexMappings.find(index) != parenthesesIndexMappings.end()) {
+void OperationParser::addParenthesis(TokenType type, string value, int index_) {
+    if (parenthesesIndexMappings.find(index_) != parenthesesIndexMappings.end()) {
         return;
     }
 
-    parenthesesIndexMappings[index] = value;
-    if (type == TokenType::LEFT_PARENTHESIS) {
+    parenthesesIndexMappings[index_] = value;
+    if (value == "(") {
         parenthesesContainer.push(value);
     }
-    else if (type == TokenType::RIGHT_PARENTHESIS) {
+    else if (value == ")") {
         parenthesesContainer.pop();
     }
 }
 
 void OperationParser::validateForBalancedParenthesis() {
-    if (isSubExpression || (isEndOfStatement() && isProcessedToken && parenthesesContainer.empty())) {
+    if (isSubExpression || (isEndOfStatement() && *isProcessedTokenPointer && parenthesesContainer.empty())) {
         return;
     }
     throw SyntaxErrorException("Unbalanced parenthesis ()");
 }
 
 void OperationParser::validateEnoughTokensToProcess() {
-    if (isProcessedToken) {
+    if (*isProcessedTokenPointer) {
         throw SyntaxErrorException("Insufficient tokens to process");
     }
 }

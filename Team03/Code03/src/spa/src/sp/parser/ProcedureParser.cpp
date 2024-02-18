@@ -29,7 +29,7 @@ std::string ProcedureParser::extractProcedureName(vector<shared_ptr<Token>>& tok
         throw SyntaxErrorException("A procedure should start with procedure");
     } else if (token1->getType() != TokenType::NAME) {
         throw SyntaxErrorException("A procedure should have a NAME");
-    } else if (token2->getType() != TokenType::LEFT_BRACE) {
+    } else if (token2->getValue() != "{") {
         throw SyntaxErrorException("A procedure should begin with a {");
     } else {
         return token1->getValue();

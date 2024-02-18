@@ -4,7 +4,6 @@
 
 shared_ptr<Expression> ArithmeticOperationParser::parse() {
     shared_ptr<Expression> leftNode = term();
-
     while (!isEndOfStatement() && 
         leftNode != nullptr && 
         count(termTokens.begin(), termTokens.end(), getTokenType())) {

@@ -2,18 +2,19 @@
 
 shared_ptr<Expression> RelationalOperationParser::parse() {
     auto leftRelationalFactor = factor();
+    updateToken();
     if (!leftRelationalFactor) {
         throw SyntaxErrorException("Missing left relational factor");
     }
-
-    unordered_set<TokenType> relationalOperators = { 
-        TokenType::DOUBLE_EQUALS, 
-        TokenType::GREATER_THAN, 
-        TokenType::GREATER_THAN_EQUAL, 
-        TokenType::LESS_THAN, 
-        TokenType::LESS_THAN_EQUAL, 
-        TokenType::NOT_EQUAL };
-    if (relationalOperators.find(getTokenType()) == relationalOperators.end()) {
+    unordered_set<string> relationalOperators = {
+        ">",
+        ">=",
+        "<",
+        "<=",
+        "==",
+        "!=" 
+    };
+    if (relationalOperators.find(getTokenValue()) == relationalOperators.end()) {
         throw SyntaxErrorException("Missing relational operator");
     }
 
@@ -23,7 +24,7 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
     if (!rightRelationalFactor) {
         throw SyntaxErrorException("Missing right relational factor");
     }
-
+    updateToken();
     pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
     arguments.first = leftRelationalFactor;
     arguments.second = rightRelationalFactor;
@@ -32,7 +33,7 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
 
 shared_ptr<Expression> RelationalOperationParser::factor() {
     shared_ptr<ArithmeticOperationParser> arithmeticOperationParser = make_shared<ArithmeticOperationParser>();
-    arithmeticOperationParser->inheritArguments(getIndex(), getIsSubExpression(), getIsProcessedToken());
+    arithmeticOperationParser->inheritArguments(getIndexPointer(), getIsSubExpression(), getIsProcessedTokenPointer());
     arithmeticOperationParser->setIsSubExpression(true);
     return arithmeticOperationParser->parseEntity(*getTokens());
 }

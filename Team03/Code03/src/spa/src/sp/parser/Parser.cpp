@@ -11,10 +11,10 @@ shared_ptr<Program> Parser::parseSource(vector<shared_ptr<Token>>& tokens) {
             program->addToProcedureList(procedure);
         }
         catch (SyntaxErrorException& e) {
-            throw SyntaxErrorException(e.error());
+            throw SyntaxErrorException(e.what());
         }
         catch (SemanticErrorException& e) {
-            throw SemanticErrorException(e.error());
+            throw SemanticErrorException(e.what());
         }
     }
 

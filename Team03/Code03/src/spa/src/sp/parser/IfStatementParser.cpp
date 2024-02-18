@@ -8,12 +8,13 @@ shared_ptr<Statement> IfStatementParser::parseEntity(vector<shared_ptr<Token>>& 
         make_shared<IfStatement>(Program::getAndIncrementStatementNumber(),
             condition,
             getProcedureName());
-
-    checkStartOfThenStatement(tokens);
+    cout << tokens[0]->getValue() << endl;
+    cout << tokens[1]->getValue() << endl;
     // Erase 'then' and '{' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
 
     while (!tokens.empty() && !isEndOfStatement(tokens)) {
+        cout << tokens[0]->getValue() << endl;
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(getProcedureName());
         auto statement = statementParser->parseEntity(tokens);
@@ -27,6 +28,7 @@ shared_ptr<Statement> IfStatementParser::parseEntity(vector<shared_ptr<Token>>& 
 
     if (!hasElseStatements(tokens)) return ifStatement;
 
+    
     checkStartOfElseStatement(tokens);
     // Erase 'else' and '{' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
@@ -52,29 +54,38 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(vector<shar
     // Erase 'if and (' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
 
-    auto end = find_if(tokens.begin(), tokens.end(), [](const std::shared_ptr<Token>& token) {
-        return token->getType() == TokenType::LEFT_BRACE;
+    auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token>& token) {
+        return token->getValue() == "{";
         });
 
+    
     if (end == tokens.end()) {
-        throw SyntaxErrorException("Condition of an if statement should be bounded by ( and )");
+        throw SyntaxErrorException("If statement is missing a {");
     }
 
-    for (auto i = tokens.begin(); i != end - 1; ++i) {
+    auto token = prev(end);
+
+    if (token->get()->getValue() != "then") {
+        throw SyntaxErrorException("If statement is missing a then");
+    }
+
+    token = prev(token);
+
+    if (token->get()->getValue() != ")") {
+        throw SyntaxErrorException("If statement condition should be bounded by ( and )");
+    }
+
+    for (auto i = tokens.begin(); i != end - 2; ++i) {
         conditionTokens.push_back(*i);
-        // Erase condition from tokens
-        tokens.erase(i);
     }
 
-    // Erase ')' from tokens
-    tokens.erase(tokens.begin());
-
+    // Erasing all condition tokens and ) from tokens
+    tokens.erase(tokens.begin(), end - 1);
     auto expressionParser =
         ExpressionParserFactory::getExpressionParser(conditionTokens, "if");
     auto
         condition = (expressionParser->parseEntity(
             conditionTokens));
-
     if (!condition) {
         throw SyntaxErrorException("Invalid condition for if statement");
     }
@@ -87,18 +98,8 @@ void IfStatementParser::checkStartOfIfStatement(vector<shared_ptr<Token>>& token
         throw SyntaxErrorException("Missing if statement");
     }
 
-    if (tokens[1]->getType() != TokenType::LEFT_PARENTHESIS) {
+    if (tokens[1]->getValue() != "(") {
         throw SyntaxErrorException("Missing ( at the start of if block");
-    }
-}
-
-void IfStatementParser::checkStartOfThenStatement(vector<shared_ptr<Token>>& tokens) const {
-    if (tokens[0]->getValue() != "then") {
-        throw SyntaxErrorException("Missing then statement");
-    }
-
-    if (tokens[1]->getType() != TokenType::LEFT_BRACE) {
-        throw SyntaxErrorException("Missing { at the start of then block");
     }
 }
 
@@ -107,21 +108,15 @@ void IfStatementParser::checkStartOfElseStatement(vector<shared_ptr<Token>>& tok
         throw SyntaxErrorException("Missing else statement");
     }
 
-    if (tokens[1]->getType() != TokenType::LEFT_BRACE) {
+    if (tokens[1]->getValue() != "{") {
         throw SyntaxErrorException("Missing { at the start of else block");
     }
 }
 
 bool IfStatementParser::hasElseStatements(vector<shared_ptr<Token>>& tokens) const {
-    return find_if(tokens.begin(), tokens.end(),
-        [&](shared_ptr<Token> const ptr) {
-            return ptr->getValue() == "else";
-        }) != tokens.end();
+    return tokens[0]->getValue() == "else";
 }
 
 bool IfStatementParser::isEndOfStatement(vector<shared_ptr<Token>>& tokens) const {
-    return find_if(tokens.begin(), tokens.end(),
-        [&](shared_ptr<Token> const ptr) {
-            return ptr->getType() == TokenType::RIGHT_BRACE;
-        }) != tokens.end();
+    return tokens[0]->getValue() == "}";
 }

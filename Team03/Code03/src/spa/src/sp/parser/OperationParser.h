@@ -15,13 +15,15 @@ public:
 	TokenType getTokenType();
 	string getTokenValue();
 	int getIndex();
+	shared_ptr<int> getIndexPointer();
 	void getNext();
 	shared_ptr<Tokens> getTokens();
+	void updateToken();
 	bool getIsProcessedToken();
+	shared_ptr<bool> getIsProcessedTokenPointer();
 	bool getIsSubExpression();
 	void setIsSubExpression(bool isSubExpression);
-	void updateToken();
-	void inheritArguments(int index, bool isSubExpression, bool isProcessedToken);
+	void inheritArguments(shared_ptr<int> index, bool isSubExpression, shared_ptr<bool> isProcessedToken);
 	void validateEnoughTokensToProcess();
 	void addParenthesis(TokenType type, string val, int index);
 
@@ -31,8 +33,11 @@ private:
 	shared_ptr<Token> token = nullptr;
 	string tokenValue;
 	int index = 0;
+	shared_ptr<int> indexPointer = make_shared<int>(index);
 	bool isProcessedToken = false;
+	shared_ptr<bool> isProcessedTokenPointer = make_shared<bool>(isProcessedToken);
 	bool isSubExpression = false;
+	shared_ptr<bool> isSubExpressionPointer = make_shared<bool>(isSubExpression);
 	void setup(vector<shared_ptr<Token>>& tokens);
 	bool isInheritArguments = false;
 	void validateForBalancedParenthesis();
