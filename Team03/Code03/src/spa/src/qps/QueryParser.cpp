@@ -14,6 +14,7 @@
 #include "qps/entity/parser/SelectionsParser.h"
 #include <sstream>
 #include <algorithm>
+#include <unordered_map>
 
 QueryParser::QueryParser() {}
 QueryParser::~QueryParser() {}
@@ -26,16 +27,16 @@ std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<st
     DeclarationsParser dp;
     SelectionsParser sp;
 
+    std::unordered_map<std::string, EntityType> synonymMap;
+
     std::vector<std::vector<std::string>> declarationsTokens = tokens[0];
     std::vector<std::vector<std::string>> selectionsTokens = tokens[1];
     std::vector<std::vector<std::string>> clausesTokens = tokens[2];
 
-    std::vector<std::shared_ptr<Clause>> entityObjects;
-
     // Create synonym objects for declarations
     for (size_t i = 0; i < declarationsTokens.size(); i++) {
         std::vector<std::string> tokens = declarationsTokens[i];
-        std::vector<std::shared_ptr<Synonym>> currentDeclarations = dp.parse(tokens);
+        std::vector<std::shared_ptr<Synonym>> currentDeclarations = dp.parse(tokens, synonymMap);
         for (std::shared_ptr<Synonym> synonym : currentDeclarations) {
             declarations.push_back(synonym);
         }
@@ -44,7 +45,7 @@ std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<st
     // Create synonym objects for selections
     for (size_t i = 0; i < selectionsTokens.size(); i++) {
         std::vector<std::string> tokens = selectionsTokens[i];
-        std::vector<std::shared_ptr<Synonym>> currentSelections = sp.parse(tokens);
+        std::vector<std::shared_ptr<Synonym>> currentSelections = sp.parse(tokens, synonymMap);
         for (std::shared_ptr<Synonym> synonym : currentSelections) {
             selections.push_back(synonym);
         }
