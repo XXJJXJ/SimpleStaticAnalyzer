@@ -43,7 +43,7 @@ shared_ptr<int> OperationParser::getIndexPointer() {
 shared_ptr<Expression> OperationParser::parseEntity(vector<shared_ptr<Token>>& tokens) {
     setup(tokens);
     shared_ptr<Expression> result = parse();
-    validateBalancedParenthesis();
+    validateParenthesis();
     return result;
 }
 
@@ -97,14 +97,14 @@ void OperationParser::addParenthesis(string value, int index_) {
     }
 }
 
-void OperationParser::validateBalancedParenthesis() {
+void OperationParser::validateParenthesis() {
     if (isSubExpression || (isEndOfStatement() && *isProcessedTokenPointer && parenthesesContainer.empty())) {
         return;
     }
     throw SyntaxErrorException("Procedure contains unbalanced parenthesis");
 }
 
-void OperationParser::validateTokensToProcess() {
+void OperationParser::validateTokens() {
     if (*isProcessedTokenPointer) {
         throw SyntaxErrorException("Insufficient tokens for processing");
     }

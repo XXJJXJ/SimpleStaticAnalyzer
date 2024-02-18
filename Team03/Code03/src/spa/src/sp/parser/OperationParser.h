@@ -25,7 +25,7 @@ public:
 	void setArguments(shared_ptr<int> index, bool isSubExpression, shared_ptr<bool> isProcessedToken);
 	void setIsSubExpression(bool isSubExpression);
 	void updateNextToken();
-	void validateTokensToProcess();
+	void validateTokens();
 
 private:
 	vector<shared_ptr<Token>> tokens;
@@ -40,6 +40,6 @@ private:
 	bool isProcessedToken = false;
 	bool isSubExpression = false;
 	void setup(vector<shared_ptr<Token>>& tokens);
-	void validateBalancedParenthesis();
+	void validateParenthesis();
 	virtual shared_ptr<Expression> parse() = 0;
 };

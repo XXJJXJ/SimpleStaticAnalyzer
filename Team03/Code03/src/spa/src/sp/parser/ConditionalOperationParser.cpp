@@ -44,7 +44,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
     }
     else if (getTokenValue() == "(") {
         getNextToken();
-        validateTokensToProcess();
+        validateTokens();
         this->setIsSubExpression(true);
         auto leftConditionalExpression = parse();
         if (getTokenValue() != ")") {
