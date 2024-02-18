@@ -7,7 +7,6 @@
 SelectionsParser::SelectionsParser() {}
 SelectionsParser::~SelectionsParser() {}
 std::vector<std::shared_ptr<Synonym>> SelectionsParser::parse(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
-	//Todo: implement
 	std::vector<std::shared_ptr<Synonym>> selections = {};
 	size_t len = tokens.size();
 
@@ -16,10 +15,15 @@ std::vector<std::shared_ptr<Synonym>> SelectionsParser::parse(const std::vector<
 		for (size_t i = 2; i < len - 1; i++) {
 			std::string token = tokens[i];
 			if (isSyn) {
-				EntityType synonymType = synonymMap.at(token);
-				std::shared_ptr<Synonym> synonym = std::make_shared<Synonym>(synonymType, token);
-				selections.push_back(synonym);
-				isSyn = false;
+				try {
+					EntityType synonymType = synonymMap.at(token);
+					std::shared_ptr<Synonym> synonym = std::make_shared<Synonym>(synonymType, token);
+					selections.push_back(synonym);
+					isSyn = false;
+				}
+				catch (const std::out_of_range& e) {
+					throw SemanticErrorException("Selected synonym '" + token + "' has not been declared");
+				}
 			}
 			else if (token == "," && i < len-2) {
 				isSyn = true;
