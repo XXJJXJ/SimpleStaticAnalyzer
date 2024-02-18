@@ -14,12 +14,9 @@ bool ArithmeticOperation::operator==(const Expression& other) const {
         return false;
     }
 
-    const ArithmeticOperation* casted = dynamic_cast<const ArithmeticOperation*>(&other);
-    if (casted == nullptr) {
-        return false;
-    }
+    auto casted = dynamic_cast<const ArithmeticOperation&>(other);
 
     return
-        this->getArguments()->first->operator==(*casted->getArguments()->first) &&
-        this->getArguments()->second->operator==(*casted->getArguments()->second);
+        this->getArguments()->first->operator==(*casted.getArguments()->first) && 
+        this->getArguments()->second->operator==(*casted.getArguments()->second);
 }

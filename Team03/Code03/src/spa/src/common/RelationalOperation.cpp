@@ -14,12 +14,8 @@ bool RelationalOperation::operator==(const Expression& other) const {
         return false;
     }
 
-    const RelationalOperation* casted = dynamic_cast<const RelationalOperation*>(&other);
-    if (casted == nullptr) {
-        return false; 
-    }
-
-    return 
-        this->getArguments()->first->operator==(*casted->getArguments()->first) &&
-        this->getArguments()->second->operator==(*casted->getArguments()->second);
+    auto casted = dynamic_cast<const RelationalOperation&>(other);
+    return
+        this->getArguments()->first->operator==(*casted.getArguments()->first) && 
+        this->getArguments()->second->operator==(*casted.getArguments()->second);
 }
