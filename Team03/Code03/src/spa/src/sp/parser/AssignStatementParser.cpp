@@ -34,7 +34,6 @@ string AssignStatementParser::extractVariableName(vector<shared_ptr<Token>>& tok
 
 vector<shared_ptr<Token>> AssignStatementParser::extractExpression(vector<shared_ptr<Token>>& tokens) const {
     vector<shared_ptr<Token>> expressionTokens;
-
     for (size_t i = 0; i < tokens.size(); ++i) {
         if (tokens[0]->getValue() == ";") {
             break;
@@ -44,6 +43,7 @@ vector<shared_ptr<Token>> AssignStatementParser::extractExpression(vector<shared
             tokens.erase(tokens.begin());
         }
     }
+
     return expressionTokens;
 }
 

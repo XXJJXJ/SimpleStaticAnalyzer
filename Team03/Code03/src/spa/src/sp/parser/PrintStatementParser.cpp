@@ -19,11 +19,9 @@ string PrintStatementParser::extractVariableName(vector<shared_ptr<Token>>& toke
     if (token0->getValue() != "print") {
         throw SyntaxErrorException("Print statement should start with print keyword");
     }
-
     else if (token1->getType() != TokenType::NAME) {
         throw SyntaxErrorException("Print statement does not have a variable");
     }
-
     else if (token2->getType() != TokenType::SEMICOLON) {
         throw SyntaxErrorException("Print statement should end with a ;");
     }

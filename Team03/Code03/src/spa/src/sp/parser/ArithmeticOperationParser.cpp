@@ -8,7 +8,7 @@ shared_ptr<Expression> ArithmeticOperationParser::parse() {
         leftNode != nullptr && 
         count(termTokens.begin(), termTokens.end(), getTokenType())) {
         string tokenValue = getTokenValue();
-        getNext();
+        getNextToken();
         shared_ptr<Expression> rightNode = term();
         pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
         arguments.first = leftNode;
@@ -21,12 +21,11 @@ shared_ptr<Expression> ArithmeticOperationParser::parse() {
 
 shared_ptr<Expression> ArithmeticOperationParser::term() {
     shared_ptr<Expression> leftNode = factor();
-
     while (!isEndOfStatement() && 
         leftNode != nullptr && 
         count(factorTokens.begin(), factorTokens.end(), getTokenType())) {
         string tokenValue = getTokenValue();
-        getNext();
+        getNextToken();
         shared_ptr<Expression> rightNode = factor();
         pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
         arguments.first = leftNode;
@@ -39,15 +38,14 @@ shared_ptr<Expression> ArithmeticOperationParser::term() {
 
 shared_ptr<Expression> ArithmeticOperationParser::factor() {
     shared_ptr<Expression> leafNode = nullptr;
-
     if (getTokenValue() == "(") {
-        addParenthesis(TokenType::LEFT_PARENTHESIS, getTokenValue(), getIndex());
-        getNext();
+        addParenthesis(getTokenValue(), getIndex());
+        getNextToken();
         leafNode = parse();
         if (getTokenValue() != ")") {
             throw SyntaxErrorException("Missing ) in arithmetic operation");
         }
-        addParenthesis(TokenType::RIGHT_PARENTHESIS, getTokenValue(), getIndex());
+        addParenthesis(getTokenValue(), getIndex());
     }
     else if (getTokenType() == TokenType::INTEGER) {
         leafNode = make_shared<Constant>(getTokenValue());
@@ -56,6 +54,6 @@ shared_ptr<Expression> ArithmeticOperationParser::factor() {
         leafNode = make_shared<Variable>(getTokenValue());
     }
 
-    getNext();
+    getNextToken();
     return leafNode;
 }

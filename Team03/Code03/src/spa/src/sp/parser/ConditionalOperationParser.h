@@ -10,6 +10,5 @@ using namespace std;
 
 class ConditionalOperationParser : public OperationParser {
 public:
-	ConditionalOperationParser() = default;
 	shared_ptr<Expression> parse() override;
 };

@@ -19,8 +19,8 @@ bool ConditionalOperation::operator==(const Expression& other) const {
         return false;
     }
 
-    if (this->getArguments()->second == NULL
-        && casted.getArguments()->second == NULL) {
+    if (this->getArguments()->second == NULL && 
+        casted.getArguments()->second == NULL) {
         return true;
     }
 

@@ -16,7 +16,7 @@ shared_ptr<StatementParser> StatementParserFactory::getStatementParser(vector<sh
     else if (checkKeywordType(tokens, "read", false)) {
         return make_shared<ReadStatementParser>();
     }
-    else 
+    
     throw SemanticErrorException("Unknown Statement Type");
 }
 
@@ -26,7 +26,6 @@ bool StatementParserFactory::checkKeywordType(
     bool hasParenthesis) {
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
-
     return
         (hasParenthesis && token0->getValue() == statementType && token1->getValue() == "(") ||
         (!hasParenthesis && token0->getValue() == statementType && token1->getType() == TokenType::NAME);

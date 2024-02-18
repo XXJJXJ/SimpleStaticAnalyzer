@@ -13,7 +13,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         if (relationalExpression) {
             pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
             arguments.first = relationalExpression;
-            updateToken();
+            updateNextToken();
             return make_shared<ConditionalOperation>("relationalExpression", arguments);
         }
     }
@@ -27,43 +27,43 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         make_shared < bool>(isProcessedToken));
 
     if (getTokenValue() == "!") {
-        getNext();
+        getNextToken();
         if (getTokenValue() == "(") {
-            getNext();
+            getNextToken();
             this->setIsSubExpression(true);
             auto conditionalExpression = parse();
             if (getTokenValue() != ")") {
                 throw SyntaxErrorException("Missing ) in conditional expression");
             }
 
-            getNext();
+            getNextToken();
             pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
             arguments.first = conditionalExpression;
             return make_shared<ConditionalOperation>("!", arguments);
         }
     }
     else if (getTokenValue() == "(") {
-        getNext();
-        validateEnoughTokensToProcess();
+        getNextToken();
+        validateTokensToProcess();
         this->setIsSubExpression(true);
         auto leftConditionalExpression = parse();
         if (getTokenValue() != ")") {
             throw SyntaxErrorException("Missing ) in conditional expression");
         }
 
-        getNext();
+        getNextToken();
         string operation = getTokenValue();
         if (!(getTokenValue() == "&&" || getTokenValue() == "||")) {
             throw SyntaxErrorException("Missing && or ||");
         }
-        getNext();
+        getNextToken();
 
         if (getTokenValue() == "(") {
-            getNext();
+            getNextToken();
             this->setIsSubExpression(true);
             auto rightConditionalExpression = parse();
             if (*(getIndexPointer().get()) < getTokens()->size()) {
-                getNext();
+                getNextToken();
             }
             if (getTokenValue() != ")") {
                 throw SyntaxErrorException("Missing ) in conditional expression");

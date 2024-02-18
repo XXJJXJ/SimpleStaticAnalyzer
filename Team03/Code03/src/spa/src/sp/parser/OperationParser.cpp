@@ -1,6 +1,6 @@
 #include "OperationParser.h"
 
-void OperationParser::getNext() {
+void OperationParser::getNextToken() {
     if (*indexPointer < tokens.size()) {
         token = tokens[*indexPointer];
         tokenValue = token->getValue();
@@ -27,7 +27,7 @@ shared_ptr<ExpressionParser::Tokens> OperationParser::getTokens() {
     return make_shared<ExpressionParser::Tokens>(tokens);
 }
 
-void OperationParser::updateToken() {
+void OperationParser::updateNextToken() {
     token = tokens[static_cast<size_t>(*indexPointer) - 1];
     tokenValue = token->getValue();
 }
@@ -43,7 +43,7 @@ shared_ptr<int> OperationParser::getIndexPointer() {
 shared_ptr<Expression> OperationParser::parseEntity(vector<shared_ptr<Token>>& tokens) {
     setup(tokens);
     shared_ptr<Expression> result = parse();
-    validateForBalancedParenthesis();
+    validateBalancedParenthesis();
     return result;
 }
 
@@ -66,7 +66,7 @@ void OperationParser::setIsSubExpression(bool isSubExpression_) {
 void OperationParser::setup(vector<shared_ptr<Token>>& tokens_) {
     if (*indexPointer == 0) {
         tokens = tokens_;
-        getNext();
+        getNextToken();
     }
 
     if (isInheritArguments) {
@@ -83,7 +83,7 @@ void OperationParser::inheritArguments(shared_ptr<int> index, bool isSubExpressi
     isProcessedTokenPointer = isProcessedToken;
 }
 
-void OperationParser::addParenthesis(TokenType type, string value, int index_) {
+void OperationParser::addParenthesis(string value, int index_) {
     if (parenthesesIndexMappings.find(index_) != parenthesesIndexMappings.end()) {
         return;
     }
@@ -97,15 +97,15 @@ void OperationParser::addParenthesis(TokenType type, string value, int index_) {
     }
 }
 
-void OperationParser::validateForBalancedParenthesis() {
+void OperationParser::validateBalancedParenthesis() {
     if (isSubExpression || (isEndOfStatement() && *isProcessedTokenPointer && parenthesesContainer.empty())) {
         return;
     }
-    throw SyntaxErrorException("Unbalanced parenthesis ()");
+    throw SyntaxErrorException("Procedure contains unbalanced parenthesis");
 }
 
-void OperationParser::validateEnoughTokensToProcess() {
+void OperationParser::validateTokensToProcess() {
     if (*isProcessedTokenPointer) {
-        throw SyntaxErrorException("Insufficient tokens to process");
+        throw SyntaxErrorException("Insufficient tokens for processing");
     }
 }

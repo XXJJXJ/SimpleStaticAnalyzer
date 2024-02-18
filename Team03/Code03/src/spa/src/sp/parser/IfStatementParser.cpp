@@ -32,7 +32,6 @@ shared_ptr<Statement> IfStatementParser::parseEntity(vector<shared_ptr<Token>>& 
     checkStartOfElseStatement(tokens);
     // Erase 'else' and '{' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
-
     while (!tokens.empty() && !isEndOfStatement(tokens)) {
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(getProcedureName());
@@ -64,13 +63,11 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(vector<shar
     }
 
     auto token = prev(end);
-
     if (token->get()->getValue() != "then") {
         throw SyntaxErrorException("If statement is missing a then");
     }
 
     token = prev(token);
-
     if (token->get()->getValue() != ")") {
         throw SyntaxErrorException("If statement condition should be bounded by ( and )");
     }

@@ -7,25 +7,20 @@ shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(
         if (checkExpressionType(tokens.front(), "variable")) {
             return make_shared<VariableParser>();
         }
-
-        if (checkExpressionType(tokens.front(), "constant")) {
+        else if (checkExpressionType(tokens.front(), "constant")) {
             return make_shared<ConstantParser>();
         }
-
-        if (!checkExpressionType(tokens.front(), "operation")) {
+        else if (!checkExpressionType(tokens.front(), "operation")) {
             return nullptr;
         }
     }
-    else {
-        if (statementType == "assign") {
-            return make_shared<ArithmeticOperationParser>();
-        }
-
-        if (statementType == "if" || statementType == "while") {
-            return make_shared<ConditionalOperationParser>();
-        }
+    else if (statementType == "assign") {
+        return make_shared<ArithmeticOperationParser>();
     }
-
+    else if (statementType == "if" || statementType == "while") {
+            return make_shared<ConditionalOperationParser>();
+    }
+    
     return nullptr;
 }
 

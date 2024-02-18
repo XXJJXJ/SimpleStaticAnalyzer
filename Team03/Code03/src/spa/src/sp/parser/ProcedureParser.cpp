@@ -20,21 +20,23 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(vector<shared_ptr<Token>>& to
     return procedure;
 }
 
-std::string ProcedureParser::extractProcedureName(vector<shared_ptr<Token>>& tokens) {
+string ProcedureParser::extractProcedureName(vector<shared_ptr<Token>>& tokens) {
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
     shared_ptr<Token> token2 = tokens[2];
 
     if (token0->getValue() != "procedure") {
         throw SyntaxErrorException("A procedure should start with procedure");
-    } else if (token1->getType() != TokenType::NAME) {
+    } 
+    else if (token1->getType() != TokenType::NAME) {
         throw SyntaxErrorException("A procedure should have a NAME");
-    } else if (token2->getValue() != "{") {
+    } 
+    else if (token2->getValue() != "{") {
         throw SyntaxErrorException("A procedure should begin with a {");
-    } else {
+    } 
+    else {
         return token1->getValue();
     }
-
 }
 
 bool ProcedureParser::isEndOfProcedure(vector<shared_ptr<Token>>& tokens) {

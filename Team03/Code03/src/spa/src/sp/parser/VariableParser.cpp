@@ -6,5 +6,5 @@ shared_ptr<Expression> VariableParser::parseEntity(vector<shared_ptr<Token>>& to
         return make_shared<Variable>(token->getValue());
     }
 
-    throw SemanticErrorException("Invalid constant");
+    throw SemanticErrorException("Invalid Variable");
 }

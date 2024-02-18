@@ -10,7 +10,7 @@ class StatementParser : public EntityParser<Statement> {
 public:
 	virtual shared_ptr<Statement> parseEntity(vector<shared_ptr<Token>>& tokens) = 0;
 	string getProcedureName();
-	void setProcedureName(string procName);
+	void setProcedureName(string procedureName);
 
 private:
 	string procedureName;

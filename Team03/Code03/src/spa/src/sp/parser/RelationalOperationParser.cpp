@@ -2,10 +2,11 @@
 
 shared_ptr<Expression> RelationalOperationParser::parse() {
     auto leftRelationalFactor = factor();
-    updateToken();
     if (!leftRelationalFactor) {
-        throw SyntaxErrorException("Missing left relational factor");
+        throw SyntaxErrorException("Missing left Relational factor");
     }
+
+    updateNextToken();
     unordered_set<string> relationalOperators = {
         ">",
         ">=",
@@ -15,16 +16,17 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
         "!=" 
     };
     if (relationalOperators.find(getTokenValue()) == relationalOperators.end()) {
-        throw SyntaxErrorException("Missing relational operator");
+        throw SyntaxErrorException("Missing Relational operator");
     }
 
     string operation = getTokenValue();
-    getNext();
+    getNextToken();
     auto rightRelationalFactor = factor();
     if (!rightRelationalFactor) {
-        throw SyntaxErrorException("Missing right relational factor");
+        throw SyntaxErrorException("Missing right Relational factor");
     }
-    updateToken();
+
+    updateNextToken();
     pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
     arguments.first = leftRelationalFactor;
     arguments.second = rightRelationalFactor;

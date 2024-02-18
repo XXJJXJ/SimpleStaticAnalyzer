@@ -11,7 +11,6 @@ using namespace std;
 
 class ArithmeticOperationParser : public OperationParser {
 public:
-	ArithmeticOperationParser() = default;
 	shared_ptr<Expression> parse() override;
 
 private:

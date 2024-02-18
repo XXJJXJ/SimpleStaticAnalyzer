@@ -30,23 +30,22 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(vector<s
     // Erase 'while and (' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
     
-    auto end = find_if(tokens.begin(), tokens.end(), [](const std::shared_ptr<Token>& token) {
+    auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token>& token) {
         return token->getValue() == "{";
         });
-
     if (end == tokens.end()) {
         throw SyntaxErrorException("While statement is missing a {");
     }
 
     auto token = prev(end);
-
     if (token->get()->getValue() != ")") {
-        throw SyntaxErrorException("If statement condition should be bounded by ( and )");
+        throw SyntaxErrorException("While statement condition should be bounded by ( and )");
     }
 
     for (auto i = tokens.begin(); i != end - 1; ++i) {
         conditionTokens.push_back(*i);
     }
+
     // Erasing all condition tokens and ) from tokens
     tokens.erase(tokens.begin(), end);
 
@@ -55,9 +54,8 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(vector<s
     auto
         condition = (expressionParser->parseEntity(
             conditionTokens));
-
     if (!condition) {
-        throw SyntaxErrorException("Invalid condition for while statement");
+        throw SyntaxErrorException("Invalid condition for While statement");
     }
 
     return dynamic_pointer_cast<ConditionalOperation>(condition);
@@ -65,11 +63,11 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(vector<s
 
 void WhileStatementParser::checkStartOfWhileStatement(vector<shared_ptr<Token>>& tokens) const {
     if (tokens[0]->getValue() != "while") {
-        throw SyntaxErrorException("Missing while statement");
+        throw SyntaxErrorException("Missing While statement");
     }
 
     if (tokens[1]->getValue() != "(") {
-        throw SyntaxErrorException("Missing ( at the start of while block");
+        throw SyntaxErrorException("Missing ( at the start of While statement");
     }
 }
 
