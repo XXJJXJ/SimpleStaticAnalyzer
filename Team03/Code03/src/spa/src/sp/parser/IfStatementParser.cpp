@@ -8,13 +8,10 @@ shared_ptr<Statement> IfStatementParser::parseEntity(vector<shared_ptr<Token>>& 
         make_shared<IfStatement>(Program::getAndIncrementStatementNumber(),
             condition,
             getProcedureName());
-    cout << tokens[0]->getValue() << endl;
-    cout << tokens[1]->getValue() << endl;
     // Erase 'then' and '{' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
 
     while (!tokens.empty() && !isEndOfStatement(tokens)) {
-        cout << tokens[0]->getValue() << endl;
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(getProcedureName());
         auto statement = statementParser->parseEntity(tokens);
