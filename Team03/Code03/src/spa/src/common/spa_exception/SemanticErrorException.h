@@ -7,5 +7,5 @@ class SemanticErrorException : public SpaException {
 public:
 	SemanticErrorException();
 	SemanticErrorException(std::string_view message);
-	std::string_view error();
+	std::string_view what();
 };
