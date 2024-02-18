@@ -5,7 +5,7 @@ IfStatement::IfStatement(
     shared_ptr<ConditionalOperation> condition,
     string procedureName) : Statement(
         statementNumber,
-        "if",
+        EntityType::If,
         move(procedureName)), condition(move(condition)) {}
 
 void IfStatement::addThenStatement(shared_ptr<Statement> statement) {

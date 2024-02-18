@@ -4,7 +4,7 @@
 
 #ifndef SPA_PARSER_H
 #define SPA_PARSER_H
-#include "PKB.h"
+
 #include "common/EntityType.h"
 #include "qps/entity/query/Query.h"
 
