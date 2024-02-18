@@ -54,7 +54,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         getNextToken();
         string operation = getTokenValue();
         if (!(getTokenValue() == "&&" || getTokenValue() == "||")) {
-            throw SyntaxErrorException("Missing && or ||");
+            throw SyntaxErrorException("Missing && or || in conditional expression");
         }
         getNextToken();
 
