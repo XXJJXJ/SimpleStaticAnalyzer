@@ -7,7 +7,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
 
     try {
         shared_ptr<RelationalOperationParser> relationalOperationParser = make_shared<RelationalOperationParser>();
-        relationalOperationParser->inheritArguments(getIndexPointer(), isSubExpression, getIsProcessedTokenPointer());
+        relationalOperationParser->setArguments(getIndexPointer(), isSubExpression, getIsProcessedTokenPointer());
         auto relationalExpression = relationalOperationParser->parseEntity(*getTokens());
         this->setIsSubExpression(false);
         if (relationalExpression) {
@@ -21,7 +21,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         string errorMessage = "Error parsing relational expression";
     }
     
-    this->inheritArguments(
+    this->setArguments(
         make_shared<int>(index),
         isSubExpression,
         make_shared < bool>(isProcessedToken));

@@ -35,7 +35,7 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
 
 shared_ptr<Expression> RelationalOperationParser::factor() {
     shared_ptr<ArithmeticOperationParser> arithmeticOperationParser = make_shared<ArithmeticOperationParser>();
-    arithmeticOperationParser->inheritArguments(getIndexPointer(), getIsSubExpression(), getIsProcessedTokenPointer());
+    arithmeticOperationParser->setArguments(getIndexPointer(), getIsSubExpression(), getIsProcessedTokenPointer());
     arithmeticOperationParser->setIsSubExpression(true);
     return arithmeticOperationParser->parseEntity(*getTokens());
 }

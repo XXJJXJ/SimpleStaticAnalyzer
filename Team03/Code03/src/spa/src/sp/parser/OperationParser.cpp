@@ -69,15 +69,15 @@ void OperationParser::setup(vector<shared_ptr<Token>>& tokens_) {
         getNextToken();
     }
 
-    if (isInheritArguments) {
+    if (isSetArguments) {
         tokens = tokens_;
         token = tokens[static_cast<size_t>(*indexPointer) - 1];
         tokenValue = token->getValue();
     }
 }
 
-void OperationParser::inheritArguments(shared_ptr<int> index, bool isSubExpression_, shared_ptr<bool> isProcessedToken) {
-    isInheritArguments = true;
+void OperationParser::setArguments(shared_ptr<int> index, bool isSubExpression_, shared_ptr<bool> isProcessedToken) {
+    isSetArguments = true;
     indexPointer = index;
     isSubExpression = isSubExpression_;
     isProcessedTokenPointer = isProcessedToken;

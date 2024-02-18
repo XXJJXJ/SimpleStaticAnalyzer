@@ -22,7 +22,7 @@ public:
 	void getNextToken();
 	bool isEndOfStatement();
 	void addParenthesis(string value, int index);
-	void inheritArguments(shared_ptr<int> index, bool isSubExpression, shared_ptr<bool> isProcessedToken);
+	void setArguments(shared_ptr<int> index, bool isSubExpression, shared_ptr<bool> isProcessedToken);
 	void setIsSubExpression(bool isSubExpression);
 	void updateNextToken();
 	void validateTokensToProcess();
@@ -36,7 +36,7 @@ private:
 	stack<string> parenthesesContainer;
 	unordered_map<int, string> parenthesesIndexMappings; int index = 0;
 	shared_ptr<int> indexPointer = make_shared<int>(index);
-	bool isInheritArguments = false;
+	bool isSetArguments = false;
 	bool isProcessedToken = false;
 	bool isSubExpression = false;
 	void setup(vector<shared_ptr<Token>>& tokens);
