@@ -2,7 +2,7 @@
 
 ConditionalOperation::ConditionalOperation(
     string name,
-    pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments)
+    PairOfArguments arguments)
     : Operation(move(name), "conditional", arguments) {}
 
 void ConditionalOperation::accept(shared_ptr<Visitor> visitor) {

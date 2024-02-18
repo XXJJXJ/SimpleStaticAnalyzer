@@ -15,6 +15,6 @@ bool Expression::operator==(const Expression& other) const {
     return expressionType == other.expressionType && name == other.name;
 }
 
-optional<Expression::PairOfArguments> Expression::getArguments() const {
+optional<PairOfArguments> Expression::getArguments() const {
     return arguments;
 }

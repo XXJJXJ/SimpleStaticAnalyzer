@@ -6,7 +6,7 @@ ReadStatement::ReadStatement(
     string procedureName) : variable(variable_), 
     Statement(
         statementNumber,
-       "read",
+        EntityType::Read,
         procedureName) {}
 
 shared_ptr<Variable> ReadStatement::getVariable() const {

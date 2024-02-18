@@ -3,11 +3,10 @@
 #include <string>
 #include <optional>
 #include "Entity.h"
+#include "Util.h"
 
 class Expression : public Entity {
 public:
-    typedef pair<shared_ptr<Expression>, shared_ptr<Expression>>
-        PairOfArguments;
     explicit Expression(string name, string expressionType);
     void accept(shared_ptr<Visitor> visitor) override = 0;
     optional<PairOfArguments> getArguments() const;

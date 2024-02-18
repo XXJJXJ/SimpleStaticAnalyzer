@@ -2,7 +2,7 @@
 
 ArithmeticOperation::ArithmeticOperation(
     string name,
-    pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments)
+    PairOfArguments arguments)
     : Operation(move(name), "arithmetic", arguments) {}
 
 void ArithmeticOperation::accept(shared_ptr<Visitor> visitor) {

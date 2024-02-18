@@ -2,10 +2,10 @@
 
 Statement::Statement(
     int statementNumber_,
-    string statementType_,
+    EntityType statementType,
     string procedureName_)
     : statementNumber(statementNumber_),
-      statementType(move(statementType_)),
+      statementType(move(statementType)),
       procedureName(move(procedureName_)) {
 }
 
@@ -13,7 +13,7 @@ int Statement::getStatementNumber() const {
     return statementNumber;
 }
 
-string Statement::getStatementType() const {
+EntityType Statement::getStatementType() const {
     return statementType;
 }
 
@@ -23,4 +23,13 @@ string Statement::getProcedureName() const {
 
 string Statement::getName() const {
     return to_string(this->getStatementNumber());
+}
+
+std::size_t Statement::hash() const {
+    std::hash<int> hasher;
+    return hasher(getStatementNumber());
+}
+
+bool Statement::operator==(const Statement& other) const {
+    return getStatementNumber() == other.getStatementNumber();
 }

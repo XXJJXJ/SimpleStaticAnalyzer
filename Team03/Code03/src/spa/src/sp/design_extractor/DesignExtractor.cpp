@@ -1,5 +1,3 @@
-#pragma once
-
 #include "DesignExtractor.h"
 #include "common/Procedure.h"
 

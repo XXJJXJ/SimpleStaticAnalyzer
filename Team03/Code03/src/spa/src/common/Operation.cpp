@@ -3,7 +3,7 @@
 Operation::Operation(
     string name, 
     string type, 
-    pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments_)
+    PairOfArguments arguments_)
     : Expression(move(name), type) {
         arguments = arguments_;
 }

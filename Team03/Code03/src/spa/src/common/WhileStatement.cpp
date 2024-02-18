@@ -5,7 +5,7 @@ WhileStatement::WhileStatement(
     shared_ptr<ConditionalOperation> condition_,
     string procedureName) : Statement(
         statementNumber,
-        "while",
+        EntityType::While,
         move(procedureName)), condition(move(condition_)) {}
 
 void WhileStatement::addStatement(shared_ptr<Statement> statement) {
