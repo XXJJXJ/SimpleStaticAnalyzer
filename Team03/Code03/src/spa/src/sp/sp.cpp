@@ -22,8 +22,8 @@ void Sp::ProcessSIMPLE(string fileName) {
             shared_ptr<Program> program = parser->parseSource(tokens);
             shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>();
             design_extractor->extractDesign(program);
-            Program::ProcedureListContainer procedures = program->getProcedureList();
-            vector<shared_ptr<Statement>> statements = procedures[0]->getStatementList();
+            /*Program::ProcedureListContainer procedures = program->getProcedureList();
+            vector<shared_ptr<Statement>> statements = procedures[0]->getStatementList();*/
         }
     }
     catch (SpaException& e) {
