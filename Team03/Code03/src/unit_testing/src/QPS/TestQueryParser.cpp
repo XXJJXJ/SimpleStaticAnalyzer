@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "qps/QueryParser.h"
 #include "qps/entity/parser/SelectionsParser.h"
+#include "qps/entity/parser/SuchThatClauseFactory.h"
 #include "common/spa_exception/SemanticErrorException.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 
@@ -47,4 +48,22 @@ TEST_CASE("SelectionsParser::parse should correctly parse and return a vector of
 	REQUIRE_THROWS_AS(sp.parse(tokens5, synonymMap), SemanticErrorException);
 
 	REQUIRE_THROWS_AS(sp.parse(tokens6, synonymMap), SyntaxErrorException);
+}
+
+TEST_CASE("SuchThatClauseFactory successfully creates a such that clause") {
+	SuchThatClauseFactory s;
+
+	std::vector<std::string> tokens1 = { "such", "that", "Follows", "(", "a", ",", "b", ")"};
+	std::vector<std::string> tokens2 = { "such", "that", "Follows*", "(", "a", ",", "b", ")" };
+	std::vector<std::string> tokens3 = { "such", "that", "Modifies", "(", "a", ",", "b", ")" };
+	std::vector<std::string> tokens4 = { "such", "that", "Parent", "(", "a", ",", "b", ")" };
+	std::vector<std::string> tokens5 = { "such", "that", "Parent*", "(", "a", ",", "b", ")" };
+	std::vector<std::string> tokens6 = { "such", "that", "Uses", "(", "a", ",", "b", ")" };
+
+	REQUIRE_NOTHROW(s.createClauseObject(tokens1));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens2));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens3));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens4));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens5));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens6));
 }

@@ -10,7 +10,7 @@
 class Strategy;
 
 // StatementRef for statement references: int, Synonym, or "_"
-using StatementRef = std::variant<int, Synonym, std::string>;
+//using StatementRef = std::variant<int, Synonym, std::string>;
 
 class FollowsTPredicate : public Predicate {
 private:
