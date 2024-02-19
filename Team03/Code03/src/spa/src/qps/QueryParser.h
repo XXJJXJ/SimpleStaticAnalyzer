@@ -5,7 +5,6 @@
 #ifndef QUERYPARSER_H
 #define QUERYPARSER_H
 
-#include "PKB.h"
 #include "common/EntityType.h"
 #include "qps/entity/query/Query.h"
 

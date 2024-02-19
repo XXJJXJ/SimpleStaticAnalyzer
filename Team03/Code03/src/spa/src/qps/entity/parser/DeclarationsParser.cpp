@@ -11,9 +11,14 @@
 DeclarationsParser::DeclarationsParser() {}
 DeclarationsParser::~DeclarationsParser() {}
 
-std::vector<std::shared_ptr<Synonym>> DeclarationsParser::parse(const std::vector<std::string>& tokens, std::unordered_map<std::string, EntityType>& synonymMap) {
+std::vector<std::shared_ptr<Synonym>>
+DeclarationsParser::parse(std::vector<std::string> const& tokens,
+                          std::unordered_map<std::string, EntityType>& synonymMap) {
+
     std::vector<std::shared_ptr<Synonym>> declarations;
-    std::map<std::string, EntityType> declaredVariables;
+
+    // ai-gen start(gpt, 0, e)
+    // prompt: https://chat.openai.com/share/62ae2963-4d00-4650-813c-22cd668f5c1e
 
     // Iterate through tokens
     for (size_t i = 0; i < tokens.size(); ++i) {
@@ -27,12 +32,12 @@ std::vector<std::shared_ptr<Synonym>> DeclarationsParser::parse(const std::vecto
             std::string variableName = tokens[++i];
 
             // Check if the variable is already declared
-            if (declaredVariables.find(variableName) != declaredVariables.end()) {
+            if (synonymMap.find(variableName) != synonymMap.end()) {
                 throw SyntaxErrorException("Variable '" + variableName + "' already declared");
             }
 
             // Store the variable in the map
-            declaredVariables[variableName] = EntityType::Variable;
+            synonymMap[variableName] = EntityType::Variable;
 
             // Create and store the Synonym
             declarations.push_back(std::make_shared<Synonym>(EntityType::Variable, variableName));
@@ -47,6 +52,8 @@ std::vector<std::shared_ptr<Synonym>> DeclarationsParser::parse(const std::vecto
             throw SyntaxErrorException("Unexpected ';'");
         }
     }
+
+    // ai-gen end
 
     return declarations;
 }
