@@ -3,7 +3,7 @@
 ArithmeticOperation::ArithmeticOperation(
     string name,
     PairOfArguments arguments)
-    : Operation(move(name), "arithmetic", arguments) {}
+    : Operation(move(name), EntityType::Arithmetic, arguments) {}
 
 void ArithmeticOperation::accept(shared_ptr<Visitor> visitor) {
     visitor->visitArithmeticalOperation(make_shared<ArithmeticOperation>(*this));

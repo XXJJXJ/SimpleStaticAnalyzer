@@ -8,15 +8,14 @@
 #include "../tokenizer/NameToken.h"
 
 class ExpressionParserFactory {
-    typedef vector<shared_ptr<Token>> Tokens;
-
+    typedef Tokens Tokens;
 public:
     static shared_ptr<ExpressionParser> getExpressionParser(
-        vector<shared_ptr<Token>>& tokens,
-        string statementType);
+        Tokens& tokens,
+        EntityType statementType);
 
 private:
     static inline bool checkExpressionType(
         shared_ptr<Token> token,
-        string_view statementType);
+        EntityType statementType);
 };

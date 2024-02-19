@@ -1,6 +1,6 @@
 #include "PrintStatementParser.h"
 
-shared_ptr<Statement> PrintStatementParser::parseEntity(vector<shared_ptr<Token>>& tokens) {
+shared_ptr<Statement> PrintStatementParser::parseEntity(Tokens& tokens) {
     string variableName = extractVariableName(tokens);
     auto variable = make_shared<Variable>(variableName);
     auto printStatement =
@@ -11,7 +11,7 @@ shared_ptr<Statement> PrintStatementParser::parseEntity(vector<shared_ptr<Token>
     return printStatement;
 }
 
-string PrintStatementParser::extractVariableName(vector<shared_ptr<Token>>& tokens) const {
+string PrintStatementParser::extractVariableName(Tokens& tokens) const {
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
     shared_ptr<Token> token2 = tokens[2];

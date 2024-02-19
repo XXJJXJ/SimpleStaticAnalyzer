@@ -1,9 +1,9 @@
 #include "Expression.h"
 
-Expression::Expression(string name_, string expressionType_)
+Expression::Expression(string name_, EntityType expressionType_)
     : name(move(name_)), expressionType(move(expressionType_)) {}
 
-string Expression::getExpressionType() const {
+EntityType Expression::getExpressionType() const {
     return expressionType;
 }
 

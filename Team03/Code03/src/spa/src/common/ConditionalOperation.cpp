@@ -3,7 +3,7 @@
 ConditionalOperation::ConditionalOperation(
     string name,
     PairOfArguments arguments)
-    : Operation(move(name), "conditional", arguments) {}
+    : Operation(move(name), EntityType::Conditional, arguments) {}
 
 void ConditionalOperation::accept(shared_ptr<Visitor> visitor) {
     visitor->visitConditionalOperation(make_shared<ConditionalOperation>(*this));

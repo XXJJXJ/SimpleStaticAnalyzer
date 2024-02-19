@@ -6,8 +6,8 @@
 
 class AssignStatementParser : public StatementParser {
 public:
-	shared_ptr<Statement> parseEntity(vector<shared_ptr<Token>>& tokens) override;
-	string extractVariableName(vector<shared_ptr<Token>>& tokens) const;
-	vector<shared_ptr<Token>> extractExpression(vector<shared_ptr<Token>>& tokens) const;
-	void checkEndOfStatement(vector<shared_ptr<Token>>& tokens) const;
+	shared_ptr<Statement> parseEntity(Tokens& tokens) override;
+	string extractVariableName(Tokens& tokens) const;
+	Tokens extractExpression(Tokens& tokens) const;
+	void checkEndOfStatement(Tokens& tokens) const;
 };

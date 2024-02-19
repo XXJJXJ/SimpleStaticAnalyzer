@@ -8,5 +8,6 @@
 
 class ExpressionParser : public EntityParser<Expression> {
 public:
-	virtual shared_ptr<Expression> parseEntity(vector<shared_ptr<Token>>& tokens) = 0;
+	typedef Tokens Tokens;
+	virtual shared_ptr<Expression> parseEntity(Tokens& tokens) = 0;
 };

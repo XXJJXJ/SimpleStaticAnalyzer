@@ -2,9 +2,6 @@
 
 shared_ptr<Expression> RelationalOperationParser::parse() {
     auto leftRelationalFactor = factor();
-    if (!leftRelationalFactor) {
-        throw SyntaxErrorException("Missing left Relational factor");
-    }
 
     updateNextToken();
     unordered_set<string> relationalOperators = {
@@ -15,6 +12,7 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
         "==",
         "!=" 
     };
+
     if (relationalOperators.find(getTokenValue()) == relationalOperators.end()) {
         throw SyntaxErrorException("Missing Relational operator");
     }

@@ -7,10 +7,10 @@
 
 class Expression : public Entity {
 public:
-    explicit Expression(string name, string expressionType);
+    explicit Expression(string name, EntityType expressionType);
     void accept(shared_ptr<Visitor> visitor) override = 0;
     optional<PairOfArguments> getArguments() const;
-    string getExpressionType() const;
+    EntityType getExpressionType() const;
     string getName() const override;
     virtual inline bool isLeafNodeExpression() { return false; }
     virtual bool operator==(const Expression& other) const;
@@ -20,5 +20,5 @@ protected:
     string name;
 
 private:
-    string expressionType;
+    EntityType expressionType;
 };

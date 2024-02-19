@@ -2,7 +2,7 @@
 
 #include "ProcedureParser.h"
 
-shared_ptr<Procedure> ProcedureParser::parseEntity(vector<shared_ptr<Token>>& tokens) {
+shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens& tokens) {
     string procedureName = extractProcedureName(tokens);
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     shared_ptr<Procedure> procedure = make_shared<Procedure>(procedureName);
@@ -20,7 +20,7 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(vector<shared_ptr<Token>>& to
     return procedure;
 }
 
-string ProcedureParser::extractProcedureName(vector<shared_ptr<Token>>& tokens) {
+string ProcedureParser::extractProcedureName(Tokens& tokens) {
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
     shared_ptr<Token> token2 = tokens[2];
@@ -39,6 +39,6 @@ string ProcedureParser::extractProcedureName(vector<shared_ptr<Token>>& tokens) 
     }
 }
 
-bool ProcedureParser::isEndOfProcedure(vector<shared_ptr<Token>>& tokens) {
+bool ProcedureParser::isEndOfProcedure(Tokens& tokens) {
     return tokens.front()->getValue() == "}";
 }

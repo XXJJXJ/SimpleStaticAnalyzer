@@ -2,9 +2,9 @@
 
 Operation::Operation(
     string name, 
-    string type, 
+    EntityType operationType, 
     PairOfArguments arguments_)
-    : Expression(move(name), type) {
+    : Expression(move(name), move(operationType)) {
         arguments = arguments_;
 }
 

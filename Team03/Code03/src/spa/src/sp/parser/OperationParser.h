@@ -10,7 +10,7 @@
 
 class OperationParser : public ExpressionParser {
 public:
-	shared_ptr<Expression> parseEntity(vector<shared_ptr<Token>>& tokens) override;
+	shared_ptr<Expression> parseEntity(Tokens& tokens) override;
 	TokenType getTokenType();
 	string getTokenValue();
 	shared_ptr<int> getIndexPointer();
@@ -28,7 +28,7 @@ public:
 	void validateTokens();
 
 private:
-	vector<shared_ptr<Token>> tokens;
+	Tokens tokens;
 	shared_ptr<Token> token = nullptr;
 	string tokenValue;
 	shared_ptr<bool> isProcessedTokenPointer = make_shared<bool>(isProcessedToken);
@@ -39,7 +39,7 @@ private:
 	bool isSetArguments = false;
 	bool isProcessedToken = false;
 	bool isSubExpression = false;
-	void setup(vector<shared_ptr<Token>>& tokens);
+	void setup(Tokens& tokens);
 	void validateParenthesis();
 	virtual shared_ptr<Expression> parse() = 0;
 };

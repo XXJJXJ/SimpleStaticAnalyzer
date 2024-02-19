@@ -3,7 +3,7 @@
 RelationalOperation::RelationalOperation(
     string name,
     PairOfArguments arguments)
-    : Operation(move(name), "relational", arguments) {}
+    : Operation(move(name), EntityType::Relational, arguments) {}
 
 void RelationalOperation::accept(shared_ptr<Visitor> visitor) {
     visitor->visitRelationalOperation(make_shared<RelationalOperation>(*this));

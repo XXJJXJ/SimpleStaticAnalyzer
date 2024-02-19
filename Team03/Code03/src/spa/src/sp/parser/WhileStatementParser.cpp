@@ -1,6 +1,6 @@
 #include "WhileStatementParser.h"
 
-shared_ptr<Statement> WhileStatementParser::parseEntity(vector<shared_ptr<Token>>& tokens) {
+shared_ptr<Statement> WhileStatementParser::parseEntity(Tokens& tokens) {
     checkStartOfWhileStatement(tokens);  
     
     auto condition = extractCondition(tokens);
@@ -25,8 +25,8 @@ shared_ptr<Statement> WhileStatementParser::parseEntity(vector<shared_ptr<Token>
     return whileStatement;
 }
 
-shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(vector<shared_ptr<Token>>& tokens) {
-    vector<shared_ptr<Token>> conditionTokens;
+shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens& tokens) {
+    Tokens conditionTokens;
     // Erase 'while and (' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
     
@@ -50,7 +50,7 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(vector<s
     tokens.erase(tokens.begin(), end);
 
     auto expressionParser =
-        ExpressionParserFactory::getExpressionParser(conditionTokens, "while");
+        ExpressionParserFactory::getExpressionParser(conditionTokens, EntityType::While);
     auto
         condition = (expressionParser->parseEntity(
             conditionTokens));
@@ -61,7 +61,7 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(vector<s
     return dynamic_pointer_cast<ConditionalOperation>(condition);
 }
 
-void WhileStatementParser::checkStartOfWhileStatement(vector<shared_ptr<Token>>& tokens) const {
+void WhileStatementParser::checkStartOfWhileStatement(Tokens& tokens) const {
     if (tokens[0]->getValue() != "while") {
         throw SyntaxErrorException("Missing While statement");
     }
@@ -71,6 +71,6 @@ void WhileStatementParser::checkStartOfWhileStatement(vector<shared_ptr<Token>>&
     }
 }
 
-bool WhileStatementParser::isEndOfWhileStatement(vector<shared_ptr<Token>>& tokens) const {
+bool WhileStatementParser::isEndOfWhileStatement(Tokens& tokens) const {
     return tokens[0]->getValue() == "}";
 }

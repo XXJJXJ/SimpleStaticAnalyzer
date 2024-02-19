@@ -12,13 +12,13 @@
 class StatementParserFactory {
 
 public:
-    static shared_ptr<StatementParser> getStatementParser(vector<shared_ptr<Token>>& tokens);
+    static shared_ptr<StatementParser> getStatementParser(Tokens& tokens);
 
 private:
     static bool checkKeywordType(
-        vector<shared_ptr<Token>>& tokens,
+        Tokens& tokens,
         string statementType,
         bool hasParenthesis);
     static bool checkAssignment(
-        vector<shared_ptr<Token>>& tokens);
+        Tokens& tokens);
 };

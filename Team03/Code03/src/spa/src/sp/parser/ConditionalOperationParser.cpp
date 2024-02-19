@@ -18,7 +18,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         }
     }
     catch (SpaException& e) {
-        string errorMessage = "Error parsing relational expression";
+        string check = "Parsing of Relational Operation failed";
     }
     
     this->setArguments(
@@ -48,13 +48,13 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         this->setIsSubExpression(true);
         auto leftConditionalExpression = parse();
         if (getTokenValue() != ")") {
-            throw SyntaxErrorException("Missing ) in conditional expression");
+            throw SyntaxErrorException("Missing ) in Conditional expression");
         }
 
         getNextToken();
         string operation = getTokenValue();
         if (!(getTokenValue() == "&&" || getTokenValue() == "||")) {
-            throw SyntaxErrorException("Missing && or || in conditional expression");
+            throw SyntaxErrorException("Missing && or || in Conditional expression");
         }
         getNextToken();
 
@@ -66,7 +66,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
                 getNextToken();
             }
             if (getTokenValue() != ")") {
-                throw SyntaxErrorException("Missing ) in conditional expression");
+                throw SyntaxErrorException("Missing ) in Conditional expression");
             }
             pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
             arguments.first = leftConditionalExpression;

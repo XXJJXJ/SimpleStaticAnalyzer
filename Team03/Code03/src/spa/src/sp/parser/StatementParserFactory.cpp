@@ -1,6 +1,6 @@
 #include "StatementParserFactory.h"
 
-shared_ptr<StatementParser> StatementParserFactory::getStatementParser(vector<shared_ptr<Token>>& tokens) {
+shared_ptr<StatementParser> StatementParserFactory::getStatementParser(Tokens& tokens) {
     if (checkKeywordType(tokens, "if", true)) {
         return make_shared<IfStatementParser>();
     }
@@ -21,7 +21,7 @@ shared_ptr<StatementParser> StatementParserFactory::getStatementParser(vector<sh
 }
 
 bool StatementParserFactory::checkKeywordType(
-    vector<shared_ptr<Token>>& tokens,
+    Tokens& tokens,
     string statementType,
     bool hasParenthesis) {
     shared_ptr<Token> token0 = tokens[0];
@@ -31,7 +31,7 @@ bool StatementParserFactory::checkKeywordType(
         (!hasParenthesis && token0->getValue() == statementType && token1->getType() == TokenType::NAME);
 }
 
-bool StatementParserFactory::checkAssignment(vector<shared_ptr<Token>>& tokens) {
+bool StatementParserFactory::checkAssignment(Tokens& tokens) {
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
     return 

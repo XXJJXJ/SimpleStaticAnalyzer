@@ -1,24 +1,24 @@
 #include "ExpressionParserFactory.h"
 
 shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(
-    vector<shared_ptr<Token>>& tokens,
-    string statementType) {
+    Tokens& tokens,
+    EntityType statementType) {
     if (tokens.size() == 1) {
-        if (checkExpressionType(tokens.front(), "variable")) {
+        if (checkExpressionType(tokens.front(), EntityType::Variable)) {
             return make_shared<VariableParser>();
         }
-        else if (checkExpressionType(tokens.front(), "constant")) {
+        else if (checkExpressionType(tokens.front(), EntityType::Constant)) {
             return make_shared<ConstantParser>();
         }
-        else if (!checkExpressionType(tokens.front(), "operation")) {
+        else if (!checkExpressionType(tokens.front(), EntityType::Operation)) {
             return nullptr;
         }
     }
-    else if (statementType == "assign") {
+    else if (statementType == EntityType::Assign) {
         return make_shared<ArithmeticOperationParser>();
     }
-    else if (statementType == "if" || statementType == "while") {
-            return make_shared<ConditionalOperationParser>();
+    else if (statementType == EntityType::If || statementType == EntityType::While) {
+        return make_shared<ConditionalOperationParser>();
     }
     
     return nullptr;
@@ -26,14 +26,14 @@ shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(
 
 bool ExpressionParserFactory::checkExpressionType(
     shared_ptr<Token> token,
-    string_view statementType) {
+    EntityType statementType) {
     if (token->getType() == TokenType::NAME) {
-        return statementType == "variable";
+        return statementType == EntityType::Variable;
     }
 
     if (token->getType() == TokenType::INTEGER) {
-        return statementType == "constant";
+        return statementType == EntityType::Constant;
     }
 
-    return statementType == "operation";
+    return statementType == EntityType::Operation;
 }

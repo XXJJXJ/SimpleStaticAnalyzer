@@ -7,8 +7,8 @@
 
 class WhileStatementParser : public StatementParser {
 public:
-	shared_ptr<Statement> parseEntity(vector<shared_ptr<Token>>& tokens) override;
-	shared_ptr<ConditionalOperation> extractCondition(vector<shared_ptr<Token>>& tokens);
-	void checkStartOfWhileStatement(vector<shared_ptr<Token>>& tokens) const;
-	bool isEndOfWhileStatement(vector<shared_ptr<Token>>& tokens) const;
+	shared_ptr<Statement> parseEntity(Tokens& tokens) override;
+	shared_ptr<ConditionalOperation> extractCondition(Tokens& tokens);
+	void checkStartOfWhileStatement(Tokens& tokens) const;
+	bool isEndOfWhileStatement(Tokens& tokens) const;
 };

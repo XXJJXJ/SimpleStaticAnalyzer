@@ -40,7 +40,7 @@ shared_ptr<int> OperationParser::getIndexPointer() {
     return indexPointer;
 }
 
-shared_ptr<Expression> OperationParser::parseEntity(vector<shared_ptr<Token>>& tokens) {
+shared_ptr<Expression> OperationParser::parseEntity(Tokens& tokens) {
     setup(tokens);
     shared_ptr<Expression> result = parse();
     validateParenthesis();
@@ -63,7 +63,7 @@ void OperationParser::setIsSubExpression(bool isSubExpression_) {
     isSubExpression = isSubExpression_;
 }
 
-void OperationParser::setup(vector<shared_ptr<Token>>& tokens_) {
+void OperationParser::setup(Tokens& tokens_) {
     if (*indexPointer == 0) {
         tokens = tokens_;
         getNextToken();

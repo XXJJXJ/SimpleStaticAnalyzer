@@ -7,7 +7,7 @@ class Operation : public Expression {
 public:
     Operation(
         string name,
-        string type,
+        EntityType operationType,
         PairOfArguments arguments);
     string getName() const override;
 };

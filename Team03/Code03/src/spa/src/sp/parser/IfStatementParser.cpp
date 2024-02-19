@@ -1,6 +1,6 @@
 #include "IfStatementParser.h"
 
-shared_ptr<Statement> IfStatementParser::parseEntity(vector<shared_ptr<Token>>& tokens) {
+shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
     checkStartOfIfStatement(tokens);
 
     shared_ptr<ConditionalOperation> condition = extractCondition(tokens);
@@ -23,8 +23,9 @@ shared_ptr<Statement> IfStatementParser::parseEntity(vector<shared_ptr<Token>>& 
         tokens.erase(tokens.begin());
     }
 
-    if (!hasElseStatements(tokens)) return ifStatement;
-
+    if (!hasElseStatements(tokens)) {
+        throw SyntaxErrorException("If statement is missing an else block");
+    }
     
     checkStartOfElseStatement(tokens);
     // Erase 'else' and '{' from tokens
@@ -44,8 +45,8 @@ shared_ptr<Statement> IfStatementParser::parseEntity(vector<shared_ptr<Token>>& 
     return ifStatement;
 }
 
-shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(vector<shared_ptr<Token>>& tokens) {
-    vector<shared_ptr<Token>> conditionTokens;
+shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tokens) {
+    Tokens conditionTokens;
 
     // Erase 'if and (' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
@@ -76,7 +77,7 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(vector<shar
     // Erasing all condition tokens and ) from tokens
     tokens.erase(tokens.begin(), end - 1);
     auto expressionParser =
-        ExpressionParserFactory::getExpressionParser(conditionTokens, "if");
+        ExpressionParserFactory::getExpressionParser(conditionTokens, EntityType::If);
     auto
         condition = (expressionParser->parseEntity(
             conditionTokens));
@@ -87,7 +88,7 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(vector<shar
     return dynamic_pointer_cast<ConditionalOperation>(condition);
 }
 
-void IfStatementParser::checkStartOfIfStatement(vector<shared_ptr<Token>>& tokens) const {
+void IfStatementParser::checkStartOfIfStatement(Tokens& tokens) const {
     if (tokens[0]->getValue() != "if") {
         throw SyntaxErrorException("Missing if statement");
     }
@@ -97,7 +98,7 @@ void IfStatementParser::checkStartOfIfStatement(vector<shared_ptr<Token>>& token
     }
 }
 
-void IfStatementParser::checkStartOfElseStatement(vector<shared_ptr<Token>>& tokens) const {
+void IfStatementParser::checkStartOfElseStatement(Tokens& tokens) const {
     if (tokens[0]->getValue() != "else") {
         throw SyntaxErrorException("Missing else statement");
     }
@@ -107,10 +108,10 @@ void IfStatementParser::checkStartOfElseStatement(vector<shared_ptr<Token>>& tok
     }
 }
 
-bool IfStatementParser::hasElseStatements(vector<shared_ptr<Token>>& tokens) const {
+bool IfStatementParser::hasElseStatements(Tokens& tokens) const {
     return tokens[0]->getValue() == "else";
 }
 
-bool IfStatementParser::isEndOfStatement(vector<shared_ptr<Token>>& tokens) const {
+bool IfStatementParser::isEndOfStatement(Tokens& tokens) const {
     return tokens[0]->getValue() == "}";
 }

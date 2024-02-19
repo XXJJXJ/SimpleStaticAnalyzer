@@ -7,10 +7,10 @@
 
 class IfStatementParser : public StatementParser {
 public:
-	shared_ptr<Statement> parseEntity(vector<shared_ptr<Token>>& tokens) override;
-	shared_ptr<ConditionalOperation> extractCondition(vector<shared_ptr<Token>>& tokens);
-	void checkStartOfIfStatement(vector<shared_ptr<Token>>& tokens) const;
-	void checkStartOfElseStatement(vector<shared_ptr<Token>>& tokens) const;
-	bool hasElseStatements(vector<shared_ptr<Token>>& tokens) const;
-	bool isEndOfStatement(vector<shared_ptr<Token>>& tokens) const;
+	shared_ptr<Statement> parseEntity(Tokens& tokens) override;
+	shared_ptr<ConditionalOperation> extractCondition(Tokens& tokens);
+	void checkStartOfIfStatement(Tokens& tokens) const;
+	void checkStartOfElseStatement(Tokens& tokens) const;
+	bool hasElseStatements(Tokens& tokens) const;
+	bool isEndOfStatement(Tokens& tokens) const;
 };
