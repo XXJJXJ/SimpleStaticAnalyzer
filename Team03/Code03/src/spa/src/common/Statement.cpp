@@ -1,12 +1,12 @@
 #include "Statement.h"
 
 Statement::Statement(
-    int statementNumber,
+    int statementNumber_,
     EntityType statementType,
-    string procedureName)
-    : statementNumber(statementNumber),
+    string procedureName_)
+    : statementNumber(statementNumber_),
       statementType(move(statementType)),
-      procedureName(move(procedureName)) {
+      procedureName(move(procedureName_)) {
 }
 
 int Statement::getStatementNumber() const {

@@ -4,7 +4,7 @@
 
 class Constant : public Expression {
 public:
-	explicit Constant(string name);
+	explicit Constant(string value);
 	void accept(shared_ptr<Visitor> visitor) override;
 	bool isLeafNodeExpression() override;
     std::size_t hash() const;

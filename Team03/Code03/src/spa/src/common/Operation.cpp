@@ -2,10 +2,10 @@
 
 Operation::Operation(
     string name, 
-    string type, 
-    PairOfArguments arguments)
-    : Expression(move(name), type) {
-        arguments = arguments;
+    EntityType operationType, 
+    PairOfArguments arguments_)
+    : Expression(move(name), move(operationType)) {
+        arguments = arguments_;
 }
 
 string Operation::getName() const {

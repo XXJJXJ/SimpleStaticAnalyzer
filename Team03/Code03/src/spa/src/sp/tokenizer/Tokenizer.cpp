@@ -1,8 +1,8 @@
 #include "Tokenizer.h"
 
-std::vector<shared_ptr<Token>> Tokenizer::tokenize(std::ifstream& file) {
+Tokens Tokenizer::tokenize(std::ifstream& file) {
 	std::regex token_regex(R"(\bprocedure\b|\bwhile\b|\bif\b|\bthen\b|\belse\b|\bcall\b|\bread\b|\bprint\b|\btrue\b|\bfalse\b|[a-zA-Z][a-zA-Z0-9]*|[0-9]+|\+|-|\*|/|%|==|!=|<|<=|>|>=|\(|\)|\{|\}|\;|\=|\"|&&|\|\||!)");
-	std::vector<shared_ptr<Token>> tokens;
+	Tokens tokens;
 
 	if (file.is_open()) {
 		std::string line;

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ExpressionParser.h"
-#include "common/Variable.h"
+#include "common/Constant.h"
 
-class VariableParser : public ExpressionParser {
+class ConstantParser : public ExpressionParser {
 public:
 	shared_ptr<Expression> parseEntity(Tokens& tokens) override;
 };

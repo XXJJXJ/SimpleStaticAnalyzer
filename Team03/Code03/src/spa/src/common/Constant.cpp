@@ -1,8 +1,8 @@
 #include "Constant.h"
 
-Constant::Constant(string name) 
-    : Expression(move(name),
-        "constant") {}
+Constant::Constant(string value) 
+    : Expression(move(value),
+        EntityType::Constant) {}
 
 void Constant::accept(shared_ptr<Visitor> visitor) {
     visitor->visitConstant(make_shared<Constant>(*this));

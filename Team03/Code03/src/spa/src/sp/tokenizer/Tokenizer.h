@@ -14,10 +14,10 @@
 #include "ArithmeticTokenFactory.h"
 #include "ConditionalTokenFactory.h"
 #include "RelationalTokenFactory.h"
+#include "common/Util.h"
 
 class Tokenizer {
 public:
-	std::vector<shared_ptr<Token>> tokenize(std::ifstream& file);
-
+	Tokens tokenize(std::ifstream& file);
 	shared_ptr<Token> stringToToken(std::string value);
 };
