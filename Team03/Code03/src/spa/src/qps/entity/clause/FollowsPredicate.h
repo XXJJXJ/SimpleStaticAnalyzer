@@ -11,9 +11,6 @@
 // Forward declaration of Strategy to avoid circular dependency
 class Strategy;
 
-// Define StatementRef to handle statement line number, synonym, or wildcard
-using StatementRef = std::variant<int, Synonym, std::string>;
-
 class FollowsPredicate : public Predicate {
 private:
     StatementRef lhs; // Left-hand side can be an int, Synonym, or "_"

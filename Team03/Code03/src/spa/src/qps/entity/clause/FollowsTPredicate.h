@@ -9,9 +9,6 @@
 
 class Strategy;
 
-// StatementRef for statement references: int, Synonym, or "_"
-//using StatementRef = std::variant<int, Synonym, std::string>;
-
 class FollowsTPredicate : public Predicate {
 private:
     StatementRef lhs; // Left-hand statement reference

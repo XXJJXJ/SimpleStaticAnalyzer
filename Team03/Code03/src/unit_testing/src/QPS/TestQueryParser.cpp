@@ -24,6 +24,7 @@ TEST_CASE("SelectionsParser::parse should correctly parse and return a vector of
 	std::vector<std::string> tokens4 = {"Select", "<", "a", ",", "b", ">"};
 	std::vector<std::string> tokens5 = {"Select", "<", "a", ",", "c", ">"};
 	std::vector<std::string> tokens6 = {"Select", "<", "a", "b", ">"};
+	std::vector<std::string> tokens7 = { "Select", "<", "a", ",", "b", ",", ">" };
 
 	std::vector<std::shared_ptr<Synonym>> results1 = sp.parse(tokens1, synonymMap);
 	std::vector<std::shared_ptr<Synonym>> results2 = sp.parse(tokens2, synonymMap);
@@ -48,6 +49,8 @@ TEST_CASE("SelectionsParser::parse should correctly parse and return a vector of
 	REQUIRE_THROWS_AS(sp.parse(tokens5, synonymMap), SemanticErrorException);
 
 	REQUIRE_THROWS_AS(sp.parse(tokens6, synonymMap), SyntaxErrorException);
+
+	REQUIRE_THROWS_AS(sp.parse(tokens7, synonymMap), SyntaxErrorException);
 }
 
 TEST_CASE("SuchThatClauseFactory successfully creates a such that clause") {
@@ -59,6 +62,8 @@ TEST_CASE("SuchThatClauseFactory successfully creates a such that clause") {
 	std::vector<std::string> tokens4 = { "such", "that", "Parent", "(", "a", ",", "b", ")" };
 	std::vector<std::string> tokens5 = { "such", "that", "Parent*", "(", "a", ",", "b", ")" };
 	std::vector<std::string> tokens6 = { "such", "that", "Uses", "(", "a", ",", "b", ")" };
+	std::vector<std::string> tokens7 = { "such", "that", "Relationship", "(", "a", ",", "b", ")" };
+	
 
 	REQUIRE_NOTHROW(s.createClauseObject(tokens1));
 	REQUIRE_NOTHROW(s.createClauseObject(tokens2));
@@ -66,4 +71,5 @@ TEST_CASE("SuchThatClauseFactory successfully creates a such that clause") {
 	REQUIRE_NOTHROW(s.createClauseObject(tokens4));
 	REQUIRE_NOTHROW(s.createClauseObject(tokens5));
 	REQUIRE_NOTHROW(s.createClauseObject(tokens6));
+	REQUIRE_THROWS(s.createClauseObject(tokens7));
 }
