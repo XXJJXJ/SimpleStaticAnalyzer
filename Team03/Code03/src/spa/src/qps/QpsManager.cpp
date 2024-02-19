@@ -1,14 +1,15 @@
 /*
-* Created by ZHENGTAO JIANG on 8/2/24.
-*/
+ * Created by ZHENGTAO JIANG on 8/2/24.
+ */
+
+#include <fstream>
+#include <iostream>
 
 #include "QpsManager.h"
 #include "QueryEvaluator.h"
 #include "QueryParser.h"
-#include "QueryValidator.h"
 #include "QueryTokenizer.h"
-#include <fstream>
-#include <iostream>
+#include "QueryValidator.h"
 
 QpsManager::QpsManager() {}
 QpsManager::~QpsManager() {}
@@ -17,16 +18,18 @@ std::vector<std::string> QpsManager::processQuery(std::string query) {
     std::vector<std::vector<std::vector<std::string>>> tokens = tokenizeQuery(query);
     std::shared_ptr<Query> parsedQuery = parseQuery(tokens);
     std::vector<std::string> results = evaluateQuery(parsedQuery);
-    
+
     return results;
 }
 
-std::vector<std::vector<std::vector<std::string>>> QpsManager::tokenizeQuery(const std::string& query) {
+std::vector<std::vector<std::vector<std::string>>>
+QpsManager::tokenizeQuery(const std::string& query) {
     QueryTokenizer tokenizer;
     return tokenizer.tokenize(query);
 }
 
-std::shared_ptr<Query> QpsManager::parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens) {
+std::shared_ptr<Query>
+QpsManager::parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens) {
     QueryParser parser;
     return parser.parse(tokens);
 }

@@ -1,25 +1,27 @@
 /*
-* Created by ZHENGTAO JIANG on 6/2/24.
-*/
+ * Created by ZHENGTAO JIANG on 6/2/24.
+ */
+
+#include <algorithm>
+#include <sstream>
 
 #include "QueryParser.h"
 #include "QueryEvaluator.h"
-#include "qps/entity/query/Query.h"
+#include "common/EntityType.h"
 #include "qps/entity/clause/Clause.h"
-#include "qps/entity/query/Synonym.h"
 #include "qps/entity/parser/ClauseFactory.h"
 #include "qps/entity/parser/ClauseFactoryManager.h"
-#include "common/EntityType.h"
 #include "qps/entity/parser/DeclarationsParser.h"
 #include "qps/entity/parser/SelectionsParser.h"
-#include <sstream>
-#include <algorithm>
+#include "qps/entity/query/Query.h"
+#include "qps/entity/query/Synonym.h"
 
 QueryParser::QueryParser() {}
 QueryParser::~QueryParser() {}
 
-//Given tokens, will create Query object
-std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
+// Given tokens, will create Query object
+std::shared_ptr<Query>
+QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     std::vector<std::shared_ptr<Synonym>> declarations;
     std::vector<std::shared_ptr<Synonym>> selections;
     std::vector<std::shared_ptr<Clause>> clauses;
@@ -49,7 +51,7 @@ std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<st
             selections.push_back(synonym);
         }
     }
-    
+
     // Create clause objects for clauses
     for (size_t i = 0; i < clausesTokens.size(); i++) {
         std::vector<std::string> tokens = clausesTokens[i];

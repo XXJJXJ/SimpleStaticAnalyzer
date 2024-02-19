@@ -1,0 +1,8 @@
+# Specifies the formatting of the code in the project
+
+BasedOnStyle: LLVM
+IndentWidth: 4
+Language: Cpp
+DerivePointerAlignment: false
+PointerAlignment: Left
+ColumnLimit: 100
