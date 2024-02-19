@@ -16,10 +16,10 @@
 #include "qps/entity/query/Query.h"
 
 
-class QueryFacade {
+class QpsManager {
 public:
-    QueryFacade();
-    ~QueryFacade();
+    QpsManager();
+    ~QpsManager();
     std::vector<std::string> processQuery(std::string query);
 
     std::vector<std::vector<std::vector<std::string>>> tokenizeQuery(const std::string& query);

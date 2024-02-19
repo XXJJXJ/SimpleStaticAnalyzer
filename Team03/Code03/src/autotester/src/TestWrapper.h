@@ -7,7 +7,7 @@
 
 // include your other headers here
 #include "AbstractWrapper.h"
-#include "qps/QueryFacade.h"
+#include "qps/QpsManager.h"
 #include "sp/sp.h"
 
 class TestWrapper : public AbstractWrapper {
@@ -25,7 +25,7 @@ class TestWrapper : public AbstractWrapper {
   virtual void evaluate(std::string query, std::list<std::string>& results);
 
 private:
-    QueryFacade qf;
+    QpsManager qf;
     Sp sp;
 };
 
