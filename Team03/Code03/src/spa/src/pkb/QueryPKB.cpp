@@ -102,3 +102,13 @@ unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::ge
 unordered_map<string, set<shared_ptr<Variable>>> QueryManager::getModifyByProcedure() {
     return am->getModifyByProcedure();
 };
+
+vector<shared_ptr<AssignStatement>> QueryManager::getAssignPattern(string targetVariable, string exprString, shared_ptr<Expression> expr, bool hasWildcard) {
+    // if (pm->hasAssignPatternExact(exprString)) {
+    //     pm->hasAssignPatternExact(exprString);
+    // }
+    // auto allAssign = em->getAllAssignStatements();
+    // auto expr = 
+    // auto foundAssign = pm->findAssignPatternExact(allAssign, exprString, expr); // will cache results
+    return {};
+}
