@@ -7,8 +7,8 @@
 using namespace std;
 
 enum class TokenType {
-	LEFT_PARENTHESIS,
-	RIGHT_PARENTHESIS,
+	LEFT_PARANTHESIS,
+	RIGHT_PARANTHESIS,
 	LEFT_BRACE,
 	RIGHT_BRACE,
 	SEMICOLON,
@@ -41,4 +41,5 @@ public:
 	Token(TokenType type, std::string value);
 	std::string getValue();
 	TokenType getType();
+	std::string getTypeAsString();
 };

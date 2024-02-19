@@ -17,7 +17,7 @@ void Sp::ProcessSIMPLE(string fileName) {
         }
         else {
             shared_ptr<Tokenizer> tokenizer = make_shared<Tokenizer>();
-            vector<shared_ptr<Token>> tokens = tokenizer->tokenize(inputfile);
+            Tokens tokens = tokenizer->tokenize(inputfile);
             shared_ptr<Parser> parser = make_shared<Parser>();
             shared_ptr<Program> program = parser->parseSource(tokens);
             shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>();
