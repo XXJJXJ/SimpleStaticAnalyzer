@@ -15,13 +15,15 @@
 #include "common/CallStatement.h"
 #include "common/IfStatement.h"
 #include "common/WhileStatement.h"
+#include "AbstractionManager.h"
 #include "EntityManager.h"
 
 using namespace std;
 
 class QueryManager {
 private:
-    EntityManager* em;
+    shared_ptr<AbstractionManager> am;
+    shared_ptr<EntityManager> em;
 public:
     QueryManager ();
     virtual vector<shared_ptr<Constant>> getAllConstants();
@@ -34,5 +36,27 @@ public:
     virtual vector<shared_ptr<CallStatement>> getAllCallStatements();
     virtual vector<shared_ptr<IfStatement>> getAllIfStatements();
     virtual vector<shared_ptr<WhileStatement>> getAllWhileStatements();
+
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowS();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowT();
+
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentS();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentT();
+
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByAssign();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByPrint(); 
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByCall();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByIfWhile();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseAll();
+    virtual unordered_map<string, set<shared_ptr<Variable>>> getUseByProcedure();
+
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByAssign();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByRead();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByCall();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByIfWhile();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAll();
+    virtual unordered_map<string, set<shared_ptr<Variable>>> getModifyByProcedure();
+    // For testing purposes
+    virtual void clear();
 };
 

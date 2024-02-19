@@ -4,6 +4,6 @@ string StatementParser::getProcedureName() {
 	return procedureName;
 }
 
-void StatementParser::setProcedureName(string procName) {
-	procedureName = procName;
+void StatementParser::setProcedureName(string procedureName_) {
+	procedureName = procedureName_;
 }

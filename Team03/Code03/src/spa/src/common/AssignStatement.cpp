@@ -5,15 +5,15 @@ AssignStatement::AssignStatement(
     Variable variable,
     string procedureName)
     : variable(move(variable)), expression(),
-    Statement(statementNumber, "assign", move(procedureName)) {}
+    Statement(statementNumber, EntityType::Assign, move(procedureName)) {}
 
 void AssignStatement::accept(shared_ptr<Visitor> visitor) {
     visitor->visitAssignStatement(make_shared<AssignStatement>(*this));
     expression->accept(visitor);
 }
 
-void AssignStatement::addExpression(shared_ptr<Expression> expression) {
-    expression = expression;
+void AssignStatement::addExpression(shared_ptr<Expression> expr) {
+    expression = expr;
 }
 
 Variable AssignStatement::getVariable() const {

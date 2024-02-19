@@ -1,9 +1,9 @@
 #include "Expression.h"
 
-Expression::Expression(string name, string expressionType)
-    : name(move(name)), expressionType(move(expressionType)) {}
+Expression::Expression(string name_, EntityType expressionType_)
+    : name(move(name_)), expressionType(move(expressionType_)) {}
 
-string Expression::getExpressionType() const {
+EntityType Expression::getExpressionType() const {
     return expressionType;
 }
 
@@ -15,6 +15,6 @@ bool Expression::operator==(const Expression& other) const {
     return expressionType == other.expressionType && name == other.name;
 }
 
-optional<Expression::PairOfArguments> Expression::getArguments() const {
+optional<PairOfArguments> Expression::getArguments() const {
     return arguments;
 }

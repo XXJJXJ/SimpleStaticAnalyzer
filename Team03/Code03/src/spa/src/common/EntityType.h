@@ -14,6 +14,10 @@ enum class EntityType {
     Variable,   // Represents variables
     Constant,   // Represents constants
     Procedure,   // Represents procedures
+    Operation,  // Represents arithmetic/conditional/relational operations
+    Arithmetic,  // Represents arithmetic operations
+    Conditional,  // Represents conditional operations
+    Relational,  // Represents relational operations
     // ai-gen end
     Unknown     // Represents unknown entity types
 };

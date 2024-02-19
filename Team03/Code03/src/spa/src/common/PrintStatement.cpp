@@ -2,11 +2,11 @@
 
 PrintStatement::PrintStatement(
     int statementNumber,
-    shared_ptr<Variable> variable,
-    string procedureName) : variable(variable),
+    shared_ptr<Variable> variable_,
+    string procedureName) : variable(variable_),
     Statement(
         statementNumber,
-        "print",
+        EntityType::Print,
         procedureName) {}
 
 shared_ptr<Variable> PrintStatement::getVariable() const {

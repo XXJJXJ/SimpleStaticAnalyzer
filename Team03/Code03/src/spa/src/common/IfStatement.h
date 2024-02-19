@@ -22,3 +22,19 @@ private:
     StatementListContainer thenStatementList;
     StatementListContainer elseStatementList;
 };
+
+namespace std {
+    template <>
+    struct hash<shared_ptr<IfStatement>> {
+        std::size_t operator()(const shared_ptr<IfStatement>& obj) const {
+            return obj->hash();
+        }
+    };
+
+    template <>
+    struct equal_to<shared_ptr<IfStatement>> {
+        bool operator()(const shared_ptr<IfStatement>& lhs, const shared_ptr<IfStatement>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
+}

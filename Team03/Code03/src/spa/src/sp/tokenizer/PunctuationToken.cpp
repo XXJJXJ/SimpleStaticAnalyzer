@@ -18,7 +18,10 @@ TokenType PunctuationToken::getTokenTypeFromValue(std::string value) {
 	else if (value == ";") {
 		return TokenType::SEMICOLON;
 	}
-	else {
+	else if (value == "\"") {
 		return TokenType::DOUBLE_QUOTE;
+	}
+	else {
+		return TokenType::INVALID;
 	}
 }
