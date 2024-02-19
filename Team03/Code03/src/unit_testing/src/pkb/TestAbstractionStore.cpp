@@ -51,10 +51,10 @@ TEST_CASE("Store and retrieve FollowS and FollowT") {
     REQUIRE((followT[stmt1].find(stmt3) != followT[stmt1].end()));
     REQUIRE((followT[stmt1].find(stmt4) != followT[stmt1].end()));
 
-    REQUIRE((followT[stmt2].find(stmt3) != followT[stmt1].end()));
-    REQUIRE((followT[stmt2].find(stmt4) != followT[stmt1].end()));
+    REQUIRE((followT[stmt2].find(stmt3) != followT[stmt2].end()));
+    REQUIRE((followT[stmt2].find(stmt4) != followT[stmt2].end()));
 
-    REQUIRE((followT[stmt3].find(stmt4) != followT[stmt1].end()));
+    REQUIRE((followT[stmt3].find(stmt4) != followT[stmt3].end()));
     pop.clear();
 }
 

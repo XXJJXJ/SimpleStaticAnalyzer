@@ -12,11 +12,18 @@
 
 class QueryValidator {
 public:
-  QueryValidator();
-  ~QueryValidator();
-  
-	bool validate(const std::string& parsedQuery);
-	bool validateExpressionSpec(std::string expressionSpec);
+	QueryValidator();
+	~QueryValidator();
+	
+	bool isLetter(const std::string& token);
+	bool isDigit(const std::string& token);
+	bool isNzDigit(const std::string& token);
+	bool isIdent(const std::string& token);
+	bool isName(const std::string& token);
+	bool isInteger(const std::string& token);
+	bool isSynonym(const std::string& token);
+	bool isStmtRef(const std::string& token);
+	bool isEntRef(const std::string& token);
 };
 
 

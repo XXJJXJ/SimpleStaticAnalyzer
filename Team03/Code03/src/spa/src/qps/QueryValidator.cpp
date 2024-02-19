@@ -8,19 +8,38 @@
 QueryValidator::QueryValidator() {}
 QueryValidator::~QueryValidator() {}
 
-bool QueryValidator::validate(const std::string& parsedQuery)
-{
-    QueryParser qp;
-    if (true) {
-        //call main validation logic
-        return true;
-    }
-    else {
-        return false;
-    }
+bool QueryValidator::isLetter(const std::string& token) {
+	return true;
 }
 
-bool QueryValidator::validateExpressionSpec(std::string expressionSpec)
-{
-    return true;
+bool QueryValidator::isDigit(const std::string& token) {
+	return true;
+}
+
+bool QueryValidator::isNzDigit(const std::string& token) {
+	return true;
+}
+
+bool QueryValidator::isIdent(const std::string& token) {
+	return true;
+}
+
+bool QueryValidator::isName(const std::string& token) {
+	return true;
+}
+
+bool QueryValidator::isInteger(const std::string& token) {
+	return true;
+}
+
+bool QueryValidator::isSynonym(const std::string& token) {
+	return true;
+}
+
+bool QueryValidator::isStmtRef(const std::string& token) {
+	return true;
+}
+
+bool QueryValidator::isEntRef(const std::string& token) {
+	return true;
 }
