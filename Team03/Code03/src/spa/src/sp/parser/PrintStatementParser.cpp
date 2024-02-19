@@ -17,7 +17,7 @@ string PrintStatementParser::extractVariableName(Tokens& tokens) const {
     shared_ptr<Token> token2 = tokens[2];
 
     if (token0->getValue() != "print") {
-        throw SyntaxErrorException("Print statement should start with print keyword");
+        throw SyntaxErrorException("Print statement should start with print");
     }
     else if (token1->getType() != TokenType::NAME) {
         throw SyntaxErrorException("Print statement does not have a variable");

@@ -6,5 +6,5 @@ shared_ptr<Expression> ConstantParser::parseEntity(Tokens& tokens) {
         return make_shared<Constant>(token->getValue());
     }
 
-    throw SemanticErrorException("Invalid constant");
+    throw SemanticErrorException("Invalid Constant");
 }

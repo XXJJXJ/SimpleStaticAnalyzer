@@ -33,7 +33,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
             this->setIsSubExpression(true);
             auto conditionalExpression = parse();
             if (getTokenValue() != ")") {
-                throw SyntaxErrorException("Missing ) in conditional expression");
+                throw SyntaxErrorException("Missing ) in Conditional expression");
             }
 
             getNextToken();
