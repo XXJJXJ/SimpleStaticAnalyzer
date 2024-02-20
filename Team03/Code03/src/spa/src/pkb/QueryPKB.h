@@ -62,7 +62,7 @@ public:
     virtual unordered_map<string, set<shared_ptr<Variable>>> getModifyByProcedure();
 
     // Pattern related API
-    virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string exprString, shared_ptr<Expression> expr, bool hasWildcard);
+    virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
 
     // For testing purposes
     virtual void clear();
