@@ -25,7 +25,7 @@ class TestWrapper : public AbstractWrapper {
   virtual void evaluate(std::string query, std::list<std::string>& results);
 
 private:
-    QpsManager qf;
+    QpsManager qm;
     Sp sp;
 };
 

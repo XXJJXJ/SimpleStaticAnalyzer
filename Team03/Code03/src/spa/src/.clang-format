@@ -1,4 +1,6 @@
 # Specifies the formatting of the code in the project
+# For VS users to format the document you are working on: Ctrl + K, Ctrl + D
+# Documentation: https://clang.llvm.org/docs/ClangFormat.html
 
 BasedOnStyle: LLVM
 IndentWidth: 4

@@ -13,7 +13,7 @@ volatile bool AbstractWrapper::GlobalStop = false;
 TestWrapper::TestWrapper() {
   // create any objects here as instance variables of this class
   // as well as any initialization required for your spa program
-  qf = QpsManager();
+  qm = QpsManager();
   sp = Sp();
 }
 
@@ -28,7 +28,7 @@ void TestWrapper::parse(std::string filename) {
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
 // call your evaluator to evaluate the query here
   // ...code to evaluate query...
-    auto result = qf.processQuery(query);
+    auto result = qm.processQuery(query);
 
     for (const auto& r : result) {
         results.push_back(r);
