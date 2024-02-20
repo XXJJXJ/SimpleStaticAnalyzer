@@ -3,6 +3,7 @@
 QueryManager::QueryManager () {
     am = AbstractionManager::getInstance();
     em = EntityManager::getInstance();
+    pm = PatternManager::getInstance();
 }
 
 void QueryManager::clear() {

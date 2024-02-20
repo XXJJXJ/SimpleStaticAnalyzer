@@ -30,7 +30,7 @@ pair<bool, string> AssignPatternStore::partialMatch(shared_ptr<Expression> exprS
     } else {
         auto args = exprS->getArguments();
         // guaranteed to have both left and right children in AssignStatement if not leaf node
-        auto leftRes = partialMatch(args->second, expr);
+        auto leftRes = partialMatch(args->first, expr);
         if (leftRes.first) {
             return leftRes;
         }
@@ -38,7 +38,8 @@ pair<bool, string> AssignPatternStore::partialMatch(shared_ptr<Expression> exprS
         if (rightRes.first) {
             return rightRes;
         }
-        return make_pair(leftRes.second + val + rightRes.second == expr, leftRes.second + val + rightRes.second);
+        string res = leftRes.second.append(val).append(rightRes.second);
+        return make_pair(res == expr, res);
     }
 }
 
@@ -50,9 +51,10 @@ pair<bool, string> AssignPatternStore::fullMatch(shared_ptr<Expression> exprS, s
     } else {
         auto args = exprS->getArguments();
         // guaranteed to have both left and right children in AssignStatement if not leaf node
-        auto leftRes = fullMatch(args->second, expr).second;
+        auto leftRes = fullMatch(args->first, expr).second;
         auto rightRes = fullMatch(args->second, expr).second;
-        return make_pair(leftRes + val + rightRes == expr, leftRes + val + rightRes);
+        string res = leftRes.append(val).append(rightRes);
+        return make_pair(res == expr, res);
     }
 }
 

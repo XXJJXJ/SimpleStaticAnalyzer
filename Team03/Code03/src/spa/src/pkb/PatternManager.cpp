@@ -3,7 +3,6 @@
 // Initialize the static instance to nullptr
 shared_ptr<PatternManager> PatternManager::instance = nullptr;
 
-// Implementation of EntityManager methods
 shared_ptr<PatternManager> PatternManager::getInstance() {
     if (!instance) {
         PatternManager* pm = new PatternManager();
