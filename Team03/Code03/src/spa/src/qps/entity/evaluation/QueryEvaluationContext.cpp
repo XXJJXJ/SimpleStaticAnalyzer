@@ -45,8 +45,10 @@ void QueryEvaluationContext::setQueryManager(const std::shared_ptr<QueryManager>
     this->queryManager = queryManager;
 }
 
-// Temp implementation
 std::vector<std::string> QueryEvaluationContext::getResults() const {
+    if (resultTable == nullptr) {
+        throw std::runtime_error("No result table present");
+    }
     return resultTable->toStrings();
 }
 
