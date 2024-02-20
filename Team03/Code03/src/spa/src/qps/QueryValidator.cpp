@@ -33,9 +33,9 @@ bool QueryValidator::isInteger(std::string const& token) {
         return false;
     }
 
-    // If single digit, check if it is non-zero
+    // If single digit, check if it is digit
     if (token.length() == 1) {
-        return isNzDigit(token);
+        return isDigit(token);
     }
 
     // If multiple digits, check if first digit is non-zero and rest are digits
