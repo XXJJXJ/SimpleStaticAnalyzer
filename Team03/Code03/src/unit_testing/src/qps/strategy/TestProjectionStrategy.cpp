@@ -1,68 +1,147 @@
-//// ai-gen start(gpt, 0, e)
-//#include "catch.hpp"
-//#include "FakeQueryManager.cpp"
-//#include "qps/entity/evaluation/QueryEvaluationContext.h"
-//#include "qps/entity/strategy/ProjectionStrategy.h"
-//#include "qps/entity/query/Synonym.h"
-//
-//TEST_CASE("ProjectionStrategy updates context with only targeted SynonymValues", "[ProjectionStrategy]") {
-//    auto queryManager = std::make_shared<FakeQueryManager>();
-//    QueryEvaluationContext context;
-//    context.setQueryManager(queryManager);
-//
-//    // Setup fake entities for testing
-//    auto targetSynonym = std::make_shared<Synonym>(EntityType::Variable, "v");
-//    auto otherSynonym = std::make_shared<Synonym>(EntityType::Procedure, "p");
-//    auto targetEntity = std::make_shared<Variable>("x");
-//    auto otherEntity = std::make_shared<Procedure>("Main");
-//
-//    // Setup initial SynonymValues in context
-//    SynonymValues targetSynonymValues(targetSynonym);
-//    targetSynonymValues.addValue(targetEntity);
-//    context.addSynonymValues(targetSynonymValues);
-//
-//    SynonymValues otherSynonymValues(otherSynonym);
-//    otherSynonymValues.addValue(otherEntity);
-//    context.addSynonymValues(otherSynonymValues);
-//
-//    // Execute ProjectionStrategy targeting "v"
-//    ProjectionStrategy strategy(targetSynonym);
-//    strategy.execute(context);
-//
-//    SECTION("Context should only contain SynonymValues for targeted synonym 'v'") {
-//        REQUIRE(context.containsSynonym(*targetSynonym));
-//        REQUIRE_FALSE(context.containsSynonym(*otherSynonym));
-//    }
-//
-//    SECTION("Targeted SynonymValues should remain intact") {
-//        auto resultingSynonymValues = context.getSynonymValues(*targetSynonym);
-//        REQUIRE(resultingSynonymValues.getValues().size() == 1);
-//        REQUIRE(*(resultingSynonymValues.getValues().front()) == *targetEntity);
-//    }
-//}
-//
-//TEST_CASE("ProjectionStrategy with non-existing target synonym does not alter context", "[ProjectionStrategy]") {
-//    auto queryManager = std::make_shared<FakeQueryManager>();
-//    QueryEvaluationContext context;
-//    context.setQueryManager(queryManager);
-//
-//    // Setup a Synonym and SynonymValues that are not targeted
-//    auto nonTargetSynonym = std::make_shared<Synonym>(EntityType::Procedure, "p");
-//    auto nonTargetEntity = std::make_shared<Procedure>("Main");
-//    SynonymValues nonTargetSynonymValues(nonTargetSynonym);
-//    nonTargetSynonymValues.addValue(nonTargetEntity);
-//    context.addSynonymValues(nonTargetSynonymValues);
-//
-//    // Execute ProjectionStrategy with a synonym that does not exist in context
-//    auto nonexistentSynonym = std::make_shared<Synonym>(EntityType::Variable, "v");
-//    ProjectionStrategy strategy(nonexistentSynonym);
-//    strategy.execute(context);
-//
-//    SECTION("Context should remain unchanged when targeted synonym does not exist") {
-//        REQUIRE(context.containsSynonym(*nonTargetSynonym));
-//        REQUIRE(context.getSynonymValues(*nonTargetSynonym).getValues().size() == 1);
-//        REQUIRE(*(context.getSynonymValues(*nonTargetSynonym).getValues().front()) == *nonTargetEntity);
-//    }
-//}
-//
-//// ai-gen end
+#include <catch.hpp>
+#include "qps/entity/evaluation/QueryEvaluationContext.h"
+#include "qps/entity/strategy/ProjectionStrategy.h"
+#include <memory>
+#include "../fakeEntities/FakeQueryManager.cpp"
+#include "../fakeEntities/MockEntity.cpp"
+
+
+TEST_CASE("ProjectionStrategy sets empty table when context has an empty table", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
+    auto emptyTable = std::make_shared<Table>(); // Intentionally empty
+    qec.addTableForSynonym(*synonym, emptyTable);
+    ProjectionStrategy strategy(synonym);
+
+    strategy.execute(qec);
+
+    auto resultTable = qec.getResultTable();
+    REQUIRE(resultTable != nullptr);
+    REQUIRE(resultTable->isEmpty());
+    REQUIRE(resultTable->getHeaders().front() == *synonym);
+}
+
+TEST_CASE("ProjectionStrategy queries and sets new table when synonym not in any table", "[ProjectionStrategy]") {
+    auto fakeManager = std::make_shared<FakeQueryManager>();
+    auto mockEntity = std::make_shared<MockEntity>("mockName");
+    fakeManager->addFakeResponse<MockEntity>(EntityType::Stmt, {mockEntity});
+
+    QueryEvaluationContext qec;
+    qec.setQueryManager(fakeManager);
+
+    auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
+    ProjectionStrategy strategy(synonym);
+
+    strategy.execute(qec);
+
+    auto resultTable = qec.getResultTable();
+    REQUIRE(resultTable != nullptr);
+    REQUIRE_FALSE(resultTable->isEmpty());
+    REQUIRE(resultTable->getSize() == 1);
+    REQUIRE(resultTable->toStrings().front() == "mockName");
+}
+
+TEST_CASE("ProjectionStrategy projects column correctly when table with synonym exists", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
+    auto table = std::make_shared<Table>();
+    table->setHeaders({*synonym}); // Assume setHeaders exists
+    // Assume MockEntity definition and it has a conversion method to TableRow
+    table->addRow(TableRow({std::make_shared<MockEntity>("entityValue")}));
+    qec.addTableForSynonym(*synonym, table);
+
+    ProjectionStrategy strategy(synonym);
+
+    strategy.execute(qec);
+
+    auto resultTable = qec.getResultTable();
+    REQUIRE(resultTable != nullptr);
+    REQUIRE_FALSE(resultTable->isEmpty());
+    // Verify that the resultTable contains only the column for the target synonym
+    REQUIRE(resultTable->toStrings().front() == "entityValue");
+}
+
+TEST_CASE("ProjectionStrategy with multiple tables, some empty", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
+    auto table1 = std::make_shared<Table>();
+    table1->setHeaders({*synonym1});
+    table1->addRow(TableRow({std::make_shared<MockEntity>("entity1")}));
+
+    auto synonym2 = std::make_shared<Synonym>(EntityType::Stmt, "s2");
+    auto emptyTable = std::make_shared<Table>(); // Intentionally empty
+    qec.addTableForSynonym(*synonym1, table1);
+    qec.addTableForSynonym(*synonym2, emptyTable);
+
+    ProjectionStrategy strategy(synonym1);
+    strategy.execute(qec);
+
+    auto resultTable = qec.getResultTable();
+    auto results = resultTable->toStrings();
+    REQUIRE(results.empty());
+}
+
+TEST_CASE("ProjectionStrategy with table having multiple columns", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
+    auto synonym2 = std::make_shared<Synonym>(EntityType::Variable, "v1");
+    auto table = std::make_shared<Table>();
+    table->setHeaders({*synonym1, *synonym2});
+    table->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
+    qec.addTableForSynonym(*synonym1, table);
+
+    ProjectionStrategy strategy(synonym1);
+    strategy.execute(qec);
+
+    auto resultTable = qec.getResultTable();
+    auto results = resultTable->toStrings();
+    REQUIRE(results.size() == 1);
+    REQUIRE(results.front() == "entity1");
+}
+
+TEST_CASE("ProjectionStrategy selects specific column when multiple synonyms exist", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
+    auto synonym2 = std::make_shared<Synonym>(EntityType::Variable, "v1");
+    auto table = std::make_shared<Table>();
+    table->setHeaders({*synonym1, *synonym2});
+    table->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
+    table->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var2")}));
+    qec.addTableForSynonym(*synonym1, table);
+    qec.addTableForSynonym(*synonym2, table);
+
+
+    ProjectionStrategy strategy(synonym2); // Projecting only the second column
+    strategy.execute(qec);
+
+    auto resultTable = qec.getResultTable();
+    auto results = resultTable->toStrings();
+    REQUIRE(results.size() == 2);
+    REQUIRE(results[0] == "var1");
+    REQUIRE(results[1] == "var2");
+}
+
+TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
+    auto synonym2 = std::make_shared<Synonym>(EntityType::Variable, "v1");
+    auto table1 = std::make_shared<Table>();
+    table1->setHeaders({*synonym1});
+    table1->addRow(TableRow({std::make_shared<MockEntity>("entity1")}));
+    auto table2 = std::make_shared<Table>();
+    table2->setHeaders({*synonym2});
+    table2->addRow(TableRow({std::make_shared<MockEntity>("var1")}));
+    qec.addTableForSynonym(*synonym1, table1);
+    qec.addTableForSynonym(*synonym2, table2);
+
+    ProjectionStrategy strategy(synonym1); // Projecting only the first synonym
+    strategy.execute(qec);
+
+    auto resultTable = qec.getResultTable();
+    auto results = resultTable->toStrings();
+    REQUIRE(results.size() == 1);
+    REQUIRE(results[0] == "entity1");
+}
+
+
+

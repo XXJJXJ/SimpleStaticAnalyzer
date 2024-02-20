@@ -30,6 +30,7 @@ public:
     void setQueryManager(const std::shared_ptr<QueryManager>& queryManager);
     [[nodiscard]] std::vector<std::string> getResults() const;
     void setResultTable(const std::shared_ptr<Table>& _resultTable);
+    [[nodiscard]] std::shared_ptr<Table> getResultTable() const;
     bool isResultEmpty() const;
 };
 

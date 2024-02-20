@@ -22,7 +22,7 @@ std::shared_ptr<Table> QueryEvaluationContext::getTableForSynonym(const Synonym&
     if (it != synonymToTableMap.end()) {
         return it->second;
     }
-    throw std::runtime_error("Synonym not found in any table");
+    return nullptr;
 }
 
 bool QueryEvaluationContext::containsSynonym(const Synonym& synonym) const {
@@ -67,6 +67,10 @@ bool QueryEvaluationContext::isResultEmpty() const {
         }
     }
     return false;
+}
+
+std::shared_ptr<Table> QueryEvaluationContext::getResultTable() const {
+    return resultTable;
 }
 
 

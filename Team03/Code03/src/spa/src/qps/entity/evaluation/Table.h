@@ -25,6 +25,7 @@ public:
     [[nodiscard]] Table selectColumns(const vector<Synonym>& synonyms) const; // Projection operation
     [[nodiscard]] bool isEmpty() const;
     [[nodiscard]] vector<string> toStrings() const;
+    [[nodiscard]] int getSize() const;
 };
 
 #endif // TABLE_H

@@ -5,15 +5,8 @@
 #include "qps/entity/evaluation/QueryEvaluationContext.h"
 #include "qps/entity/evaluation/Table.h"
 #include <memory>
+#include "fakeEntities/MockEntity.cpp"
 
-// MockEntity inheriting from Entity for test purposes
-class MockEntity : public Entity {
-    std::string name;
-public:
-    explicit MockEntity(const std::string& name) : name(name) {}
-    std::string getName() const override { return name; } // Assuming Entity has getName()
-    void accept(shared_ptr<Visitor> visitor) override {}
-};
 
 TEST_CASE("QueryEvaluationContext::getResults throws when multiple tables are present and one is empty", "[QueryEvaluationContext]") {
     QueryEvaluationContext qec;

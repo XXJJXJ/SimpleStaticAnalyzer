@@ -60,4 +60,8 @@ vector<string> Table::toStrings() const {
     return rowStrings;
 }
 
+int Table::getSize() const {
+    return rows.size();
+}
+
 // ai-gen end
