@@ -5,6 +5,8 @@
 #include "../fakeEntities/FakeQueryManager.cpp"
 #include "../fakeEntities/MockEntity.cpp"
 
+// ai-gen start(gpt, 1, e)
+// prompt: https://chat.openai.com/share/69b2d8ce-dffd-44f8-b7ab-48a128e89a6a
 
 TEST_CASE("ProjectionStrategy sets empty table when context has an empty table", "[ProjectionStrategy]") {
     QueryEvaluationContext qec;
@@ -142,6 +144,6 @@ TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrat
     REQUIRE(results.size() == 1);
     REQUIRE(results[0] == "entity1");
 }
-
+// ai-gen end
 
 

@@ -7,7 +7,8 @@
 #include <memory>
 #include "fakeEntities/MockEntity.cpp"
 
-
+// ai-gen start(gpt, 1, e)
+// prompt: https://chat.openai.com/share/69b2d8ce-dffd-44f8-b7ab-48a128e89a6a
 TEST_CASE("QueryEvaluationContext::getResults throws when multiple tables are present and one is empty", "[QueryEvaluationContext]") {
     QueryEvaluationContext qec;
 
@@ -53,3 +54,4 @@ TEST_CASE("QueryEvaluationContext::getResults handles special characters in enti
     REQUIRE(result[1] == "value#2");
     REQUIRE(result[2] == "value, 3");
 }
+// ai-gen end
