@@ -1,5 +1,6 @@
-// ai-gen start(gpt, 0, e)
+// ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/b4e5ee0e-2ffc-4b9b-810c-871f71f82758
+// prompt 2: https://chat.openai.com/share/69b2d8ce-dffd-44f8-b7ab-48a128e89a6a
 
 #include "ProjectionStrategy.h"
 #include <algorithm>
@@ -7,19 +8,33 @@
 ProjectionStrategy::ProjectionStrategy(std::shared_ptr<Synonym> synonym) : targetSynonym(std::move(synonym)) {}
 
 void ProjectionStrategy::execute(QueryEvaluationContext &context) {
-    if (!context.containsSynonym(*targetSynonym)) {
-        return; // If the target synonym is not present, no action is needed.
+    // Check all tables in the context; if any is empty, return an empty table directly.
+    if (context.isResultEmpty()) {
+        Table emptyTable;
+        emptyTable.setHeaders({*targetSynonym});
+        context.setResultTable(std::make_shared<Table>(emptyTable));
+        return;
     }
 
-    auto targetSynonymValues = context.getSynonymValues(*targetSynonym);
+    // Proceed if no empty tables are found
+    auto table = context.getTableForSynonym(*targetSynonym);
+    if (!table) {
+        // Synonym not used in constructing tables, query QueryManager for entities by type
+        auto entities = context.getQueryManager()->getAllEntitiesByType(targetSynonym->getType());
+        Table newTable;
+        newTable.setHeaders({*targetSynonym}); // Assuming setHeaders method exists
 
-    std::list<SynonymValues> updatedList;
-    updatedList.push_back(targetSynonymValues); // Add only the target synonym values to the list.
+        for (const auto& entity : entities) {
+            // Convert entity to TableRow and add to newTable
+            // This step assumes you have a mechanism to convert an Entity to a TableRow
+            newTable.addRow(TableRow({entity}));
+        }
 
-    // Replace the existing list with the updated one.
-    context.clearSynonymValuesList();
-    for (const auto& synonymValues : updatedList) {
-        context.addSynonymValues(synonymValues);
+        context.setResultTable(std::make_shared<Table>(newTable));
+    } else {
+        // If the synonym's table exists and is not empty, select the column and project it.
+        Table projectedTable = table->selectColumns({*targetSynonym});
+        context.setResultTable(std::make_shared<Table>(projectedTable));
     }
 }
 // ai-gen end

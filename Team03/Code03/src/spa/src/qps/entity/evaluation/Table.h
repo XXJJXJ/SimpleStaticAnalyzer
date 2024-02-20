@@ -23,6 +23,8 @@ public:
     void setHeaders(const vector<Synonym>& headers);
     [[nodiscard]] const vector<Synonym>& getHeaders() const;
     [[nodiscard]] Table selectColumns(const vector<Synonym>& synonyms) const; // Projection operation
+    [[nodiscard]] bool isEmpty() const;
+    [[nodiscard]] vector<string> toStrings() const;
 };
 
 #endif // TABLE_H

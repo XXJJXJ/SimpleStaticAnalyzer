@@ -56,6 +56,7 @@ public:
     virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByIfWhile();
     virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAll();
     virtual unordered_map<string, set<shared_ptr<Variable>>> getModifyByProcedure();
+    virtual std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
     // For testing purposes
     virtual void clear();
 };

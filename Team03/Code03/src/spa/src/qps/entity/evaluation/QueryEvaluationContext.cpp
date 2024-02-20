@@ -1,66 +1,72 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/8e7dd4d8-d866-4a69-a89a-abf14f589fa0
+// prompt 2: https://chat.openai.com/share/69b2d8ce-dffd-44f8-b7ab-48a128e89a6a
 #include "QueryEvaluationContext.h"
 #include <algorithm>
 #include <string>
 #include <sstream>
 
-void QueryEvaluationContext::addSynonymValues(const SynonymValues& synonymValues) {
-    synonymValuesList.push_back(synonymValues);
+
+QueryEvaluationContext::QueryEvaluationContext() : queryManager(std::make_shared<QueryManager>()) {}
+
+void QueryEvaluationContext::addTableForSynonym(const Synonym& synonym, const std::shared_ptr<Table>& table) {
+    synonymToTableMap[synonym] = table;
 }
 
-// ai-gen end
-QueryEvaluationContext::QueryEvaluationContext() {
-    synonymValuesList = std::list<SynonymValues>();
-    queryManager = std::make_shared<QueryManager>();
+void QueryEvaluationContext::clearTables() {
+    synonymToTableMap.clear();
 }
 
-shared_ptr<QueryManager> QueryEvaluationContext::getQueryManager() const {
+std::shared_ptr<Table> QueryEvaluationContext::getTableForSynonym(const Synonym& synonym) const {
+    auto it = synonymToTableMap.find(synonym);
+    if (it != synonymToTableMap.end()) {
+        return it->second;
+    }
+    throw std::runtime_error("Synonym not found in any table");
+}
+
+bool QueryEvaluationContext::containsSynonym(const Synonym& synonym) const {
+    return synonymToTableMap.find(synonym) != synonymToTableMap.end();
+}
+
+std::vector<Synonym> QueryEvaluationContext::getSynonyms() const {
+    std::vector<Synonym> synonyms;
+    for (const auto& pair : synonymToTableMap) {
+        synonyms.push_back(pair.first);
+    }
+    return synonyms;
+}
+
+std::shared_ptr<QueryManager> QueryEvaluationContext::getQueryManager() const {
     return queryManager;
 }
 
-vector<string> QueryEvaluationContext::getResults() const {
-    // ensures that there's only one synonym list left
-    // prompt: https://chat.openai.com/share/b8694b03-2e9e-465e-a3fb-e31d4fbe079a
-    if (synonymValuesList.size() != 1) {
-        throw std::runtime_error("There should be exactly one synonym list left");
-    }
-    return synonymValuesList.front().toStringList();
+void QueryEvaluationContext::setQueryManager(const std::shared_ptr<QueryManager>& queryManager) {
+    this->queryManager = queryManager;
 }
 
-void QueryEvaluationContext::setQueryManager(const shared_ptr<QueryManager>& queryManager1) {
-    this->queryManager = queryManager1;
+// Temp implementation
+std::vector<std::string> QueryEvaluationContext::getResults() const {
+    return resultTable->toStrings();
 }
 
-SynonymValues QueryEvaluationContext::getSynonymValues(const Synonym &synonym) const {
-    for (const auto& synonymValue : synonymValuesList) {
-        if (*synonymValue.getSynonym() == synonym) {
-            return synonymValue;
-        }
-    }
-    throw std::runtime_error("Synonym not found in context");
+void QueryEvaluationContext::setResultTable(const shared_ptr<Table> &_resultTable) {
+    this->resultTable = _resultTable;
 }
 
-bool QueryEvaluationContext::containsSynonym(const Synonym &synonym) const {
-    for (const auto& synonymValue : synonymValuesList) {
-        if (*synonymValue.getSynonym() == synonym) {
+/**
+ * Checks whether the result is empty. Returns true if any of the tables in the context is empty.
+ */
+bool QueryEvaluationContext::isResultEmpty() const {
+    for (const auto& pair : synonymToTableMap) {
+        auto &table = pair.second;
+        if (table->isEmpty()) {
             return true;
         }
     }
     return false;
 }
 
-std::list<Synonym> QueryEvaluationContext::getSynonyms() const {
-    std::list<Synonym> synonyms;
-    for (const auto& synonymValue : synonymValuesList) {
-        synonyms.push_back(*synonymValue.getSynonym());
-    }
-    return synonyms;
-}
-
-void QueryEvaluationContext::clearSynonymValuesList() {
-    synonymValuesList.clear();
-}
 
 
 
