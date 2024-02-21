@@ -5,7 +5,7 @@
 SuchThatClauseFactory::SuchThatClauseFactory() {}
 SuchThatClauseFactory::~SuchThatClauseFactory() {}
 
-std::shared_ptr<Clause> SuchThatClauseFactory::createClauseObject(const std::vector<std::string>& tokens) {
+std::shared_ptr<Clause> SuchThatClauseFactory::createClauseObject(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
 	SuchThatClause suchThatClause;
 
 	if (tokens[1] == "that" && tokens.size() > 2) {
@@ -14,7 +14,7 @@ std::shared_ptr<Clause> SuchThatClauseFactory::createClauseObject(const std::vec
 
 		PredicateFactory* factory = PredicateFactoryManager::getPredicateFactory(firstWord);
 		if (factory) {
-			std::unique_ptr<Predicate> predicateObject = factory->createPredicate(tokens);
+			std::unique_ptr<Predicate> predicateObject = factory->createPredicate(predicateTokens, synonymMap);
 			suchThatClause.addPredicate(std::move(predicateObject));
 		}
 

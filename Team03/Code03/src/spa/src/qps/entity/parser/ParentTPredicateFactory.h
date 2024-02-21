@@ -7,5 +7,5 @@ public:
 	ParentTPredicateFactory();
 	~ParentTPredicateFactory();
 
-	std::unique_ptr<Predicate> createPredicate(const std::vector<std::string>& tokens);
+	std::unique_ptr<Predicate> createPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap);
 };

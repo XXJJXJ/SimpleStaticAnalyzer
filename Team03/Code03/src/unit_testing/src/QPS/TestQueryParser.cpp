@@ -55,21 +55,25 @@ TEST_CASE("SelectionsParser::parse should correctly parse and return a vector of
 
 TEST_CASE("SuchThatClauseFactory successfully creates a such that clause") {
 	SuchThatClauseFactory s;
+	std::unordered_map<std::string, EntityType> synonymMap;
+	synonymMap["a"] = EntityType::Stmt;
+	synonymMap["b"] = EntityType::Stmt;
+	synonymMap["c"] = EntityType::Variable;
 
 	std::vector<std::string> tokens1 = { "such", "that", "Follows", "(", "a", ",", "b", ")"};
 	std::vector<std::string> tokens2 = { "such", "that", "Follows*", "(", "a", ",", "b", ")" };
-	std::vector<std::string> tokens3 = { "such", "that", "Modifies", "(", "a", ",", "b", ")" };
+	std::vector<std::string> tokens3 = { "such", "that", "Modifies", "(", "a", ",", "c", ")" };
 	std::vector<std::string> tokens4 = { "such", "that", "Parent", "(", "a", ",", "b", ")" };
 	std::vector<std::string> tokens5 = { "such", "that", "Parent*", "(", "a", ",", "b", ")" };
-	std::vector<std::string> tokens6 = { "such", "that", "Uses", "(", "a", ",", "b", ")" };
+	std::vector<std::string> tokens6 = { "such", "that", "Uses", "(", "a", ",", "c", ")" };
 	std::vector<std::string> tokens7 = { "such", "that", "Relationship", "(", "a", ",", "b", ")" };
 	
 
-	REQUIRE_NOTHROW(s.createClauseObject(tokens1));
-	REQUIRE_NOTHROW(s.createClauseObject(tokens2));
-	REQUIRE_NOTHROW(s.createClauseObject(tokens3));
-	REQUIRE_NOTHROW(s.createClauseObject(tokens4));
-	REQUIRE_NOTHROW(s.createClauseObject(tokens5));
-	REQUIRE_NOTHROW(s.createClauseObject(tokens6));
-	REQUIRE_THROWS(s.createClauseObject(tokens7));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens1, synonymMap));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens2, synonymMap));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens3, synonymMap));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens4, synonymMap));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens5, synonymMap));
+	REQUIRE_NOTHROW(s.createClauseObject(tokens6, synonymMap));
+	REQUIRE_THROWS(s.createClauseObject(tokens7, synonymMap));
 }

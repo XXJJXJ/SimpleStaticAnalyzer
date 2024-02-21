@@ -8,5 +8,5 @@ public:
 	SuchThatClauseFactory();
 	~SuchThatClauseFactory();
 
-	std::shared_ptr<Clause> createClauseObject(const std::vector<std::string>& token);
+	std::shared_ptr<Clause> createClauseObject(const std::vector<std::string>& token, const std::unordered_map<std::string, EntityType>& synonymMap);
 };

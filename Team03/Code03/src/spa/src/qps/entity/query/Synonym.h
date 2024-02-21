@@ -3,6 +3,7 @@
 
 #include "common/EntityType.h"
 #include <string>
+#include <unordered_map>
 
 
 class Synonym {

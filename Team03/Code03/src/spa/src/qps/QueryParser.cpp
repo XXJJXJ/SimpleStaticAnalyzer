@@ -57,7 +57,7 @@ std::shared_ptr<Query> QueryParser::parse(std::vector<std::vector<std::vector<st
         std::string firstWord = tokens.front();
         ClauseFactory* factory = ClauseFactoryManager::getClauseFactory(firstWord);
         if (factory) {
-            std::shared_ptr<Clause> clauseObject = factory->createClauseObject(tokens);
+            std::shared_ptr<Clause> clauseObject = factory->createClauseObject(tokens, synonymMap);
             clauses.push_back(clauseObject);
         }
     }
