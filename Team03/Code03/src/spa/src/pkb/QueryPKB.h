@@ -64,6 +64,7 @@ public:
     // Pattern related API
     virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
 
+    virtual std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
     // For testing purposes
     virtual void clear();
 };
