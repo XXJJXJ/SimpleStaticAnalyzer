@@ -35,12 +35,12 @@ string AssignStatementParser::extractVariableName(Tokens& tokens) const {
 Tokens AssignStatementParser::extractExpression(Tokens& tokens) const {
     Tokens expressionTokens;
     for (size_t i = 0; i < tokens.size(); ++i) {
-        if (tokens[0]->getValue() == ";") {
+        if (tokens[i]->getValue() == ";") {
+            tokens.erase(tokens.begin(), tokens.begin() + i);
             break;
         }
         else {
-            expressionTokens.push_back(tokens[0]);
-            tokens.erase(tokens.begin());
+            expressionTokens.push_back(tokens[i]);
         }
     }
 
