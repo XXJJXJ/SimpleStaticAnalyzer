@@ -184,4 +184,23 @@ TEST_CASE("Store detect pattern in assignment") {
     }
     
     qm.clear();
+    // Check cleared
+}
+
+TEST_CASE("Check clear") {
+    AssignStatementParser parser;
+    Tokenizer tker;
+    vector<string> tok3 = {"a", "=", "5", "-", "x",";"};
+    Tokens tokens3;
+    for (auto t : tok3) {
+        tokens3.push_back(tker.stringToToken(t));
+    }
+    auto assignStmt3 = dynamic_pointer_cast<AssignStatement>(parser.parseEntity(tokens3));
+    Populator pop;
+    QueryManager qm;
+    qm.clear(); // In case other test case affects
+    pop.addAssignStatement(assignStmt3);
+    REQUIRE((qm.getAssignPattern("", "", true).size() == 1));
+    qm.clear();
+    REQUIRE((qm.getAssignPattern("", "", true).size() == 0));
 }
