@@ -46,10 +46,13 @@ string infixToPostfix(std::string expression) {
             }
             if (count > 0) {
                 // throw error
+                throw SyntaxErrorException("[QPS] Assign pattern mismatched parentheses, too many (");
             }
             i--;
             string res = infixToPostfix(temp);
             result += res;
+        } else if (expression[i] == ')') {
+            throw SyntaxErrorException("[QPS] Assign pattern mismatched parentheses, too many )");
         } else if (!isOperator(expression[i])) {
             // is a symbol
             while (i < expression.length() && !isOperator(expression[i])) {
