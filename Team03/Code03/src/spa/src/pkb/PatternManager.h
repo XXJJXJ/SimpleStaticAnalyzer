@@ -14,6 +14,8 @@ private:
     
 public:
     static shared_ptr<PatternManager> getInstance();
+    void clearStore();
+    static void clear();
     // Assign relateed
     bool hasAssignPattern(string expr, bool hasWildcard);
     vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVar, string expr, bool hasWildcard);

@@ -23,3 +23,14 @@ vector<shared_ptr<AssignStatement>> PatternManager::findAssignPattern(vector<sha
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
     return assignPatternStore.findAssignPattern(allAssign, targetVar, expr, hasWildcard);
 }
+
+void PatternManager::clearStore() {
+    assignPatternStore.clear();
+}
+
+void PatternManager::clear() {
+    if (!instance) {
+        return;
+    }
+    instance->clearStore();
+}

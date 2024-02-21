@@ -108,3 +108,8 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::findAssignPattern(
     // Reuse similar logic
     return getAssignPattern(targetVar, expr, hasWildcard);
 }
+
+void AssignPatternStore::clear() {
+    wildMatch.clear();
+    exactMatch.clear();
+}

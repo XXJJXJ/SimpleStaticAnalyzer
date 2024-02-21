@@ -9,6 +9,7 @@ QueryManager::QueryManager () {
 void QueryManager::clear() {
     EntityManager::clear();
     AbstractionManager::clear();
+    PatternManager::clear();
 }
 
 vector<shared_ptr<Constant>> QueryManager::getAllConstants() {
