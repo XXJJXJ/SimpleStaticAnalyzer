@@ -1,6 +1,8 @@
 #pragma once
 
 #include <unordered_map>
+#include <stack>
+#include <map>
 #include "common/AssignStatement.h"
 
 class AssignPatternStore {

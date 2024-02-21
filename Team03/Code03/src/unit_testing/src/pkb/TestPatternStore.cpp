@@ -90,7 +90,7 @@ TEST_CASE("Store detect pattern in assignment") {
         REQUIRE((qm.getAssignPattern("", "3+5-x*9109+111*10/5%3", false).size() == 1));
     }
 
-    SECTION("[Partial match] Get empty var, expr, with wildcard") {
+    SECTION("[Partial match] Get empty var, expr, with wildcard, no parenthesis") {
         // Only statement3
         REQUIRE((qm.getAssignPattern("", "5 - x", true).size() == 1));
         REQUIRE((qm.getAssignPattern("", "5-x", true).size() == 1));
@@ -120,8 +120,44 @@ TEST_CASE("Store detect pattern in assignment") {
         REQUIRE((qm.getAssignPattern("", "5 % 3", true).size() == 0));
     }
 
-    SECTION("[Partial match] Get named var, expr, with wildcard") {
+    SECTION("[Partial match] Get empty var, expr, with wildcard, with parenthesis") {
+        // Only statement3
+        REQUIRE((qm.getAssignPattern("", "(5) - (x)", true).size() == 1));
+        REQUIRE((qm.getAssignPattern("", "(5-x)", true).size() == 1));
+        REQUIRE((qm.getAssignPattern("", "((5)-(x))", true).size() == 1));
 
+        // Statement 1 and 2
+        REQUIRE((qm.getAssignPattern("", "(3) + (5)", true).size() == 2));
+        REQUIRE((qm.getAssignPattern("", "(3+5)", true).size() == 2));
+        REQUIRE((qm.getAssignPattern("", " 3 ", true).size() == 2));
+        REQUIRE((qm.getAssignPattern("", "3", true).size() == 2));
+
+        // Only statement 2
+        REQUIRE((qm.getAssignPattern("", "3 + 5 - x", true).size() == 1));
+        REQUIRE((qm.getAssignPattern("", "3+5-x", true).size() == 1));
+
+        // Only statement 1
+        REQUIRE((qm.getAssignPattern("", "(111) * (10)", true).size() == 1));
+        REQUIRE((qm.getAssignPattern("", "(111 * 10) / 5", true).size() == 1));
+        REQUIRE((qm.getAssignPattern("", "((111 * (10)) / 5)", true).size() == 1));
+        REQUIRE((qm.getAssignPattern("", "((111 * 10) / 5 % 3)", true).size() == 1));
+        // No statement because of parenthesis
+        REQUIRE((qm.getAssignPattern("", "((111 * 10) / (5 % 3))", true).size() == 0));
+
+        REQUIRE((qm.getAssignPattern("", "(3+5)-(x*9109)+(111*10/5%3)", true).size() == 1));
+        // None because of parenthesis
+        REQUIRE((qm.getAssignPattern("", "(3+5)-((x*9109)+(111*10/5%3))", true).size() == 0));
+
+        // All 3 statements
+        REQUIRE((qm.getAssignPattern("", " 5 ", true).size() == 3));
+        REQUIRE((qm.getAssignPattern("", "5", true).size() == 3));
+
+        // No statements
+        REQUIRE((qm.getAssignPattern("", "9109 + 111", true).size() == 0));
+        REQUIRE((qm.getAssignPattern("", "5 % 3", true).size() == 0));
+    }
+
+    SECTION("[Partial match] Get named var, expr, with wildcard") {
         // Statement 1
         REQUIRE((qm.getAssignPattern("abb", "3 + 5", true).size() == 1));
         REQUIRE((qm.getAssignPattern("abb", " 3 ", true).size() == 1));
