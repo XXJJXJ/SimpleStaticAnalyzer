@@ -31,7 +31,7 @@ string ProcedureParser::extractProcedureName(Tokens& tokens) {
     else if (token1->getType() != TokenType::NAME) {
         throw SyntaxErrorException("A procedure should have a NAME");
     } 
-    else if (token2->getValue() != "{") {
+    else if (token2->getType() != TokenType::LEFT_BRACE) {
         throw SyntaxErrorException("A procedure should begin with a {");
     } 
     else {

@@ -31,14 +31,14 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens& 
     tokens.erase(tokens.begin(), tokens.begin() + 2);
     
     auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token>& token) {
-        return token->getValue() == "{";
+        return token->getType() == TokenType::LEFT_BRACE;
         });
     if (end == tokens.end()) {
         throw SyntaxErrorException("While statement is missing a {");
     }
 
     auto token = prev(end);
-    if (token->get()->getValue() != ")") {
+    if (token->get()->getType() != TokenType::RIGHT_PARANTHESIS) {
         throw SyntaxErrorException("While statement condition should be bounded by ( and )");
     }
 
@@ -66,11 +66,11 @@ void WhileStatementParser::checkStartOfWhileStatement(Tokens& tokens) const {
         throw SyntaxErrorException("Missing While statement");
     }
 
-    if (tokens[1]->getValue() != "(") {
+    if (tokens[1]->getType() != TokenType::LEFT_PARANTHESIS) {
         throw SyntaxErrorException("Missing ( at the start of While statement");
     }
 }
 
 bool WhileStatementParser::isEndOfWhileStatement(Tokens& tokens) const {
-    return tokens[0]->getValue() == "}";
+    return tokens[0]->getType() == TokenType::RIGHT_BRACE;
 }

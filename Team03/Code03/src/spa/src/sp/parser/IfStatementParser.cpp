@@ -52,7 +52,7 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tok
     tokens.erase(tokens.begin(), tokens.begin() + 2);
 
     auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token>& token) {
-        return token->getValue() == "{";
+        return token->getType() == TokenType::LEFT_BRACE;
         });
 
     
@@ -66,7 +66,7 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tok
     }
 
     token = prev(token);
-    if (token->get()->getValue() != ")") {
+    if (token->get()->getType() != TokenType::RIGHT_PARANTHESIS) {
         throw SyntaxErrorException("If statement condition should be bounded by ( and )");
     }
 
@@ -93,7 +93,7 @@ void IfStatementParser::checkStartOfIfStatement(Tokens& tokens) const {
         throw SyntaxErrorException("Missing if statement");
     }
 
-    if (tokens[1]->getValue() != "(") {
+    if (tokens[1]->getType() != TokenType::LEFT_PARANTHESIS) {
         throw SyntaxErrorException("Missing ( at the start of if block");
     }
 }
@@ -103,7 +103,7 @@ void IfStatementParser::checkStartOfElseStatement(Tokens& tokens) const {
         throw SyntaxErrorException("Missing else statement");
     }
 
-    if (tokens[1]->getValue() != "{") {
+    if (tokens[1]->getType() != TokenType::LEFT_BRACE) {
         throw SyntaxErrorException("Missing { at the start of else block");
     }
 }
@@ -113,5 +113,5 @@ bool IfStatementParser::hasElseStatements(Tokens& tokens) const {
 }
 
 bool IfStatementParser::isEndOfStatement(Tokens& tokens) const {
-    return tokens[0]->getValue() == "}";
+    return tokens[0]->getType() == TokenType::RIGHT_BRACE;
 }
