@@ -38,6 +38,9 @@ std::variant<int, Synonym, std::string> PredicateFactory::stringToStatementRef(c
 	if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
 		return token.substr(1, len - 1);
 	}
+	else if (token == "_") {
+		return token;
+	}
 	else if (qv.isInteger(token)) {
 		return stringToInteger(token);
 	}
@@ -54,6 +57,9 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 	size_t len = token.size();
 	if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
 		return token.substr(1, len - 1);
+	}
+	else if (token == "_") {
+		return token;
 	}
 	else if (qv.isSynonym(token)) {
 		return stringToSynonym(token, synonymMap);
