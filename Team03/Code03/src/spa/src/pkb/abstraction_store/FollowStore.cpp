@@ -28,13 +28,6 @@ bool FollowStore::add(shared_ptr<Statement> follower, shared_ptr<Statement> foll
     return true;
 }
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> FollowStore::getDirect() {
-    return directMap;
-}
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> FollowStore::getTransitive() {
-    return transitiveMap;
-}
-
 void FollowStore::clear() {
     directMap.clear();
     transitiveMap.clear();

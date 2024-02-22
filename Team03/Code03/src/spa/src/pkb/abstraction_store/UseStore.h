@@ -4,5 +4,5 @@
 
 class UseStore : public SPVStore {
 public:
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getByRead() override;
+    vector<vector<shared_ptr<Entity>>> getByRead() override;
 };

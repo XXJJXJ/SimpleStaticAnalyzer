@@ -17,18 +17,26 @@ private:
     unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> readStmts;
     unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> ifWhileStmts;
     unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> callStmts;
+
+    unordered_map<EntityType, vector<vector<shared_ptr<Entity>>>> cache;
     // string or procedure object?
     unordered_map<string, set<shared_ptr<Variable>>> procedureToVar;
+    vector<vector<shared_ptr<Entity>>> getStmtVarPairs(const unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>>& table, EntityType type);
 public:
     virtual bool add(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
 
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getByAssign();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getByPrint();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getByRead();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getByIfWhileStmt();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getByCall();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getByAllStmt();
+    virtual vector<vector<shared_ptr<Entity>>> getByAssign();
+    virtual vector<vector<shared_ptr<Entity>>> getByPrint();
+    virtual vector<vector<shared_ptr<Entity>>> getByRead();
+    virtual vector<vector<shared_ptr<Entity>>> getByIfWhileStmt();
+    virtual vector<vector<shared_ptr<Entity>>> getByCall();
+    virtual vector<vector<shared_ptr<Entity>>> getByAllStmt();
     virtual unordered_map<string, set<shared_ptr<Variable>>> getByProcedure();
+
+    // For testing
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getAllMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getReadMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getPrintMap();
     virtual void clear();
     virtual ~SPVStore();
 };

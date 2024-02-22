@@ -40,56 +40,84 @@ bool AbstractionManager::addModifies(shared_ptr<Statement> stmt, shared_ptr<Vari
     return modifyStore.add(stmt, var);
 };
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> AbstractionManager::getFollowS() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getFollowS() {
     return followStore.getDirect();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> AbstractionManager::getFollowT() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getFollowT() {
     return followStore.getTransitive();
 }
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> AbstractionManager::getParentS() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getParentS() {
     return parentStore.getDirect();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> AbstractionManager::getParentT() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getParentT() {
     return parentStore.getTransitive();
 }
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getUseByAssign() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByAssign() {
     return useStore.getByAssign();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getUseByPrint() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByPrint() {
     return useStore.getByPrint();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getUseByCall() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByCall() {
     return useStore.getByCall();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getUseByIfWhile() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByIfWhile() {
     return useStore.getByIfWhileStmt();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getUseAll() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseAll() {
     return useStore.getByAllStmt();
 }
 unordered_map<string, set<shared_ptr<Variable>>> AbstractionManager::getUseByProcedure() {
     return useStore.getByProcedure();
 }
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getModifyByAssign() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByAssign() {
     return modifyStore.getByAssign();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getModifyByRead() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByRead() {
     return modifyStore.getByRead();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getModifyByCall() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByCall() {
     return modifyStore.getByCall();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getModifyByIfWhile() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByIfWhile() {
     return modifyStore.getByIfWhileStmt();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getModifyAll() {
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyAll() {
     return modifyStore.getByAllStmt();
 }
 unordered_map<string, set<shared_ptr<Variable>>> AbstractionManager::getModifyByProcedure() {
     return modifyStore.getByProcedure();
+}
+
+
+// For testing
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> AbstractionManager::getFollowSMap() {
+    return followStore.getDirectMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> AbstractionManager::getFollowTMap() {
+    return followStore.getTransitiveMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> AbstractionManager::getParentSMap() {
+    return parentStore.getDirectMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> AbstractionManager::getParentTMap() {
+    return parentStore.getTransitiveMap();
+}
+
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getUseAllMap() {
+    return useStore.getAllMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getUseByPrintMap() {
+    return useStore.getPrintMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getModifyAllMap() {
+    return modifyStore.getAllMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getModifyByReadMap() {
+    return modifyStore.getReadMap();
 }
 
 AbstractionManager::~AbstractionManager() {

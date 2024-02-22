@@ -53,57 +53,83 @@ vector<shared_ptr<WhileStatement>> QueryManager::getAllWhileStatements() {
 }
 
 // Abstractions
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getFollowS() {
+vector<vector<shared_ptr<Entity>>> QueryManager::getFollowS() {
     return am->getFollowS();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getFollowT() {
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getFollowT() {
     return am->getFollowT();
-};
+}
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getParentS() {
+vector<vector<shared_ptr<Entity>>> QueryManager::getParentS() {
     return am->getParentS();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getParentT() {
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getParentT() {
     return am->getParentT();
-};
+}
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseByAssign() {
+vector<vector<shared_ptr<Entity>>> QueryManager::getUseByAssign() {
     return am->getUseByAssign();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseByPrint() {
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getUseByPrint() {
     return am->getUseByPrint();
-}; 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseByCall() {
+}
+vector<vector<shared_ptr<Entity>>>QueryManager::getUseByCall() {
     return am->getUseByCall();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseByIfWhile() {
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getUseByIfWhile() {
     return am->getUseByIfWhile();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseAll() {
+}
+vector<vector<shared_ptr<Entity>>>QueryManager::getUseAll() {
     return am->getUseAll();
-};
+}
 unordered_map<string, set<shared_ptr<Variable>>> QueryManager::getUseByProcedure() {
     return am->getUseByProcedure();
-};
+}
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyByAssign() {
+vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByAssign() {
     return am->getModifyByAssign();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyByRead() {
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByRead() {
     return am->getModifyByRead();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyByCall() {
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByCall() {
     return am->getModifyByCall();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyByIfWhile() {
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByIfWhile() {
     return am->getModifyByIfWhile();
-};
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyAll() {
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getModifyAll() {
     return am->getModifyAll();
-};
+}
 unordered_map<string, set<shared_ptr<Variable>>> QueryManager::getModifyByProcedure() {
     return am->getModifyByProcedure();
-};
+}
+
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getFollowSMap() {
+    return am->getFollowSMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getFollowTMap() {
+    return am->getFollowTMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getParentSMap() {
+    return am->getParentSMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getParentTMap() {
+    return am->getParentTMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseAllMap() {
+    return am->getUseAllMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseByPrintMap() {
+    return am->getUseByPrintMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyAllMap() {
+    return am->getModifyAllMap();
+}
+unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyByReadMap() {
+    return am->getModifyByReadMap();
+}
+
 
 vector<shared_ptr<AssignStatement>> QueryManager::getAssignPattern(string targetVariable, string expr, bool hasWildcard) {
     if (pm->hasAssignPattern(expr, hasWildcard)) {
@@ -114,59 +140,25 @@ vector<shared_ptr<AssignStatement>> QueryManager::getAssignPattern(string target
     }
 }
 
-std::vector<std::shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityType) {
-    std::vector<std::shared_ptr<Entity>> baseClassEntities;
+vector<shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityType) {
+    vector<shared_ptr<Entity>> baseClassEntities;
+
+    auto addEntities = [&](auto&& entities) {
+        baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+    };
 
     switch (entityType) {
-        case EntityType::Procedure: {
-            auto entities = getAllProcedures();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        case EntityType::Stmt: {
-            auto entities = getAllStatements();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        case EntityType::Assign: {
-            auto entities = getAllAssignStatements();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        case EntityType::Print: {
-            auto entities = getAllPrintStatements();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        case EntityType::Read: {
-            auto entities = getAllReadStatements();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        case EntityType::Call: {
-            auto entities = getAllCallStatements();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        case EntityType::If: {
-            auto entities = getAllIfStatements();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        case EntityType::While: {
-            auto entities = getAllWhileStatements();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        case EntityType::Variable: {
-            auto entities = getAllVariables();
-            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
-            break;
-        }
-        default:
-            // Raise exception for unknown entity type
-            throw std::invalid_argument("Unknown entity type");
-        }
+        case EntityType::Procedure: addEntities(getAllProcedures()); break;
+        case EntityType::Stmt: addEntities(getAllStatements()); break;
+        case EntityType::Assign: addEntities(getAllAssignStatements()); break;
+        case EntityType::Print: addEntities(getAllPrintStatements()); break;
+        case EntityType::Read: addEntities(getAllReadStatements()); break;
+        case EntityType::Call: addEntities(getAllCallStatements()); break;
+        case EntityType::If: addEntities(getAllIfStatements()); break;
+        case EntityType::While: addEntities(getAllWhileStatements()); break;
+        case EntityType::Variable: addEntities(getAllVariables()); break;
+        default: throw std::invalid_argument("Unknown entity type");
+    }
 
     return baseClassEntities;
 }
