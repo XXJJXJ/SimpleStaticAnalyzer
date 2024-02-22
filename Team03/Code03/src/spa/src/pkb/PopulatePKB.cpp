@@ -7,6 +7,7 @@ Populator::Populator() {
 void Populator::clear() {
     EntityManager::clear();
     AbstractionManager::clear();
+    PatternManager::clear();
 }
 
 bool Populator::addVariable(shared_ptr<Variable> var) {
