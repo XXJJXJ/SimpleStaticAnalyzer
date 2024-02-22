@@ -1,7 +1,7 @@
 #include "Tokenizer.h"
 
 Tokens Tokenizer::tokenize(std::ifstream& file) {
-	std::regex token_regex(R"(\bprocedure\b|\bwhile\b|\bif\b|\bthen\b|\belse\b|\bcall\b|\bread\b|\bprint\b|\btrue\b|\bfalse\b|[a-zA-Z0-9]*|[0-9]+|\+|-|\*|/|%|==|!=|<|<=|>|>=|\(|\)|\{|\}|\;|\=|\"|&&|\|\||!)");
+	std::regex token_regex(R"(\bprocedure\b|\bwhile\b|\bif\b|\bthen\b|\belse\b|\bcall\b|\bread\b|\bprint\b|\btrue\b|\bfalse\b|\+|-|\*|/|%|==|!=|<|<=|>|>=|\(|\)|\{|\}|;|\=|\"|&&|\|\||!|((?!;)[a-zA-Z0-9]+))");
 	Tokens tokens;
 
 	if (file.is_open()) {
@@ -20,6 +20,8 @@ Tokens Tokenizer::tokenize(std::ifstream& file) {
 }
 
 shared_ptr<Token> Tokenizer::stringToToken(std::string value) {
+	std::regex name_regex(R"((?!;)[a-zA-Z0-9]+))");
+
 	if (value == "(" || value == ")" || value == "{" || value == "}" || value == ";" || value == "\"") {
 		return PunctuationTokenFactory::createToken(value);
 	}
@@ -40,7 +42,10 @@ shared_ptr<Token> Tokenizer::stringToToken(std::string value) {
 	else if (value == "&&" | value == "||" | value == "!") {
 		return ConditionalTokenFactory::createToken(value);
 	}
-	else {
+	else if (std::regex_match(value, name_regex)) {
 		return NameTokenFactory::createToken(value);
+	}
+	else {
+		return TokenFactory::createToken(value);
 	}
 }
