@@ -20,7 +20,7 @@ Tokens Tokenizer::tokenize(std::ifstream& file) {
 }
 
 shared_ptr<Token> Tokenizer::stringToToken(std::string value) {
-	std::regex name_regex(R"((?!;)[a-zA-Z0-9]+))");
+	std::regex name_regex(R"((?!;)[a-zA-Z0-9]+)");
 
 	if (value == "(" || value == ")" || value == "{" || value == "}" || value == ";" || value == "\"") {
 		return PunctuationTokenFactory::createToken(value);
