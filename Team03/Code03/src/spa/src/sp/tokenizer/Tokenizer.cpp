@@ -1,7 +1,7 @@
 #include "Tokenizer.h"
 
 Tokens Tokenizer::tokenize(std::ifstream& file) {
-	std::regex token_regex(R"(\bprocedure\b|\bwhile\b|\bif\b|\bthen\b|\belse\b|\bcall\b|\bread\b|\bprint\b|\btrue\b|\bfalse\b|[a-zA-Z][a-zA-Z0-9]*|[0-9]+|\+|-|\*|/|%|==|!=|<|<=|>|>=|\(|\)|\{|\}|\;|\=|\"|&&|\|\||!)");
+	std::regex token_regex(R"(\bprocedure\b|\bwhile\b|\bif\b|\bthen\b|\belse\b|\bcall\b|\bread\b|\bprint\b|\btrue\b|\bfalse\b|[a-zA-Z0-9]*|[0-9]+|\+|-|\*|/|%|==|!=|<|<=|>|>=|\(|\)|\{|\}|\;|\=|\"|&&|\|\||!)");
 	Tokens tokens;
 
 	if (file.is_open()) {
@@ -35,10 +35,10 @@ shared_ptr<Token> Tokenizer::stringToToken(std::string value) {
 		return ArithmeticTokenFactory::createToken(value);
 	}
 	else if (value == "<" | value == "<=" | value == ">" | value == ">=" | value == "==" | value == "!=") {
-		return ConditionalTokenFactory::createToken(value);
+		return RelationalTokenFactory::createToken(value);
 	}
 	else if (value == "&&" | value == "||" | value == "!") {
-		return RelationalTokenFactory::createToken(value);
+		return ConditionalTokenFactory::createToken(value);
 	}
 	else {
 		return NameTokenFactory::createToken(value);
