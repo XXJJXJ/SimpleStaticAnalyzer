@@ -1,4 +1,4 @@
-//ai-gen start(gpt, 1, 0)
+//ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/c3dec1ba-84fd-4fdb-ab11-c7f34bf4ef59
 
 #include <catch.hpp>
