@@ -11,4 +11,7 @@ public:
     virtual bool operator==(const Entity& other) const {
         return getName() == other.getName();
     }
+    virtual bool operator!=(const Entity& other) const {
+        return !(*this == other);
+    }
 };

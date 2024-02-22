@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include "qps/entity/query/Synonym.h" // Assuming Synonym and Entity classes are defined elsewhere
 #include "common/Entity.h"
 #include "qps/entity/evaluation/TableRow.h"
@@ -14,8 +15,9 @@ using namespace std;
 // Class to represent the table itself.
 class Table {
 private:
-    vector<Synonym> headers; // The table headers (synonyms)
-    vector<TableRow> rows; // The rows of the table
+    std::vector<Synonym> headers;
+    std::unordered_map<Synonym, int> headerIndexMap; // Mapping from synonym to index
+    std::vector<TableRow> rows;
 
 public:
     Table() = default;
@@ -26,6 +28,12 @@ public:
     [[nodiscard]] bool isEmpty() const;
     [[nodiscard]] vector<string> toStrings() const;
     [[nodiscard]] int getSize() const;
+    shared_ptr<Table> join(Table& other);
+
+    void updateHeaderIndexMap(); // Utility function to update headerIndexMap
+    int indexOf(const Synonym& synonym) const; // Get index of a synonym
+    bool hasHeader(const Synonym& synonym) const; // Check if a header exists
+
 };
 
 #endif // TABLE_H

@@ -1,11 +1,11 @@
-#include <catch.hpp>
+#include "catch.hpp"
 
 #include "common/Entity.h"
 #include "qps/entity/query/Synonym.h"
 #include "qps/entity/evaluation/QueryEvaluationContext.h"
 #include "qps/entity/evaluation/Table.h"
 #include <memory>
-#include "fakeEntities/MockEntity.cpp"
+#include "../fakeEntities/MockEntity.cpp"
 
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/69b2d8ce-dffd-44f8-b7ab-48a128e89a6a

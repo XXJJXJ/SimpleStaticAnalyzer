@@ -26,3 +26,11 @@ string TableRow::toString() const {
     return oss.str();
 }
 // ai-gen end
+
+std::shared_ptr<Entity> TableRow::getByIndex(int index) const {
+    if (index >= 0 && index < values.size()) {
+        return values[index];
+    }
+    throw std::out_of_range("Index out of range in TableRow::getByIndex");
+}
+
