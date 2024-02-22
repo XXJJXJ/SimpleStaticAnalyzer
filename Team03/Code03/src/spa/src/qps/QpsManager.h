@@ -21,6 +21,7 @@ class QpsManager {
     ~QpsManager();
     std::vector<std::string> processQuery(std::string query);
 
+  private:
     std::vector<std::vector<std::vector<std::string>>> tokenizeQuery(const std::string& query);
     std::shared_ptr<Query> parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens);
     vector<std::string> evaluateQuery(const std::shared_ptr<Query> validatedQuery);

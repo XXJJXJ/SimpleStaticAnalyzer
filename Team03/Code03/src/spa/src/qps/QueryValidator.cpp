@@ -18,7 +18,7 @@ bool QueryValidator::isLetter(std::string const& token) {
 
 // Check if token is a single digit from 0-9
 bool QueryValidator::isDigit(std::string const& token) {
-    return token.length() == 1 && token[0] >= '0' && token[0] <= '9';
+    return token.length() == 1 && isdigit(token[0]);
 }
 
 // Check if token is a single non-zero digit from 1-9
@@ -57,7 +57,7 @@ bool QueryValidator::isIdent(std::string const& token) {
 
     // Check if rest of the characters are letters or digits
     for (size_t i = 1; i < token.length(); i++) {
-        if (!isalpha(token[0]) && !isDigit(token.substr(i, 1))) {
+        if (!isalnum(token[i])) {
             return false;
         }
     }
@@ -71,12 +71,8 @@ bool QueryValidator::isIdent(std::string const& token) {
 bool QueryValidator::isName(std::string const& token) { return isIdent(token); }
 
 // Check if token is a valid synonym
-// Types of synonyms (Defined in EntityType.h). Unknown is not a valid synonym
-bool QueryValidator::isSynonym(std::string const& token) {
-    return token == "stmt" || token == "read" || token == "print" || token == "call" ||
-           token == "while" || token == "if" || token == "assign" || token == "variable" ||
-           token == "constant" || token == "procedure";
-}
+// Definition of synonym: IDENT
+bool QueryValidator::isSynonym(std::string const& token) { return isIdent(token); }
 
 // Check if token is a valid statement reference
 // Definition of stmtRef: synonym | '_' | INTEGER

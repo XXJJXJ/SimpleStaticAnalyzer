@@ -33,6 +33,7 @@ TEST_CASE("Test isNzDigit method", "[isNzDigit]") {
 	REQUIRE(validator.isNzDigit("") == false);
 }
 
+// Definition of integer: 0 | NZDIGIT ( DIGIT )* - no leading zero
 TEST_CASE("Test isInteger method", "[isInteger]") {
 	REQUIRE(validator.isInteger("0") == true);
 	REQUIRE(validator.isInteger("1") == true);
@@ -44,6 +45,7 @@ TEST_CASE("Test isInteger method", "[isInteger]") {
 	REQUIRE(validator.isInteger("") == false);
 }
 
+// Definition of identifier: LETTER ( LETTER | DIGIT )*
 TEST_CASE("Test isIdent method", "[isIdent]") {
 	REQUIRE(validator.isIdent("variable") == true);
 	REQUIRE(validator.isIdent("Variable1") == true);
@@ -53,19 +55,21 @@ TEST_CASE("Test isIdent method", "[isIdent]") {
 	REQUIRE(validator.isIdent("") == false);
 }
 
+// Definition of synonym: IDENT
 TEST_CASE("Test isSynonym method", "[isSynonym]") {
 	REQUIRE(validator.isSynonym("stmt") == true);
 	REQUIRE(validator.isSynonym("variable") == true);
 	REQUIRE(validator.isSynonym("read") == true);
-	REQUIRE(validator.isSynonym("xyz") == false);
+	REQUIRE(validator.isSynonym("xyz") == true);
 	REQUIRE(validator.isSynonym("") == false);
 }
 
+// Definition of stmtRef: synonym | '_' | INTEGER
 TEST_CASE("Test isStmtRef method", "[isStmtRef]") {
 	REQUIRE(validator.isStmtRef("stmt") == true);
 	REQUIRE(validator.isStmtRef("_") == true);
 	REQUIRE(validator.isStmtRef("10") == true);
-	REQUIRE(validator.isStmtRef("xyz") == false);
+	REQUIRE(validator.isStmtRef("xyz") == true);
 	REQUIRE(validator.isStmtRef("") == false);
 }
 
@@ -73,9 +77,9 @@ TEST_CASE("Test isEntRef method", "[isEntRef]") {
 	REQUIRE(validator.isEntRef("stmt") == true);
 	REQUIRE(validator.isEntRef("_") == true);
 	REQUIRE(validator.isEntRef("\"variable\"") == true);
-	//REQUIRE(validator.isEntRef("\"_\"") == true);
+	REQUIRE(validator.isEntRef("\"_\"") == false);
 	REQUIRE(validator.isEntRef("\"123\"") == false);
-	REQUIRE(validator.isEntRef("xyz") == false);
+	REQUIRE(validator.isEntRef("xyz") == true);
 	REQUIRE(validator.isEntRef("") == false);
 }
 // ai-gen end
