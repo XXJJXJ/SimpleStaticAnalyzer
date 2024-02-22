@@ -23,7 +23,6 @@ string infixToPostfix(std::string expression) {
             --i;
             result += " ";
         } else if (expression[i] == '(') {
-            // Wrong
             int count = 1;
             i++;
             string temp;
@@ -49,12 +48,15 @@ string infixToPostfix(std::string expression) {
                 throw SyntaxErrorException("[QPS] Assign pattern mismatched parentheses, too many (");
             }
             i--;
+            // recurse sub-expression
             string res = infixToPostfix(temp);
             result += res;
         } else if (expression[i] == ')') {
             throw SyntaxErrorException("[QPS] Assign pattern mismatched parentheses, too many )");
         } else if (!isOperator(expression[i])) {
-            // is a symbol
+            // is a synonym: assumes no spaces and no random '(' or ')' characters
+            // reads in until the next operator
+            // validation should be already done in QPS
             while (i < expression.length() && !isOperator(expression[i])) {
                 result += expression[i];
                 ++i;
