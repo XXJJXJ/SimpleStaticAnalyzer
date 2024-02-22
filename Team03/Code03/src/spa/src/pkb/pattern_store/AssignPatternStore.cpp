@@ -1,8 +1,7 @@
 #include "AssignPatternStore.h"
 
-// ai-gen start(gpt, 1, e)
-// prompt: https://platform.openai.com/playground/p/mIE13CKrGM91ekSMxmAUP3lm?model=gpt-4&mode=chat
-// prompt2: https://platform.openai.com/playground/p/NO2qblo8fQIgUUtE5l7Cz01B?model=gpt-4&mode=chat
+// ai-gen start(gpt, 2, e)
+// prompt: https://platform.openai.com/playground/p/NO2qblo8fQIgUUtE5l7Cz01B?model=gpt-4&mode=chat
 bool isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/' || c == '%');
 }
