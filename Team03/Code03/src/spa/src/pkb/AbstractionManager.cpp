@@ -69,9 +69,6 @@ vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByIfWhile() {
 vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseAll() {
     return useStore.getByAllStmt();
 }
-unordered_map<string, set<shared_ptr<Variable>>> AbstractionManager::getUseByProcedure() {
-    return useStore.getByProcedure();
-}
 
 vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByAssign() {
     return modifyStore.getByAssign();
@@ -88,8 +85,11 @@ vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByIfWhile() {
 vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyAll() {
     return modifyStore.getByAllStmt();
 }
-unordered_map<string, set<shared_ptr<Variable>>> AbstractionManager::getModifyByProcedure() {
-    return modifyStore.getByProcedure();
+unordered_map<string, set<shared_ptr<Variable>>> AbstractionManager::getUseByProcedureMap() {
+    return useStore.getByProcedureMap();
+}
+unordered_map<string, set<shared_ptr<Variable>>> AbstractionManager::getModifyByProcedureMap() {
+    return modifyStore.getByProcedureMap();
 }
 
 
@@ -119,6 +119,7 @@ unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManag
 unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> AbstractionManager::getModifyByReadMap() {
     return modifyStore.getReadMap();
 }
+
 
 AbstractionManager::~AbstractionManager() {
     clear();

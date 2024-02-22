@@ -31,12 +31,12 @@ public:
     virtual vector<vector<shared_ptr<Entity>>> getByIfWhileStmt();
     virtual vector<vector<shared_ptr<Entity>>> getByCall();
     virtual vector<vector<shared_ptr<Entity>>> getByAllStmt();
-    virtual unordered_map<string, set<shared_ptr<Variable>>> getByProcedure();
 
     // For testing
     unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getAllMap();
     unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getReadMap();
     unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getPrintMap();
+    unordered_map<string, set<shared_ptr<Variable>>> getByProcedureMap();
     virtual void clear();
     virtual ~SPVStore();
 };
