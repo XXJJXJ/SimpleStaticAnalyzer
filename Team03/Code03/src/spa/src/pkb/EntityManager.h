@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <memory>
 
 #include "common/Constant.h"
 #include "common/Variable.h"

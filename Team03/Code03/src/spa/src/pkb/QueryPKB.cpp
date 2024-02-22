@@ -3,11 +3,13 @@
 QueryManager::QueryManager () {
     am = AbstractionManager::getInstance();
     em = EntityManager::getInstance();
+    pm = PatternManager::getInstance();
 }
 
 void QueryManager::clear() {
     EntityManager::clear();
     AbstractionManager::clear();
+    PatternManager::clear();
 }
 
 vector<shared_ptr<Constant>> QueryManager::getAllConstants() {
@@ -102,6 +104,15 @@ unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::ge
 unordered_map<string, set<shared_ptr<Variable>>> QueryManager::getModifyByProcedure() {
     return am->getModifyByProcedure();
 };
+
+vector<shared_ptr<AssignStatement>> QueryManager::getAssignPattern(string targetVariable, string expr, bool hasWildcard) {
+    if (pm->hasAssignPattern(expr, hasWildcard)) {
+        return pm->getAssignPattern(targetVariable, expr, hasWildcard);
+    } else {
+        auto allAssign = em->getAllAssignStatements();
+        return pm->findAssignPattern(allAssign, targetVariable, expr, hasWildcard); // will cache results
+    }
+}
 
 std::vector<std::shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityType) {
     std::vector<std::shared_ptr<Entity>> baseClassEntities;
