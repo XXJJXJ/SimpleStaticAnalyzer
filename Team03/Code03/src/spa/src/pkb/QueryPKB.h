@@ -39,7 +39,8 @@ public:
     virtual vector<shared_ptr<CallStatement>> getAllCallStatements();
     virtual vector<shared_ptr<IfStatement>> getAllIfStatements();
     virtual vector<shared_ptr<WhileStatement>> getAllWhileStatements();
-    virtual std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
+    
+    virtual vector<shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
 
     // Abstraction related
     virtual vector<vector<shared_ptr<Entity>>> getFollowS();
