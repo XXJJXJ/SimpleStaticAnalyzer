@@ -2,10 +2,15 @@
 
 #include "Visitor.h"
 #include "common/Util.h"
+#include "common/Operation.h"
 #include "common/Procedure.h"
 #include "common/Variable.h"
 #include "common/ReadStatement.h"
 #include "common/PrintStatement.h"
+#include "common/Constant.h"
+#include "common/ArithmeticOperation.h"
+#include "common/ConditionalOperation.h"
+#include "common/RelationalOperation.h"
 #include "pkb/PopulatePKB.h"
 
 class EntityExtractor : public Visitor {
@@ -26,5 +31,6 @@ public:
 
 private:
 	void processStatements(StatementListContainer statementList);
+	void extractArgs(optional<PairOfArguments> arguments);
 	shared_ptr<Populator> pkbPopulator;
 };

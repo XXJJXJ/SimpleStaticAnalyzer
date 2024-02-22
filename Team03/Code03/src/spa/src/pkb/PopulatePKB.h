@@ -10,6 +10,7 @@
 #include "common/Procedure.h"
 #include "AbstractionManager.h"
 #include "EntityManager.h"
+#include "PatternManager.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class Populator {
 private:
     shared_ptr<EntityManager> em;
     shared_ptr<AbstractionManager> am;
+    shared_ptr<PatternManager> pm;
 public:
     Populator();
     bool addConstant(shared_ptr<Constant>  c);

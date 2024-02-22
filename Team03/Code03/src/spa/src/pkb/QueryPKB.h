@@ -17,15 +17,18 @@
 #include "common/WhileStatement.h"
 #include "AbstractionManager.h"
 #include "EntityManager.h"
+#include "PatternManager.h"
 
 using namespace std;
 
 class QueryManager {
 private:
     shared_ptr<AbstractionManager> am;
+    shared_ptr<PatternManager> pm;
     shared_ptr<EntityManager> em;
 public:
     QueryManager ();
+    // Entity Related API
     virtual vector<shared_ptr<Constant>> getAllConstants();
     virtual vector<shared_ptr<Variable>> getAllVariables();
     virtual vector<shared_ptr<Procedure>> getAllProcedures();
@@ -37,6 +40,7 @@ public:
     virtual vector<shared_ptr<IfStatement>> getAllIfStatements();
     virtual vector<shared_ptr<WhileStatement>> getAllWhileStatements();
 
+    // Abstraction related API
     virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowS();
     virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowT();
 
@@ -56,6 +60,10 @@ public:
     virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByIfWhile();
     virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAll();
     virtual unordered_map<string, set<shared_ptr<Variable>>> getModifyByProcedure();
+
+    // Pattern related API
+    virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
+
     virtual std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
     // For testing purposes
     virtual void clear();
