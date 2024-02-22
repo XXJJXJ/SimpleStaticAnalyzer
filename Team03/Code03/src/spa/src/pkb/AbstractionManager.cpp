@@ -38,7 +38,32 @@ bool AbstractionManager::addUses(shared_ptr<Statement> stmt, shared_ptr<Variable
 
 bool AbstractionManager::addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
     return modifyStore.add(stmt, var);
-};
+}
+
+// Private helper function
+void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
+    auto childToParent = parentStore.getChildToParentMap();
+    auto allRelations = store.getAllMap();
+    for (auto & _pair : allRelations) {
+        for (auto & _var : _pair.second) {
+            auto ancestor = _pair.first;
+            while (childToParent.find(ancestor) != childToParent.end()) {
+                // Can modify first, because the first statement is already stored
+                ancestor = childToParent[ancestor];
+                store.add(ancestor, _var);
+            }
+        }
+    }
+}
+
+void AbstractionManager::tabulateUses() {
+    tabulateContainerStmtVarRelation(useStore);
+}
+
+void AbstractionManager::tabulateModifies() {
+    tabulateContainerStmtVarRelation(modifyStore);
+}
+
 
 vector<vector<shared_ptr<Entity>>> AbstractionManager::getFollowS() {
     return followStore.getDirect();
