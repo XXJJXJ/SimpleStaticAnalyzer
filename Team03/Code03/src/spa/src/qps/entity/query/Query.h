@@ -6,7 +6,6 @@
 #define SPA_QUERY_H
 
 #include "qps/entity/strategy/Strategy.h"
-#include "qps/entity/strategy/DeclarationStrategy.h"
 #include "qps/entity/strategy/ProjectionStrategy.h"
 #include "Synonym.h"
 #include "qps/entity/clause/Clause.h"

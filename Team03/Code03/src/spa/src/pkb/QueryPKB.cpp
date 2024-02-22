@@ -102,3 +102,60 @@ unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::ge
 unordered_map<string, set<shared_ptr<Variable>>> QueryManager::getModifyByProcedure() {
     return am->getModifyByProcedure();
 };
+
+std::vector<std::shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityType) {
+    std::vector<std::shared_ptr<Entity>> baseClassEntities;
+
+    switch (entityType) {
+        case EntityType::Procedure: {
+            auto entities = getAllProcedures();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        case EntityType::Stmt: {
+            auto entities = getAllStatements();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        case EntityType::Assign: {
+            auto entities = getAllAssignStatements();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        case EntityType::Print: {
+            auto entities = getAllPrintStatements();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        case EntityType::Read: {
+            auto entities = getAllReadStatements();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        case EntityType::Call: {
+            auto entities = getAllCallStatements();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        case EntityType::If: {
+            auto entities = getAllIfStatements();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        case EntityType::While: {
+            auto entities = getAllWhileStatements();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        case EntityType::Variable: {
+            auto entities = getAllVariables();
+            baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+            break;
+        }
+        default:
+            // Raise exception for unknown entity type
+            throw std::invalid_argument("Unknown entity type");
+        }
+
+    return baseClassEntities;
+}
