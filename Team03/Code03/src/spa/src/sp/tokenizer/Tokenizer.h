@@ -15,6 +15,7 @@
 #include "ConditionalTokenFactory.h"
 #include "RelationalTokenFactory.h"
 #include "common/Util.h"
+#include "common/spa_exception/SyntaxErrorException.h"
 
 class Tokenizer {
 public:
