@@ -19,7 +19,6 @@ TEST_CASE("Predicates Input Validations", "[Predicates]") {
 
     SECTION("ModifiesPredicate and UsesPredicate Validation") {
         // ModifiesPredicate: LHS can be stmt, proc (synonym or string); RHS must be a variable (synonym or string)
-        auto mp = ModifiesPredicate(stmtSyn, varSyn);
         REQUIRE_NOTHROW(ModifiesPredicate(stmtSyn, varSyn));
         REQUIRE_NOTHROW(ModifiesPredicate(procSyn, varSyn));
         REQUIRE_NOTHROW(ModifiesPredicate(validString, varSyn)); // LHS as procedure name string
