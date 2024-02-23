@@ -1,7 +1,5 @@
 #include "catch.hpp"
 #include "qps/QueryTokenizer.h"
-#include <iostream>
-
 
 TEST_CASE("QueryTokenizer::tokenize should remove trailing whitespaces") {
 	QueryTokenizer qe;
