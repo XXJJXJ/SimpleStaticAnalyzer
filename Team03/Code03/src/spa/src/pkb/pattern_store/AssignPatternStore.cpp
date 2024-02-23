@@ -161,7 +161,7 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::getAssignPattern(string&
         }
         // Need to filter
         for (auto &s : wildMatch[rpn]) {
-            if (s->getVariable().getName() == targetVar) {
+            if (s->getVariable()->getName() == targetVar) {
                 res.push_back(s);
             }
         }
@@ -170,7 +170,7 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::getAssignPattern(string&
             return exactMatch[rpn];
         }
         for (auto &s : exactMatch[rpn]) {
-            if (s->getVariable().getName() == targetVar) {
+            if (s->getVariable()->getName() == targetVar) {
                 res.push_back(s);
             }
         }

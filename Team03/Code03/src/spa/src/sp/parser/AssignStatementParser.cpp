@@ -4,7 +4,7 @@ shared_ptr<Statement> AssignStatementParser::parseEntity(Tokens& tokens) {
     string variableName = extractVariableName(tokens);
     // Erase 'variable =' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
-    Variable variable(variableName);
+    auto variable = make_shared<Variable>(variableName);
     auto assignStatement =
         make_shared<AssignStatement>(Program::getAndIncrementStatementNumber(),
             variable,
