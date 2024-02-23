@@ -53,7 +53,7 @@ TEST_CASE("SelectionsParser::parse should correctly parse and return a vector of
 	REQUIRE_THROWS_AS(sp.parse(tokens7, synonymMap), SyntaxErrorException);
 }
 
-TEST_CASE("PredicateFactory successfully creates predicate objects") {
+TEST_CASE("PredicateFactory::createPredicate successfully creates predicate objects") {
 	PredicateFactory pf;
 	std::unordered_map<std::string, EntityType> synonymMap;
 	synonymMap["a"] = EntityType::Stmt;
@@ -115,4 +115,23 @@ TEST_CASE("PredicateFactory successfully creates predicate objects") {
 		REQUIRE_THROWS(pf.createPredicate(tokens4, synonymMap));
 		REQUIRE_THROWS(pf.createPredicate(tokens5, synonymMap));
 	}
+}
+
+TEST_CASE("PredicateFactory::createPredicate should throw errors for invalid queries") {
+	PredicateFactory pf;
+	std::unordered_map<std::string, EntityType> synonymMap;
+	synonymMap["a"] = EntityType::Stmt;
+	synonymMap["b"] = EntityType::Stmt;
+	synonymMap["c"] = EntityType::Variable;
+	synonymMap["d"] = EntityType::Assign;
+
+	std::vector<std::string> tokens1 = { "Modifies", "(", "a", ")" }; // Too few arguments
+	std::vector<std::string> tokens2 = { "Follows", "(", "a", ",", "b", ",", "c", ")" }; // Too many arguments
+	std::vector<std::string> tokens3 = { "Parent", "extraWord", "(", "a", ",", "b", ")" }; // Extra word before "("
+	std::vector<std::string> tokens4 = { "Uses", "extraWord", "(", "a", ",", "_", ",", ")" }; // Invalid syntax in clause
+
+	REQUIRE_THROWS(pf.createPredicate(tokens1, synonymMap));
+	REQUIRE_THROWS(pf.createPredicate(tokens2, synonymMap));
+	REQUIRE_THROWS(pf.createPredicate(tokens3, synonymMap));
+	REQUIRE_THROWS(pf.createPredicate(tokens4, synonymMap));
 }
