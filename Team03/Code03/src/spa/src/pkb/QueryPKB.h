@@ -70,16 +70,16 @@ public:
     virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
 
     // For testing purposes
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowSMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowTMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentSMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentTMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseAllMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByPrintMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAllMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByReadMap();
-    virtual unordered_map<string, set<shared_ptr<Variable>>> getUseByProcedureMap();
-    virtual unordered_map<string, set<shared_ptr<Variable>>> getModifyByProcedureMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getParentSMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getParentTMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getUseAllMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getUseByPrintMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getModifyAllMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getModifyByReadMap();
+    virtual unordered_map<string, unordered_set<shared_ptr<Variable>>> getUseByProcedureMap();
+    virtual unordered_map<string, unordered_set<shared_ptr<Variable>>> getModifyByProcedureMap();
 
     virtual void clear();
 };

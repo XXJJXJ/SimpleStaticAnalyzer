@@ -131,34 +131,34 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByProcedure() {
     return res;
 }
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getFollowSMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getFollowSMap() {
     return am->getFollowSMap();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getFollowTMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getFollowTMap() {
     return am->getFollowTMap();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getParentSMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getParentSMap() {
     return am->getParentSMap();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> QueryManager::getParentTMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getParentTMap() {
     return am->getParentTMap();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseAllMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> QueryManager::getUseAllMap() {
     return am->getUseAllMap();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getUseByPrintMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> QueryManager::getUseByPrintMap() {
     return am->getUseByPrintMap();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyAllMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> QueryManager::getModifyAllMap() {
     return am->getModifyAllMap();
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> QueryManager::getModifyByReadMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> QueryManager::getModifyByReadMap() {
     return am->getModifyByReadMap();
 }
-unordered_map<string, set<shared_ptr<Variable>>> QueryManager::getUseByProcedureMap() {
+unordered_map<string, unordered_set<shared_ptr<Variable>>> QueryManager::getUseByProcedureMap() {
     return am->getUseByProcedureMap();
 }
-unordered_map<string, set<shared_ptr<Variable>>> QueryManager::getModifyByProcedureMap() {
+unordered_map<string, unordered_set<shared_ptr<Variable>>> QueryManager::getModifyByProcedureMap() {
     return am->getModifyByProcedureMap();
 }
 

@@ -31,7 +31,7 @@ bool SPVStore::add(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
 };
 
 vector<vector<shared_ptr<Entity>>> SPVStore::getStmtVarPairs(
-    const unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>>& table,
+    const unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>>& table,
     EntityType type) 
 {
     if (cache.find(type) != cache.end()) {
@@ -67,17 +67,17 @@ vector<vector<shared_ptr<Entity>>> SPVStore::getByAllStmt() {
     return getStmtVarPairs(allStmts, EntityType::Stmt);
 }
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> SPVStore::getAllMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> SPVStore::getAllMap() {
     return allStmts;
 }
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> SPVStore::getReadMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> SPVStore::getReadMap() {
     return readStmts;
 }
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> SPVStore::getPrintMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> SPVStore::getPrintMap() {
     return printStmts;
 }
-unordered_map<string, set<shared_ptr<Variable>>> SPVStore::getByProcedureMap() {
+unordered_map<string, unordered_set<shared_ptr<Variable>>> SPVStore::getByProcedureMap() {
     return procedureToVar;
 }
 
