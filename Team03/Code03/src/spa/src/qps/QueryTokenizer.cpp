@@ -82,6 +82,9 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
     std::vector<std::vector<std::string>> selections;
     std::vector<std::vector<std::string>> clauses;
 
+    bool isDeclarationDone = false;
+    bool isSelectionDone = false;
+
     for (const auto& token : tokens) {
         currentList.push_back(token);
 
@@ -94,28 +97,44 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
                 throw SyntaxErrorException("Mismatched parentheses");
             }
             else if (openParenthesesCount == 0) {
+                if (!isSelectionDone || !isSelectionDone) {
+                    throw SyntaxErrorException("Incorrect order in query");
+                }
                 clauses.push_back(currentList);
                 currentList.clear();
             }
         }
         else if (token == ";") {
+            if (isDeclarationDone) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
             declarations.push_back(currentList);
             currentList.clear();
         }
         else if (token == ">") {
+            if (isSelectionDone) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
             selections.push_back(currentList);
             currentList.clear();
+            isDeclarationDone = true;
+            isSelectionDone = true;
         }
         else if (currentList.size() == 2 && currentList[0] == "Select" && token != "<") {
             // If the list starts with "Select", and the next token is not "<", end the list
+            if (isSelectionDone) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
             selections.push_back(currentList);
             currentList.clear();
+            isDeclarationDone = true;
+            isSelectionDone = true;
         }
     }
 
     // Query does not end properly
     if (!currentList.empty()) {
-        throw SyntaxErrorException("Unexpected tokens at the end of the query");
+        throw SyntaxErrorException("Invalid query syntax");
     }
 
     splitTokens.push_back(declarations);
