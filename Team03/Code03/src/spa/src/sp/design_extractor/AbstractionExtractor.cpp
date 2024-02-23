@@ -22,21 +22,20 @@ void AbstractionExtractor::extractParent(StatementListContainer statementList, s
 	}
 }
 
-void AbstractionExtractor::extractArgumentsForUsesAndModifies(shared_ptr<Expression> expression, shared_ptr<AssignStatement> assignStatement) {
+void AbstractionExtractor::extractArgumentsForUses(shared_ptr<Expression> expression, shared_ptr<AssignStatement> assignStatement) {
 	if (expression->isLeafNodeExpression()) {
 		if (expression->getExpressionType() == EntityType::Variable) {
 			pkbPopulator->addUses(assignStatement, dynamic_pointer_cast<Variable>(expression));
-			pkbPopulator->addModifies(assignStatement, dynamic_pointer_cast<Variable>(expression));
 		}
 	}
 	else {
 		auto arguments = expression->getArguments();
 		auto& [lhs, rhs] = *arguments;
 		if (lhs) {
-			extractArgumentsForUsesAndModifies(lhs, assignStatement);
+			extractArgumentsForUses(lhs, assignStatement);
 		}
 		if (rhs) {
-			extractArgumentsForUsesAndModifies(rhs, assignStatement);
+			extractArgumentsForUses(rhs, assignStatement);
 		}
 	}
 }
@@ -55,7 +54,8 @@ void AbstractionExtractor::visitPrintStatement(shared_ptr<PrintStatement> printS
 }
 
 void AbstractionExtractor::visitAssignStatement(shared_ptr<AssignStatement> assignStatement) {
-	extractArgumentsForUsesAndModifies(assignStatement->getExpression(), assignStatement);
+	extractArgumentsForUses(assignStatement->getExpression(), assignStatement);
+	pkbPopulator->addModifies(assignStatement, assignStatement->getVariable());
 }
 
 void AbstractionExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement) {
