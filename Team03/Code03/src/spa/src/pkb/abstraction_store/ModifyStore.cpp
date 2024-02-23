@@ -1,5 +1,5 @@
 #include "ModifyStore.h"
 
-unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> ModifyStore::getByPrint() {
+vector<vector<shared_ptr<Entity>>> ModifyStore::getByPrint() {
     return {};
 }

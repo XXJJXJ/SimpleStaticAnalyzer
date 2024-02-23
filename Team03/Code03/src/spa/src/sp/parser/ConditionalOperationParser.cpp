@@ -26,13 +26,13 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         isSubExpression,
         make_shared < bool>(isProcessedToken));
 
-    if (getTokenValue() == "!") {
+    if (getTokenType() == TokenType::NOT) {
         getNextToken();
-        if (getTokenValue() == "(") {
+        if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
             getNextToken();
             this->setIsSubExpression(true);
             auto conditionalExpression = parse();
-            if (getTokenValue() != ")") {
+            if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
                 throw SyntaxErrorException("Missing ) in Conditional expression");
             }
 
@@ -42,30 +42,30 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
             return make_shared<ConditionalOperation>("!", arguments);
         }
     }
-    else if (getTokenValue() == "(") {
+    else if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
         getNextToken();
         validateTokens();
         this->setIsSubExpression(true);
         auto leftConditionalExpression = parse();
-        if (getTokenValue() != ")") {
+        if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
             throw SyntaxErrorException("Missing ) in Conditional expression");
         }
 
         getNextToken();
         string operation = getTokenValue();
-        if (!(getTokenValue() == "&&" || getTokenValue() == "||")) {
+        if (!(getTokenType() == TokenType::AND || getTokenType() == TokenType::OR)) {
             throw SyntaxErrorException("Missing && or || in Conditional expression");
         }
         getNextToken();
 
-        if (getTokenValue() == "(") {
+        if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
             getNextToken();
             this->setIsSubExpression(true);
             auto rightConditionalExpression = parse();
             if (*(getIndexPointer().get()) < getTokens()->size()) {
                 getNextToken();
             }
-            if (getTokenValue() != ")") {
+            if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
                 throw SyntaxErrorException("Missing ) in Conditional expression");
             }
             pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;

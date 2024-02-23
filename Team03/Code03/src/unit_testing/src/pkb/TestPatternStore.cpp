@@ -190,7 +190,7 @@ TEST_CASE("Store detect pattern in assignment") {
 TEST_CASE("Check clear") {
     AssignStatementParser parser;
     Tokenizer tker;
-    vector<string> tok3 = {"a", "=", "5", "-", "x",";"};
+    vector<string> tok3 = {"a", "=", "5", "-", "x", ";"};
     Tokens tokens3;
     for (auto t : tok3) {
         tokens3.push_back(tker.stringToToken(t));

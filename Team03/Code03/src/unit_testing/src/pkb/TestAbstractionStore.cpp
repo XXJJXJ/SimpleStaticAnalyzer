@@ -41,12 +41,12 @@ TEST_CASE("Store and retrieve FollowS and FollowT") {
 
 
     QueryManager qm;
-    auto followS = qm.getFollowS();
+    auto followS = qm.getFollowSMap();
     REQUIRE((followS[stmt1].find(stmt2) != followS[stmt1].end()));
     REQUIRE((followS[stmt2].find(stmt3) != followS[stmt2].end()));
     REQUIRE((followS[stmt3].find(stmt4) != followS[stmt3].end()));
 
-    auto followT = qm.getFollowT();
+    auto followT = qm.getFollowTMap();
     REQUIRE((followT[stmt1].find(stmt2) != followT[stmt1].end()));
     REQUIRE((followT[stmt1].find(stmt3) != followT[stmt1].end()));
     REQUIRE((followT[stmt1].find(stmt4) != followT[stmt1].end()));
@@ -92,7 +92,7 @@ TEST_CASE("Store and retrieve ParentS and ParentT") {
 
     // Retrieval
     QueryManager qm;
-    auto parentS = qm.getParentS();
+    auto parentS = qm.getParentSMap();
     REQUIRE((parentS[stmt1].find(stmt2) != parentS[stmt1].end()));
     REQUIRE((parentS[stmt1].find(stmt3) == parentS[stmt1].end()));
     REQUIRE((parentS[stmt1].find(stmt4) == parentS[stmt1].end()));
@@ -105,7 +105,7 @@ TEST_CASE("Store and retrieve ParentS and ParentT") {
     REQUIRE((parentS[stmt2].find(stmt5) != parentS[stmt2].end()));
     REQUIRE((parentS[stmt2].find(stmt6) != parentS[stmt2].end()));
 
-    auto parentT = qm.getParentT();
+    auto parentT = qm.getParentTMap();
     REQUIRE((parentT[stmt1].find(stmt2) != parentT[stmt1].end()));
     REQUIRE((parentT[stmt1].find(stmt3) != parentT[stmt1].end()));
     REQUIRE((parentT[stmt1].find(stmt4) != parentT[stmt1].end()));
@@ -130,11 +130,11 @@ TEST_CASE("Store and retrieve Modifies") {
     pop.addModifies(stmt4, x);
 
     QueryManager qm;
-    auto modifiesAllStmt = qm.getModifyAll();
+    auto modifiesAllStmt = qm.getModifyAllMap();
     REQUIRE((modifiesAllStmt[stmt4].find(y) == modifiesAllStmt[stmt4].end()));
     REQUIRE((modifiesAllStmt[stmt4].find(x) != modifiesAllStmt[stmt4].end()));
 
-    auto modifiesAllRead = qm.getModifyByRead();
+    auto modifiesAllRead = qm.getModifyByReadMap();
     REQUIRE((modifiesAllRead[stmt4].find(y) == modifiesAllRead[stmt4].end()));
     REQUIRE((modifiesAllRead[stmt4].find(x) != modifiesAllRead[stmt4].end()));
 
@@ -153,11 +153,11 @@ TEST_CASE("Store and retrieve Uses") {
     pop.addUses(stmt3, y);
 
     QueryManager qm;
-    auto useAllStmt = qm.getUseAll();
+    auto useAllStmt = qm.getUseAllMap();
     REQUIRE((useAllStmt[stmt3].find(y) != useAllStmt[stmt3].end()));
     REQUIRE((useAllStmt[stmt3].find(x) == useAllStmt[stmt3].end()));
 
-    auto useAllPrint = qm.getUseByPrint();
+    auto useAllPrint = qm.getUseByPrintMap();
     REQUIRE((useAllPrint[stmt3].find(y) != useAllPrint[stmt3].end()));
     REQUIRE((useAllPrint[stmt3].find(x) == useAllPrint[stmt3].end()));
 
