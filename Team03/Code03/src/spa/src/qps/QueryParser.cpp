@@ -19,8 +19,9 @@
 #include <algorithm>
 #include <unordered_map>
 
-QueryParser::QueryParser() {}
-QueryParser::~QueryParser() {}
+QueryParser::QueryParser() = default;
+
+QueryParser::~QueryParser() = default;
 
 // Given tokens, will create Query object
 std::shared_ptr<Query>
@@ -28,7 +29,6 @@ QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     std::vector<std::shared_ptr<Synonym>> declarations;
     std::vector<std::shared_ptr<Synonym>> selections;
     std::vector<std::shared_ptr<Clause>> clauses;
-    DeclarationsParser dp;
     SelectionsParser sp;
 
     std::unordered_map<std::string, EntityType> synonymMap;
@@ -38,30 +38,28 @@ QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     std::vector<std::vector<std::string>> clausesTokens = tokens[2];
 
     // Create synonym objects for declarations
-    for (size_t i = 0; i < declarationsTokens.size(); i++) {
-        std::vector<std::string> tokens = declarationsTokens[i];
-        std::vector<std::shared_ptr<Synonym>> currentDeclarations = dp.parse(tokens, synonymMap);
-        for (std::shared_ptr<Synonym> synonym : currentDeclarations) {
+    for (const auto &declareTokens: declarationsTokens) {
+        std::vector<std::shared_ptr<Synonym>> currentDeclarations = DeclarationsParser::parse(declareTokens,
+                                                                                              synonymMap);
+        for (const std::shared_ptr<Synonym> &synonym: currentDeclarations) {
             declarations.push_back(synonym);
         }
     }
 
     // Create synonym objects for selections
-    for (size_t i = 0; i < selectionsTokens.size(); i++) {
-        std::vector<std::string> tokens = selectionsTokens[i];
-        std::vector<std::shared_ptr<Synonym>> currentSelections = sp.parse(tokens, synonymMap);
-        for (std::shared_ptr<Synonym> synonym : currentSelections) {
+    for (const auto &selectTokens: selectionsTokens) {
+        std::vector<std::shared_ptr<Synonym>> currentSelections = sp.parse(selectTokens, synonymMap);
+        for (std::shared_ptr<Synonym> synonym: currentSelections) {
             selections.push_back(synonym);
         }
     }
 
     // Create clause objects for clauses
-    for (size_t i = 0; i < clausesTokens.size(); i++) {
-        std::vector<std::string> tokens = clausesTokens[i];
-        std::string firstWord = tokens.front();
-        ClauseFactory* factory = ClauseFactoryManager::getClauseFactory(firstWord);
+    for (auto clauseToken: clausesTokens) {
+        std::string firstWord = clauseToken.front();
+        ClauseFactory *factory = ClauseFactoryManager::getClauseFactory(firstWord);
         if (factory) {
-            std::shared_ptr<Clause> clauseObject = factory->createClauseObject(tokens);
+            std::shared_ptr<Clause> clauseObject = factory->createClauseObject(clauseToken);
             clauses.push_back(clauseObject);
         }
     }

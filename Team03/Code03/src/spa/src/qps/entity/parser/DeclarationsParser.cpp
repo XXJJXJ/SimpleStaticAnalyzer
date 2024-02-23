@@ -11,7 +11,7 @@
 
 DeclarationsParser::DeclarationsParser() = default;
 
-DeclarationsParser::~DeclarationsParser() {}
+DeclarationsParser::~DeclarationsParser() = default;
 
 // ai-gen start (gpt, 1, e)
 // prompt:
@@ -19,7 +19,6 @@ std::vector<std::shared_ptr<Synonym>>
 DeclarationsParser::parse(const std::vector<std::string> &tokens,
                           std::unordered_map<std::string, EntityType> &synonymMap) {
 
-    QueryValidator qv;
     std::vector<std::shared_ptr<Synonym>> declarations;
 
     // Try to parse first token as entity type
@@ -51,7 +50,7 @@ DeclarationsParser::parse(const std::vector<std::string> &tokens,
                 throw SemanticErrorException("Duplicate declaration of " + name);
             }
 
-            if (!qv.isName(name)) { // Validate synonym name more rigorously
+            if (!QueryValidator::isName(name)) { // Validate synonym name more rigorously
                 throw SyntaxErrorException("Syntax Error: Invalid synonym name");
             }
 

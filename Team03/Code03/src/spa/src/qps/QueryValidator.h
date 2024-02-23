@@ -22,8 +22,8 @@ class QueryValidator {
     static bool isIdent(const std::string& token);
     static bool isName(const std::string& token);
     static bool isSynonym(const std::string& token);
-    bool isStmtRef(const std::string& token);
-    bool isEntRef(const std::string& token);
+    static bool isStmtRef(const std::string& token);
+    static bool isEntRef(const std::string& token);
 };
 
 #endif // SPA_QUERYVALIDATOR_H

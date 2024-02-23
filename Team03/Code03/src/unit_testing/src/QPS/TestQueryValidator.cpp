@@ -42,6 +42,8 @@ TEST_CASE("Test isInteger method", "[isInteger]") {
 	REQUIRE(validator.isInteger("123"));
 	REQUIRE(!validator.isInteger("01"));
 	REQUIRE(!validator.isInteger("A"));
+    REQUIRE(!validator.isInteger("aBcSDSWdds"));
+    REQUIRE(!validator.isInteger("01fscd43j2d"));
 	REQUIRE(!validator.isInteger(""));
 }
 

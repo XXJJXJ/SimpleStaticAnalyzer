@@ -94,7 +94,7 @@ TEST_CASE("Invalid Synonym Names", "[DeclarationsParser]") {
 
 // ai-gen start (gpt, 2, e)
 // prompt: https://chat.openai.com/share/4961f207-6946-4c80-8a64-e51b06b24aa1
-TEST_CASE("mapTokenToEntityType Tests", "[DeclarationsParser]") {
+/*TEST_CASE("mapTokenToEntityType Tests", "[DeclarationsParser]") {
 	DeclarationsParser parser;
 
 	REQUIRE(parser.mapTokenToEntityType("stmt") == EntityType::Stmt);
@@ -108,5 +108,5 @@ TEST_CASE("mapTokenToEntityType Tests", "[DeclarationsParser]") {
 	REQUIRE(parser.mapTokenToEntityType("constant") == EntityType::Constant);
 	REQUIRE(parser.mapTokenToEntityType("procedure") == EntityType::Procedure);
 	REQUIRE(parser.mapTokenToEntityType("unknown_token") == EntityType::Unknown);
-}
+}*/
 // ai-gen end

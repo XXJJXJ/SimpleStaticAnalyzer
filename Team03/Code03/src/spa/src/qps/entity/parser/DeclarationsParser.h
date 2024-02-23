@@ -5,10 +5,14 @@
 #include <vector>
 
 class DeclarationsParser {
-  public:
+public:
     DeclarationsParser();
+
     ~DeclarationsParser();
-    std::vector<std::shared_ptr<Synonym>> parse(const std::vector<std::string>& tokens,
-          std::unordered_map<std::string, EntityType>& synonymMap);
-    EntityType mapTokenToEntityType(const std::string& token);
+
+    static std::vector<std::shared_ptr<Synonym>> parse(const std::vector<std::string> &tokens,
+                                                       std::unordered_map<std::string, EntityType> &synonymMap);
+
+private:
+    static EntityType mapTokenToEntityType(const std::string &token);
 };
