@@ -2,9 +2,9 @@
 
 AssignStatement::AssignStatement(
     int statementNumber, 
-    Variable variable,
+    shared_ptr<Variable> variable_,
     string procedureName)
-    : variable(move(variable)), expression(),
+    : variable(variable_), expression(),
     Statement(statementNumber, EntityType::Assign, move(procedureName)) {}
 
 void AssignStatement::accept(shared_ptr<Visitor> visitor) {
@@ -16,7 +16,7 @@ void AssignStatement::addExpression(shared_ptr<Expression> expr) {
     expression = expr;
 }
 
-Variable AssignStatement::getVariable() const {
+shared_ptr<Variable> AssignStatement::getVariable() const {
     return variable;
 }
 
