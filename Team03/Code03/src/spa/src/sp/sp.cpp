@@ -16,14 +16,13 @@ void Sp::ProcessSIMPLE(string fileName) {
             std::cerr << "Error opening file" << std::endl;
         }
         else {
+            shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
             shared_ptr<Tokenizer> tokenizer = make_shared<Tokenizer>();
             Tokens tokens = tokenizer->tokenize(inputfile);
             shared_ptr<Parser> parser = make_shared<Parser>();
             shared_ptr<Program> program = parser->parseSource(tokens);
-            shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>();
+            shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
             design_extractor->extractDesign(program);
-            /*Program::ProcedureListContainer procedures = program->getProcedureList();
-            vector<shared_ptr<Statement>> statements = procedures[0]->getStatementList();*/
         }
     }
     catch (SpaException& e) {
