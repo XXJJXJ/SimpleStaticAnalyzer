@@ -14,7 +14,8 @@ DeclarationsParser::DeclarationsParser() = default;
 DeclarationsParser::~DeclarationsParser() = default;
 
 // ai-gen start (gpt, 1, e)
-// prompt:
+// prompt 1: https://chat.openai.com/share/82e2cd52-da0f-49d9-8032-25cca59e34b3
+// prompt 2: https://chat.openai.com/share/d86b9515-ec39-46ef-aaae-c8e284de92a2
 std::vector<std::shared_ptr<Synonym>>
 DeclarationsParser::parse(const std::vector<std::string> &tokens,
                           std::unordered_map<std::string, EntityType> &synonymMap) {
@@ -27,23 +28,24 @@ DeclarationsParser::parse(const std::vector<std::string> &tokens,
     // Invalid Entity Type or declaration doesn't start with an entity type
     if (currEntityType == EntityType::Unknown) {
         throw SyntaxErrorException("Syntax Error: Invalid Entity Type");
-    };
+    }
 
     // Flag to check if next token should be a synonym name
     // Variable name expected after EntityType definition
     bool expectNameNext = true;
 
+
     // Iterate through the rest of the tokens, less the first (entity type) and last (semicolon)
     // Tokenizer ensures that the last token confirm is semicolon
     for (size_t i = 1; i < tokens.size() - 1; ++i) {
         if (tokens[i] == ",") {
-            if (!expectNameNext) { // Found consecutive commas or a comma after an invalid token
+            if (expectNameNext) { // Found consecutive commas or a comma after an invalid token
                 throw SyntaxErrorException("Syntax Error: Unexpected ',' in declaration");
             }
             expectNameNext = true; // Next token must be a valid synonym name
         } else {
             if (!expectNameNext) { // Did not find a comma where one was expected
-                throw SyntaxErrorException("Syntax Error: Expected ',' between synonym names");
+                throw SyntaxErrorException("Expected ',' between synonym names");
             }
             std::string name = tokens[i];
             if (synonymMap.find(name) != synonymMap.end()) {
@@ -51,7 +53,7 @@ DeclarationsParser::parse(const std::vector<std::string> &tokens,
             }
 
             if (!QueryValidator::isName(name)) { // Validate synonym name more rigorously
-                throw SyntaxErrorException("Syntax Error: Invalid synonym name");
+                throw SyntaxErrorException("Invalid synonym name");
             }
 
             synonymMap[name] = currEntityType;
@@ -70,6 +72,8 @@ DeclarationsParser::parse(const std::vector<std::string> &tokens,
 }
 // ai-gen end
 
+
+// TODO: Update this to follow OCP
 // ai-gen start (gpt, 0, e)
 // prompt: https://chat.openai.com/share/4961f207-6946-4c80-8a64-e51b06b24aa1
 EntityType DeclarationsParser::mapTokenToEntityType(const std::string &token) {
