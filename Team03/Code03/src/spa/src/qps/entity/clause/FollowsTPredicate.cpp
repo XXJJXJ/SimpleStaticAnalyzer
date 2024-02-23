@@ -8,6 +8,14 @@ FollowsTPredicate::FollowsTPredicate(StatementRef lhs, StatementRef rhs)
     if (!isValidStmtRef(this->lhs) || !isValidStmtRef(this->rhs)) {
         throw std::invalid_argument("Invalid arguments for FollowsTPredicate constructor");
     }
+    if (std::holds_alternative<Synonym>(this->lhs)) {
+        auto synonym = std::get<Synonym>(lhs);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+    }
+    if (std::holds_alternative<Synonym>(this->rhs)) {
+        auto synonym = std::get<Synonym>(rhs);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+    }
 }
 
 std::shared_ptr<Strategy> FollowsTPredicate::getStrategy() const {

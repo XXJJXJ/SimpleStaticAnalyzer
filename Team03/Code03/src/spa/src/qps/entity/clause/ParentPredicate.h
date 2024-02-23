@@ -21,6 +21,7 @@ public:
 
     // Helper methods for validation
     static bool isValidStmtRef(const StatementRef& ref);
+
 };
 
 #endif // PARENTPREDICATE_H

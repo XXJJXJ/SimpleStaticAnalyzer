@@ -163,4 +163,3 @@ int Table::indexOf(const Synonym& synonym) const {
 bool Table::hasHeader(const Synonym &synonym) const {
     return headerIndexMap.find(synonym) != headerIndexMap.end();
 }
-

@@ -24,6 +24,7 @@ public:
 
     static bool isValidLhs(const ModifiesLhsRef& lhs);
     static bool isValidRhs(const EntityRef& rhs);
+
 };
 
 #endif // MODIFIESPREDICATE_H

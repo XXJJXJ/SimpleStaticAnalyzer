@@ -19,9 +19,12 @@ using StatementRef = std::variant<int, Synonym, std::string>;
  * query.
  */
 class Predicate {
+protected:
+    vector<shared_ptr<Synonym>> synonyms; // Synonyms used in the predicate
 public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion
     virtual shared_ptr<Strategy> getStrategy() const = 0; // Pure virtual function
+    [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
 };
 
 #endif // RELATIONSHIPPREDICATE_H

@@ -8,6 +8,14 @@ ModifiesPredicate::ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs)
     if (!isValidLhs(this->lhs) || !isValidRhs(this->rhs)) {
         throw std::invalid_argument("Invalid arguments for ModifiesPredicate constructor");
     }
+    if (std::holds_alternative<Synonym>(this->lhs)) {
+        auto synonym = std::get<Synonym>(lhs);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+    }
+    if (std::holds_alternative<Synonym>(this->rhs)) {
+        auto synonym = std::get<Synonym>(rhs);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+    }
 }
 
 std::shared_ptr<Strategy> ModifiesPredicate::getStrategy() const {
