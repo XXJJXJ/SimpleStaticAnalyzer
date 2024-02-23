@@ -1,4 +1,4 @@
-//ai-gen start(gpt, 1, e)
+//ai-gen start(gpt, 2, e)
 // prompt: https://chat.openai.com/share/c3dec1ba-84fd-4fdb-ab11-c7f34bf4ef59
 
 #include <catch.hpp>
@@ -7,79 +7,79 @@
 QueryValidator validator;
 
 TEST_CASE("Test isLetter method", "[isLetter]") {
-	REQUIRE(validator.isLetter("a") == true);
-	REQUIRE(validator.isLetter("A") == true);
-	REQUIRE(validator.isLetter("1") == false);
-	REQUIRE(validator.isLetter("*") == false);
-	REQUIRE(validator.isLetter("") == false);
+	REQUIRE(validator.isLetter("a"));
+	REQUIRE(validator.isLetter("A"));
+	REQUIRE(!validator.isLetter("1"));
+	REQUIRE(!validator.isLetter("*"));
+	REQUIRE(!validator.isLetter(""));
 }
 
 TEST_CASE("Test isDigit method", "[isDigit]") {
-	REQUIRE(validator.isDigit("0") == true);
-	REQUIRE(validator.isDigit("5") == true);
-	REQUIRE(validator.isDigit("9") == true);
-	REQUIRE(validator.isDigit("10") == false);
-	REQUIRE(validator.isDigit("A") == false);
-	REQUIRE(validator.isDigit("") == false);
+	REQUIRE(validator.isDigit("0"));
+	REQUIRE(validator.isDigit("5"));
+	REQUIRE(validator.isDigit("9"));
+	REQUIRE(!validator.isDigit("10"));
+	REQUIRE(!validator.isDigit("A"));
+	REQUIRE(!validator.isDigit(""));
 }
 
 TEST_CASE("Test isNzDigit method", "[isNzDigit]") {
-	REQUIRE(validator.isNzDigit("1") == true);
-	REQUIRE(validator.isNzDigit("2") == true);
-	REQUIRE(validator.isNzDigit("9") == true);
-	REQUIRE(validator.isNzDigit("0") == false);
-	REQUIRE(validator.isNzDigit("10") == false);
-	REQUIRE(validator.isNzDigit("A") == false);
-	REQUIRE(validator.isNzDigit("") == false);
+	REQUIRE(validator.isNzDigit("1"));
+	REQUIRE(validator.isNzDigit("2"));
+	REQUIRE(validator.isNzDigit("9"));
+	REQUIRE(!validator.isNzDigit("0"));
+	REQUIRE(!validator.isNzDigit("10"));
+	REQUIRE(!validator.isNzDigit("A"));
+	REQUIRE(!validator.isNzDigit(""));
 }
 
 // Definition of integer: 0 | NZDIGIT ( DIGIT )* - no leading zero
 TEST_CASE("Test isInteger method", "[isInteger]") {
-	REQUIRE(validator.isInteger("0") == true);
-	REQUIRE(validator.isInteger("1") == true);
-	REQUIRE(validator.isInteger("9") == true);
-	REQUIRE(validator.isInteger("10") == true);
-	REQUIRE(validator.isInteger("123") == true);
-	REQUIRE(validator.isInteger("01") == false);
-	REQUIRE(validator.isInteger("A") == false);
-	REQUIRE(validator.isInteger("") == false);
+	REQUIRE(validator.isInteger("0"));
+	REQUIRE(validator.isInteger("1"));
+	REQUIRE(validator.isInteger("9"));
+	REQUIRE(validator.isInteger("10"));
+	REQUIRE(validator.isInteger("123"));
+	REQUIRE(!validator.isInteger("01"));
+	REQUIRE(!validator.isInteger("A"));
+	REQUIRE(!validator.isInteger(""));
 }
 
-// Definition of identifier: LETTER ( LETTER | DIGIT )*
+// Definition of identifier (IDENT): LETTER ( LETTER | DIGIT )*
 TEST_CASE("Test isIdent method", "[isIdent]") {
-	REQUIRE(validator.isIdent("variable") == true);
-	REQUIRE(validator.isIdent("Variable1") == true);
-	REQUIRE(validator.isIdent("123variable") == false);
-	REQUIRE(validator.isIdent("_variable") == false);
-	REQUIRE(validator.isIdent("123") == false);
-	REQUIRE(validator.isIdent("") == false);
+	REQUIRE(validator.isIdent("variable"));
+	REQUIRE(validator.isIdent("Variable1"));
+	REQUIRE(!validator.isIdent("123variable"));
+	REQUIRE(!validator.isIdent("_variable"));
+	REQUIRE(!validator.isIdent("123"));
+	REQUIRE(!validator.isIdent(""));
 }
 
 // Definition of synonym: IDENT
 TEST_CASE("Test isSynonym method", "[isSynonym]") {
-	REQUIRE(validator.isSynonym("stmt") == true);
-	REQUIRE(validator.isSynonym("variable") == true);
-	REQUIRE(validator.isSynonym("read") == true);
-	REQUIRE(validator.isSynonym("xyz") == true);
-	REQUIRE(validator.isSynonym("") == false);
+	REQUIRE(validator.isSynonym("stmt"));
+	REQUIRE(validator.isSynonym("variable"));
+	REQUIRE(validator.isSynonym("read"));
+	REQUIRE(validator.isSynonym("xyz"));
+	REQUIRE(!validator.isSynonym(""));
 }
 
 // Definition of stmtRef: synonym | '_' | INTEGER
 TEST_CASE("Test isStmtRef method", "[isStmtRef]") {
-	REQUIRE(validator.isStmtRef("stmt") == true);
-	REQUIRE(validator.isStmtRef("_") == true);
-	REQUIRE(validator.isStmtRef("10") == true);
-	REQUIRE(validator.isStmtRef("xyz") == true);
-	REQUIRE(validator.isStmtRef("") == false);
+	REQUIRE(validator.isStmtRef("stmt"));
+	REQUIRE(validator.isStmtRef("_"));
+	REQUIRE(validator.isStmtRef("10"));
+	REQUIRE(validator.isStmtRef("xyz"));
+	REQUIRE(!validator.isStmtRef(""));
 }
 
 TEST_CASE("Test isEntRef method", "[isEntRef]") {
-	REQUIRE(validator.isEntRef("stmt") == true);
-	REQUIRE(validator.isEntRef("_") == true);
-	REQUIRE(validator.isEntRef("\"variable\"") == true);
-	REQUIRE(validator.isEntRef("\"_\"") == false);
-	REQUIRE(validator.isEntRef("\"123\"") == false);
-	REQUIRE(validator.isEntRef("xyz") == true);
-	REQUIRE(validator.isEntRef("") == false);
+	REQUIRE(validator.isEntRef("stmt"));
+	REQUIRE(validator.isEntRef("_"));
+	REQUIRE(validator.isEntRef("\"variable\""));
+	REQUIRE(!validator.isEntRef("\"_\""));
+	REQUIRE(!validator.isEntRef("\"123\""));
+	REQUIRE(validator.isEntRef("xyz"));
+	REQUIRE(!validator.isEntRef(""));
 }
 // ai-gen end

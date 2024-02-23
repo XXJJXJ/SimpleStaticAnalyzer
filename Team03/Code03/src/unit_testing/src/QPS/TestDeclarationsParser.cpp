@@ -3,16 +3,14 @@
 #include <common/spa_exception/SemanticErrorException.h>
 #include <common/spa_exception/SyntaxErrorException.h>
 
-DeclarationsParser parser;
-std::vector<std::string> tokens = {};
-std::unordered_map<std::string, EntityType> synonymMap = {};
-std::vector<std::shared_ptr<Synonym>> expectedDeclarations;
+//std::vector<std::shared_ptr<Synonym>> expectedDeclarations;
 
 // ai-gen start (gpt, 1, e)
 // Prompt: https://chat.openai.com/share/82e2cd52-da0f-49d9-8032-25cca59e34b3
 TEST_CASE("Valid Declarations", "[DeclarationsParser]") {
-	tokens = { "variable", "a", ",", "b", ",", "x", ";" };
-	synonymMap = {};
+	DeclarationsParser parser;
+	std::vector<std::string> tokens = { "variable", "a", ",", "b", ",", "x", ";" };
+	std::unordered_map<std::string, EntityType> synonymMap = {};
 	auto declarations = parser.parse(tokens, synonymMap);
 
 	REQUIRE(declarations.size() == 3);
@@ -25,12 +23,10 @@ TEST_CASE("Valid Declarations", "[DeclarationsParser]") {
 }
 
 TEST_CASE("Single Declaration", "[DeclarationsParser]") {
-	tokens = { "variable", "a", ";" };
-	synonymMap = {};
+	DeclarationsParser parser;
+	std::vector<std::string> tokens = { "variable", "a", ";" };
+	std::unordered_map<std::string, EntityType> synonymMap = {};
 	auto declarations = parser.parse(tokens, synonymMap);
-
-	expectedDeclarations.clear();
-	expectedDeclarations.push_back(std::make_shared<Synonym>(EntityType::Variable, "a"));
 
 	REQUIRE(declarations.size() == 1);
 	REQUIRE(synonymMap.find("a") != synonymMap.end());
@@ -62,8 +58,45 @@ TEST_CASE("Duplicate Names", "[DeclarationsParser]") {
 // ai-gen end
 
 // ai-gen start (gpt, 0, e)
+// prompt:
+TEST_CASE("Consecutive Commas Without Synonym Name", "[DeclarationsParser]") {
+	DeclarationsParser parser;
+	std::vector<std::string> tokens = { "variable", "a", ",", ",", ",", ",", "b", ";" };
+	std::unordered_map<std::string, EntityType> synonymMap;
+
+	REQUIRE_THROWS_AS(parser.parse(tokens, synonymMap), SyntaxErrorException);
+}
+
+TEST_CASE("Non-Separated Synonym Names", "[DeclarationsParser]") {
+	DeclarationsParser parser;
+	std::vector<std::string> tokens = { "variable", "a", "b", "c", ";" };
+	std::unordered_map<std::string, EntityType> synonymMap;
+
+	REQUIRE_THROWS_AS(parser.parse(tokens, synonymMap), SyntaxErrorException);
+}
+
+TEST_CASE("Numeric Synonym Names", "[DeclarationsParser]") {
+	DeclarationsParser parser;
+	std::vector<std::string> tokens = { "variable", "1", "2", ";" };
+	std::unordered_map<std::string, EntityType> synonymMap;
+
+	REQUIRE_THROWS_AS(parser.parse(tokens, synonymMap), SyntaxErrorException);
+}
+// ai-gen end
+
+TEST_CASE("Invalid Synonym Names", "[DeclarationsParser]") {
+	DeclarationsParser parser;
+	std::vector<std::string> tokens = { "variable", "123lolol", "_invalid_", ";" };
+	std::unordered_map<std::string, EntityType> synonymMap;
+
+	REQUIRE_THROWS_AS(parser.parse(tokens, synonymMap), SyntaxErrorException);
+}
+
+// ai-gen start (gpt, 2, e)
 // prompt: https://chat.openai.com/share/4961f207-6946-4c80-8a64-e51b06b24aa1
 TEST_CASE("mapTokenToEntityType Tests", "[DeclarationsParser]") {
+	DeclarationsParser parser;
+
 	REQUIRE(parser.mapTokenToEntityType("stmt") == EntityType::Stmt);
 	REQUIRE(parser.mapTokenToEntityType("read") == EntityType::Read);
 	REQUIRE(parser.mapTokenToEntityType("print") == EntityType::Print);

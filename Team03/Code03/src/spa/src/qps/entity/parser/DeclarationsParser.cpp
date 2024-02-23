@@ -6,6 +6,7 @@
 
 #include "DeclarationsParser.h"
 #include "common/EntityType.h"
+#include "qps/QueryValidator.h"
 #include <common/spa_exception/SemanticErrorException.h>
 #include <common/spa_exception/SyntaxErrorException.h>
 
@@ -18,6 +19,7 @@ std::vector<std::shared_ptr<Synonym>>
 DeclarationsParser::parse(const std::vector<std::string>& tokens,
                           std::unordered_map<std::string, EntityType>& synonymMap) {
 
+    QueryValidator qv;
     std::vector<std::shared_ptr<Synonym>> declarations;
 
     // Empty Declarations
@@ -35,22 +37,40 @@ DeclarationsParser::parse(const std::vector<std::string>& tokens,
         throw SyntaxErrorException("Syntax Error: Invalid Entity Type");
     };
 
-    // Parse the rest of the tokens
-    for (size_t i = 1; i < tokens.size(); ++i) {
-        // ";" is the end of the declaration
-        if (tokens[i] == ";") {
-            break;
-        } else if (tokens[i] != ",") { // Skip commas
+    // Flag to check if next token should be a synonym name
+    bool expectNameNext = true;
+
+    // Iterate through the rest of the tokens, less the first (entity type) and last (semicolon)
+    // Tokenizer ensures that the last token confirm is semicolon
+    for (size_t i = 1; i < tokens.size() - 1; ++i) {
+        if (tokens[i] == ",") {
+            if (!expectNameNext) { // Found consecutive commas or a comma after an invalid token
+                throw SyntaxErrorException("Syntax Error: Unexpected ',' in declaration");
+            }
+            expectNameNext = true; // Next token must be a valid synonym name
+        } else {
+            if (!expectNameNext) { // Did not find a comma where one was expected
+                throw SyntaxErrorException("Syntax Error: Expected ',' between synonym names");
+            }
             std::string name = tokens[i];
             if (synonymMap.find(name) != synonymMap.end()) {
                 throw SemanticErrorException("Duplicate declaration of " + name);
             }
 
-            synonymMap[name] = currEntityType; // Add to map
+            if (!qv.isName(name)) { // Validate synonym name more rigorously
+                throw SyntaxErrorException("Syntax Error: Invalid synonym name");
+            }
 
-            declarations.push_back(
-                std::make_shared<Synonym>(currEntityType, name)); // Add to declarations
+            synonymMap[name] = currEntityType;
+            declarations.push_back(std::make_shared<Synonym>(currEntityType, name));
+            expectNameNext = false; // Reset flag since a valid name was found
         }
+    }
+
+    // Check if the declaration ended expecting a name
+    // Cases: {"variable", "a", ",", ";" }
+    if (expectNameNext) {
+        throw SyntaxErrorException("Syntax Error: Incomplete declaration");
     }
 
     return declarations;
