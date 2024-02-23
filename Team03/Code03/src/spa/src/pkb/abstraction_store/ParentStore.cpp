@@ -29,6 +29,10 @@ bool ParentStore::add(shared_ptr<Statement> parent, shared_ptr<Statement> child)
     return true;
 }
 
+unordered_map<shared_ptr<Statement>, shared_ptr<Statement>> ParentStore::getChildToParentMap() {
+    return childToParentMap;
+}
+
 void ParentStore::clear() {
     directMap.clear();
     transitiveMap.clear();
