@@ -4,16 +4,16 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
     auto leftRelationalFactor = factor();
 
     updateNextToken();
-    unordered_set<string> relationalOperators = {
-        ">",
-        ">=",
-        "<",
-        "<=",
-        "==",
-        "!=" 
+    unordered_set<TokenType> relationalOperators = {
+        TokenType::GREATER_THAN,
+        TokenType::GREATER_THAN_EQUAL,
+        TokenType::LESS_THAN,
+        TokenType::LESS_THAN_EQUAL,
+        TokenType::DOUBLE_EQUALS,
+        TokenType::NOT_EQUAL
     };
 
-    if (relationalOperators.find(getTokenValue()) == relationalOperators.end()) {
+    if (relationalOperators.find(getTokenType()) == relationalOperators.end()) {
         throw SyntaxErrorException("Missing Relational operator");
     }
 
