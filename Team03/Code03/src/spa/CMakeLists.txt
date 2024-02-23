@@ -14,8 +14,10 @@ file(GLOB headers
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.h"
 )
 add_library(spa ${srcs} ${headers}
-		src/qps/entity/query/SynonymGraph.cpp
-		src/qps/entity/query/SynonymGraph.h)
+		src/qps/entity/evaluation/SynonymGraph.cpp
+		src/qps/entity/evaluation/SynonymGraph.h
+		src/qps/entity/evaluation/EvaluationPlanner.cpp
+		src/qps/entity/evaluation/EvaluationPlanner.h)
 # this makes the headers accessible for other projects which uses spa lib
 target_include_directories(spa PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 

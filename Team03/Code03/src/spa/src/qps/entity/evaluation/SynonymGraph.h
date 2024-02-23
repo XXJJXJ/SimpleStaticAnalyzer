@@ -5,12 +5,12 @@
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
-#include "Query.h"
+#include "qps/entity/query/Query.h"
 
 class SynonymGraph {
 public:
     SynonymGraph(const std::vector<std::shared_ptr<Predicate>>& predicates);
-    std::vector<std::unordered_set<std::shared_ptr<Synonym>>> groupPredicates();
+    std::vector<std::unordered_set<std::shared_ptr<Synonym>>> groupSynonyms();
 
 private:
     void addEdge(const std::shared_ptr<Synonym>& u, const std::shared_ptr<Synonym>& v);

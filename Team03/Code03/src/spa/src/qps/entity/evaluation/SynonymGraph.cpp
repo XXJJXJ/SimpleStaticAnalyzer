@@ -17,7 +17,7 @@ void SynonymGraph::addEdge(const std::shared_ptr<Synonym>& u, const std::shared_
     adjList[u].push_back(v);
 }
 
-std::vector<std::unordered_set<std::shared_ptr<Synonym>>> SynonymGraph::groupPredicates() {
+std::vector<std::unordered_set<std::shared_ptr<Synonym>>> SynonymGraph::groupSynonyms() {
     std::vector<std::unordered_set<std::shared_ptr<Synonym>>> groups;
     for (const auto& pair : adjList) {
         if (visited.find(pair.first) == visited.end()) {
