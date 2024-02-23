@@ -1,9 +1,9 @@
 /*
  * Created by ZHENGTAO JIANG on 8/2/24.
  *
- * Given a string query, it checks if the query is valid based on the predefined PQL grammar
- * If not valid, returns invalid query string
- * If valid, continues execution by calling parseQuery
+ * Methods for validating input string based on the predefined PQL grammar
+ * Returns true if valid, false if invalid
+ *
  */
 
 #ifndef SPA_QUERYVALIDATOR_H
@@ -15,13 +15,13 @@ class QueryValidator {
     QueryValidator();
     ~QueryValidator();
 
-    bool isLetter(const std::string& token);
-    bool isDigit(const std::string& token);
-    bool isNzDigit(const std::string& token);
-    bool isInteger(const std::string& token);
-    bool isIdent(const std::string& token);
-    bool isName(const std::string& token);
-    bool isSynonym(const std::string& token);
+    static bool isLetter(const std::string& token);
+    static bool isDigit(const std::string& token);
+    static bool isNzDigit(const std::string& token);
+    static bool isInteger(const std::string& token);
+    static bool isIdent(const std::string& token);
+    static bool isName(const std::string& token);
+    static bool isSynonym(const std::string& token);
     bool isStmtRef(const std::string& token);
     bool isEntRef(const std::string& token);
 };

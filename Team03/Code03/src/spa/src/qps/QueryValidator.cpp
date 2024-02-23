@@ -6,8 +6,8 @@
 #include "QueryParser.h"
 #include <algorithm>
 
-QueryValidator::QueryValidator() {}
-QueryValidator::~QueryValidator() {}
+QueryValidator::QueryValidator() = default;
+QueryValidator::~QueryValidator() = default;
 
 // ai-gen start(copilot, 2, e)
 
