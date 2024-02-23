@@ -38,24 +38,16 @@ PredicateType getPredicateType(const std::string& keyword) {
 
 std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {	
 	PredicateType predicateType = getPredicateType(tokens[0]);
-	
-	// Pattern clause
-	if (predicateType == PredicateType::Pattern) {
-		Synonym assignSyn = Synonym(tokens[1], synonymMap);
-		std::vector<std::string> patternTokens(tokens.begin() + 1, tokens.end());
-		std::vector<std::string> refs = extractRefs(patternTokens);
-		if (refs.size() == 2) {
-			AssignPatternPredicate predicate(assignSyn, stringToEntityRef(refs[0], synonymMap), refs[1]);
-			return std::make_shared<AssignPatternPredicate>(predicate);
-		}
-		else {
-			throw SyntaxErrorException("Invalid number of arguments in pattern clause");
-		}	
-	}
+    std::vector<std::string> refs;
 
-	// Such that clause
-	std::vector<std::string> refs = extractRefs(tokens);
-	if (refs.size() == 2) {
+    if (predicateType == PredicateType::Pattern) {
+        std::vector<std::string> patternTokens(tokens.begin() + 1, tokens.end());
+        refs = extractRefs(patternTokens);
+    } else {
+        refs = extractRefs(tokens);
+    }
+
+    if (refs.size() == 2) {
 		switch (predicateType) {
 		case PredicateType::Follows: {
 			FollowsPredicate predicate(stringToStatementRef(refs[0], synonymMap), stringToStatementRef(refs[1], synonymMap));
@@ -81,6 +73,11 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
 			UsesPredicate predicate(stringToStatementRef(refs[0], synonymMap), stringToEntityRef(refs[1], synonymMap));
 			return std::make_shared<UsesPredicate>(predicate);
 		}
+        case PredicateType::Pattern: {
+            Synonym assignSyn = Synonym(tokens[1], synonymMap);
+            AssignPatternPredicate predicate(assignSyn, stringToEntityRef(refs[0], synonymMap), refs[1]);
+            return std::make_shared<AssignPatternPredicate>(predicate);
+        }
 		default:
 			throw new SyntaxErrorException("Invalid relationship keyword");
 		}
