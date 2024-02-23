@@ -1,5 +1,4 @@
 #include "AssignPatternPredicate.h"
-#include "common/spa_exception/SemanticErrorException.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 
 AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs) 
