@@ -4,7 +4,7 @@ shared_ptr<Statement> AssignStatementParser::parseEntity(Tokens& tokens) {
     string variableName = extractVariableName(tokens);
     // Erase 'variable =' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
-    Variable variable(variableName);
+    auto variable = make_shared<Variable>(variableName);
     auto assignStatement =
         make_shared<AssignStatement>(Program::getAndIncrementStatementNumber(),
             variable,
@@ -25,7 +25,7 @@ string AssignStatementParser::extractVariableName(Tokens& tokens) const {
         throw SyntaxErrorException("Missing variable in Assign statement");
     }
 
-    if (tokens[1]->getValue() != "=") {
+    if (tokens[1]->getType() != TokenType::SINGLE_EQUAL) {
         throw SyntaxErrorException("Missing = in Assign statement");
     }
 
@@ -35,7 +35,7 @@ string AssignStatementParser::extractVariableName(Tokens& tokens) const {
 Tokens AssignStatementParser::extractExpression(Tokens& tokens) const {
     Tokens expressionTokens;
     for (size_t i = 0; i < tokens.size(); ++i) {
-        if (tokens[i]->getValue() == ";") {
+        if (tokens[i]->getType() == TokenType::SEMICOLON) {
             tokens.erase(tokens.begin(), tokens.begin() + i);
             break;
         }
@@ -48,7 +48,7 @@ Tokens AssignStatementParser::extractExpression(Tokens& tokens) const {
 }
 
 void AssignStatementParser::checkEndOfStatement(Tokens& tokens) const {
-    if (tokens[0]->getValue() != ";") {
+    if (tokens[0]->getType() != TokenType::SEMICOLON) {
         throw SyntaxErrorException("Assign statement does not end with ;");
     }
 }

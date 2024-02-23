@@ -9,9 +9,6 @@
 
 class Strategy;
 
-// StatementRef for statement references: int, Synonym, or "_"
-using StatementRef = std::variant<int, Synonym, std::string>;
-
 class ParentTPredicate : public Predicate {
 private:
     StatementRef lhs; // Ancestor statement reference

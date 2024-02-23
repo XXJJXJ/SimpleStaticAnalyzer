@@ -20,6 +20,8 @@ private:
     FollowStore followStore;
     ParentStore parentStore;
 
+    // Helper
+    void tabulateContainerStmtVarRelation(SPVStore& store);
 public:
     static shared_ptr<AbstractionManager> getInstance();
 
@@ -28,25 +30,38 @@ public:
     bool addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     bool addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
 
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowS();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowT();
+    void tabulateUses();
+    void tabulateModifies();
 
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentS();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentT();
+    vector<vector<shared_ptr<Entity>>> getFollowS();
+    vector<vector<shared_ptr<Entity>>> getFollowT();
 
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByAssign();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByPrint(); 
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByCall();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByIfWhile();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseAll();
+    vector<vector<shared_ptr<Entity>>> getParentS();
+    vector<vector<shared_ptr<Entity>>> getParentT();
+
+    vector<vector<shared_ptr<Entity>>> getUseByAssign();
+    vector<vector<shared_ptr<Entity>>> getUseByPrint(); 
+    vector<vector<shared_ptr<Entity>>> getUseByCall();
+    vector<vector<shared_ptr<Entity>>> getUseByIfWhile();
+    vector<vector<shared_ptr<Entity>>> getUseAll();
     unordered_map<string, set<shared_ptr<Variable>>> getUseByProcedure();
 
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByAssign();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByRead();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByCall();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByIfWhile();
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAll();
+    vector<vector<shared_ptr<Entity>>> getModifyByAssign();
+    vector<vector<shared_ptr<Entity>>> getModifyByRead();
+    vector<vector<shared_ptr<Entity>>> getModifyByCall();
+    vector<vector<shared_ptr<Entity>>> getModifyByIfWhile();
+    vector<vector<shared_ptr<Entity>>> getModifyAll();
     unordered_map<string, set<shared_ptr<Variable>>> getModifyByProcedure();
+
+
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowSMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowTMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentSMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentTMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseAllMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByPrintMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAllMap();
+    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByReadMap();
 
     void clearStore();
     static void clear();

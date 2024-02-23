@@ -38,11 +38,11 @@ shared_ptr<Expression> ArithmeticOperationParser::term() {
 
 shared_ptr<Expression> ArithmeticOperationParser::factor() {
     shared_ptr<Expression> leafNode = nullptr;
-    if (getTokenValue() == "(") {
+    if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
         addParenthesis(getTokenValue(), getIndex());
         getNextToken();
         leafNode = parse();
-        if (getTokenValue() != ")") {
+        if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
             throw SyntaxErrorException("Missing ) in Arithmetic operation");
         }
         addParenthesis(getTokenValue(), getIndex());

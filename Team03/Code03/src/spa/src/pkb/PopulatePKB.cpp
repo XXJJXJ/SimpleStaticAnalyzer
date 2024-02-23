@@ -51,3 +51,10 @@ bool Populator::addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
 bool Populator::addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
     return am->addModifies(stmt, var);
 }
+
+void Populator::tabulateUses() {
+    am->tabulateUses();
+}
+void Populator::tabulateModifies() {
+    am->tabulateModifies();
+}

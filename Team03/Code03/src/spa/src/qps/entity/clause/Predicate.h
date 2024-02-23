@@ -4,10 +4,14 @@
 #define RELATIONSHIPPREDICATE_H
 
 #include <string>
+#include <variant>
 #include "qps/entity/strategy/Strategy.h"
 
 template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
+// StatementRef for statement references: int, Synonym, or "_"
+using StatementRef = std::variant<int, Synonym, std::string>;
 
 /**
  * Base class for all filtering conditions in a query, including relationship, pattern and with

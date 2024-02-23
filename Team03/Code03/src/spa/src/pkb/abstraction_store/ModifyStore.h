@@ -4,5 +4,5 @@
 
 class ModifyStore : public SPVStore {
 public:
-    unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getByPrint() override;
+    vector<vector<shared_ptr<Entity>>> getByPrint() override;
 };

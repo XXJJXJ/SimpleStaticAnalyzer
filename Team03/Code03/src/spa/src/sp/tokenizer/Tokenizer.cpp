@@ -20,7 +20,7 @@ Tokens Tokenizer::tokenize(std::ifstream& file) {
 }
 
 shared_ptr<Token> Tokenizer::stringToToken(std::string value) {
-	std::regex name_regex(R"((?!;)[a-zA-Z0-9]+))");
+	std::regex name_regex(R"((?!;)[a-zA-Z0-9]+)");
 
 	if (value == "(" || value == ")" || value == "{" || value == "}" || value == ";" || value == "\"") {
 		return PunctuationTokenFactory::createToken(value);
@@ -28,7 +28,7 @@ shared_ptr<Token> Tokenizer::stringToToken(std::string value) {
 	else if (isdigit(value[0])) {
 		for (int i = 1; i < value.size(); i++) {
 			if (!isdigit(value[i])) {
-				return TokenFactory::createToken(value);
+				throw SyntaxErrorException(value + " is an invalid token");
 			}
 		}
 		return IntegerTokenFactory::createToken(value);
@@ -46,6 +46,6 @@ shared_ptr<Token> Tokenizer::stringToToken(std::string value) {
 		return NameTokenFactory::createToken(value);
 	}
 	else {
-		return TokenFactory::createToken(value);
+		throw SyntaxErrorException(value + " is an invalid token");
 	}
 }

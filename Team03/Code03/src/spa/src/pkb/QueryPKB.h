@@ -39,33 +39,45 @@ public:
     virtual vector<shared_ptr<CallStatement>> getAllCallStatements();
     virtual vector<shared_ptr<IfStatement>> getAllIfStatements();
     virtual vector<shared_ptr<WhileStatement>> getAllWhileStatements();
+    
+    virtual vector<shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
 
-    // Abstraction related API
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowS();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowT();
+    // Abstraction related
+    virtual vector<vector<shared_ptr<Entity>>> getFollowS();
+    virtual vector<vector<shared_ptr<Entity>>> getFollowT();
 
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentS();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentT();
+    virtual vector<vector<shared_ptr<Entity>>> getParentS();
+    virtual vector<vector<shared_ptr<Entity>>> getParentT();
 
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByAssign();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByPrint(); 
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByCall();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByIfWhile();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseAll();
+    virtual vector<vector<shared_ptr<Entity>>> getUseByAssign();
+    virtual vector<vector<shared_ptr<Entity>>> getUseByPrint(); 
+    virtual vector<vector<shared_ptr<Entity>>> getUseByCall();
+    virtual vector<vector<shared_ptr<Entity>>> getUseByIfWhile();
+    virtual vector<vector<shared_ptr<Entity>>> getUseAll();
     virtual unordered_map<string, set<shared_ptr<Variable>>> getUseByProcedure();
 
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByAssign();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByRead();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByCall();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByIfWhile();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAll();
+    virtual vector<vector<shared_ptr<Entity>>> getModifyByAssign();
+    virtual vector<vector<shared_ptr<Entity>>> getModifyByRead();
+    virtual vector<vector<shared_ptr<Entity>>> getModifyByCall();
+    virtual vector<vector<shared_ptr<Entity>>> getModifyByIfWhile();
+    virtual vector<vector<shared_ptr<Entity>>> getModifyAll();
     virtual unordered_map<string, set<shared_ptr<Variable>>> getModifyByProcedure();
 
-    // Pattern related API
+    // Pattern Related
     virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
 
-    virtual std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
+    
+
     // For testing purposes
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowSMap();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowTMap();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentSMap();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentTMap();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseAllMap();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByPrintMap();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAllMap();
+    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByReadMap();
+
     virtual void clear();
 };
 
