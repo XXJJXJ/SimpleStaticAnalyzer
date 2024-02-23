@@ -59,6 +59,7 @@ TEST_CASE("PredicateFactory successfully creates predicate objects") {
 	synonymMap["a"] = EntityType::Stmt;
 	synonymMap["b"] = EntityType::Stmt;
 	synonymMap["c"] = EntityType::Variable;
+	synonymMap["d"] = EntityType::Assign;
 	
 
 	SECTION("Testing successful creation of each type of predicate") {
@@ -68,7 +69,8 @@ TEST_CASE("PredicateFactory successfully creates predicate objects") {
 		std::vector<std::string> tokens4 = { "Parent", "(", "a", ",", "b", ")" };
 		std::vector<std::string> tokens5 = { "Parent*", "(", "a", ",", "b", ")" };
 		std::vector<std::string> tokens6 = { "Uses", "(", "a", ",", "c", ")" };
-		std::vector<std::string> tokens7 = { "Relationship", "(", "a", ",", "b", ")" };
+		std::vector<std::string> tokens7 = { "pattern", "d", "(", "c", ",", "_", ")"};
+		std::vector<std::string> tokens8 = { "Relationship", "(", "a", ",", "b", ")" };
 
 		REQUIRE_NOTHROW(pf.createPredicate(tokens1, synonymMap));
 		REQUIRE_NOTHROW(pf.createPredicate(tokens2, synonymMap));
@@ -76,7 +78,8 @@ TEST_CASE("PredicateFactory successfully creates predicate objects") {
 		REQUIRE_NOTHROW(pf.createPredicate(tokens4, synonymMap));
 		REQUIRE_NOTHROW(pf.createPredicate(tokens5, synonymMap));
 		REQUIRE_NOTHROW(pf.createPredicate(tokens6, synonymMap));
-		REQUIRE_THROWS(pf.createPredicate(tokens7, synonymMap));
+		REQUIRE_NOTHROW(pf.createPredicate(tokens7, synonymMap));
+		REQUIRE_THROWS(pf.createPredicate(tokens8, synonymMap));
 	}
 
 	// Applies to Follows, Follows*, Parent, Parent*, because they all have StatementRef as lhs and rhs. The actual validity of input is already tested in TestPredicateConstructors
@@ -96,13 +99,15 @@ TEST_CASE("PredicateFactory successfully creates predicate objects") {
 		REQUIRE_THROWS(pf.createPredicate(tokens6, synonymMap));
 	}
 
-	// Applies to rhs of Modifies and Uses. Lhs is ignored since input type is essentially == StatementRef. Once again actuall validity already tested in TestPredicateConstructors
+	// Applies to rhs of Modifies and Uses. Lhs is ignored since input type is essentially == StatementRef. 
+	// Also applies to lhs of AssignPattern
+	// Once again actuall validity already tested in TestPredicateConstructors
 	SECTION("Testing different input types for EntityRef") {
 		std::vector<std::string> tokens1 = { "Modifies", "(", "a", ",", "c", ")" }; //Valid synonyms
 		std::vector<std::string> tokens2 = { "Uses", "(", "a", ",", "_", ")" }; //Valid synonym + wildcard
 		std::vector<std::string> tokens3 = { "Modifies", "(", "a", ",", "\"b\"", ")" }; //Valid synonym + string (valid)
 		std::vector<std::string> tokens4 = { "Uses", "(", "a", ",", "b", ")" }; //Invalid synonym type
-		std::vector<std::string> tokens5 = { "Modifies", "(", "a", ",", "1", ")" }; //Integer (invalid)
+		std::vector<std::string> tokens5 = { "pattern", "d", "(", "1", ",", "_", ")"}; //Integer (invalid)
 
 		REQUIRE_NOTHROW(pf.createPredicate(tokens1, synonymMap));
 		REQUIRE_NOTHROW(pf.createPredicate(tokens2, synonymMap));

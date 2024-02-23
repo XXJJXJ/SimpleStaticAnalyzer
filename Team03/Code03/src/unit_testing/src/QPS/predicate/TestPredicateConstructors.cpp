@@ -8,14 +8,19 @@
 #include "qps/entity/clause/FollowsTPredicate.h"
 #include "qps/entity/clause/ParentPredicate.h"
 #include "qps/entity/clause/ParentTPredicate.h"
+#include "qps/entity/clause/AssignPatternPredicate.h"
 
 TEST_CASE("Predicates Input Validations", "[Predicates]") {
     Synonym stmtSyn(EntityType::Stmt, "s1");
     Synonym stmtSyn2(EntityType::Stmt, "s2");
     Synonym varSyn(EntityType::Variable, "v");
     Synonym procSyn(EntityType::Procedure, "p");
+    Synonym assignSyn(EntityType::Assign, "a");
     std::string validString = "procName"; // Example of a valid non-empty string for procedure names
     std::string wildcard = "_";
+    std::string characterString = "\"charString\"";
+    std::string exactMatch = "\"x*y\"";
+    std::string partialMatch = "_\"x*y\"_";
 
     SECTION("ModifiesPredicate and UsesPredicate Validation") {
         // ModifiesPredicate: LHS can be stmt, proc (synonym or string); RHS must be a variable (synonym or string)
@@ -45,6 +50,16 @@ TEST_CASE("Predicates Input Validations", "[Predicates]") {
         REQUIRE_THROWS(ParentPredicate(procSyn, stmtSyn2)); // Procedure cannot be a parent
         REQUIRE_NOTHROW(ParentTPredicate(stmtSyn, stmtSyn2));
         REQUIRE_THROWS(ParentTPredicate(procSyn, stmtSyn2)); // Invalid LHS type for ParentT
+    }
+
+    SECTION("AssignPatternPredicate Validation") {
+        REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, varSyn, wildcard));
+        REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, wildcard, exactMatch));
+        REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, characterString, partialMatch));
+        REQUIRE_THROWS(AssignPatternPredicate(procSyn, varSyn, wildcard)); // Pattern predicate must be assign
+        REQUIRE_THROWS(AssignPatternPredicate(assignSyn, procSyn, wildcard)); // LHS cannot be procedure synonym
+        REQUIRE_THROWS(AssignPatternPredicate(assignSyn, validString, wildcard)); // LHS character string must have ""
+        REQUIRE_THROWS(AssignPatternPredicate(assignSyn, varSyn, validString)); // Invalid RHS expression for matching 
     }
 
     SECTION("Wildcard and Non-empty String Checks") {

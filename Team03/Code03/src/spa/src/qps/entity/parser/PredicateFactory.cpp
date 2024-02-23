@@ -1,5 +1,6 @@
 #include "PredicateFactory.h"
 #include "qps/QueryValidator.h"
+#include "qps/entity/clause/AssignPatternPredicate.h"
 #include "qps/entity/clause/FollowsPredicate.h"
 #include "qps/entity/clause/FollowsTPredicate.h"
 #include "qps/entity/clause/ModifiesPredicate.h"
@@ -36,13 +37,24 @@ PredicateType getPredicateType(const std::string& keyword) {
 }
 
 std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {	
-	if (tokens.size() > 2 && tokens[0] == "such" && tokens[1] == "that") {
-		std::vector<std::string> predicateTokens(tokens.begin() + 2, tokens.end());
+	PredicateType predicateType = getPredicateType(tokens[0]);
+	
+	// Pattern clause
+	if (predicateType == PredicateType::Pattern) {
+		Synonym assignSyn = Synonym(tokens[1], synonymMap);
+		std::vector<std::string> patternTokens(tokens.begin() + 1, tokens.end());
+		std::vector<std::string> refs = extractRefs(patternTokens);
+		if (refs.size() == 2) {
+			AssignPatternPredicate predicate(assignSyn, stringToEntityRef(refs[0], synonymMap), refs[1]);
+			return std::make_shared<AssignPatternPredicate>(predicate);
+		}
+		else {
+			throw SyntaxErrorException("Invalid number of arguments in pattern clause");
+		}	
 	}
 
+	// Such that clause
 	std::vector<std::string> refs = extractRefs(tokens);
-	PredicateType predicateType = getPredicateType(tokens[0]);
-
 	if (refs.size() == 2) {
 		switch (predicateType) {
 		case PredicateType::Follows: {
@@ -74,7 +86,7 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
 		}
 	}
 	else {
-		throw new SyntaxErrorException("Invalid number of arguments in such that clause");
+		throw SyntaxErrorException("Invalid number of arguments in such that clause");
 	}
 }
 

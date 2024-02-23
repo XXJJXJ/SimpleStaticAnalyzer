@@ -17,7 +17,7 @@ std::vector<std::shared_ptr<Synonym>> SelectionsParser::parse(const std::vector<
 		for (size_t i = 2; i < len - 1; i++) {
 			std::string token = tokens[i];
 			if (isSyn) {
-				std::shared_ptr<Synonym> synonym = makeSynonym(token, synonymMap);
+				std::shared_ptr<Synonym> synonym = std::make_shared<Synonym>(token, synonymMap);
 				selections.push_back(synonym);
 				isSyn = false;
 			}
@@ -31,7 +31,7 @@ std::vector<std::shared_ptr<Synonym>> SelectionsParser::parse(const std::vector<
 	} 
 	// Select a single synonym
 	else if (len == 2) {
-		std::shared_ptr<Synonym> synonym = makeSynonym(tokens[1], synonymMap);
+		std::shared_ptr<Synonym> synonym = std::make_shared<Synonym>(tokens[1], synonymMap);
 		selections.push_back(synonym);
 	}
 	else {
@@ -39,15 +39,4 @@ std::vector<std::shared_ptr<Synonym>> SelectionsParser::parse(const std::vector<
 	}
 	
 	return selections;
-}
-
-std::shared_ptr<Synonym> SelectionsParser::makeSynonym(const std::string& synonymName, const std::unordered_map<std::string, EntityType>& synonymMap) {
-	try {
-		EntityType synonymType = synonymMap.at(synonymName);
-		std::shared_ptr<Synonym> synonym = std::make_shared<Synonym>(synonymType, synonymName);
-		return synonym;
-	}
-	catch (const std::out_of_range& e) {
-		throw SemanticErrorException("Selected synonym '" + synonymName + "' has not been declared");
-	}
 }
