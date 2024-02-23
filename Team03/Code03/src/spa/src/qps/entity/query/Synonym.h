@@ -5,6 +5,7 @@
 
 #include "common/EntityType.h"
 #include <string>
+#include <unordered_map>
 
 
 #include <functional> // Required for std::hash
