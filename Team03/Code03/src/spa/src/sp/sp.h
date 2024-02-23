@@ -6,6 +6,7 @@
 #include <sp/parser/Parser.h>
 #include <common/spa_exception/SpaException.h>
 #include "sp/tokenizer/Tokenizer.h"
+#include "pkb/PopulatePKB.h"
 
 using namespace std;
 
