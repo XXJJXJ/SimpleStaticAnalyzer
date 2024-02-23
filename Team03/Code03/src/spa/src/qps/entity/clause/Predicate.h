@@ -25,6 +25,10 @@ public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion
     virtual shared_ptr<Strategy> getStrategy() const = 0; // Pure virtual function
     [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
+    [[nodiscard]] virtual shared_ptr<Table> getTable(const QueryManager& qm) {
+        // Temp implementation to get code compiling, TODO: remove and set pure virtual
+        return make_shared<Table>();
+    };
 };
 
 #endif // RELATIONSHIPPREDICATE_H

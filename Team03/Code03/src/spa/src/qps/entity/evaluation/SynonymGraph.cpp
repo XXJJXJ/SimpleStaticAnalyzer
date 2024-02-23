@@ -1,6 +1,8 @@
 #include "SynonymGraph.h"
 #include <stack>
 
+// ai-gen start (gpt, 1, e)
+// prompt: https://chat.openai.com/share/7b6dae68-063a-4ce8-9fd0-bd2ac43f9fe4
 SynonymGraph::SynonymGraph(const std::vector<std::shared_ptr<Predicate>>& predicates) : predicates(predicates) {
     for (const auto& predicate : predicates) {
         auto synonyms = predicate->getSynonyms();
@@ -38,4 +40,4 @@ void SynonymGraph::DFS(std::shared_ptr<Synonym> v, std::unordered_set<std::share
         }
     }
 }
-
+// ai-gen end

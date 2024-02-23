@@ -1,3 +1,5 @@
+// ai-gen start (gpt, 1, e)
+// prompt: https://chat.openai.com/share/7b6dae68-063a-4ce8-9fd0-bd2ac43f9fe4
 #ifndef SYNONYMGRAPH_H
 #define SYNONYMGRAPH_H
 
@@ -22,3 +24,4 @@ private:
 };
 
 #endif // SYNONYMGRAPH_H
+// ai-gen end

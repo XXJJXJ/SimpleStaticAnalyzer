@@ -78,5 +78,24 @@ void QueryEvaluationContext::setSynonymGroups(
     this->synonymGroups = synonymGroups;
 }
 
+// ai-gen end
 
+// ai-gen start(gpt, 0, e)
+// prompt: https://chat.openai.com/share/7c590366-8e0e-40e2-863f-2862fa1ae192
+bool QueryEvaluationContext::isTableInitialized(const Synonym& synonym) const {
+    return synonymToTableMap.find(synonym) != synonymToTableMap.end();
+}
+
+void QueryEvaluationContext::putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<Table>& table) {
+    // Find the synonym group for the given synonym
+    for (const auto& group : synonymGroups) {
+        if (group.find(std::make_shared<Synonym>(synonym)) != group.end()) {
+            // For each synonym in the group, initialize the table
+            for (const auto& syn : group) {
+                synonymToTableMap[*syn] = table;
+            }
+            break;
+        }
+    }
+}
 

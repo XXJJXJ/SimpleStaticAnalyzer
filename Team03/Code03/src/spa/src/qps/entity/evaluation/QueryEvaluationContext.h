@@ -26,6 +26,8 @@ public:
     void clearTables();
     [[nodiscard]] std::shared_ptr<Table> getTableForSynonym(const Synonym& synonym) const;
     [[nodiscard]] bool containsSynonym(const Synonym& synonym) const;
+    [[nodiscard]] bool isTableInitialized(const Synonym& synonym) const;
+    void putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<Table>& table);
     [[nodiscard]] std::vector<Synonym> getSynonyms() const;
     [[nodiscard]] std::shared_ptr<QueryManager> getQueryManager() const;
     void setQueryManager(const std::shared_ptr<QueryManager>& queryManager);
@@ -36,6 +38,7 @@ public:
     void setSynonymGroups(const std::vector<std::unordered_set<std::shared_ptr<Synonym>>>& synonymGroups);
 };
 
-#endif // QUERYEVALUATIONCONTEXT_H
+#endif // QUERY_EVALUATION_CONTEXT_H
+
 
 // ai-gen end
