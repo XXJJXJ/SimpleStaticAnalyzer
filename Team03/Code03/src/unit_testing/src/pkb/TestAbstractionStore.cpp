@@ -166,3 +166,95 @@ TEST_CASE("Store and retrieve Uses") {
     REQUIRE((useByProcedure["main"].find(x) == useByProcedure["main"].end()));
     pop.clear();
 }
+
+TEST_CASE("Test container stmt Uses and Modifies") {
+    Populator pop;
+    pop.clear();
+
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
+    shared_ptr<WhileStatement> stmt1 = make_shared<WhileStatement>(1, cond, "main");
+    shared_ptr<IfStatement> stmt2 = make_shared<IfStatement>(2, cond,"main");
+    // then
+    shared_ptr<PrintStatement> stmt3 = make_shared<PrintStatement>(3, y, "main");
+    shared_ptr<ReadStatement> stmt4 = make_shared<ReadStatement>(4, x, "main");
+    // else
+    shared_ptr<PrintStatement> stmt5 = make_shared<PrintStatement>(5, x, "main");
+    shared_ptr<ReadStatement> stmt6 = make_shared<ReadStatement>(6, y, "main");
+    // Random while loop in outermost layer and has nothing inside (not allowed, but used for the sake of negative testcases)
+    shared_ptr<WhileStatement> stmt7 = make_shared<WhileStatement>(7, cond, "main");
+
+
+    pop.addParent(stmt1, stmt2);
+    pop.addParent(stmt2, stmt3);
+    pop.addParent(stmt2, stmt4);
+    pop.addParent(stmt2, stmt5);
+    pop.addParent(stmt2, stmt6);
+
+    pop.addUses(stmt3, y);
+    pop.addUses(stmt5, x);
+
+    pop.addModifies(stmt4, x);
+    pop.addModifies(stmt6, y);
+
+    pop.tabulateUses();
+    pop.tabulateModifies();
+
+    QueryManager qm;
+    SECTION("Test stmt container uses") {
+        auto useAllStmt = qm.getUseAllMap();
+
+        SECTION("Trivial test cases, direct uses, either x or y") {
+            REQUIRE((useAllStmt[stmt3].find(y) != useAllStmt[stmt3].end()));
+            REQUIRE((useAllStmt[stmt3].find(x) == useAllStmt[stmt3].end()));
+
+            REQUIRE((useAllStmt[stmt5].find(x) != useAllStmt[stmt5].end()));
+            REQUIRE((useAllStmt[stmt5].find(y) == useAllStmt[stmt5].end()));
+        }
+        
+        // if statement have both
+        SECTION("Parent if statement uses both x and y") {
+            REQUIRE((useAllStmt[stmt2].find(x) != useAllStmt[stmt2].end()));
+            REQUIRE((useAllStmt[stmt2].find(y) != useAllStmt[stmt2].end()));
+        }
+        
+        SECTION("Parent while statement uses both x and y") {
+            REQUIRE((useAllStmt[stmt1].find(x) != useAllStmt[stmt1].end()));
+            REQUIRE((useAllStmt[stmt1].find(y) != useAllStmt[stmt1].end()));
+        }
+
+        SECTION("Dummy while statement with nothing") {
+            REQUIRE((useAllStmt[stmt7].find(x) == useAllStmt[stmt7].end()));
+            REQUIRE((useAllStmt[stmt7].find(y) == useAllStmt[stmt7].end()));
+        }
+    }
+    
+    SECTION("Test stmt container modifies") {
+        auto modifiesAllStmt = qm.getModifyAllMap();
+
+        SECTION("Trivial test cases, direct modifies, either x or y") {
+            REQUIRE((modifiesAllStmt[stmt4].find(y) == modifiesAllStmt[stmt4].end()));
+            REQUIRE((modifiesAllStmt[stmt4].find(x) != modifiesAllStmt[stmt4].end()));
+
+            REQUIRE((modifiesAllStmt[stmt6].find(x) == modifiesAllStmt[stmt6].end()));
+            REQUIRE((modifiesAllStmt[stmt6].find(y) != modifiesAllStmt[stmt6].end()));
+        }
+        
+        // if statement have both
+        SECTION("Parent if statement modifies both x and y") {
+            REQUIRE((modifiesAllStmt[stmt2].find(x) != modifiesAllStmt[stmt2].end()));
+            REQUIRE((modifiesAllStmt[stmt2].find(y) != modifiesAllStmt[stmt2].end()));
+        }
+        
+        SECTION("Parent while statement modifies both x and y") {
+            REQUIRE((modifiesAllStmt[stmt1].find(x) != modifiesAllStmt[stmt1].end()));
+            REQUIRE((modifiesAllStmt[stmt1].find(y) != modifiesAllStmt[stmt1].end()));
+        }
+
+        SECTION("Dummy while statement with nothing") {
+            REQUIRE((modifiesAllStmt[stmt7].find(x) == modifiesAllStmt[stmt7].end()));
+            REQUIRE((modifiesAllStmt[stmt7].find(y) == modifiesAllStmt[stmt7].end()));
+        }
+    }
+}

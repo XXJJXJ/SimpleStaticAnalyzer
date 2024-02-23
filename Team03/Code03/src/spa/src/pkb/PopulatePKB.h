@@ -36,5 +36,8 @@ public:
     bool addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     bool addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
 
+    void tabulateUses();
+    void tabulateModifies();
+
     void clear();
 };
