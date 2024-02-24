@@ -118,6 +118,10 @@ vector<shared_ptr<CallStatement>> EntityManager::getAllCallStatements() {
     return {};
 }
 
+shared_ptr<Procedure> EntityManager::getProcByName(const string& procName) {
+    return procStore.getProcByName(procName);
+}
+
 
 void EntityManager::clear() {
     if (!instance) {

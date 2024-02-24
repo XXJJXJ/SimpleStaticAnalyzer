@@ -71,6 +71,8 @@ public:
 
     vector<shared_ptr<Statement>> getAllStatements();
 
+    shared_ptr<Procedure> getProcByName(const string& procName);
+
     static void clear();
     ~EntityManager();
 };
