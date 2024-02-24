@@ -52,3 +52,16 @@ TEST_CASE("QueryTokenizer::tokenize should support synonyms with names that are 
 
 	REQUIRE(result == expectedResult);
 }
+
+TEST_CASE("QueryTokenizer::splitTokens should throw error if clauses are in the wrong order") {
+	QueryTokenizer qe;
+	std::string testQuery1 = "variable a, b; assign c; Select a such that Follows (a, _) pattern a(_, _)";
+	std::string testQuery2 = "variable a, b; Select a assign c; such that Follows (a, _) pattern a(_, _)"; // Declaration after Select
+	std::string testQuery3 = "variable a, b; such that Follows (a, _) assign c; Select a  pattern a(_, _)"; // Clause before Declaration
+	std::string testQuery4 = "variable a, b; assign c; such that Follows (a, _) pattern a(_, _) Select a"; // Select after clause
+
+	REQUIRE_NOTHROW(qe.tokenize(testQuery1));
+	REQUIRE_THROWS(qe.tokenize(testQuery2));
+	REQUIRE_THROWS(qe.tokenize(testQuery3));
+	REQUIRE_THROWS(qe.tokenize(testQuery4));
+}

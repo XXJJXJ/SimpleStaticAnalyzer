@@ -16,6 +16,7 @@ private:
     std::string name;
 public:
     Synonym(EntityType type, const std::string &name);
+    Synonym(const std::string& synonymName, const std::unordered_map<std::string, EntityType>& synonymMap);
 
     [[nodiscard]] EntityType getType() const;
 

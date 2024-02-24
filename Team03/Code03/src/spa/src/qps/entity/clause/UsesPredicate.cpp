@@ -1,12 +1,12 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "UsesPredicate.h"
-#include <stdexcept> // For std::invalid_argument
+#include "common/spa_exception/SyntaxErrorException.h"
 
 UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidLhs(this->lhs) || !isValidRhs(this->rhs)) {
-        throw std::invalid_argument("Invalid arguments for UsesPredicate constructor");
+        throw SyntaxErrorException("Invalid arguments for UsesPredicate constructor");
     }
 }
 

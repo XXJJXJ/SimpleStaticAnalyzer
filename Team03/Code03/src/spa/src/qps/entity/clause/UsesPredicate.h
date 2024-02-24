@@ -11,7 +11,6 @@
 class Strategy;
 
 using UsesLhsRef = std::variant<int, Synonym, std::string>; // Combination of procedure and statements ref
-using EntityRef = std::variant<Synonym, std::string>; // For RHS, holding variable Synonyms or variable names
 
 class UsesPredicate : public Predicate {
 private:

@@ -1,10 +1,11 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "FollowsPredicate.h"
+#include "common/spa_exception/SyntaxErrorException.h"
 
 FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs) || isWildcard(rhs)) {
-        throw std::invalid_argument("Invalid argument for FollowsPredicate constructor");
+        throw SyntaxErrorException("Invalid argument for FollowsPredicate constructor");
     }
     this->lhs = std::move(lhs);
     this->rhs = std::move(rhs);
