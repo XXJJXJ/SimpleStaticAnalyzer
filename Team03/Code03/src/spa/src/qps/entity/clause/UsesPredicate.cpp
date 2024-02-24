@@ -9,11 +9,11 @@ UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
         throw SyntaxErrorException("Invalid arguments for UsesPredicate constructor");
     }
     if (std::holds_alternative<Synonym>(this->lhs)) {
-        auto synonym = std::get<Synonym>(lhs);
+        auto synonym = std::get<Synonym>(this->lhs);
         this->synonyms.push_back(std::make_shared<Synonym>(synonym));
     }
     if (std::holds_alternative<Synonym>(this->rhs)) {
-        auto synonym = std::get<Synonym>(rhs);
+        auto synonym = std::get<Synonym>(this->rhs);
         this->synonyms.push_back(std::make_shared<Synonym>(synonym));
     }
 }

@@ -74,7 +74,7 @@ std::shared_ptr<BaseTable> QueryEvaluationContext::getResultTable() const {
 }
 
 void QueryEvaluationContext::setSynonymGroups(
-        const vector<std::unordered_set<std::shared_ptr<Synonym>>> &synonymGroups) {
+        const vector<SynonymPtrSet> &synonymGroups) {
     this->synonymGroups = synonymGroups;
 }
 

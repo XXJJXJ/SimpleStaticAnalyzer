@@ -9,6 +9,7 @@
 
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/69b2d8ce-dffd-44f8-b7ab-48a128e89a6a
+// prompt: https://chat.openai.com/share/7c590366-8e0e-40e2-863f-2862fa1ae192
 TEST_CASE("QueryEvaluationContext::getResults throws when multiple tables are present and one is empty", "[QueryEvaluationContext]") {
     QueryEvaluationContext qec;
 

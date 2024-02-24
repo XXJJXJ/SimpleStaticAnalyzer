@@ -12,14 +12,14 @@
 class SynonymGraph {
 public:
     SynonymGraph(const std::vector<std::shared_ptr<Predicate>>& predicates);
-    std::vector<std::unordered_set<std::shared_ptr<Synonym>>> groupSynonyms();
+    std::vector<SynonymPtrSet> groupSynonyms();
 
 private:
     void addEdge(const std::shared_ptr<Synonym>& u, const std::shared_ptr<Synonym>& v);
-    void DFS(std::shared_ptr<Synonym> v, std::unordered_set<std::shared_ptr<Synonym>>& component);
+    void DFS(std::shared_ptr<Synonym> v, SynonymPtrSet & component);
 
     std::vector<std::shared_ptr<Predicate>> predicates;
-    std::unordered_map<std::shared_ptr<Synonym>, std::vector<std::shared_ptr<Synonym>>, std::hash<std::shared_ptr<Synonym>>, std::equal_to<>> adjList;
+    std::unordered_map<std::shared_ptr<Synonym>, std::vector<std::shared_ptr<Synonym>>, SynonymPtrHash, SynonymPtrEqual> adjList;
     std::unordered_set<std::shared_ptr<Synonym>> visited;
 };
 

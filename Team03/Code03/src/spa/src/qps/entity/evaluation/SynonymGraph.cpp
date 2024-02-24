@@ -19,11 +19,11 @@ void SynonymGraph::addEdge(const std::shared_ptr<Synonym>& u, const std::shared_
     adjList[u].push_back(v);
 }
 
-std::vector<std::unordered_set<std::shared_ptr<Synonym>>> SynonymGraph::groupSynonyms() {
-    std::vector<std::unordered_set<std::shared_ptr<Synonym>>> groups;
+std::vector<SynonymPtrSet> SynonymGraph::groupSynonyms() {
+    std::vector<SynonymPtrSet> groups;
     for (const auto& pair : adjList) {
         if (visited.find(pair.first) == visited.end()) {
-            std::unordered_set<std::shared_ptr<Synonym>> component;
+            SynonymPtrSet component;
             DFS(pair.first, component);
             groups.push_back(component);
         }
@@ -31,7 +31,7 @@ std::vector<std::unordered_set<std::shared_ptr<Synonym>>> SynonymGraph::groupSyn
     return groups;
 }
 
-void SynonymGraph::DFS(std::shared_ptr<Synonym> v, std::unordered_set<std::shared_ptr<Synonym>>& component) {
+void SynonymGraph::DFS(std::shared_ptr<Synonym> v, SynonymPtrSet & component) {
     visited.insert(v);
     component.insert(v);
     for (auto& adjSynonym : adjList[v]) {

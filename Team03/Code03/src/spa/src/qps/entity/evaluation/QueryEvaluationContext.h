@@ -18,7 +18,7 @@ private:
     std::unordered_map<Synonym, std::shared_ptr<BaseTable>> synonymToTableMap;
     std::shared_ptr<QueryManager> queryManager;
     std::shared_ptr<BaseTable> resultTable;
-    std::vector<std::unordered_set<std::shared_ptr<Synonym>>> synonymGroups;
+    std::vector<SynonymPtrSet> synonymGroups;
 
 public:
     QueryEvaluationContext();
@@ -35,7 +35,7 @@ public:
     void setResultTable(const std::shared_ptr<BaseTable>& _resultTable);
     [[nodiscard]] std::shared_ptr<BaseTable> getResultTable() const;
     [[nodiscard]] bool isResultEmpty() const;
-    void setSynonymGroups(const std::vector<std::unordered_set<std::shared_ptr<Synonym>>>& synonymGroups);
+    void setSynonymGroups(const std::vector<SynonymPtrSet>& synonymGroups);
 };
 
 #endif // QUERY_EVALUATION_CONTEXT_H
