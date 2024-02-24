@@ -14,6 +14,7 @@ TEST_CASE("QueryEvaluationContext::getResults throws when multiple tables are pr
 
     auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
     auto table1 = std::make_shared<HeaderTable>();
+    table1->setHeaders({synonym1});
     table1->addRow(TableRow({std::make_shared<MockEntity>("value1")}));
     qec.addTableForSynonym(*synonym1, table1);
 
@@ -43,6 +44,7 @@ TEST_CASE("QueryEvaluationContext::getResults handles special characters in enti
     QueryEvaluationContext qec;
     auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
     auto table = std::make_shared<HeaderTable>();
+    table->setHeaders({synonym});
     table->addRow(TableRow({std::make_shared<MockEntity>("$1")}));
     table->addRow(TableRow({std::make_shared<MockEntity>("value#2")}));
     table->addRow(TableRow({std::make_shared<MockEntity>("value, 3")}));

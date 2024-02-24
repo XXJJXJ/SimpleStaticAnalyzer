@@ -20,7 +20,7 @@ private:
 public:
     FollowsPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsPredicate() override = default;
-    [[nodiscard]] shared_ptr<HeaderTable> getTable(QueryManager& qm) override;
+    [[nodiscard]] shared_ptr<BaseTable> getTable(QueryManager& qm) override;
 };
 
 #endif // FOLLOWSPREDICATE_H

@@ -9,31 +9,31 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
-#include "HeaderTable.h" // Include the HeaderTable class header
+#include "BaseTable.h" // Include the BaseTable class header
 #include "qps/entity/query/Synonym.h"
 #include "pkb/QueryPKB.h"
 
 class QueryEvaluationContext {
 private:
-    std::unordered_map<Synonym, std::shared_ptr<HeaderTable>> synonymToTableMap;
+    std::unordered_map<Synonym, std::shared_ptr<BaseTable>> synonymToTableMap;
     std::shared_ptr<QueryManager> queryManager;
-    std::shared_ptr<HeaderTable> resultTable;
+    std::shared_ptr<BaseTable> resultTable;
     std::vector<std::unordered_set<std::shared_ptr<Synonym>>> synonymGroups;
 
 public:
     QueryEvaluationContext();
-    void addTableForSynonym(const Synonym& synonym, const std::shared_ptr<HeaderTable>& table);
+    void addTableForSynonym(const Synonym& synonym, const std::shared_ptr<BaseTable>& table);
     void clearTables();
-    [[nodiscard]] std::shared_ptr<HeaderTable> getTableForSynonym(const Synonym& synonym) const;
+    [[nodiscard]] std::shared_ptr<BaseTable> getTableForSynonym(const Synonym& synonym) const;
     [[nodiscard]] bool containsSynonym(const Synonym& synonym) const;
     [[nodiscard]] bool isTableInitialized(const Synonym& synonym) const;
-    void putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<HeaderTable>& table);
+    void putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<BaseTable>& table);
     [[nodiscard]] std::vector<Synonym> getSynonyms() const;
     [[nodiscard]] std::shared_ptr<QueryManager> getQueryManager() const;
     void setQueryManager(const std::shared_ptr<QueryManager>& queryManager);
     [[nodiscard]] std::vector<std::string> getResults() const;
-    void setResultTable(const std::shared_ptr<HeaderTable>& _resultTable);
-    [[nodiscard]] std::shared_ptr<HeaderTable> getResultTable() const;
+    void setResultTable(const std::shared_ptr<BaseTable>& _resultTable);
+    [[nodiscard]] std::shared_ptr<BaseTable> getResultTable() const;
     [[nodiscard]] bool isResultEmpty() const;
     void setSynonymGroups(const std::vector<std::unordered_set<std::shared_ptr<Synonym>>>& synonymGroups);
 };

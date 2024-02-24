@@ -11,7 +11,7 @@ public:
         int statementNumber,
         EntityType statementType,
         string procedureName);
-    void accept(shared_ptr<Visitor> visitor) override = 0;
+    void accept(shared_ptr<Visitor> visitor) override;
     int getStatementNumber() const;
     EntityType getStatementType() const;
     string getProcedureName() const;

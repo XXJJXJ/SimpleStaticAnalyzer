@@ -41,3 +41,8 @@ EntityType Statement::getType() const {
 bool Statement::isOfType(EntityType type) const {
     return type == this->getType();
 }
+
+// Empty function to make Statement non-abstract
+void Statement::accept(shared_ptr<Visitor> visitor) {
+
+}

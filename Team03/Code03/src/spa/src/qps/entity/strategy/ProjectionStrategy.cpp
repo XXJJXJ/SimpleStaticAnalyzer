@@ -4,6 +4,7 @@
 
 #include "ProjectionStrategy.h"
 #include <algorithm>
+#include "qps/entity/evaluation/HeaderTable.h"
 
 ProjectionStrategy::ProjectionStrategy(std::shared_ptr<Synonym> synonym) : targetSynonym(std::move(synonym)) {}
 
@@ -11,7 +12,7 @@ void ProjectionStrategy::execute(QueryEvaluationContext &context) {
     // Check all tables in the context; if any is empty, return an empty table directly.
     if (context.isResultEmpty()) {
         HeaderTable emptyTable;
-        emptyTable.setHeaders({*targetSynonym});
+        emptyTable.setHeaders({targetSynonym});
         context.setResultTable(std::make_shared<HeaderTable>(emptyTable));
         return;
     }
@@ -22,7 +23,7 @@ void ProjectionStrategy::execute(QueryEvaluationContext &context) {
         // Synonym not used in constructing tables, query QueryManager for entities by type
         auto entities = context.getQueryManager()->getAllEntitiesByType(targetSynonym->getType());
         HeaderTable newTable;
-        newTable.setHeaders({*targetSynonym}); // Assuming setHeaders method exists
+        newTable.setHeaders({targetSynonym}); // Assuming setHeaders method exists
 
         for (const auto& entity : entities) {
             // Convert entity to TableRow and add to newTable
@@ -33,7 +34,11 @@ void ProjectionStrategy::execute(QueryEvaluationContext &context) {
         context.setResultTable(std::make_shared<HeaderTable>(newTable));
     } else {
         // If the synonym's table exists and is not empty, select the column and project it.
-        HeaderTable projectedTable = table->selectColumns({*targetSynonym});
+        auto castedTable = std::dynamic_pointer_cast<HeaderTable>(table);
+        if (!castedTable) {
+            throw std::runtime_error("ProjectionStrategy: table for synonym is not a HeaderTable");
+        }
+        HeaderTable projectedTable = castedTable->selectColumns({targetSynonym});
         context.setResultTable(std::make_shared<HeaderTable>(projectedTable));
     }
 }

@@ -9,7 +9,7 @@
 
 QueryEvaluationContext::QueryEvaluationContext() : queryManager(std::make_shared<QueryManager>()) {}
 
-void QueryEvaluationContext::addTableForSynonym(const Synonym& synonym, const std::shared_ptr<HeaderTable>& table) {
+void QueryEvaluationContext::addTableForSynonym(const Synonym& synonym, const std::shared_ptr<BaseTable>& table) {
     synonymToTableMap[synonym] = table;
 }
 
@@ -17,7 +17,7 @@ void QueryEvaluationContext::clearTables() {
     synonymToTableMap.clear();
 }
 
-std::shared_ptr<HeaderTable> QueryEvaluationContext::getTableForSynonym(const Synonym& synonym) const {
+std::shared_ptr<BaseTable> QueryEvaluationContext::getTableForSynonym(const Synonym& synonym) const {
     auto it = synonymToTableMap.find(synonym);
     if (it != synonymToTableMap.end()) {
         return it->second;
@@ -52,7 +52,7 @@ std::vector<std::string> QueryEvaluationContext::getResults() const {
     return resultTable->toStrings();
 }
 
-void QueryEvaluationContext::setResultTable(const shared_ptr<HeaderTable> &_resultTable) {
+void QueryEvaluationContext::setResultTable(const shared_ptr<BaseTable> &_resultTable) {
     this->resultTable = _resultTable;
 }
 
@@ -69,7 +69,7 @@ bool QueryEvaluationContext::isResultEmpty() const {
     return false;
 }
 
-std::shared_ptr<HeaderTable> QueryEvaluationContext::getResultTable() const {
+std::shared_ptr<BaseTable> QueryEvaluationContext::getResultTable() const {
     return resultTable;
 }
 
@@ -86,7 +86,7 @@ bool QueryEvaluationContext::isTableInitialized(const Synonym& synonym) const {
     return synonymToTableMap.find(synonym) != synonymToTableMap.end();
 }
 
-void QueryEvaluationContext::putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<HeaderTable>& table) {
+void QueryEvaluationContext::putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<BaseTable>& table) {
     // Find the synonym group for the given synonym
     for (const auto& group : synonymGroups) {
         if (group.find(std::make_shared<Synonym>(synonym)) != group.end()) {

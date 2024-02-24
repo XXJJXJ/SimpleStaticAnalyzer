@@ -16,18 +16,18 @@ using namespace std;
 // Class to represent the table itself.
 class HeaderTable : public BaseTable {
 private:
-    std::vector<Synonym> headers;
+    std::vector<shared_ptr<Synonym>> headers;
     std::unordered_map<Synonym, int> headerIndexMap; // Mapping from synonym to index
-    std::vector<TableRow> rows;
-    bool isValidRow(const TableRow& row) const;
+    bool isValidRow(const TableRow& row) const override;
 
 public:
     HeaderTable() = default;
-    HeaderTable(const vector<Synonym>& headers, const vector<vector<shared_ptr<Entity>>>& entities);
-    void setHeaders(const vector<Synonym>& headers);
-    [[nodiscard]] const vector<Synonym>& getHeaders() const;
-    [[nodiscard]] HeaderTable selectColumns(const vector<Synonym>& synonyms) const; // Projection operation
-    shared_ptr<HeaderTable> join(HeaderTable& other);
+    HeaderTable(const vector<shared_ptr<Synonym>>& headers, const vector<vector<shared_ptr<Entity>>>& entities);
+    HeaderTable(const vector<shared_ptr<Synonym>>& headers, BaseTable& baseTable);
+    void setHeaders(const vector<shared_ptr<Synonym>>& headers);
+    [[nodiscard]] const vector<shared_ptr<Synonym>>& getHeaders() const;
+    [[nodiscard]] HeaderTable selectColumns(const vector<shared_ptr<Synonym>>& synonyms) const; // Projection operation
+    shared_ptr<BaseTable> join(BaseTable& other) override;
 
     void updateHeaderIndexMap(); // Utility function to update headerIndexMap
     int indexOf(const Synonym& synonym) const; // Get index of a synonym

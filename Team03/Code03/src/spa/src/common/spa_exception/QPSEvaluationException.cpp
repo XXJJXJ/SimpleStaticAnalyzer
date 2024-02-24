@@ -1,6 +1,3 @@
-//
-// Created by ZHENGTAO JIANG on 24/2/24.
-//
 
 #include "QPSEvaluationException.h"
 

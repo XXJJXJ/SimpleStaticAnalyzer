@@ -20,9 +20,9 @@ protected:
 public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion
     [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
-    [[nodiscard]] virtual shared_ptr<HeaderTable> getTable(QueryManager& qm) {
+    [[nodiscard]] virtual shared_ptr<BaseTable> getTable(QueryManager& qm) {
         // Temp implementation to get code compiling, TODO: remove and set pure virtual
-        return make_shared<HeaderTable>();
+        return make_shared<BaseTable>();
     };
 };
 
