@@ -10,7 +10,6 @@
 class Strategy;
 
 using ModifiesLhsRef = std::variant<int, Synonym, std::string>; // Combination of procedure and statements ref
-using EntityRef = std::variant<Synonym, std::string>;
 
 class ModifiesPredicate : public Predicate {
 private:

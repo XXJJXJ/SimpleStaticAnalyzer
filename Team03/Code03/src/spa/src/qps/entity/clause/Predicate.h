@@ -10,8 +10,9 @@
 template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
-// StatementRef for statement references: int, Synonym, or "_"
-using StatementRef = std::variant<int, Synonym, std::string>;
+
+using StatementRef = std::variant<int, Synonym, std::string>; // stmtRef: synonym | '_' | INTEGER
+using EntityRef = std::variant<Synonym, std::string>; // entRef : synonym | '_' | '"' IDENT '"'
 
 /**
  * Base class for all filtering conditions in a query, including relationship, pattern and with

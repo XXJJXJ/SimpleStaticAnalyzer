@@ -1,7 +1,7 @@
 #include "EntityExtractor.h"
 
-EntityExtractor::EntityExtractor() {
-	pkbPopulator = make_shared<Populator>();
+EntityExtractor::EntityExtractor(shared_ptr<Populator> pkb) {
+	pkbPopulator = pkb;
 }
 
 void EntityExtractor::processStatements(StatementListContainer statementList) {
@@ -11,7 +11,7 @@ void EntityExtractor::processStatements(StatementListContainer statementList) {
 }
 
 void EntityExtractor::extractArgs(optional<PairOfArguments> arguments) {
-	auto& [lhs, rhs] = *arguments;
+	auto &[lhs, rhs] = *arguments;
 	if (lhs) {
 		lhs->accept(make_shared<EntityExtractor>(*this));
 	}

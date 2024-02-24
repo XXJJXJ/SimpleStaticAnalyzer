@@ -1,12 +1,12 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "ModifiesPredicate.h"
-#include <stdexcept> // For std::invalid_argument
+#include "common/spa_exception/SyntaxErrorException.h"
 
 ModifiesPredicate::ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidLhs(this->lhs) || !isValidRhs(this->rhs)) {
-        throw std::invalid_argument("Invalid arguments for ModifiesPredicate constructor");
+        throw SyntaxErrorException("Invalid arguments for ModifiesPredicate constructor");
     }
     if (std::holds_alternative<Synonym>(this->lhs)) {
         auto synonym = std::get<Synonym>(lhs);
