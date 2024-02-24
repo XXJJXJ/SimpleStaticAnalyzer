@@ -14,6 +14,7 @@ public:
 	string getName() const override;
 	StatementListContainer getStatementList() const;
     [[nodiscard]] EntityType getType() const override;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 
 private:
 	string procedureName;

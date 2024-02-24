@@ -19,3 +19,11 @@ optional<PairOfArguments> Expression::getArguments() const {
     return arguments;
 }
 
+EntityType Expression::getType() const {
+    return EntityType::Expression;
+}
+
+bool Expression::isOfType(EntityType type) const {
+    return type == this->getType();
+}
+

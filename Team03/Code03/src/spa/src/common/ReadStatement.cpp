@@ -20,3 +20,7 @@ void ReadStatement::accept(shared_ptr<Visitor> visitor) {
 EntityType ReadStatement::getType() const {
     return EntityType::Read;
 }
+
+bool ReadStatement::isOfType(EntityType type) const {
+    return type == this->getType() || Statement::isOfType(type);
+}

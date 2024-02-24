@@ -20,6 +20,7 @@ public:
 
     std::size_t hash() const;
 	bool operator==(const Statement& other) const;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 
 private:
     const int statementNumber;

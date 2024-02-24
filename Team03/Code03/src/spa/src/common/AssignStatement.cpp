@@ -27,3 +27,7 @@ shared_ptr<Expression> AssignStatement::getExpression() const {
 EntityType AssignStatement::getType() const {
     return EntityType::Assign;
 }
+
+bool AssignStatement::isOfType(EntityType type) const {
+    return type == this->getType() || Statement::isOfType(type);
+}

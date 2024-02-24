@@ -35,3 +35,7 @@ StatementListContainer IfStatement::getElseStatementList() const {
 EntityType IfStatement::getType() const {
     return EntityType::If;
 }
+
+bool IfStatement::isOfType(EntityType type) const {
+    return type == this->getType() || Statement::isOfType(type);
+}

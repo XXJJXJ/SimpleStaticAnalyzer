@@ -11,6 +11,8 @@ public:
     std::string getName() const override { return name; } // Assuming Entity has getName()
     void accept(shared_ptr<Visitor> visitor) override {}
     [[nodiscard]] EntityType getType() const override { return type; }
+    // We always return true for mock entity, as it's not meant for checking type
+    [[nodiscard]] bool isOfType(EntityType type) const override { return true; }
 };
 
 

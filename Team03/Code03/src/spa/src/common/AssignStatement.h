@@ -15,6 +15,7 @@ public:
     shared_ptr<Variable> getVariable() const;
     shared_ptr<Expression> getExpression() const;
     [[nodiscard]] EntityType getType() const override;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 
 private:
     shared_ptr<Variable> variable;

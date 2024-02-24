@@ -30,3 +30,7 @@ bool ConditionalOperation::operator==(const Expression& other) const {
 EntityType ConditionalOperation::getType() const {
     return EntityType::Conditional;
 }
+
+bool ConditionalOperation::isOfType(EntityType type) const {
+    return type == this->getType() || Operation::isOfType(type);
+}

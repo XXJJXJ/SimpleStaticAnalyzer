@@ -14,6 +14,8 @@ public:
     string getName() const override;
     virtual inline bool isLeafNodeExpression() { return false; }
     virtual bool operator==(const Expression& other) const;
+    [[nodiscard]] EntityType getType() const override;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 
 protected:
     optional<PairOfArguments> arguments;

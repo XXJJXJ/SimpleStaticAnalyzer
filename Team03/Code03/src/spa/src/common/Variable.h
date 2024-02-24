@@ -12,6 +12,7 @@ public:
 
 	std::size_t hash() const;
 	bool operator==(const Variable& other) const;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 };
 
 namespace std {

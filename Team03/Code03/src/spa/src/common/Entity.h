@@ -16,4 +16,5 @@ public:
         return !(*this == other);
     }
     [[nodiscard]] virtual EntityType getType() const = 0;
+    [[nodiscard]] virtual bool isOfType(EntityType type) const = 0;
 };

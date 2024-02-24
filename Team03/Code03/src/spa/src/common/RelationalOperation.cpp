@@ -23,3 +23,7 @@ bool RelationalOperation::operator==(const Expression& other) const {
 EntityType RelationalOperation::getType() const {
     return EntityType::Relational;
 }
+
+bool RelationalOperation::isOfType(EntityType type) const {
+    return type == this->getType() || Operation::isOfType(type);
+}

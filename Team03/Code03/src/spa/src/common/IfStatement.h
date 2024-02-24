@@ -17,6 +17,7 @@ public:
     StatementListContainer getThenStatementList() const;
     StatementListContainer getElseStatementList() const;
     [[nodiscard]] EntityType getType() const override;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 
 private:
     shared_ptr<ConditionalOperation> condition;

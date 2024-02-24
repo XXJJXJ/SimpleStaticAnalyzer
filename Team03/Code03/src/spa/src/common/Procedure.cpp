@@ -22,3 +22,7 @@ void Procedure::accept(shared_ptr<Visitor> visitor) {
 EntityType Procedure::getType() const {
     return EntityType::Procedure;
 }
+
+bool Procedure::isOfType(EntityType type) const {
+    return type == this->getType();
+}

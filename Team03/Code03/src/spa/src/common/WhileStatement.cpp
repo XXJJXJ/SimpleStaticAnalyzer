@@ -27,3 +27,7 @@ StatementListContainer WhileStatement::getStatementList() const {
 EntityType WhileStatement::getType() const {
     return EntityType::While;
 }
+
+bool WhileStatement::isOfType(EntityType type) const {
+    return type == this->getType() || Statement::isOfType(type);
+}

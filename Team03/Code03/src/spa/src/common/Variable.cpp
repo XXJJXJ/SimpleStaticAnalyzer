@@ -26,3 +26,7 @@ bool Variable::operator==(const Variable& other) const {
 EntityType Variable::getType() const {
     return EntityType::Variable;
 }
+
+bool Variable::isOfType(EntityType type) const {
+    return type == this->getType() || Expression::isOfType(type);
+}

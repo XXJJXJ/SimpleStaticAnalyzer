@@ -24,3 +24,7 @@ bool ArithmeticOperation::operator==(const Expression& other) const {
 EntityType ArithmeticOperation::getType() const {
     return EntityType::Arithmetic;
 }
+
+bool ArithmeticOperation::isOfType(EntityType type) const {
+    return type == this->getType() || Operation::isOfType(type);
+}

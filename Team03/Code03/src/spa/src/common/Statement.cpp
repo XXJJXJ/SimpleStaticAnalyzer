@@ -37,3 +37,7 @@ bool Statement::operator==(const Statement& other) const {
 EntityType Statement::getType() const {
     return EntityType::Stmt;
 }
+
+bool Statement::isOfType(EntityType type) const {
+    return type == this->getType();
+}

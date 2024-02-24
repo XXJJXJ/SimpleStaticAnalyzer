@@ -21,7 +21,8 @@ add_library(spa ${srcs} ${headers}
 		src/qps/entity/strategy/JoinWithPredicateStrategy.cpp
 		src/qps/entity/strategy/JoinWithPredicateStrategy.h
 		src/common/spa_exception/QPSEvaluationException.cpp
-		src/common/spa_exception/QPSEvaluationException.h)
+		src/common/spa_exception/QPSEvaluationException.h
+		src/common/CallStatement.cpp)
 # this makes the headers accessible for other projects which uses spa lib
 target_include_directories(spa PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 

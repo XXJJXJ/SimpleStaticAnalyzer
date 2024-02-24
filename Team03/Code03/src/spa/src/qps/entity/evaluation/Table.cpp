@@ -30,15 +30,14 @@ void Table::addRow(const TableRow& row) {
 }
 
 bool Table::isValidRow(const TableRow& row) const {
-//    if (row.getValues().size() == headers.size()) {
-//        // Checks if the types of the entities in the row match the types of the headers
-//        for (size_t i = 0; i < headers.size(); ++i) {
-//            // TODO: this is buggy, as it doesn't check subtypes, to be settled after the check subtype logic is done
-//            if (row.getValues()[i]->getType() != headers[i].getType()) {
-//                return false;
-//            }
-//        }
-//    }
+    if (row.getValues().size() == headers.size()) {
+        // Checks if the types of the entities in the row match the types of the headers
+        for (size_t i = 0; i < headers.size(); ++i) {
+            if (!row.getValues()[i]->isOfType(headers[i].getType())) {
+                return false;
+            }
+        }
+    }
     return row.getValues().size() == headers.size();
 }
 

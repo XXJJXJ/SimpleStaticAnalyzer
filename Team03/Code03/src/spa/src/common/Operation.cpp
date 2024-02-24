@@ -15,3 +15,7 @@ string Operation::getName() const {
 EntityType Operation::getType() const {
     return EntityType::Operation;
 }
+
+bool Operation::isOfType(EntityType type) const {
+    return type == this->getType() || Expression::isOfType(type);
+}

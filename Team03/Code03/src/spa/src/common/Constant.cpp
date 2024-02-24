@@ -24,3 +24,7 @@ bool Constant::operator==(const Constant& other) const {
 EntityType Constant::getType() const {
     return EntityType::Constant;
 }
+
+bool Constant::isOfType(EntityType type) const {
+    return type == this->getType() || Expression::isOfType(type);
+}

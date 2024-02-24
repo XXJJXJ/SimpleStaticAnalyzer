@@ -20,3 +20,7 @@ void PrintStatement::accept(shared_ptr<Visitor> visitor) {
 EntityType PrintStatement::getType() const {
     return EntityType::Print;
 }
+
+bool PrintStatement::isOfType(EntityType type) const {
+    return type == this->getType() || Statement::isOfType(type);
+}
