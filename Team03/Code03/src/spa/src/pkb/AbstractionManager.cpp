@@ -45,8 +45,8 @@ void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
     auto childToParent = parentStore.getChildToParentMap();
     auto allRelations = store.getAllMap();
     for (auto & _pair : allRelations) {
-        auto ancestor = _pair.first;
         for (auto & _var : _pair.second) {
+            auto ancestor = _pair.first;
             while (childToParent.find(ancestor) != childToParent.end()) {
                 // Can modify first, because the first statement is already stored
                 ancestor = childToParent[ancestor];
