@@ -18,3 +18,4 @@ bool Expression::operator==(const Expression& other) const {
 optional<PairOfArguments> Expression::getArguments() const {
     return arguments;
 }
+

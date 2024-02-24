@@ -11,6 +11,7 @@ public:
 		string procedureName);
 	void accept(shared_ptr<Visitor> visitor) override;
 	shared_ptr<Variable> getVariable() const;
+    [[nodiscard]] EntityType getType() const override;
 
 private:
 	const shared_ptr<Variable> variable;

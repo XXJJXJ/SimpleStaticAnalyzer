@@ -18,9 +18,11 @@ private:
     std::vector<Synonym> headers;
     std::unordered_map<Synonym, int> headerIndexMap; // Mapping from synonym to index
     std::vector<TableRow> rows;
+    bool isValidRow(const TableRow& row) const;
 
 public:
     Table() = default;
+    Table(const vector<Synonym>& headers, const vector<vector<shared_ptr<Entity>>>& entities);
     void addRow(const TableRow& row);
     void setHeaders(const vector<Synonym>& headers);
     [[nodiscard]] const vector<Synonym>& getHeaders() const;

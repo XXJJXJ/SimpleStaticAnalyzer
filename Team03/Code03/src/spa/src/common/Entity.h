@@ -2,6 +2,7 @@
 
 #include "sp/design_extractor/Visitor.h"
 #include <string>
+#include "EntityType.h"
 
 // In Entity.h
 class Entity {
@@ -14,4 +15,5 @@ public:
     virtual bool operator!=(const Entity& other) const {
         return !(*this == other);
     }
+    [[nodiscard]] virtual EntityType getType() const = 0;
 };

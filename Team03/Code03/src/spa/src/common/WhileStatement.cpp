@@ -23,3 +23,7 @@ shared_ptr<ConditionalOperation> WhileStatement::getCondition() const {
 StatementListContainer WhileStatement::getStatementList() const {
     return statementList;
 }
+
+EntityType WhileStatement::getType() const {
+    return EntityType::While;
+}

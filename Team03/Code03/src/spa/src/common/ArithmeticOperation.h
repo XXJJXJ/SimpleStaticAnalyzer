@@ -8,8 +8,10 @@ using namespace std;
 class ArithmeticOperation : public Operation {
 public:
 	ArithmeticOperation(
-		string name, 
+		string name,
 		PairOfArguments arguments);
 	void accept(shared_ptr<Visitor> visitor) override;
 	bool operator==(const Expression& other) const override;
+    [[nodiscard]] EntityType getType() const override;
+
 };

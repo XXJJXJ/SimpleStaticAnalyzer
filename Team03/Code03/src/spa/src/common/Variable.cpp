@@ -22,3 +22,7 @@ std::size_t Variable::hash() const {
 bool Variable::operator==(const Variable& other) const {
     return (getName() == other.getName());
 }
+
+EntityType Variable::getType() const {
+    return EntityType::Variable;
+}

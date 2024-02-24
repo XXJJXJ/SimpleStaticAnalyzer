@@ -16,3 +16,7 @@ shared_ptr<Variable> ReadStatement::getVariable() const {
 void ReadStatement::accept(shared_ptr<Visitor> visitor) {
     visitor->visitReadStatement(make_shared<ReadStatement>(*this));
 }
+
+EntityType ReadStatement::getType() const {
+    return EntityType::Read;
+}

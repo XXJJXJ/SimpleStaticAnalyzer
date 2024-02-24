@@ -2,4 +2,7 @@
 
 #include "Statement.h"
 
-class CallStatement : public Statement {};
+class CallStatement : public Statement {
+public:
+    [[nodiscard]] EntityType getType() const override;
+};

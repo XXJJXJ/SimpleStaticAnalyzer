@@ -10,4 +10,5 @@ public:
 		PairOfArguments arguments);
 	void accept(shared_ptr<Visitor> visitor) override;
 	bool operator==(const Expression& other) const override;
+    [[nodiscard]] EntityType getType() const override;
 };

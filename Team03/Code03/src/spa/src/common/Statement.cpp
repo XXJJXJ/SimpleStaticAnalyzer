@@ -33,3 +33,7 @@ std::size_t Statement::hash() const {
 bool Statement::operator==(const Statement& other) const {
     return getStatementNumber() == other.getStatementNumber();
 }
+
+EntityType Statement::getType() const {
+    return EntityType::Stmt;
+}

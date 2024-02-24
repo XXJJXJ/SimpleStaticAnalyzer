@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <unordered_set>
 #include <memory>
+#include "common/spa_exception/QPSEvaluationException.h"
 
 bool rowsAreCompatible(const TableRow& row1, const TableRow& row2,
                        const Table& table1, const Table& table2,
@@ -22,7 +23,23 @@ std::vector<std::shared_ptr<Entity>> createJoinedRow(const TableRow& row1, const
 
 // Implementation of Table
 void Table::addRow(const TableRow& row) {
-    rows.push_back(row);
+    if (isValidRow(row)) {
+        rows.push_back(row);
+    }
+    throw QPSEvaluationException("Table::addRow: Trying to add invalid row");
+}
+
+bool Table::isValidRow(const TableRow& row) const {
+//    if (row.getValues().size() == headers.size()) {
+//        // Checks if the types of the entities in the row match the types of the headers
+//        for (size_t i = 0; i < headers.size(); ++i) {
+//            // TODO: this is buggy, as it doesn't check subtypes, to be settled after the check subtype logic is done
+//            if (row.getValues()[i]->getType() != headers[i].getType()) {
+//                return false;
+//            }
+//        }
+//    }
+    return row.getValues().size() == headers.size();
 }
 
 void Table::setHeaders(const vector<Synonym>& headers) {
@@ -157,9 +174,18 @@ int Table::indexOf(const Synonym& synonym) const {
     if (it != headerIndexMap.end()) {
         return it->second;
     }
-    return -1; // Indicate not found
+    throw QPSEvaluationException("Table::indexOf: Synonym not found in headers");
 }
 
 bool Table::hasHeader(const Synonym &synonym) const {
     return headerIndexMap.find(synonym) != headerIndexMap.end();
 }
+
+Table::Table(const vector<Synonym> &headers, const vector<vector<shared_ptr<Entity>>> &entities) {
+    this->headers = headers;
+    for (const auto& row : entities) {
+        this->addRow(TableRow(row));
+    }
+    updateHeaderIndexMap();
+}
+

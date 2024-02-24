@@ -31,3 +31,7 @@ StatementListContainer IfStatement::getThenStatementList() const {
 StatementListContainer IfStatement::getElseStatementList() const {
     return elseStatementList;
 }
+
+EntityType IfStatement::getType() const {
+    return EntityType::If;
+}

@@ -13,6 +13,7 @@ public:
 	void addToStatementList(shared_ptr<Statement> statement);
 	string getName() const override;
 	StatementListContainer getStatementList() const;
+    [[nodiscard]] EntityType getType() const override;
 
 private:
 	string procedureName;

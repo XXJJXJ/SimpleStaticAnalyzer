@@ -23,3 +23,7 @@ shared_ptr<Variable> AssignStatement::getVariable() const {
 shared_ptr<Expression> AssignStatement::getExpression() const {
     return expression;
 }
+
+EntityType AssignStatement::getType() const {
+    return EntityType::Assign;
+}

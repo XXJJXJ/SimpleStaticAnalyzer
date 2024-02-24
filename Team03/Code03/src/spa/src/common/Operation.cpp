@@ -11,3 +11,7 @@ Operation::Operation(
 string Operation::getName() const {
     return name;
 }
+
+EntityType Operation::getType() const {
+    return EntityType::Operation;
+}

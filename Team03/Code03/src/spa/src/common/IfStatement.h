@@ -16,6 +16,7 @@ public:
     shared_ptr<ConditionalOperation> getCondition() const;
     StatementListContainer getThenStatementList() const;
     StatementListContainer getElseStatementList() const;
+    [[nodiscard]] EntityType getType() const override;
 
 private:
     shared_ptr<ConditionalOperation> condition;

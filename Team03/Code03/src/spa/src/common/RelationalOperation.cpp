@@ -19,3 +19,7 @@ bool RelationalOperation::operator==(const Expression& other) const {
         this->getArguments()->first->operator==(*casted.getArguments()->first) && 
         this->getArguments()->second->operator==(*casted.getArguments()->second);
 }
+
+EntityType RelationalOperation::getType() const {
+    return EntityType::Relational;
+}

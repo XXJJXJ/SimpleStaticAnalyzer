@@ -16,6 +16,7 @@ public:
     EntityType getStatementType() const;
     string getProcedureName() const;
     string getName() const override;
+    [[nodiscard]] EntityType getType() const override;
 
     std::size_t hash() const;
 	bool operator==(const Statement& other) const;
