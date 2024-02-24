@@ -17,16 +17,22 @@ shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
         auto statement = statementParser->parseEntity(tokens);
         ifStatement->addThenStatement(statement);
     }
+    if (ifStatement->getThenStatementList().size() == 0) {
+        throw SyntaxErrorException("If statement's then block cannot be empty");
+    }
 
     if (isEndOfStatement(tokens)) {
         // Erase '}' from tokens
         tokens.erase(tokens.begin());
     }
+    else {
+        throw SyntaxErrorException("If statement's then block is missing a }");
+    }
 
     if (!hasElseStatements(tokens)) {
         throw SyntaxErrorException("If statement is missing an else block");
     }
-    
+
     checkStartOfElseStatement(tokens);
     // Erase 'else' and '{' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
@@ -34,12 +40,19 @@ shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(getProcedureName());
         auto statement = statementParser->parseEntity(tokens);
-        ifStatement->addElseStatement(statement);
+        ifStatement->addElseStatement(statement); \
+    }
+
+    if (ifStatement->getElseStatementList().size() == 0) {
+        throw SyntaxErrorException("If statement's else block cannot be empty!");
     }
 
     if (isEndOfStatement(tokens)) {
         // Erase '}' from tokens
         tokens.erase(tokens.begin());
+    }
+    else {
+        throw SyntaxErrorException("If statement's else block is missing a }");
     }
 
     return ifStatement;
@@ -55,7 +68,7 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tok
         return token->getType() == TokenType::LEFT_BRACE;
         });
 
-    
+
     if (end == tokens.end()) {
         throw SyntaxErrorException("If statement is missing a {");
     }
@@ -113,5 +126,10 @@ bool IfStatementParser::hasElseStatements(Tokens& tokens) const {
 }
 
 bool IfStatementParser::isEndOfStatement(Tokens& tokens) const {
-    return tokens[0]->getType() == TokenType::RIGHT_BRACE;
+    if (tokens.size() > 0) {
+        return tokens[0]->getType() == TokenType::RIGHT_BRACE;
+    }
+    else {
+        throw SyntaxErrorException("Insufficient number of tokens");
+    }
 }

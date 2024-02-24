@@ -1,23 +1,32 @@
 #include "StatementParserFactory.h"
 
 shared_ptr<StatementParser> StatementParserFactory::getStatementParser(Tokens& tokens) {
-    if (checkKeywordType(tokens, "if", true)) {
-        return make_shared<IfStatementParser>();
+    try {
+        if (tokens.size() < 2) {
+            throw SyntaxErrorException("Insufficient number of tokens");
+        }
+        if (checkKeywordType(tokens, "if", true)) {
+            return make_shared<IfStatementParser>();
+        }
+        else if (checkKeywordType(tokens, "while", true)) {
+            return make_shared<WhileStatementParser>();
+        }
+        else if (checkAssignment(tokens)) {
+            return make_shared<AssignStatementParser>();
+        }
+        else if (checkKeywordType(tokens, "print", false)) {
+            return make_shared<PrintStatementParser>();
+        }
+        else if (checkKeywordType(tokens, "read", false)) {
+            return make_shared<ReadStatementParser>();
+        }
+
+        throw SemanticErrorException("Unknown Statement Type");
     }
-    else if (checkKeywordType(tokens, "while", true)) {
-        return make_shared<WhileStatementParser>();
+    catch (SpaException& e) {
+        cout << e.what() << endl;
     }
-    else if (checkAssignment(tokens)) {
-        return make_shared<AssignStatementParser>();
-    }
-    else if (checkKeywordType(tokens, "print", false)) {
-        return make_shared<PrintStatementParser>();
-    }
-    else if (checkKeywordType(tokens, "read", false)) {
-        return make_shared<ReadStatementParser>();
-    }
-    
-    throw SemanticErrorException("Unknown Statement Type");
+
 }
 
 bool StatementParserFactory::checkKeywordType(
@@ -34,7 +43,7 @@ bool StatementParserFactory::checkKeywordType(
 bool StatementParserFactory::checkAssignment(Tokens& tokens) {
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
-    return 
-        token0->getType() == TokenType::NAME && 
+    return
+        token0->getType() == TokenType::NAME &&
         token1->getValue() == "=";
 }

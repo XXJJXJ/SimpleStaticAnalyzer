@@ -16,6 +16,9 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens& tokens) {
     if (isEndOfProcedure(tokens)) {
         tokens.erase(tokens.begin());
     }
+    else {
+        throw SyntaxErrorException("Procedure is missing a }");
+    }
 
     return procedure;
 }
@@ -27,18 +30,23 @@ string ProcedureParser::extractProcedureName(Tokens& tokens) {
 
     if (token0->getValue() != "procedure") {
         throw SyntaxErrorException("A procedure should start with procedure");
-    } 
+    }
     else if (token1->getType() != TokenType::NAME) {
         throw SyntaxErrorException("A procedure should have a NAME");
-    } 
+    }
     else if (token2->getType() != TokenType::LEFT_BRACE) {
         throw SyntaxErrorException("A procedure should begin with a {");
-    } 
+    }
     else {
         return token1->getValue();
     }
 }
 
 bool ProcedureParser::isEndOfProcedure(Tokens& tokens) {
-    return tokens.front()->getValue() == "}";
+    if (tokens.size() > 0) {
+        return tokens[0]->getType() == TokenType::RIGHT_BRACE;
+    }
+    else {
+        throw SyntaxErrorException("Insufficient number of tokens");
+    }
 }
