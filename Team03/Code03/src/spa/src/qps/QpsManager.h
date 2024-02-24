@@ -1,10 +1,8 @@
 /*
  * Created by ZHENGTAO JIANG on 8/2/24.
  *
- * Users submit queries to the QPS using the evaluateQuery() method,
- * Returns a string response with requested data:
- * Statement Numbers e.g 1,3,5,6
- * Variables e.g a,b,c,v
+ * Users submit queries to the qps using the processQuery() method,
+ * Returns a string response with requested data, depending on synonyms and clauses in the query.
  *
  */
 

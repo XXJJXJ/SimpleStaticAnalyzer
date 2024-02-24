@@ -22,18 +22,21 @@ std::vector<std::string> QpsManager::processQuery(std::string query) {
     return results;
 }
 
+// Calls QueryTokenizer to tokenize the query string
 std::vector<std::vector<std::vector<std::string>>>
 QpsManager::tokenizeQuery(const std::string& query) {
     QueryTokenizer tokenizer;
     return tokenizer.tokenize(query);
 }
 
+// Calls QueryParser to parse the tokens into a Query object
 std::shared_ptr<Query>
 QpsManager::parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens) {
     QueryParser parser;
     return parser.parse(tokens);
 }
 
+// Calls QueryEvaluator to evaluate the parsed query
 vector<std::string> QpsManager::evaluateQuery(const std::shared_ptr<Query> parsedQuery) {
     QueryEvaluator evaluator = QueryEvaluator();
     return evaluator.evaluate(parsedQuery);
