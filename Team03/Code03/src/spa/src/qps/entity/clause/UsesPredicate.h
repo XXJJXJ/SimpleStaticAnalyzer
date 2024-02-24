@@ -7,6 +7,8 @@
 #include "Predicate.h"
 #include <memory>
 #include <variant>
+#include "PredicateUtils.h"
+
 
 class Strategy;
 
@@ -19,8 +21,6 @@ private:
 public:
     UsesPredicate(UsesLhsRef lhs, EntityRef rhs);
     ~UsesPredicate() override = default;
-
-    std::shared_ptr<Strategy> getStrategy() const override;
 
     static bool isValidLhs(const UsesLhsRef& lhs);
     static bool isValidRhs(const EntityRef& rhs);

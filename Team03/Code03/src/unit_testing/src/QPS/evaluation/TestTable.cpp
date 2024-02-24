@@ -1,13 +1,13 @@
-#include "qps/entity/evaluation/Table.h"
+#include "qps/entity/evaluation/HeaderTable.h"
 #include "qps/entity/evaluation/TableRow.h"
 #include "../fakeEntities/MockEntity.cpp"
 #include "catch.hpp"
 
-TEST_CASE("Table Join Functionality", "[Table]") {
+TEST_CASE("HeaderTable Join Functionality", "[HeaderTable]") {
     SECTION("Empty table with headers joins empty table") {
-        Table table1;
+        HeaderTable table1;
         table1.setHeaders({Synonym(EntityType::Variable, "A"), Synonym(EntityType::Variable, "B")});
-        Table table2; // Empty table
+        HeaderTable table2; // Empty table
 
         auto resultTable = table1.join(table2);
 
@@ -16,10 +16,10 @@ TEST_CASE("Table Join Functionality", "[Table]") {
     }
 
     SECTION("Empty table without rows joins non-empty table") {
-        Table table1;
+        HeaderTable table1;
         table1.setHeaders({Synonym(EntityType::Variable, "A"), Synonym(EntityType::Variable, "B")});
 
-        Table table2;
+        HeaderTable table2;
         table2.setHeaders({Synonym(EntityType::Variable, "B"), Synonym(EntityType::Variable, "C")});
         table2.addRow(TableRow({std::make_shared<MockEntity>("Entity2B"), std::make_shared<MockEntity>("Entity2C")}));
 
@@ -30,9 +30,9 @@ TEST_CASE("Table Join Functionality", "[Table]") {
     }
 
     SECTION("Empty table without rows and headers joins non-empty table") {
-        Table table1; // Completely empty table
+        HeaderTable table1; // Completely empty table
 
-        Table table2;
+        HeaderTable table2;
         table2.setHeaders({Synonym(EntityType::Variable, "B"), Synonym(EntityType::Variable, "C")});
         table2.addRow(TableRow({std::make_shared<MockEntity>("Entity2B"), std::make_shared<MockEntity>("Entity2C")}));
 
@@ -43,11 +43,11 @@ TEST_CASE("Table Join Functionality", "[Table]") {
     }
 
     SECTION("Normal join") {
-        Table table1;
+        HeaderTable table1;
         table1.setHeaders({Synonym(EntityType::Variable, "A"), Synonym(EntityType::Variable, "B")});
         table1.addRow(TableRow({std::make_shared<MockEntity>("Entity1A"), std::make_shared<MockEntity>("Entity1B")}));
 
-        Table table2;
+        HeaderTable table2;
         table2.setHeaders({Synonym(EntityType::Variable, "B"), Synonym(EntityType::Variable, "C")});
         table2.addRow(TableRow({std::make_shared<MockEntity>("Entity1B"), std::make_shared<MockEntity>("Entity2C")}));
 
@@ -58,11 +58,11 @@ TEST_CASE("Table Join Functionality", "[Table]") {
     }
 
     SECTION("The table to be joined with current one is a subset of current table") {
-        Table table1;
+        HeaderTable table1;
         table1.setHeaders({Synonym(EntityType::Stmt, "A"), Synonym(EntityType::Variable, "B"), Synonym(EntityType::Procedure, "C")});
         table1.addRow(TableRow({std::make_shared<MockEntity>("Entity1A"), std::make_shared<MockEntity>("Entity1B"), std::make_shared<MockEntity>("Entity1C")}));
 
-        Table table2;
+        HeaderTable table2;
         table2.setHeaders({Synonym(EntityType::Variable, "B")});
         table2.addRow(TableRow({std::make_shared<MockEntity>("Entity1B")}));
 
@@ -73,11 +73,11 @@ TEST_CASE("Table Join Functionality", "[Table]") {
     }
 
     SECTION("No common columns") {
-        Table table1;
+        HeaderTable table1;
         table1.setHeaders({Synonym(EntityType::Stmt, "A")});
         table1.addRow(TableRow({std::make_shared<MockEntity>("Entity1A")}));
 
-        Table table2;
+        HeaderTable table2;
         table2.setHeaders({Synonym(EntityType::Print, "B")});
         table2.addRow(TableRow({std::make_shared<MockEntity>("Entity2B")}));
 
@@ -88,12 +88,12 @@ TEST_CASE("Table Join Functionality", "[Table]") {
     }
 
     SECTION("Tables with multiple rows and common column") {
-        Table table1;
+        HeaderTable table1;
         table1.setHeaders({Synonym(EntityType::Stmt, "A"), Synonym(EntityType::Variable, "B")});
         table1.addRow(TableRow({std::make_shared<MockEntity>("Entity1A"), std::make_shared<MockEntity>("Entity1B")}));
         table1.addRow(TableRow({std::make_shared<MockEntity>("Entity2A"), std::make_shared<MockEntity>("Entity2B")}));
 
-        Table table2;
+        HeaderTable table2;
         table2.setHeaders({Synonym(EntityType::Variable, "B"), Synonym(EntityType::Call, "C")});
         table2.addRow(TableRow({std::make_shared<MockEntity>("Entity1B"), std::make_shared<MockEntity>("Entity2C")}));
         table2.addRow(TableRow({std::make_shared<MockEntity>("Entity2B"), std::make_shared<MockEntity>("Entity3C")}));

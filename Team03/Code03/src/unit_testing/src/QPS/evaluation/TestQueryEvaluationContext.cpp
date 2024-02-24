@@ -3,7 +3,7 @@
 #include "common/Entity.h"
 #include "qps/entity/query/Synonym.h"
 #include "qps/entity/evaluation/QueryEvaluationContext.h"
-#include "qps/entity/evaluation/Table.h"
+#include "qps/entity/evaluation/HeaderTable.h"
 #include <memory>
 #include "../fakeEntities/MockEntity.cpp"
 
@@ -13,12 +13,12 @@ TEST_CASE("QueryEvaluationContext::getResults throws when multiple tables are pr
     QueryEvaluationContext qec;
 
     auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
-    auto table1 = std::make_shared<Table>();
+    auto table1 = std::make_shared<HeaderTable>();
     table1->addRow(TableRow({std::make_shared<MockEntity>("value1")}));
     qec.addTableForSynonym(*synonym1, table1);
 
     auto synonym2 = std::make_shared<Synonym>(EntityType::Stmt, "s2");
-    auto table2 = std::make_shared<Table>(); // Empty table
+    auto table2 = std::make_shared<HeaderTable>(); // Empty table
     qec.addTableForSynonym(*synonym2, table2);
 
     REQUIRE(qec.isResultEmpty());
@@ -33,7 +33,7 @@ TEST_CASE("QueryEvaluationContext::getResults throws when no tables are present"
 TEST_CASE("QueryEvaluationContext::getResults returns empty vector for context with empty tables", "[QueryEvaluationContext]") {
     QueryEvaluationContext qec;
     auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
-    auto table = std::make_shared<Table>(); // Empty table
+    auto table = std::make_shared<HeaderTable>(); // Empty table
     qec.addTableForSynonym(*synonym, table);
 
     REQUIRE(qec.isResultEmpty());
@@ -42,7 +42,7 @@ TEST_CASE("QueryEvaluationContext::getResults returns empty vector for context w
 TEST_CASE("QueryEvaluationContext::getResults handles special characters in entity names", "[QueryEvaluationContext]") {
     QueryEvaluationContext qec;
     auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
-    auto table = std::make_shared<Table>();
+    auto table = std::make_shared<HeaderTable>();
     table->addRow(TableRow({std::make_shared<MockEntity>("$1")}));
     table->addRow(TableRow({std::make_shared<MockEntity>("value#2")}));
     table->addRow(TableRow({std::make_shared<MockEntity>("value, 3")}));

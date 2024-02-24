@@ -11,7 +11,7 @@
 TEST_CASE("ProjectionStrategy sets empty table when context has an empty table", "[ProjectionStrategy]") {
     QueryEvaluationContext qec;
     auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
-    auto emptyTable = std::make_shared<Table>(); // Intentionally empty
+    auto emptyTable = std::make_shared<HeaderTable>(); // Intentionally empty
     qec.addTableForSynonym(*synonym, emptyTable);
     ProjectionStrategy strategy(synonym);
 
@@ -46,7 +46,7 @@ TEST_CASE("ProjectionStrategy queries and sets new table when synonym not in any
 TEST_CASE("ProjectionStrategy projects column correctly when table with synonym exists", "[ProjectionStrategy]") {
     QueryEvaluationContext qec;
     auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
-    auto table = std::make_shared<Table>();
+    auto table = std::make_shared<HeaderTable>();
     table->setHeaders({*synonym}); // Assume setHeaders exists
     // Assume MockEntity definition and it has a conversion method to TableRow
     table->addRow(TableRow({std::make_shared<MockEntity>("entityValue")}));
@@ -66,12 +66,12 @@ TEST_CASE("ProjectionStrategy projects column correctly when table with synonym 
 TEST_CASE("ProjectionStrategy with multiple tables, some empty", "[ProjectionStrategy]") {
     QueryEvaluationContext qec;
     auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
-    auto table1 = std::make_shared<Table>();
+    auto table1 = std::make_shared<HeaderTable>();
     table1->setHeaders({*synonym1});
     table1->addRow(TableRow({std::make_shared<MockEntity>("entity1")}));
 
     auto synonym2 = std::make_shared<Synonym>(EntityType::Stmt, "s2");
-    auto emptyTable = std::make_shared<Table>(); // Intentionally empty
+    auto emptyTable = std::make_shared<HeaderTable>(); // Intentionally empty
     qec.addTableForSynonym(*synonym1, table1);
     qec.addTableForSynonym(*synonym2, emptyTable);
 
@@ -87,7 +87,7 @@ TEST_CASE("ProjectionStrategy with table having multiple columns", "[ProjectionS
     QueryEvaluationContext qec;
     auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
     auto synonym2 = std::make_shared<Synonym>(EntityType::Variable, "v1");
-    auto table = std::make_shared<Table>();
+    auto table = std::make_shared<HeaderTable>();
     table->setHeaders({*synonym1, *synonym2});
     table->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
     qec.addTableForSynonym(*synonym1, table);
@@ -105,7 +105,7 @@ TEST_CASE("ProjectionStrategy selects specific column when multiple synonyms exi
     QueryEvaluationContext qec;
     auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
     auto synonym2 = std::make_shared<Synonym>(EntityType::Variable, "v1");
-    auto table = std::make_shared<Table>();
+    auto table = std::make_shared<HeaderTable>();
     table->setHeaders({*synonym1, *synonym2});
     table->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
     table->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var2")}));
@@ -127,10 +127,10 @@ TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrat
     QueryEvaluationContext qec;
     auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
     auto synonym2 = std::make_shared<Synonym>(EntityType::Variable, "v1");
-    auto table1 = std::make_shared<Table>();
+    auto table1 = std::make_shared<HeaderTable>();
     table1->setHeaders({*synonym1});
     table1->addRow(TableRow({std::make_shared<MockEntity>("entity1")}));
-    auto table2 = std::make_shared<Table>();
+    auto table2 = std::make_shared<HeaderTable>();
     table2->setHeaders({*synonym2});
     table2->addRow(TableRow({std::make_shared<MockEntity>("var1")}));
     qec.addTableForSynonym(*synonym1, table1);

@@ -18,11 +18,6 @@ UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
     }
 }
 
-std::shared_ptr<Strategy> UsesPredicate::getStrategy() const {
-    // Placeholder logic for strategy selection
-    return nullptr;
-}
-
 bool UsesPredicate::isValidLhs(const UsesLhsRef& lhs) {
     return std::visit(overloaded {
             [](const int&) { return true; },

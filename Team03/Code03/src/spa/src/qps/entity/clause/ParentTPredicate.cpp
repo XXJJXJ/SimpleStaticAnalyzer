@@ -18,11 +18,6 @@ ParentTPredicate::ParentTPredicate(StatementRef lhs, StatementRef rhs)
     }
 }
 
-std::shared_ptr<Strategy> ParentTPredicate::getStrategy() const {
-    // Placeholder logic for strategy selection specific to Parent*
-    return nullptr; // Return a valid shared_ptr to a Strategy object as needed
-}
-
 bool ParentTPredicate::isValidStmtRef(const StatementRef& ref) {
     // Implement validation logic for statement references
     return std::visit(overloaded {

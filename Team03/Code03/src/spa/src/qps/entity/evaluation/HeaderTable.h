@@ -9,11 +9,12 @@
 #include "qps/entity/query/Synonym.h" // Assuming Synonym and Entity classes are defined elsewhere
 #include "common/Entity.h"
 #include "qps/entity/evaluation/TableRow.h"
+#include "BaseTable.h"
 
 using namespace std;
 
 // Class to represent the table itself.
-class Table {
+class HeaderTable : public BaseTable {
 private:
     std::vector<Synonym> headers;
     std::unordered_map<Synonym, int> headerIndexMap; // Mapping from synonym to index
@@ -21,16 +22,12 @@ private:
     bool isValidRow(const TableRow& row) const;
 
 public:
-    Table() = default;
-    Table(const vector<Synonym>& headers, const vector<vector<shared_ptr<Entity>>>& entities);
-    void addRow(const TableRow& row);
+    HeaderTable() = default;
+    HeaderTable(const vector<Synonym>& headers, const vector<vector<shared_ptr<Entity>>>& entities);
     void setHeaders(const vector<Synonym>& headers);
     [[nodiscard]] const vector<Synonym>& getHeaders() const;
-    [[nodiscard]] Table selectColumns(const vector<Synonym>& synonyms) const; // Projection operation
-    [[nodiscard]] bool isEmpty() const;
-    [[nodiscard]] vector<string> toStrings() const;
-    [[nodiscard]] int getSize() const;
-    shared_ptr<Table> join(Table& other);
+    [[nodiscard]] HeaderTable selectColumns(const vector<Synonym>& synonyms) const; // Projection operation
+    shared_ptr<HeaderTable> join(HeaderTable& other);
 
     void updateHeaderIndexMap(); // Utility function to update headerIndexMap
     int indexOf(const Synonym& synonym) const; // Get index of a synonym

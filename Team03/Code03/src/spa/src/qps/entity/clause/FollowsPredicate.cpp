@@ -3,6 +3,7 @@
 #include "FollowsPredicate.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 
+
 FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs) || isWildcard(rhs)) {
         throw SyntaxErrorException("Invalid argument for FollowsPredicate constructor");
@@ -21,28 +22,9 @@ FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
     }
 }
 
-std::shared_ptr<Strategy> FollowsPredicate::getStrategy() const {
-    // Implementation logic for returning the appropriate strategy
-    return nullptr; // Placeholder return
-}
 
-// Checks the validity of input
-bool FollowsPredicate::isValidStatementRef(const StatementRef& ref) {
-    if (std::holds_alternative<Synonym>(ref)) {
-        auto synonym = std::get<Synonym>(ref);
-        return synonym.getType() == EntityType::Stmt;
-    } else if (std::holds_alternative<std::string>(ref)) {
-        return std::get<std::string>(ref) == "_";
-    } else if (std::holds_alternative<int>(ref)) {
-        // Assuming int is always a valid statement reference
-        return true;
-    }
-    return false;
-}
-
-// Implement the isWildcard function to check if RHS is a wildcard
-bool FollowsPredicate::isWildcard(const StatementRef& ref) {
-    return std::holds_alternative<std::string>(ref) && std::get<std::string>(ref) != "_";
+shared_ptr<HeaderTable> FollowsPredicate::getTable(QueryManager &qm) {
+    auto table = qm.getFollowS();
 }
 
 // ai-gen end

@@ -18,11 +18,6 @@ FollowsTPredicate::FollowsTPredicate(StatementRef lhs, StatementRef rhs)
     }
 }
 
-std::shared_ptr<Strategy> FollowsTPredicate::getStrategy() const {
-    // Placeholder logic for strategy selection specific to Follows*
-    return nullptr; // Return a valid shared_ptr to a Strategy object as needed
-}
-
 bool FollowsTPredicate::isValidStmtRef(const StatementRef& ref) {
     // Implement validation logic for statement references
     return std::visit(overloaded {

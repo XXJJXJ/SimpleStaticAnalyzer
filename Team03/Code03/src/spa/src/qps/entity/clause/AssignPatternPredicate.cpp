@@ -30,7 +30,3 @@ bool AssignPatternPredicate::isValidRhs(const std::string& rhs) {
 		len > 4 && rhs[0] == '_' && rhs[1] == '"' && rhs[len - 2] == '"' && rhs[len - 1] == '_';
 	}
 
-std::shared_ptr<Strategy> AssignPatternPredicate::getStrategy() const {
-	// Implementation logic for returning the appropriate strategy
-	return nullptr; // Placeholder return
-}

@@ -10,9 +10,9 @@ ProjectionStrategy::ProjectionStrategy(std::shared_ptr<Synonym> synonym) : targe
 void ProjectionStrategy::execute(QueryEvaluationContext &context) {
     // Check all tables in the context; if any is empty, return an empty table directly.
     if (context.isResultEmpty()) {
-        Table emptyTable;
+        HeaderTable emptyTable;
         emptyTable.setHeaders({*targetSynonym});
-        context.setResultTable(std::make_shared<Table>(emptyTable));
+        context.setResultTable(std::make_shared<HeaderTable>(emptyTable));
         return;
     }
 
@@ -21,7 +21,7 @@ void ProjectionStrategy::execute(QueryEvaluationContext &context) {
     if (!table) {
         // Synonym not used in constructing tables, query QueryManager for entities by type
         auto entities = context.getQueryManager()->getAllEntitiesByType(targetSynonym->getType());
-        Table newTable;
+        HeaderTable newTable;
         newTable.setHeaders({*targetSynonym}); // Assuming setHeaders method exists
 
         for (const auto& entity : entities) {
@@ -30,11 +30,11 @@ void ProjectionStrategy::execute(QueryEvaluationContext &context) {
             newTable.addRow(TableRow({entity}));
         }
 
-        context.setResultTable(std::make_shared<Table>(newTable));
+        context.setResultTable(std::make_shared<HeaderTable>(newTable));
     } else {
         // If the synonym's table exists and is not empty, select the column and project it.
-        Table projectedTable = table->selectColumns({*targetSynonym});
-        context.setResultTable(std::make_shared<Table>(projectedTable));
+        HeaderTable projectedTable = table->selectColumns({*targetSynonym});
+        context.setResultTable(std::make_shared<HeaderTable>(projectedTable));
     }
 }
 // ai-gen end

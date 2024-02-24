@@ -18,11 +18,6 @@ ModifiesPredicate::ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs)
     }
 }
 
-std::shared_ptr<Strategy> ModifiesPredicate::getStrategy() const {
-    // Placeholder logic for strategy selection
-    return nullptr; // Return a valid shared_ptr to a Strategy object as needed
-}
-
 bool ModifiesPredicate::isValidLhs(const ModifiesLhsRef& lhs) {
     return std::visit(overloaded {
             [](const int&) { return true; },
