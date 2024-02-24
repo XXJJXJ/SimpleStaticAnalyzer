@@ -17,6 +17,10 @@ shared_ptr<Statement> WhileStatementParser::parseEntity(Tokens& tokens) {
         whileStatement->addStatement(loopStatement);
     }
 
+    if (whileStatement->getStatementList().size() == 0) {
+        throw SyntaxErrorException("While statement's block cannot be empty");
+    }
+
     if (isEndOfWhileStatement(tokens)) {
         // Erase '}' from tokens
         tokens.erase(tokens.begin());
