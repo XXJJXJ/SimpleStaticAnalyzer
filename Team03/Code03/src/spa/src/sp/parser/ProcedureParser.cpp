@@ -6,7 +6,7 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens& tokens) {
     string procedureName = extractProcedureName(tokens);
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     shared_ptr<Procedure> procedure = make_shared<Procedure>(procedureName);
-    while (!isEndOfProcedure(tokens)) {
+    while (!tokens.empty() && !isEndOfProcedure(tokens)) {
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(procedureName);
         shared_ptr<Statement> statement = statementParser->parseEntity(tokens);
