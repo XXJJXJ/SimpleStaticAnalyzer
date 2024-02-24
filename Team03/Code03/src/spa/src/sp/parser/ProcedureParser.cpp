@@ -13,6 +13,10 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens& tokens) {
         procedure->addToStatementList(statement);
     }
 
+    if (procedure->getStatementList().size() == 0) {
+        throw SyntaxErrorException("Procedure block cannot be empty");
+    }
+
     if (isEndOfProcedure(tokens)) {
         tokens.erase(tokens.begin());
     }
