@@ -13,3 +13,7 @@ Query::Query(vector<shared_ptr<Synonym>> declarations, vector<shared_ptr<Synonym
     this->predicates = std::move(predicates);
 }
 
+vector<shared_ptr<Synonym>> Query::getSelections() const {
+    return selections;
+}
+

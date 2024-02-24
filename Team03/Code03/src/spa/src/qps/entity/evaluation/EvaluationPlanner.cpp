@@ -4,6 +4,8 @@
 
 #include "EvaluationPlanner.h"
 #include "SynonymGraph.h"
+#include "qps/entity/strategy/JoinWithPredicateStrategy.h"
+#include "qps/entity/strategy/ProjectionStrategy.h"
 
 #include <utility>
 
@@ -19,6 +21,17 @@ void EvaluationPlanner::plan() {
     setSynonymGroups();
 
     // step 2: set strategies
+    // Grouping and ordering within group not implemented yet, but it should work fine (just less efficient).
+    vector<shared_ptr<Strategy>> strategies;
+    for (auto& predicate : query->getPredicates()) {
+        auto strategy = make_shared<JoinWithPredicateStrategy>(predicate);
+        strategies.push_back(strategy);
+    }
+    // Projection strategy, only one selection is supported for now due to the implementation of the ProjectionStrategy.
+    // TODO: Implement multiple selections.
+    strategies.push_back(make_shared<ProjectionStrategy>(query->getSelections()[0]));
+
+    evaluator->setStrategies(strategies);
 
 }
 
