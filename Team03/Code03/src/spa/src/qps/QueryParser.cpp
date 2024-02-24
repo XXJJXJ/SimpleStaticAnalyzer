@@ -8,29 +8,12 @@
 #include "QueryParser.h"
 #include "QueryEvaluator.h"
 
-<<<<<<< HEAD
-
 #include "qps/entity/query/Query.h"
 #include "qps/entity/query/Synonym.h"
 #include "qps/entity/parser/PredicateFactory.h"
 #include "common/EntityType.h"
-=======
-
-#include "common/EntityType.h"
-#include "qps/entity/clause/Clause.h"
-#include "qps/entity/parser/ClauseFactory.h"
-#include "qps/entity/parser/ClauseFactoryManager.h"
-
->>>>>>> qps-feature-enhance-
-
-components
-
 #include "qps/entity/parser/DeclarationsParser.h"
 #include "qps/entity/parser/SelectionsParser.h"
-#include "qps/entity/query/Query.h"
-#include "qps/entity/query/Synonym.h"
-#include <sstream>
-#include <algorithm>
 #include <unordered_map>
 
 QueryParser::QueryParser() = default;
