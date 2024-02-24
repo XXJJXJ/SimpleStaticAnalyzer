@@ -79,6 +79,6 @@ bool WhileStatementParser::isEndOfWhileStatement(Tokens& tokens) const {
         return tokens[0]->getType() == TokenType::RIGHT_BRACE;
     }
     else {
-        throw SyntaxErrorException("Insufficient number of tokens");
+        return false;
     }
 }

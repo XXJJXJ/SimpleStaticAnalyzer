@@ -47,6 +47,6 @@ bool ProcedureParser::isEndOfProcedure(Tokens& tokens) {
         return tokens[0]->getType() == TokenType::RIGHT_BRACE;
     }
     else {
-        throw SyntaxErrorException("Insufficient number of tokens");
+        return false;
     }
 }
