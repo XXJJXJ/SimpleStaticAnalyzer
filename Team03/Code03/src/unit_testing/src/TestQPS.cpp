@@ -4,15 +4,15 @@
 
 //#include "catch.hpp"
 //
-//#include "qps/QueryFacade.h"
+//#include "qps/QpsManager.h"
 //#include <filesystem>
 //#include <iostream>
 //
 //using namespace std;
 //
-//// Tests that QueryFacade can properly read and write the correct files
-//TEST_CASE("Test QueryFacade") {
-//    QueryFacade q;
+//// Tests that QpsManager can properly read and write the correct files
+//TEST_CASE("Test QpsManager") {
+//    QpsManager q;
 //
 //    std::filesystem::path currentPath = std::filesystem::current_path();
 //
