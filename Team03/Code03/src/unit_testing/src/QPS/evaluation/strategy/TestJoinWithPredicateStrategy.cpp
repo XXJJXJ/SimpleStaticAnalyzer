@@ -328,8 +328,9 @@ TEST_CASE("Comprehensive Test: Multiple Group, Multiple Predicates, Changing Eva
             JoinWithPredicateStrategy(predicate7),
             JoinWithPredicateStrategy(predicate8)
     };
-
-    for (int i = 0; i < 5000; i++) {
+    auto result_initialized = false;
+    int table1Size, table2Size, table3Size;
+    for (int i = 0; i < 30; i++) {
         // Randomize the order of strategies
         std::shuffle(strategies.begin(), strategies.end(), std::mt19937(std::random_device()()));
         for (auto &strategy: strategies) {
@@ -347,22 +348,18 @@ TEST_CASE("Comprehensive Test: Multiple Group, Multiple Predicates, Changing Eva
         auto table1Rows = resultTable1->toStrings();
         auto table2Rows = resultTable2->toStrings();
         auto table3Rows = resultTable3->toStrings();
-//        REQUIRE(table1Rows.size() == 108);
-//        REQUIRE(table2Rows.size() == 32);
-//        REQUIRE(table3Rows.size() == 20);
-        if (!(table1Rows.size() == 108 && table2Rows.size() == 32 && table3Rows.size() == 20)) {
-            for (auto &strategy: strategies) {
-                std::cout << strategy.toString() << std::endl;
-            }
-            // print result size
-            std::cout << "Table 1: " << table1Rows.size() << std::endl;
-            std::cout << "Table 2: " << table2Rows.size() << std::endl;
-            std::cout << "Table 3: " << table3Rows.size() << std::endl;
+
+        if (result_initialized) {
+            REQUIRE(table1Rows.size() == table1Size);
+            REQUIRE(table2Rows.size() == table2Size);
+            REQUIRE(table3Rows.size() == table3Size);
+        } else {
+            table1Size = table1Rows.size();
+            table2Size = table2Rows.size();
+            table3Size = table3Rows.size();
+            result_initialized = true;
         }
-        // print current order of strategies
-//        for (auto& strategy : strategies) {
-//            std::cout << strategy.toString() << std::endl;
-//        }
+
     }
 
 

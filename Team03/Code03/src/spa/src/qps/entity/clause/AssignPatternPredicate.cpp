@@ -22,11 +22,6 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
 }
 
 
-
-bool AssignPatternPredicate::isValidRow(const vector<std::shared_ptr<Entity>> &row) const {
-    return false;
-}
-
 // Allowed RHS expressions:
 // - Wildcard _
 // - Expression for exact match(e.g. "x*y")

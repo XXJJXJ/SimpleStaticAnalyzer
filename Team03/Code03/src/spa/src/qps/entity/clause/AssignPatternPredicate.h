@@ -17,7 +17,6 @@ private:
 	Synonym assignSyn;
 	EntityRef lhs;
 	std::string rhs;
-    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
     static bool isValidRhs(const std::string& rhs);
 public:
 	AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs);

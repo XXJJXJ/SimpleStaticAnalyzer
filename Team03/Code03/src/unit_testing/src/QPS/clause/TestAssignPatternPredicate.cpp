@@ -79,5 +79,58 @@ TEST_CASE("AssignPatternPredicate with specific variable and exact match") {
     }
 }
 
+// ai-gen start(gpt, 1, e)
+// prompt: https://chat.openai.com/share/5347909f-8b91-4451-8f33-ebc41eb4576f
+TEST_CASE("AssignPatternPredicate Constructor - Valid Inputs") {
+    SECTION("Valid assignSyn, lhs as synonym, and exact match rhs") {
+        Synonym assignSyn(EntityType::Assign, "a");
+        Synonym lhsSyn(EntityType::Variable, "v");
+        std::string rhs = "x+1";
 
+        REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, lhsSyn, rhs));
+    }
+
+    SECTION("Valid assignSyn, lhs as wildcard, and wildcard rhs") {
+        Synonym assignSyn(EntityType::Assign, "a");
+        EntityRef lhs = "_";
+        std::string rhs = "_";
+
+        REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, lhs, rhs));
+    }
+
+    SECTION("Valid assignSyn, lhs as string, and partial match rhs") {
+        Synonym assignSyn(EntityType::Assign, "a");
+        EntityRef lhs = "x";
+        std::string rhs = "_\"x*y\"_";
+
+        REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, lhs, rhs));
+    }
+}
+
+TEST_CASE("AssignPatternPredicate Constructor - Invalid Inputs") {
+    SECTION("Invalid assignSyn type") {
+        Synonym assignSyn(EntityType::Variable, "a"); // Incorrect type
+        Synonym lhsSyn(EntityType::Variable, "v");
+        std::string rhs = "x+1";
+
+        REQUIRE_THROWS_AS(AssignPatternPredicate(assignSyn, lhsSyn, rhs), SyntaxErrorException);
+    }
+
+    SECTION("Invalid lhs as non-variable synonym") {
+        Synonym assignSyn(EntityType::Assign, "a");
+        Synonym lhsSyn(EntityType::Procedure, "p"); // Incorrect type for lhs
+        std::string rhs = "x+1";
+
+        REQUIRE_THROWS_AS(AssignPatternPredicate(assignSyn, lhsSyn, rhs), SyntaxErrorException);
+    }
+
+
+//    SECTION("Invalid rhs - contains underscores without quotes") {
+//        Synonym assignSyn(EntityType::Assign, "a");
+//        EntityRef lhs = "x";
+//        std::string rhs = "xy_"; // Underscores without surrounding quotes are invalid
+//
+//        REQUIRE_THROWS_AS(AssignPatternPredicate(assignSyn, lhs, rhs), SyntaxErrorException);
+//    }
+}
 
