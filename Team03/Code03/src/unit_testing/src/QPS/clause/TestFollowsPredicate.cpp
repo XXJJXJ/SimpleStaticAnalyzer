@@ -137,6 +137,28 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
     }
 
     SECTION("Using mix of synonyms and statement numbers") {
-        // TODO: To mix and match using the above examples once they are rectified
+        Synonym stmtSyn(EntityType::Stmt, "s1");
+        SECTION("Follows(1, s1) -- gets 1") {
+            FollowsPredicate followsPred(1, stmtSyn);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 1);
+            REQUIRE(table->getRows().size() == 1);
+            REQUIRE(table->getRows()[0].getValues()[0]->getName() == "2");
+        }
+
+        SECTION("Follows(s1, 1) -- gets 0") {
+            FollowsPredicate followsPred(stmtSyn, 1);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 1);
+            REQUIRE(table->getRows().size() == 0);
+        }
+
+        SECTION("Follows(s1, 3) -- gets 1") {
+            FollowsPredicate followsPred(stmtSyn, 3);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 1);
+            REQUIRE(table->getRows().size() == 1);
+            REQUIRE(table->getRows()[0].getValues()[0]->getName() == "2");
+        }
     }
 }
