@@ -7,9 +7,10 @@
 
 ModifiesPredicate::ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
-    if (!isValidLhs(this->lhs) || !isValidVariable(this->rhs)) {
+    if (!isValidModifiesLhsRef(this->lhs) || !isValidVariable(this->rhs)) {
         throw SyntaxErrorException("Invalid arguments for ModifiesPredicate constructor");
     }
+
     if (std::holds_alternative<Synonym>(this->lhs)) {
         auto synonym = std::get<Synonym>(this->lhs);
         this->synonyms.push_back(std::make_shared<Synonym>(synonym));
@@ -22,14 +23,13 @@ ModifiesPredicate::ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs)
 
 shared_ptr<BaseTable> ModifiesPredicate::getTable(QueryManager& qm) {
     // Step 1: Fetch all follows relationships as a BaseTable
-    auto allModifies =
-        BaseTable(qm.getModifyAll(),
-                  2); 
+    auto allModifies = BaseTable(qm.getModifyAll(), 2); 
 
     // Step 2: Filter based on lhs and rhs
     // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
-    auto filteredModifies = allModifies.filter(
-        [this](const std::vector<std::shared_ptr<Entity>>& row) { return isValidRow(row); });
+    auto filteredModifies = allModifies.filter([this](const std::vector<std::shared_ptr<Entity>>& row) { 
+        return isValidRow(row); 
+    });
 
     // Step 3: Project to keep columns associated with a Synonym or determine a boolean result
     bool isLhsSynonym = std::holds_alternative<Synonym>(lhs);
@@ -57,8 +57,7 @@ bool ModifiesPredicate::isValidRow(const vector<shared_ptr<Entity>>& row) const 
 
     if (std::holds_alternative<int>(lhs)) {
         int lhsInt = std::get<int>(lhs);
-        lhsMatch = lhsStatement->getStatementNumber() ==
-                   lhsInt; // Assuming row[0] is the lhs entity and has an ID method
+        lhsMatch = lhsStatement->getStatementNumber() == lhsInt; // Assuming row[0] is the lhs entity and has an ID method
     } else if (std::holds_alternative<Synonym>(lhs)) {
         auto lhsSynonym = std::get<Synonym>(lhs);
         lhsMatch = lhsStatement->isOfType(lhsSynonym.getType());
@@ -74,23 +73,5 @@ bool ModifiesPredicate::isValidRow(const vector<shared_ptr<Entity>>& row) const 
 
     return lhsMatch && rhsMatch;
 }
-
-
-bool ModifiesPredicate::isValidLhs(const ModifiesLhsRef& lhs) {
-    return std::visit(overloaded {
-            [](const int&) { return true; },
-            [](const Synonym& syn) { return syn.getType() == EntityType::Stmt || syn.getType() == EntityType::Procedure; },
-            [](const std::string& str) { return !str.empty(); },
-            [](const auto&) { return false; } // No longer needed, but kept for completeness
-    }, lhs);
-}
-
-bool ModifiesPredicate::isValidRhs(const EntityRef& rhs) {
-    return std::visit(overloaded {
-            [](const Synonym& syn) { return syn.getType() == EntityType::Variable; },
-            [](const std::string& str) { return !str.empty(); }
-    }, rhs);
-}
-
 
 // ai-gen end
