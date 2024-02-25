@@ -14,6 +14,7 @@ file(GLOB headers
 
 add_executable(unit_testing ${srcs} ${headers}
         src/qps/evaluation/TestSynonymGraph.cpp
-        src/qps/clause/TestFollowsPredicate.cpp)
+        src/qps/clause/TestFollowsPredicate.cpp
+        src/QPS/clause/TestFollowsTPredicate.cpp)
 
 target_link_libraries(unit_testing spa)
