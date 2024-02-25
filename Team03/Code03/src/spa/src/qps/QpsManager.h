@@ -25,7 +25,7 @@ class QpsManager {
   public:
     QpsManager();
     ~QpsManager();
-    std::vector<std::string> processQuery(const std::string& query);
+    std::vector<std::string> processQuery(std::string query);
 
   private:
     std::vector<std::vector<std::vector<std::string>>> tokenizeQuery(const std::string& query);
