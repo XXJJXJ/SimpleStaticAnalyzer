@@ -12,9 +12,6 @@ file(GLOB headers
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.h"
 )
 
-add_executable(unit_testing ${srcs} ${headers}
-        src/qps/evaluation/TestSynonymGraph.cpp
-        src/qps/clause/TestFollowsPredicate.cpp
-        src/qps/evaluation/strategy/TestJoinWithPredicateStrategy.cpp)
+add_executable(unit_testing ${srcs} ${headers})
 
 target_link_libraries(unit_testing spa)

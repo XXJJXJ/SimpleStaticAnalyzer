@@ -20,8 +20,8 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
         auto table = predicate->getTable(*context.getQueryManager());
         if (table->isEmpty()) {
             context.setResultToFalse();
-            return;
         }
+        return;
     }
 
     // Check if the table is initialized for the synonyms
@@ -48,6 +48,10 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
             }
         }
     }
+}
+
+std::string JoinWithPredicateStrategy::toString() const {
+    return "JoinWithPredicateStrategy" + predicate->toString();
 }
 
 // ai-gen end

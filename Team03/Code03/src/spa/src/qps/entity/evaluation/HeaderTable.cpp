@@ -109,6 +109,7 @@ std::shared_ptr<BaseTable> HeaderTable::join(BaseTable &other) {
         } else {
             // If true, return a copy of the current table
             resultTable = std::make_shared<HeaderTable>(*this);
+//            resultTable->makeRowsUnique();
         }
     } else {
         throw QPSEvaluationException("HeaderTable::join: other is not a HeaderTable or a BooleanTable");
@@ -186,4 +187,19 @@ HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, BaseTable &
         this->addRow(row);
     }
     updateHeaderIndexMap();
+}
+
+bool HeaderTable::operator==(const BaseTable &other) const {
+    if (auto otherHeader = dynamic_cast<const HeaderTable *>(&other)) {
+        if (this->headers.size() != otherHeader->headers.size()) {
+            return false;
+        }
+        for (size_t i = 0; i < this->headers.size(); ++i) {
+            if (!(*this->headers[i] == *otherHeader->headers[i])) {
+                return false;
+            }
+        }
+        return BaseTable::operator==(other);
+    }
+    return false;
 }

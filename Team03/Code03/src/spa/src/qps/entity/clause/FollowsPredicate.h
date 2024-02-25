@@ -22,6 +22,7 @@ public:
     FollowsPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsPredicate() override = default;
     [[nodiscard]] shared_ptr<BaseTable> getTable(QueryManager& qm) override;
+    std::string toString() const override;
 };
 
 #endif // FOLLOWSPREDICATE_H

@@ -22,8 +22,8 @@ public:
     bool operator==(const TableRow& other) const;
     [[nodiscard]] string toString() const;
     [[nodiscard]] std::shared_ptr<Entity> getByIndex(int index) const; // New function for direct access
-    bool compatibleWith(const TableRow& other, vector<int> indices1, vector<int> indices2) const;
     friend class HeaderTable; // Allows HeaderTable to access private members of TableRow
+    bool operator<(const TableRow& other) const;
 };
 
 
