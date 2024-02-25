@@ -89,6 +89,7 @@ void SPVStore::clear() {
     ifWhileStmts.clear();
     callStmts.clear();
     procedureToVar.clear();
+    cache.clear();
 };
 SPVStore::~SPVStore() {
     clear();

@@ -10,6 +10,7 @@ void QueryManager::clear() {
     EntityManager::clear();
     AbstractionManager::clear();
     PatternManager::clear();
+    procVarResultCache.clear();
 }
 
 vector<shared_ptr<Constant>> QueryManager::getAllConstants() {
