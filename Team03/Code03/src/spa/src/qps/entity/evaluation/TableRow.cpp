@@ -5,14 +5,25 @@
 #include "TableRow.h"
 
 // Implementation of TableRow
-TableRow::TableRow(const vector<shared_ptr<Entity>>& values) : values(values) {}
+TableRow::TableRow(const vector<shared_ptr<Entity>> &values) : values(values) {}
 
-const vector<shared_ptr<Entity>>& TableRow::getValues() const {
+const vector<shared_ptr<Entity>> &TableRow::getValues() const {
     return values;
 }
 
-bool TableRow::operator==(const TableRow& other) const {
-    return values == other.values;
+bool TableRow::operator==(const TableRow &other) const {
+    if (values.size() != other.values.size()) {
+        return false;
+    }
+    for (size_t i = 0; i < values.size(); ++i) {
+        if (
+                values[i]->getName() != other.values[i]->getName() ||
+                values[i]->getType() != other.values[i]->getType()
+                ) {
+            return false;
+        }
+    }
+    return true;
 }
 
 string TableRow::toString() const {
@@ -34,3 +45,16 @@ std::shared_ptr<Entity> TableRow::getByIndex(int index) const {
     throw std::out_of_range("Index out of range in TableRow::getByIndex");
 }
 
+bool TableRow::operator<(const TableRow& other) const {
+    const auto& valuesA = getValues();
+    const auto& valuesB = other.getValues();
+    if (valuesA.size() != valuesB.size()) {
+        return valuesA.size() < valuesB.size();
+    }
+    for (size_t i = 0; i < valuesA.size(); ++i) {
+        if (*valuesA[i] != *valuesB[i]) { // First, check for equality
+            return *valuesA[i] < *valuesB[i]; // Then determine order
+        }
+    }
+    return false; // Rows are equal
+}

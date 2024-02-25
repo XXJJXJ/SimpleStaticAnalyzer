@@ -7,7 +7,22 @@ JoinWithPredicateStrategy::JoinWithPredicateStrategy(std::shared_ptr<Predicate> 
         : predicate(std::move(pred)) {}
 
 void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
+
+    if (context.isCurrentResultEmpty()) {
+        // short-circuit if the result is already empty
+        return;
+    }
+
     auto synonyms = predicate->getSynonyms();
+
+    if (synonyms.empty()) {
+        // No synonym involved in the predicate, returns boolean table
+        auto table = predicate->getTable(*context.getQueryManager());
+        if (table->isEmpty()) {
+            context.setResultToFalse();
+        }
+        return;
+    }
 
     // Check if the table is initialized for the synonyms
     // Check one synonym is enough as all synonyms in the group share the same table
@@ -33,6 +48,10 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
             }
         }
     }
+}
+
+std::string JoinWithPredicateStrategy::toString() const {
+    return "JoinWithPredicateStrategy" + predicate->toString();
 }
 
 // ai-gen end

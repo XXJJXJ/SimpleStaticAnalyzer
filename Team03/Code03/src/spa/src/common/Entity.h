@@ -17,4 +17,10 @@ public:
     }
     [[nodiscard]] virtual EntityType getType() const = 0;
     [[nodiscard]] virtual bool isOfType(EntityType type) const = 0;
+    virtual bool operator<(const Entity& other) const {
+        if (getType() != other.getType()) {
+            return getType() < other.getType();
+        }
+        return getName() < other.getName();
+    }
 };
