@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <functional>
 #include "common/Entity.h"
 #include "TableRow.h"
 

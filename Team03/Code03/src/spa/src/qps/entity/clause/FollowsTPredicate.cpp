@@ -38,7 +38,7 @@ std::shared_ptr<BaseTable> FollowsTPredicate::getTable(QueryManager &qm) {
 
     shared_ptr<BaseTable> resultTable = filteredFollowsT->project({isLhsSynonym, isRhsSynonym});
     if(!resultTable->isBoolean()) {
-        resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable)
+        resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
     }
     return resultTable;
 }

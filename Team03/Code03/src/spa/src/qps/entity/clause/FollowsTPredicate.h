@@ -16,7 +16,7 @@ class FollowsTPredicate : public Predicate {
 private:
     StatementRef lhs; // Left-hand statement reference
     StatementRef rhs; // Right-hand statement reference
-    bool isValidRow(const std::vector<std::shared_ptr<Entity>> &row) const;
+    [[nodiscard]] bool isValidRow(const std::vector<std::shared_ptr<Entity>> &row) const;
 
 public:
     FollowsTPredicate(StatementRef lhs, StatementRef rhs);

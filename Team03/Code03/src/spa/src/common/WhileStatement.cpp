@@ -6,7 +6,7 @@ WhileStatement::WhileStatement(
     string procedureName) : Statement(
         statementNumber,
         EntityType::While,
-        move(procedureName)), condition(move(condition_)) {}
+        std::move(procedureName)), condition(std::move(condition_)) {}
 
 void WhileStatement::addStatement(shared_ptr<Statement> statement) {
     statementList.push_back(statement);

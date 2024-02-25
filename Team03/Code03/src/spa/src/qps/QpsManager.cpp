@@ -16,6 +16,8 @@ std::vector<std::string> QpsManager::processQuery(std::string query) {
     catch (SemanticErrorException s) {
         return {"SemanticError"};
     }
+
+    return {};
 }
 
 // Calls QueryTokenizer to tokenize the query string
