@@ -10,7 +10,7 @@ ProjectionStrategy::ProjectionStrategy(std::shared_ptr<Synonym> synonym) : targe
 
 void ProjectionStrategy::execute(QueryEvaluationContext &context) {
     // Check all tables in the context; if any is empty, return an empty table directly.
-    if (context.isResultEmpty()) {
+    if (context.isCurrentResultEmpty()) {
         HeaderTable emptyTable;
         emptyTable.setHeaders({targetSynonym});
         context.setResultTable(std::make_shared<HeaderTable>(emptyTable));

@@ -105,3 +105,7 @@ shared_ptr<BaseTable> BaseTable::join(BaseTable &other) {
 const vector<TableRow> BaseTable::getRows() const {
     return rows;
 }
+
+bool BaseTable::operator==(const BaseTable &other) const {
+    return rows == other.rows;
+}

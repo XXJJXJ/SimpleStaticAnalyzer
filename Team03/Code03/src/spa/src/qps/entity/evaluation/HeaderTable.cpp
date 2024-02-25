@@ -187,4 +187,3 @@ HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, BaseTable &
     }
     updateHeaderIndexMap();
 }
-

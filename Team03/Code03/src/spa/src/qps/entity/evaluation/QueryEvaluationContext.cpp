@@ -59,10 +59,12 @@ void QueryEvaluationContext::setResultTable(const shared_ptr<BaseTable> &_result
 /**
  * Checks whether the result is empty. Returns true if any of the tables in the context is empty.
  */
-bool QueryEvaluationContext::isResultEmpty() const {
+bool QueryEvaluationContext::isCurrentResultEmpty() const {
+    if (resultMustBeEmpty) {
+        return true;
+    }
     for (const auto& pair : synonymToTableMap) {
-        auto &table = pair.second;
-        if (table->isEmpty()) {
+        if (pair.second->isEmpty()) {
             return true;
         }
     }
@@ -97,5 +99,9 @@ void QueryEvaluationContext::putTableForSynonymGroup(const Synonym& synonym, con
             break;
         }
     }
+}
+
+void QueryEvaluationContext::setResultToFalse() {
+    resultMustBeEmpty = true;
 }
 

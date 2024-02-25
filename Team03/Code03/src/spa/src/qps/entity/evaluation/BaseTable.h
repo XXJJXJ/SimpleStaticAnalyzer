@@ -5,6 +5,7 @@
 #include <memory>
 #include "common/Entity.h"
 #include "TableRow.h"
+#include <functional>
 
 class BaseTable {
 private:
@@ -32,5 +33,9 @@ public:
     virtual ~BaseTable() = default;
 
     vector<TableRow> &getRows();
+
+    virtual bool operator==(const BaseTable& other) const;
+
+
 };
 #endif // BASE_TABLE_H

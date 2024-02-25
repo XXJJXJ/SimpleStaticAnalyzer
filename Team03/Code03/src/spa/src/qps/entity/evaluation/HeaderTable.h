@@ -32,7 +32,6 @@ public:
     void updateHeaderIndexMap(); // Utility function to update headerIndexMap
     int indexOf(const Synonym& synonym) const; // Get index of a synonym
     bool hasHeader(const Synonym& synonym) const; // Check if a header exists
-
 };
 
 #endif // TABLE_H
