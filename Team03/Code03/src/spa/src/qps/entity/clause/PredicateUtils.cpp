@@ -78,3 +78,15 @@ bool isWildcard(StatementRef& ref) {
 bool isWildcard(EntityRef & ref) {
     return std::holds_alternative<std::string>(ref) && std::get<std::string>(ref) != WILDCARD;
 }
+
+bool hasWildcard(std::string& expr) {
+    // if both first and last are "_", then it's a wildcard
+    return expr.size() > 1 && expr[0] == '_' && expr[expr.size() - 1] == '_';
+}
+
+std::string stripWildcard(std::string& expr) {
+    if (hasWildcard(expr)) {
+        return expr.substr(1, expr.size() - 2);
+    }
+    return expr;
+}

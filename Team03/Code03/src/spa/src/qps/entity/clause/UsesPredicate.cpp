@@ -24,13 +24,13 @@ UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
 shared_ptr<BaseTable> UsesPredicate::getTable(QueryManager& qm) {
     // Step 1: Fetch all follows relationships as a BaseTable
     auto allUses =
-        BaseTable(qm.getUseAll(),
-                  2); // Assuming getFollowS returns data compatible with BaseTable constructor
+            BaseTable(qm.getUseAll(),
+                      2); // Assuming getFollowS returns data compatible with BaseTable constructor
 
     // Step 2: Filter based on lhs and rhs
     // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
     auto filteredUses = allUses.filter(
-        [this](const std::vector<std::shared_ptr<Entity>>& row) { return isValidRow(row); });
+            [this](const std::vector<std::shared_ptr<Entity>>& row) { return isValidRow(row); });
 
     // Step 3: Project to keep columns associated with a Synonym or determine a boolean result
     bool isLhsSynonym = std::holds_alternative<Synonym>(lhs);

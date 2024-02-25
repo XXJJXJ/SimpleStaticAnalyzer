@@ -21,6 +21,10 @@ private:
     vector<vector<shared_ptr<Entity>>> fakeUses;
 
     vector<vector<shared_ptr<Entity>>> fakeModifies;
+
+    vector<shared_ptr<AssignStatement>> fakeAssignsWithPattern;
+    vector<shared_ptr<Variable>> allFakeVariables;  // Special case, since PKB doesn't return entity, TODO: fix
+
 public:
     FakeQueryManager() = default;
 
@@ -30,6 +34,23 @@ public:
         // Convert T (derived from Entity) vector to Entity vector
         std::vector<std::shared_ptr<Entity>> genericResponse(response.begin(), response.end());
         fakeResponses[entityType] = genericResponse;
+    }
+
+    // Specifies the return value of getAssignPattern()
+    void setFakeAssignsWithPattern(vector<shared_ptr<AssignStatement>> stmt) {
+        fakeAssignsWithPattern = stmt;
+    }
+
+    vector<shared_ptr<AssignStatement>> getAssignPattern(string useless1, string useless2, bool useless3) override {
+        return fakeAssignsWithPattern;
+    }
+
+    vector<shared_ptr<Variable>> getAllVariables() override {
+        return allFakeVariables;
+    }
+
+    void setAllFakeVariable(vector<shared_ptr<Variable>> var) {
+        allFakeVariables = var;
     }
 
     void addFakeFollows(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
