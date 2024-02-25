@@ -5,7 +5,6 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
-
 FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs)) {
         throw SyntaxErrorException("Invalid argument for FollowsPredicate constructor");
@@ -98,7 +97,4 @@ std::string FollowsPredicate::toString() const {
     }
     return "FollowsPredicate " + lhsStr + " " + rhsStr;
 }
-
-
-
 // ai-gen end
