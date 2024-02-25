@@ -119,8 +119,8 @@ std::vector<std::string> PredicateFactory::extractRefs(const std::vector<std::st
 std::variant<int, Synonym, std::string> PredicateFactory::stringToStatementRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
 	QueryValidator qv;
 	size_t len = token.size();
-	if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
-		return token.substr(1, len - 1);
+    if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
+        return token.substr(1, len - 2);
 	}
 	else if (token == "_") {
 		return token;
