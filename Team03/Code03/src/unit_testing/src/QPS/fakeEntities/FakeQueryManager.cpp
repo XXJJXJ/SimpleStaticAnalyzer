@@ -13,8 +13,11 @@ private:
     std::map<EntityType, std::vector<std::shared_ptr<Entity>>> fakeResponses;
 
     vector<vector<shared_ptr<Entity>>> fakeFollows;
+
     vector<vector<shared_ptr<Entity>>> fakeParents;
     vector<vector<shared_ptr<Entity>>> fakeParentT;
+
+    vector<vector<shared_ptr<Entity>>> fakeUses;
 
 public:
     FakeQueryManager() = default;
@@ -31,12 +34,17 @@ public:
         fakeFollows.push_back({stmt1, stmt2});
     }
 
+
     void addFakeParent(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
         fakeParents.push_back({stmt1, stmt2});
     }
 
     void addFakeParentT(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
         fakeParentT.push_back({stmt1, stmt2});
+    }
+    void addFakeUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
+        fakeUses.push_back({ stmt, var });
+
     }
 
     // New method to get all entities by type
@@ -57,7 +65,10 @@ public:
     }
 
     vector<vector<shared_ptr<Entity>>> getParentT() override {
-        return fakeParentT;
+                return fakeParentT;
+    }
+    vector<vector<shared_ptr<Entity>>> getUseAll() override {
+        return fakeUses;
     }
 
     // Implement other necessary virtual functions from QueryManager

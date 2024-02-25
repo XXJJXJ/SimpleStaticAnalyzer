@@ -108,12 +108,14 @@ TEST_CASE("PredicateFactory::createPredicate successfully creates predicate obje
 		std::vector<std::string> tokens3 = { "Modifies", "(", "a", ",", "\"b\"", ")" }; //Valid synonym + string (valid)
 		std::vector<std::string> tokens4 = { "Uses", "(", "a", ",", "b", ")" }; //Invalid synonym type
 		std::vector<std::string> tokens5 = { "pattern", "d", "(", "1", ",", "_", ")"}; //Integer (invalid)
+		std::vector<std::string> tokens6 = { "Uses", "(", "\"a\"", ",", "c", ")" }; //Ident name for lhs (valid)
 
 		REQUIRE_NOTHROW(pf.createPredicate(tokens1, synonymMap));
 		REQUIRE_NOTHROW(pf.createPredicate(tokens2, synonymMap));
 		REQUIRE_NOTHROW(pf.createPredicate(tokens3, synonymMap));
 		REQUIRE_THROWS(pf.createPredicate(tokens4, synonymMap));
 		REQUIRE_THROWS(pf.createPredicate(tokens5, synonymMap));
+		REQUIRE_NOTHROW(pf.createPredicate(tokens6, synonymMap));
 	}
 }
 
@@ -128,7 +130,7 @@ TEST_CASE("PredicateFactory::createPredicate should throw errors for invalid que
 	std::vector<std::string> tokens1 = { "Modifies", "(", "a", ")" }; // Too few arguments
 	std::vector<std::string> tokens2 = { "Follows", "(", "a", ",", "b", ",", "c", ")" }; // Too many arguments
 	std::vector<std::string> tokens3 = { "Parent", "extraWord", "(", "a", ",", "b", ")" }; // Extra word before "("
-	std::vector<std::string> tokens4 = { "Uses", "extraWord", "(", "a", ",", "_", ",", ")" }; // Invalid syntax in clause
+	std::vector<std::string> tokens4 = { "Uses", "(", "a", ",", "_", ",", ")" }; // Invalid syntax in clause
 
 	REQUIRE_THROWS(pf.createPredicate(tokens1, synonymMap));
 	REQUIRE_THROWS(pf.createPredicate(tokens2, synonymMap));
