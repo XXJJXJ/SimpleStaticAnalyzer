@@ -26,3 +26,11 @@ bool ConditionalOperation::operator==(const Expression& other) const {
 
     return this->getArguments()->second->operator==(*casted.getArguments()->second);
 }
+
+EntityType ConditionalOperation::getType() const {
+    return EntityType::Conditional;
+}
+
+bool ConditionalOperation::isOfType(EntityType type) const {
+    return type == EntityType::Conditional || Operation::isOfType(type);
+}

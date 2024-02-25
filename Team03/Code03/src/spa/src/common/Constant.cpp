@@ -20,3 +20,11 @@ std::size_t Constant::hash() const {
 bool Constant::operator==(const Constant& other) const {
     return getName() == other.getName();
 }
+
+EntityType Constant::getType() const {
+    return EntityType::Constant;
+}
+
+bool Constant::isOfType(EntityType type) const {
+    return type == EntityType::Constant || Expression::isOfType(type);
+}

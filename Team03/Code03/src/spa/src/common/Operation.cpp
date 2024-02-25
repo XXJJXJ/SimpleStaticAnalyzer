@@ -11,3 +11,11 @@ Operation::Operation(
 string Operation::getName() const {
     return name;
 }
+
+EntityType Operation::getType() const {
+    return EntityType::Operation;
+}
+
+bool Operation::isOfType(EntityType type) const {
+    return type == EntityType::Operation || Expression::isOfType(type);
+}

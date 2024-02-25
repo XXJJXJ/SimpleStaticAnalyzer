@@ -6,6 +6,8 @@
 #include "Predicate.h"
 #include <memory>
 #include <variant>
+#include "PredicateUtils.h"
+
 
 class Strategy;
 
@@ -17,10 +19,9 @@ public:
     ParentPredicate(StatementRef lhs, StatementRef rhs);
     ~ParentPredicate() override = default;
 
-    std::shared_ptr<Strategy> getStrategy() const override;
-
     // Helper methods for validation
     static bool isValidStmtRef(const StatementRef& ref);
+
 };
 
 #endif // PARENTPREDICATE_H

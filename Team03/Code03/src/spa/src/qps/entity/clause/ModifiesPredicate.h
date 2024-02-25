@@ -6,6 +6,8 @@
 #include "Predicate.h"
 #include <memory>
 #include <variant>
+#include "PredicateUtils.h"
+
 
 class Strategy;
 
@@ -19,10 +21,9 @@ public:
     ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs);
     ~ModifiesPredicate() override = default;
 
-    std::shared_ptr<Strategy> getStrategy() const override;
-
     static bool isValidLhs(const ModifiesLhsRef& lhs);
     static bool isValidRhs(const EntityRef& rhs);
+
 };
 
 #endif // MODIFIESPREDICATE_H

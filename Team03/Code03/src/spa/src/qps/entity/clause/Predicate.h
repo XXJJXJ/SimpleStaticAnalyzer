@@ -7,12 +7,7 @@
 #include <variant>
 #include "qps/entity/strategy/Strategy.h"
 
-template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
-template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
-
-using StatementRef = std::variant<int, Synonym, std::string>; // stmtRef: synonym | '_' | INTEGER
-using EntityRef = std::variant<Synonym, std::string>; // entRef : synonym | '_' | '"' IDENT '"'
 
 /**
  * Base class for all filtering conditions in a query, including relationship, pattern and with
@@ -20,9 +15,15 @@ using EntityRef = std::variant<Synonym, std::string>; // entRef : synonym | '_' 
  * query.
  */
 class Predicate {
+protected:
+    vector<shared_ptr<Synonym>> synonyms; // Synonyms used in the predicate
 public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion
-    virtual shared_ptr<Strategy> getStrategy() const = 0; // Pure virtual function
+    [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
+    [[nodiscard]] virtual shared_ptr<BaseTable> getTable(QueryManager& qm) {
+        // Temp implementation to get code compiling, TODO: remove and set pure virtual
+        return make_shared<BaseTable>();
+    };
 };
 
 #endif // RELATIONSHIPPREDICATE_H

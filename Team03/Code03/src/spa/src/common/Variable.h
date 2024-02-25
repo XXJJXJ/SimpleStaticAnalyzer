@@ -8,9 +8,11 @@ public:
 	void accept(shared_ptr<Visitor> visitor) override;
 	bool isLeafNodeExpression() override;
     string getName() const override;
+    [[nodiscard]] EntityType getType() const override;
 
 	std::size_t hash() const;
 	bool operator==(const Variable& other) const;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 };
 
 namespace std {

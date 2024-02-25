@@ -2,4 +2,9 @@
 
 #include "Statement.h"
 
-class CallStatement : public Statement {};
+class CallStatement : public Statement {
+public:
+    [[nodiscard]] EntityType getType() const override;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
+};
+

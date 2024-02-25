@@ -8,11 +8,14 @@ UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
     if (!isValidLhs(this->lhs) || !isValidRhs(this->rhs)) {
         throw SyntaxErrorException("Invalid arguments for UsesPredicate constructor");
     }
-}
-
-std::shared_ptr<Strategy> UsesPredicate::getStrategy() const {
-    // Placeholder logic for strategy selection
-    return nullptr;
+    if (std::holds_alternative<Synonym>(this->lhs)) {
+        auto synonym = std::get<Synonym>(this->lhs);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+    }
+    if (std::holds_alternative<Synonym>(this->rhs)) {
+        auto synonym = std::get<Synonym>(this->rhs);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+    }
 }
 
 bool UsesPredicate::isValidLhs(const UsesLhsRef& lhs) {

@@ -9,6 +9,8 @@ public:
 	bool isLeafNodeExpression() override;
     std::size_t hash() const;
 	bool operator==(const Constant& other) const;
+    [[nodiscard]] EntityType getType() const override;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 };
 
 namespace std {

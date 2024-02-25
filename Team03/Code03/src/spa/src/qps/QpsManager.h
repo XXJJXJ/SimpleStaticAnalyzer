@@ -9,9 +9,17 @@
 #ifndef QPSMANAGER_H
 #define QPSMANAGER_H
 
-#include "qps/entity/query/Query.h"
 #include <string>
 #include <vector>
+
+#include "QueryEvaluator.h"
+#include "QueryParser.h"
+#include "QueryTokenizer.h"
+#include "QueryValidator.h"
+#include "qps/entity/query/Query.h"
+#include "qps/entity/evaluation/EvaluationPlanner.h"
+#include "common/spa_exception/SyntaxErrorException.h"
+#include "common/spa_exception/SemanticErrorException.h"
 
 class QpsManager {
   public:

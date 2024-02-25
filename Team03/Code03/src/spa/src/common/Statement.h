@@ -11,14 +11,16 @@ public:
         int statementNumber,
         EntityType statementType,
         string procedureName);
-    void accept(shared_ptr<Visitor> visitor) override = 0;
+    void accept(shared_ptr<Visitor> visitor) override;
     int getStatementNumber() const;
     EntityType getStatementType() const;
     string getProcedureName() const;
     string getName() const override;
+    [[nodiscard]] EntityType getType() const override;
 
     std::size_t hash() const;
 	bool operator==(const Statement& other) const;
+    [[nodiscard]] bool isOfType(EntityType type) const override;
 
 private:
     const int statementNumber;

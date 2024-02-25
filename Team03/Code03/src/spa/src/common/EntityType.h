@@ -18,6 +18,7 @@ enum class EntityType {
     Arithmetic,  // Represents arithmetic operations
     Conditional,  // Represents conditional operations
     Relational,  // Represents relational operations
+    Expression,  // Represents expressions
     // ai-gen end
     Unknown     // Represents unknown entity types
 };

@@ -33,3 +33,17 @@ std::size_t Statement::hash() const {
 bool Statement::operator==(const Statement& other) const {
     return getStatementNumber() == other.getStatementNumber();
 }
+
+EntityType Statement::getType() const {
+    return EntityType::Stmt;
+}
+
+bool Statement::isOfType(EntityType type) const {
+    // Cannot use this->getType() it still returns the more specific type
+    return type == EntityType::Stmt;
+}
+
+// Empty function to make Statement non-abstract
+void Statement::accept(shared_ptr<Visitor> visitor) {
+
+}

@@ -1,18 +1,4 @@
-/*
- * Created by ZHENGTAO JIANG on 8/2/24.
- */
-
-#include <fstream>
-#include <iostream>
-
 #include "QpsManager.h"
-#include "QueryEvaluator.h"
-#include "QueryParser.h"
-#include "QueryTokenizer.h"
-#include "QueryValidator.h"
-
-#include "common/spa_exception/SyntaxErrorException.h"
-#include "common/spa_exception/SemanticErrorException.h"
 
 QpsManager::QpsManager() {}
 
@@ -46,8 +32,9 @@ QpsManager::parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens
     return parser.parse(tokens);
 }
 
-// Calls QueryEvaluator to evaluate the parsed query
 vector<std::string> QpsManager::evaluateQuery(const std::shared_ptr<Query> parsedQuery) {
-    QueryEvaluator evaluator = QueryEvaluator();
-    return evaluator.evaluate(parsedQuery);
+    auto evaluator = make_shared<QueryEvaluator>();
+    auto planner = EvaluationPlanner(parsedQuery, evaluator);
+    planner.plan();
+    return evaluator->evaluate(parsedQuery);
 }

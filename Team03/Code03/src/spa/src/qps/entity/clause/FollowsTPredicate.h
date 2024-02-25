@@ -6,6 +6,8 @@
 #include "Predicate.h"
 #include <memory>
 #include <variant>
+#include "PredicateUtils.h"
+
 
 class Strategy;
 
@@ -16,8 +18,6 @@ private:
 public:
     FollowsTPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsTPredicate() override = default;
-
-    std::shared_ptr<Strategy> getStrategy() const override;
 
     // Helper methods for validation
     static bool isValidStmtRef(const StatementRef& ref);

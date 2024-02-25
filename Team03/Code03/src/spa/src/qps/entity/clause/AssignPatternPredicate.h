@@ -1,9 +1,12 @@
+#pragma once
+
 #ifndef ASSIGNPATTERNPREDICATE_H
 #define ASSIGNPATTERNPREDICATE_H
 
 #include "Predicate.h"
 #include <memory>
 #include <variant>
+#include "PredicateUtils.h"
 
 // Forward declaration of Strategy to avoid circular dependency
 class Strategy;
@@ -20,7 +23,6 @@ public:
 	AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs);
 	~AssignPatternPredicate() override = default;
 
-	std::shared_ptr<Strategy> getStrategy() const override;
 };
 
 #endif // ASSIGNPATTERNPREDICATE_H

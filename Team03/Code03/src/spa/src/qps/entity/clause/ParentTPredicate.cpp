@@ -8,11 +8,14 @@ ParentTPredicate::ParentTPredicate(StatementRef lhs, StatementRef rhs)
     if (!isValidStmtRef(this->lhs) || !isValidStmtRef(this->rhs)) {
         throw SyntaxErrorException("Invalid arguments for ParentTPredicate constructor");
     }
-}
-
-std::shared_ptr<Strategy> ParentTPredicate::getStrategy() const {
-    // Placeholder logic for strategy selection specific to Parent*
-    return nullptr; // Return a valid shared_ptr to a Strategy object as needed
+    if (std::holds_alternative<Synonym>(this->lhs)) {
+        auto synonym = std::get<Synonym>(this->lhs);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+    }
+    if (std::holds_alternative<Synonym>(this->rhs)) {
+        auto synonym = std::get<Synonym>(this->rhs);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+    }
 }
 
 bool ParentTPredicate::isValidStmtRef(const StatementRef& ref) {

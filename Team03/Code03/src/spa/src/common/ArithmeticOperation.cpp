@@ -20,3 +20,11 @@ bool ArithmeticOperation::operator==(const Expression& other) const {
         this->getArguments()->first->operator==(*casted.getArguments()->first) && 
         this->getArguments()->second->operator==(*casted.getArguments()->second);
 }
+
+EntityType ArithmeticOperation::getType() const {
+    return EntityType::Arithmetic;
+}
+
+bool ArithmeticOperation::isOfType(EntityType type) const {
+    return type == EntityType::Arithmetic || Operation::isOfType(type);
+}

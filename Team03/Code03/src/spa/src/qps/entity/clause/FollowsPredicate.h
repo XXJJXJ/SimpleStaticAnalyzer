@@ -7,6 +7,8 @@
 #include "Predicate.h"
 #include <memory>
 #include <variant>
+#include "PredicateUtils.h"
+
 
 // Forward declaration of Strategy to avoid circular dependency
 class Strategy;
@@ -14,17 +16,12 @@ class Strategy;
 class FollowsPredicate : public Predicate {
 private:
     StatementRef lhs; // Left-hand side can be an int, Synonym, or "_"
-    StatementRef rhs; // Right-hand side can be an Synonym or "_"
-    // Private helper function declaration
-    bool isValidStatementRef(const StatementRef& ref);
-    bool isWildcard(const StatementRef& ref);
+    StatementRef rhs; // Right-hand side can be a Synonym or "_"
+    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
 public:
     FollowsPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsPredicate() override = default;
-
-    std::shared_ptr<Strategy> getStrategy() const override;
-
-    // Additional methods for internal logic as needed
+    [[nodiscard]] shared_ptr<BaseTable> getTable(QueryManager& qm) override;
 };
 
 #endif // FOLLOWSPREDICATE_H

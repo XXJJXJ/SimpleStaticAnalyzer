@@ -18,3 +18,11 @@ string Procedure::getName() const {
 void Procedure::accept(shared_ptr<Visitor> visitor) {
     visitor->visitProcedure(make_shared<Procedure>(*this));
 }
+
+EntityType Procedure::getType() const {
+    return EntityType::Procedure;
+}
+
+bool Procedure::isOfType(EntityType type) const {
+    return type == EntityType::Procedure;
+}
