@@ -140,7 +140,7 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 	QueryValidator qv;
 	size_t len = token.size();
 	if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
-		return token.substr(1, len - 1);
+		return token.substr(1, len - 2);
 	}
 	else if (token == "_") {
 		return token;

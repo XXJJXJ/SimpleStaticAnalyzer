@@ -19,6 +19,8 @@ private:
 
     vector<vector<shared_ptr<Entity>>> fakeUses;
 
+    vector<vector<shared_ptr<Entity>>> fakeModifies;
+
 public:
     FakeQueryManager() = default;
 
@@ -47,6 +49,10 @@ public:
 
     }
 
+    void addFakeModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
+        fakeModifies.push_back({ stmt, var });
+    }
+
     // New method to get all entities by type
     std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType) override {
         auto it = fakeResponses.find(entityType);
@@ -69,6 +75,10 @@ public:
     }
     vector<vector<shared_ptr<Entity>>> getUseAll() override {
         return fakeUses;
+    }
+
+    vector<vector<shared_ptr<Entity>>> getModifyAll() override {
+        return fakeModifies;
     }
 
     // Implement other necessary virtual functions from QueryManager
