@@ -39,7 +39,8 @@ EntityType Statement::getType() const {
 }
 
 bool Statement::isOfType(EntityType type) const {
-    return type == this->getType();
+    // Cannot use this->getType() it still returns the more specific type
+    return type == EntityType::Stmt;
 }
 
 // Empty function to make Statement non-abstract

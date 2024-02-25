@@ -29,5 +29,5 @@ EntityType AssignStatement::getType() const {
 }
 
 bool AssignStatement::isOfType(EntityType type) const {
-    return type == this->getType() || Statement::isOfType(type);
+    return type == EntityType::Assign || Statement::isOfType(type);
 }

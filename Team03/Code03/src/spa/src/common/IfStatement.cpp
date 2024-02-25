@@ -37,5 +37,5 @@ EntityType IfStatement::getType() const {
 }
 
 bool IfStatement::isOfType(EntityType type) const {
-    return type == this->getType() || Statement::isOfType(type);
+    return type == EntityType::If || Statement::isOfType(type);
 }

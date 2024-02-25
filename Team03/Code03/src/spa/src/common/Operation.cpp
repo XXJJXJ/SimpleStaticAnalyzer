@@ -17,5 +17,5 @@ EntityType Operation::getType() const {
 }
 
 bool Operation::isOfType(EntityType type) const {
-    return type == this->getType() || Expression::isOfType(type);
+    return type == EntityType::Operation || Expression::isOfType(type);
 }

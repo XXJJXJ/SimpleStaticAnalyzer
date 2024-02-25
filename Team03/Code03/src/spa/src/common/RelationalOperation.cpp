@@ -25,5 +25,5 @@ EntityType RelationalOperation::getType() const {
 }
 
 bool RelationalOperation::isOfType(EntityType type) const {
-    return type == this->getType() || Operation::isOfType(type);
+    return type == EntityType::Relational || Operation::isOfType(type);
 }

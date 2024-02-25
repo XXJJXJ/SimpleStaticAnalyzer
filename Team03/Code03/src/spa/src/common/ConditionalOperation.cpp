@@ -32,5 +32,5 @@ EntityType ConditionalOperation::getType() const {
 }
 
 bool ConditionalOperation::isOfType(EntityType type) const {
-    return type == this->getType() || Operation::isOfType(type);
+    return type == EntityType::Conditional || Operation::isOfType(type);
 }

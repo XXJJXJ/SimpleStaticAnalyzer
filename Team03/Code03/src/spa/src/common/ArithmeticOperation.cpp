@@ -26,5 +26,5 @@ EntityType ArithmeticOperation::getType() const {
 }
 
 bool ArithmeticOperation::isOfType(EntityType type) const {
-    return type == this->getType() || Operation::isOfType(type);
+    return type == EntityType::Arithmetic || Operation::isOfType(type);
 }
