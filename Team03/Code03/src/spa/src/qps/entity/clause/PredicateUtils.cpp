@@ -46,10 +46,6 @@ bool isValidModifiesLhsRef(const ModifiesLhsRef& ref) {
     QueryValidator qv;
     if (std::holds_alternative<Synonym>(ref)) {
         auto synonym = std::get<Synonym>(ref);
-        if (!(VALID_STATEMENT_TYPES.find(synonym.getType()) != VALID_STATEMENT_TYPES.end() ||
-              VALID_PROCEDURE_TYPES.find(synonym.getType()) != VALID_PROCEDURE_TYPES.end())) {
-            std::cout << "nopls";
-        }
         return VALID_STATEMENT_TYPES.find(synonym.getType()) != VALID_STATEMENT_TYPES.end() ||
                VALID_PROCEDURE_TYPES.find(synonym.getType()) != VALID_PROCEDURE_TYPES.end();
     } else if (std::holds_alternative<std::string>(ref)) {
@@ -69,7 +65,6 @@ bool isValidVariable(const EntityRef& ref) {
         return synonym.getType() == EntityType::Variable;
     } else if (std::holds_alternative<std::string>(ref)) {
         std::string refString = std::get<std::string>(ref);
-        std::cout << refString;
         return refString == WILDCARD || qv.isIdent(refString);
     }
 
