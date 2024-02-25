@@ -55,7 +55,7 @@ shared_ptr<BaseTable> FollowsPredicate::getTable(QueryManager &qm) {
             if (lhsStatement == nullptr) {
                 throw QPSEvaluationException("FollowsPredicate: got a non-statement entity in the lhs from PKB");
             }
-            lhsMatch = lhsStatement->getStatementNumber() == lhsInt; // Assuming row[0] is the lhs entity and has an ID method
+            rhsMatch = lhsStatement->getStatementNumber() == lhsInt; // Assuming row[0] is the lhs entity and has an ID method
         }
 
         return lhsMatch && rhsMatch;
