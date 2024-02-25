@@ -38,7 +38,7 @@ bool isValidUsesLhsRef(const UsesLhsRef& ref) {
     } else if (std::holds_alternative<int>(ref)) {
         // Assuming int is always a valid statement reference
         return std::get<int>(ref) > 0;
-    }
+    } 
     return false;
 }
 
