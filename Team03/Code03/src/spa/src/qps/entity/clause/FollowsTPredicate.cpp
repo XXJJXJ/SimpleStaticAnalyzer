@@ -25,10 +25,10 @@ FollowsTPredicate::FollowsTPredicate(StatementRef lhs, StatementRef rhs) {
 
 std::shared_ptr<BaseTable> FollowsTPredicate::getTable(QueryManager &qm) {
     // Step 1: Fetch all followsT relationships as BaseTable
-    auto allFollows = BaseTable(qm.getFollowT(), 2);
+    auto allFollowsT = BaseTable(qm.getFollowT(), 2);
 
     //Step 2: Filter based on lhs and rhs
-    auto filteredFollowsT = allFollows.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
+    auto filteredFollowsT = allFollowsT.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
         return isValidRow(row);
     });
 
