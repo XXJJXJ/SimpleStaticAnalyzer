@@ -18,21 +18,20 @@ TEST_CASE("Predicates Input Validations", "[Predicates]") {
     Synonym assignSyn(EntityType::Assign, "a");
     std::string validString = "procName"; // Example of a valid non-empty string for procedure names
     std::string wildcard = "_";
-    std::string characterString = "\"charString\"";
-    std::string exactMatch = "\"x*y\"";
+    std::string exactMatch = "x*y";
     std::string partialMatch = "_\"x*y\"_";
 
     SECTION("ModifiesPredicate and UsesPredicate Validation") {
         // ModifiesPredicate: LHS can be stmt, proc (synonym or string); RHS must be a variable (synonym or string)
         REQUIRE_NOTHROW(ModifiesPredicate(stmtSyn, varSyn));
         REQUIRE_NOTHROW(ModifiesPredicate(procSyn, varSyn));
-        REQUIRE_NOTHROW(ModifiesPredicate(characterString, varSyn)); // LHS as procedure name string
+        REQUIRE_NOTHROW(ModifiesPredicate(validString, varSyn)); // LHS as procedure name string
         REQUIRE_NOTHROW(ModifiesPredicate(wildcard, varSyn)); // LHS as wildcard
 
         // UsesPredicate: Similar to Modifies, but for "uses" relationships
         REQUIRE_NOTHROW(UsesPredicate(stmtSyn, varSyn));
         REQUIRE_NOTHROW(UsesPredicate(procSyn, varSyn));
-        REQUIRE_NOTHROW(UsesPredicate(characterString, varSyn)); // LHS as procedure name string
+        REQUIRE_NOTHROW(UsesPredicate(validString, varSyn)); // LHS as procedure name string
         REQUIRE_NOTHROW(UsesPredicate(wildcard, varSyn)); // LHS as wildcard
     }
 
@@ -55,11 +54,9 @@ TEST_CASE("Predicates Input Validations", "[Predicates]") {
     SECTION("AssignPatternPredicate Validation") {
         REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, varSyn, wildcard));
         REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, wildcard, exactMatch));
-        REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, characterString, partialMatch));
+        REQUIRE_NOTHROW(AssignPatternPredicate(assignSyn, validString, partialMatch));
         REQUIRE_THROWS(AssignPatternPredicate(procSyn, varSyn, wildcard)); // Pattern predicate must be assign
         REQUIRE_THROWS(AssignPatternPredicate(assignSyn, procSyn, wildcard)); // LHS cannot be procedure synonym
-        REQUIRE_THROWS(AssignPatternPredicate(assignSyn, validString, wildcard)); // LHS character string must have ""
-        REQUIRE_THROWS(AssignPatternPredicate(assignSyn, varSyn, validString)); // Invalid RHS expression for matching 
     }
 
     SECTION("Wildcard and Non-empty String Checks") {
@@ -67,7 +64,7 @@ TEST_CASE("Predicates Input Validations", "[Predicates]") {
         REQUIRE_NOTHROW(ParentTPredicate(wildcard, stmtSyn2));
         REQUIRE_NOTHROW(FollowsTPredicate(wildcard, stmtSyn2));
         REQUIRE_NOTHROW(ModifiesPredicate(wildcard, varSyn));
-        REQUIRE_NOTHROW(UsesPredicate(characterString, varSyn)); // Procedure name as LHS
+        REQUIRE_NOTHROW(UsesPredicate(validString, varSyn)); // Procedure name as LHS
         REQUIRE_THROWS(ModifiesPredicate("", varSyn)); // Empty string for LHS should throw
         REQUIRE_THROWS(UsesPredicate("", varSyn)); // Empty string for LHS should throw
     }
