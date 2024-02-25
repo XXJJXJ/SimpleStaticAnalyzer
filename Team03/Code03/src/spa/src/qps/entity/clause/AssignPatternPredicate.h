@@ -7,6 +7,7 @@
 #include <memory>
 #include <variant>
 #include "PredicateUtils.h"
+#include "qps/entity/evaluation/HeaderTable.h"
 
 // Forward declaration of Strategy to avoid circular dependency
 class Strategy;
@@ -16,12 +17,12 @@ private:
 	Synonym assignSyn;
 	EntityRef lhs;
 	std::string rhs;
-	bool isValidAssignSyn(const Synonym& assignSyn);
-	bool isValidLhs(const EntityRef& lhs);
-	bool isValidRhs(const std::string& rhs);
+    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
+    static bool isValidRhs(const std::string& rhs);
 public:
 	AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs);
 	~AssignPatternPredicate() override = default;
+    [[nodiscard]] shared_ptr<BaseTable> getTable(QueryManager& qm) override;
 
 };
 

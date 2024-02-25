@@ -42,3 +42,5 @@ bool isValidModifiesLhsRef(const ModifiesLhsRef& ref);
 bool isValidVariable(const EntityRef& ref);
 bool isWildcard(StatementRef& ref);
 bool isWildcard(EntityRef & ref);
+bool hasWildcard(std::string& expr);
+std::string stripWildcard(std::string& expr);
