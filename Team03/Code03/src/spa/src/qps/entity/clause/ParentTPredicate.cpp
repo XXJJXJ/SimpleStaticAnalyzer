@@ -5,7 +5,7 @@
 
 ParentTPredicate::ParentTPredicate(StatementRef lhs, StatementRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
-    if (!isValidStmtRef(this->lhs) || !isValidStmtRef(this->rhs)) {
+    if (!isValidStatementRef(this->lhs) || !isValidStatementRef(this->rhs)) {
         throw SyntaxErrorException("Invalid arguments for ParentTPredicate constructor");
     }
     if (std::holds_alternative<Synonym>(this->lhs)) {
@@ -18,17 +18,74 @@ ParentTPredicate::ParentTPredicate(StatementRef lhs, StatementRef rhs)
     }
 }
 
-bool ParentTPredicate::isValidStmtRef(const StatementRef& ref) {
-    // Implement validation logic for statement references
-    return std::visit(overloaded {
-            [](const int&) { return true; }, // int is always valid for StatementRef
-            [](const Synonym& syn) {
-                // Check if Synonym is of appropriate type, assuming stmt is valid
-                return syn.getType() == EntityType::Stmt;
-            },
-            [](const std::string& str) { return str == "_"; }, // "_" is valid
-            [](const auto&) { return false; } // Catch-all for unexpected types
-    }, ref);
+std::shared_ptr<BaseTable> ParentTPredicate::getTable(QueryManager &qm) {
+    // Step 1: Fetch all parent relationships as a BaseTable
+    auto allParents = BaseTable(
+            qm.getParentT(), 2); // Assuming getParentS returns data compatible with BaseTable constructor
+
+    // Step 2: Filter based on lhs and rhs
+    auto filteredParentT = allParents.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
+        return isValidRow(row);
+    });
+
+    // Step 3: Project to keep columns associated with a Synonym or determine a boolean result
+    bool isLhsSynonym = std::holds_alternative<Synonym>(lhs);
+    bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
+    shared_ptr<BaseTable> resultTable = filteredParentT->project({isLhsSynonym, isRhsSynonym});
+    if (!resultTable->isBoolean()) {
+        resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
+    }
+    return resultTable;
 }
 
+bool ParentTPredicate::isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const {
+    if (row.size() != 2) {
+        throw QPSEvaluationException("ParentTPredicate: got a row with size != 2 from PKB");
+    }
+
+    auto parentStatement = std::dynamic_pointer_cast<Statement>(row[0]);
+    auto childStatement = std::dynamic_pointer_cast<Statement>(row[1]);
+    if (parentStatement == nullptr || childStatement == nullptr) {
+        throw QPSEvaluationException("ParentTPredicate: non-statement entity in the row from PKB");
+    }
+
+    bool lhsMatch = std::holds_alternative<std::string>(lhs) && std::get<std::string>(lhs) == "_";
+    bool rhsMatch = std::holds_alternative<std::string>(rhs) && std::get<std::string>(rhs) == "_";
+
+    if (std::holds_alternative<int>(lhs)) {
+        int lhsInt = std::get<int>(lhs);
+        lhsMatch = parentStatement->getStatementNumber() == lhsInt;
+    } else if (std::holds_alternative<Synonym>(lhs)) {
+        auto lhsSynonym = std::get<Synonym>(lhs);
+        lhsMatch = parentStatement->isOfType(lhsSynonym.getType());
+    }
+
+    if (std::holds_alternative<int>(rhs)) {
+        int rhsInt = std::get<int>(rhs);
+        rhsMatch = childStatement->getStatementNumber() == rhsInt;
+    } else if (std::holds_alternative<Synonym>(rhs)) {
+        auto rhsSynonym = std::get<Synonym>(rhs);
+        rhsMatch = childStatement->isOfType(rhsSynonym.getType());
+    }
+
+    return lhsMatch && rhsMatch;
+}
+
+std::string ParentTPredicate::toString() const {
+    std::string lhsStr = std::visit(overloaded {
+            [](const int val) { return std::to_string(val); },
+            [](const Synonym& syn) { return syn.getName(); },
+            [](const std::string& str) { return str; },
+            [](const auto&) { return std::string("Unsupported Type"); }
+    }, lhs);
+
+    std::string rhsStr = std::visit(overloaded {
+            [](const int val) { return std::to_string(val); },
+            [](const Synonym& syn) { return syn.getName(); },
+            [](const std::string& str) { return str; },
+            [](const auto&) { return std::string("Unsupported Type"); }
+    }, rhs);
+
+    return "ParentTPredicate " + lhsStr + " " + rhsStr;
+}
 // ai-gen end
