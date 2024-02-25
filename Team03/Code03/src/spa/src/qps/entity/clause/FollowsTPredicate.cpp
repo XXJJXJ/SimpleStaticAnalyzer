@@ -51,7 +51,7 @@ bool FollowsTPredicate::isValidRow(const std::vector<std::shared_ptr<Entity>> &r
     bool rhsMatch = true; // Same as above
     auto lhsStatement = std::dynamic_pointer_cast<Statement>(row[0]);
     auto rhsStatement = std::dynamic_pointer_cast<Statement>(row[1]);
-    if (lhsStatement == nullptr || rhsStatement) {
+    if (lhsStatement == nullptr || rhsStatement == nullptr) {
         throw QPSEvaluationException("FollowsTPredicate: got a non-statement entity in the row from PKB");
     }
 
