@@ -3,7 +3,7 @@
 
 AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs) 
 		: assignSyn(std::move(assignSyn)), lhs(std::move(lhs)), rhs(std::move(rhs)) {
-    bool isValidAssignSyn = assignSyn.getType() == EntityType::Assign;
+    bool isValidAssignSyn = this->assignSyn.getType() == EntityType::Assign;
     bool isLhsValid = isValidEntityRef(this->lhs);
     if (holds_alternative<Synonym>(this->lhs)) {
         auto synonym = get<Synonym>(this->lhs);
@@ -14,7 +14,7 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
 		throw SyntaxErrorException("Invalid argument for AssignPatternPredicate constructor");
 	}
 
-    synonyms.push_back(make_shared<Synonym>(assignSyn));
+    synonyms.push_back(make_shared<Synonym>(this->assignSyn));
     if (holds_alternative<Synonym>(this->lhs)) {
         auto synonym = get<Synonym>(this->lhs);
         synonyms.push_back(make_shared<Synonym>(synonym));
@@ -43,11 +43,11 @@ bool AssignPatternPredicate::isValidRhs(const std::string& rhs) {
 shared_ptr<BaseTable> AssignPatternPredicate::getTable(QueryManager &qm) {
     // Step 1: get all possible LHS (arg1)
     vector<shared_ptr<Entity>> allPossibleLhs;
-    if (holds_alternative<string>(lhs)) {
-        if (get<string>(lhs) != WILDCARD) {
-            // TODO: Ask PKB to support querying by variable name and refactor this
-            allPossibleLhs.push_back(make_shared<Variable>(get<string>(lhs)));
-        }
+    if (holds_alternative<string>(lhs) && get<string>(lhs) != WILDCARD) {
+
+        // TODO: Ask PKB to support querying by variable name and refactor this
+        allPossibleLhs.push_back(make_shared<Variable>(get<string>(lhs)));
+
     } else {
         // TODO: Ask PKB to return Entity and refactor this
         for (auto& variable : qm.getAllVariables()) {

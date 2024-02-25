@@ -4,26 +4,26 @@
 #define PARENTPREDICATE_H
 
 #include "Predicate.h"
-#include <memory>
-#include <variant>
+#include "qps/entity/evaluation/HeaderTable.h"
 #include "PredicateUtils.h"
-
-
-class Strategy;
+#include "common/spa_exception/SyntaxErrorException.h"
+#include "common/spa_exception/QPSEvaluationException.h"
+#include <memory>
 
 class ParentPredicate : public Predicate {
 private:
-    StatementRef lhs; // Parent statement reference
-    StatementRef rhs; // Child statement reference
+    StatementRef lhs;
+    StatementRef rhs;
+    std::vector<std::shared_ptr<Synonym>> synonyms;
+    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
+
 public:
     ParentPredicate(StatementRef lhs, StatementRef rhs);
-    ~ParentPredicate() override = default;
-
-    // Helper methods for validation
-    static bool isValidStmtRef(const StatementRef& ref);
-
+    std::shared_ptr<BaseTable> getTable(QueryManager &qm) override;
+    std::string toString() const override;
 };
 
 #endif // PARENTPREDICATE_H
+
 
 // ai-gen end

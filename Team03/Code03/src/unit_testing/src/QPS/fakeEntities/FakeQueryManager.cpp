@@ -13,8 +13,17 @@ private:
     std::map<EntityType, std::vector<std::shared_ptr<Entity>>> fakeResponses;
 
     vector<vector<shared_ptr<Entity>>> fakeFollows;
+
+    vector<vector<shared_ptr<Entity>>> fakeParents;
+    vector<vector<shared_ptr<Entity>>> fakeParentT;
+
     vector<vector<shared_ptr<Entity>>> fakeUses;
+
     vector<vector<shared_ptr<Entity>>> fakeModifies;
+
+    vector<shared_ptr<AssignStatement>> fakeAssignsWithPattern;
+    vector<shared_ptr<Variable>> allFakeVariables;  // Special case, since PKB doesn't return entity, TODO: fix
+
 public:
     FakeQueryManager() = default;
 
@@ -26,12 +35,38 @@ public:
         fakeResponses[entityType] = genericResponse;
     }
 
+    // Specifies the return value of getAssignPattern()
+    void setFakeAssignsWithPattern(vector<shared_ptr<AssignStatement>> stmt) {
+        fakeAssignsWithPattern = stmt;
+    }
+
+    vector<shared_ptr<AssignStatement>> getAssignPattern(string useless1, string useless2, bool useless3) override {
+        return fakeAssignsWithPattern;
+    }
+
+    vector<shared_ptr<Variable>> getAllVariables() override {
+        return allFakeVariables;
+    }
+
+    void setAllFakeVariable(vector<shared_ptr<Variable>> var) {
+        allFakeVariables = var;
+    }
+
     void addFakeFollows(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
         fakeFollows.push_back({stmt1, stmt2});
     }
 
+
+    void addFakeParent(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
+        fakeParents.push_back({stmt1, stmt2});
+    }
+
+    void addFakeParentT(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
+        fakeParentT.push_back({stmt1, stmt2});
+    }
     void addFakeUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
         fakeUses.push_back({ stmt, var });
+
     }
 
     void addFakeModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
@@ -51,6 +86,13 @@ public:
         return fakeFollows;
     }
 
+    vector<vector<shared_ptr<Entity>>> getParentS() override {
+        return fakeParents;
+    }
+
+    vector<vector<shared_ptr<Entity>>> getParentT() override {
+                return fakeParentT;
+    }
     vector<vector<shared_ptr<Entity>>> getUseAll() override {
         return fakeUses;
     }
