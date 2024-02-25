@@ -50,7 +50,7 @@ bool UsesPredicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
     bool lhsMatch = true; // Default to true for wildcard "_"
     bool rhsMatch = true; // Same as above
     auto lhsStatement = std::dynamic_pointer_cast<Statement>(row[0]);
-    auto rhsExpression = std::dynamic_pointer_cast<Expression>(row[1]);
+    auto rhsExpression = std::dynamic_pointer_cast<Variable>(row[1]);
     if (lhsStatement == nullptr || rhsExpression == nullptr) {
         throw QPSEvaluationException(
             "UsesPredicate: got a non-statement entity in the row from PKB");
@@ -65,7 +65,7 @@ bool UsesPredicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
         lhsMatch = lhsStatement->isOfType(lhsSynonym.getType());
     } else if (std::holds_alternative<std::string>(lhs)) {
         std::string lhsString = std::get<std::string>(lhs);
-        lhsMatch = lhsStatement->getName() == lhsString;
+        lhsMatch = lhsString == "_" || lhsStatement->getName() == lhsString;
     }
 
     if (std::holds_alternative<std::string>(rhs)) {
