@@ -129,17 +129,6 @@ bool rowsAreCompatible(const TableRow &row1, const TableRow &row2,
             return false;
         }
     }
-
-    // checks whether columns with same name are compatible
-    for (const auto &header: table1.getHeaders()) {
-        if (std::find(commonHeaders.begin(), commonHeaders.end(), header) == commonHeaders.end()) {
-            int pos1 = table1.indexOf(*header);
-            int pos2 = table2.indexOf(*header);
-            if (*row1.getByIndex(pos1) != *row2.getByIndex(pos2)) {
-                return false;
-            }
-        }
-    }
     return true;
 }
 

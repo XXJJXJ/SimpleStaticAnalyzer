@@ -33,6 +33,11 @@ std::shared_ptr<BaseTable> ParentTPredicate::getTable(QueryManager &qm) {
     bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
     shared_ptr<BaseTable> resultTable = filteredParentT->project({isLhsSynonym, isRhsSynonym});
     if (!resultTable->isBoolean()) {
+        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
+            resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
+                return row[0] == row[1];
+            });
+        }
         resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
     }
     return resultTable;

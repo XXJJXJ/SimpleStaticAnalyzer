@@ -40,7 +40,7 @@ shared_ptr<BaseTable> FollowsPredicate::getTable(QueryManager &qm) {
     shared_ptr<BaseTable> resultTable = filteredFollows->project({isLhsSynonym, isRhsSynonym});
     if (!resultTable->isBoolean()) {
         // an additional filter to drop row if all headers are the same and the values are different
-        if (synonyms.size() == 2 && synonyms[0] == synonyms[1]) {
+        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
             resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
                 return row[0] == row[1];
             });

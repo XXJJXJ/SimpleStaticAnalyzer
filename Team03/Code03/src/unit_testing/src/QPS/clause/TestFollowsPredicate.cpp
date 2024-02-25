@@ -132,6 +132,13 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
             REQUIRE(table->getColumnCount() == 2);
             REQUIRE(table->getRows().size() == 1);
         }
+        SECTION("Using same synonyms - gets 0") {
+            Synonym stmtSyn(EntityType::Stmt, "s1");
+            FollowsPredicate followsPred(stmtSyn, stmtSyn);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 0);
+        }
     }
 
     SECTION("Using mix of synonyms and statement numbers") {
