@@ -24,35 +24,36 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
 
     SECTION("Using statement numbers") {
         // All Failing here
-
-        // SECTION("Follows(1, 2) is true") {
-        //     FollowsPredicate followsPred(1, 2);
-        //     auto table = followsPred.getTable(qm);
-        //     REQUIRE(table->isBoolean()); // True
-        //     auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
-        //     REQUIRE(boolTable->isTrue());
-        // }
-        // SECTION("Follows(2, 3) is true") {
-        //     FollowsPredicate followsPred(2, 3);
-        //     auto table = followsPred.getTable(qm);
-        //     REQUIRE(table->isBoolean());
-        //     auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
-        //     REQUIRE(boolTable->isTrue());
-        // }
-        // SECTION("Follows(3, 4) is true") {
-        //     FollowsPredicate followsPred(3, 4);
-        //     auto table = followsPred.getTable(qm);
-        //     REQUIRE(table->isBoolean());
-        //     auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
-        //     REQUIRE(boolTable->isTrue());
-        // }
-        // SECTION("Follows(4, 5) is true") {
-        //     FollowsPredicate followsPred(4, 5);
-        //     auto table = followsPred.getTable(qm);
-        //     REQUIRE(table->isBoolean());
-        //     auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
-        //     REQUIRE(boolTable->isTrue());
-        // }
+        /*
+        SECTION("Follows(1, 2) is true") {
+            FollowsPredicate followsPred(1, 2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->isBoolean()); // True
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(boolTable->isTrue());
+        }
+        SECTION("Follows(2, 3) is true") {
+            FollowsPredicate followsPred(2, 3);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->isBoolean());
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(boolTable->isTrue());
+        }
+        SECTION("Follows(3, 4) is true") {
+            FollowsPredicate followsPred(3, 4);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->isBoolean());
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(boolTable->isTrue());
+        }
+        SECTION("Follows(4, 5) is true") {
+            FollowsPredicate followsPred(4, 5);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->isBoolean());
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(boolTable->isTrue());
+        }
+        */
 
         // SECTION("Follows(5, 4) is false") {
         //     FollowsPredicate followsPred(5, 4);
@@ -87,51 +88,57 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
         // }
     }
     
-    SECTION("Using stmt synonym type - gets all") {
-        Synonym stmtSyn(EntityType::Stmt, "s1");
-        Synonym stmtSyn2(EntityType::Stmt, "s2");
-        FollowsPredicate followsPred(stmtSyn, stmtSyn2);
-        auto table = followsPred.getTable(qm);
-        REQUIRE(table->getColumnCount() == 2);
-        REQUIRE(table->getRows().size() == 4);
+    SECTION("Using synonyms only") {
+        SECTION("Using stmt synonym type - gets all") {
+            Synonym stmtSyn(EntityType::Stmt, "s1");
+            Synonym stmtSyn2(EntityType::Stmt, "s2");
+            FollowsPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 4);
+        }
+
+        // This onwards all fails
+        /*
+        SECTION("Using Print Print synonym type - gets 1") {
+            Synonym stmtSyn(EntityType::Print, "s1");
+            Synonym stmtSyn2(EntityType::Print, "s2");
+            FollowsPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 1);
+        }
+
+        SECTION("Using Print Read synonym type - gets 1") {
+            Synonym stmtSyn(EntityType::Print, "s1");
+            Synonym stmtSyn2(EntityType::Read, "s2");
+            FollowsPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 1);
+        }
+
+        SECTION("Using Read Read synonym type - gets 1") {
+            Synonym stmtSyn(EntityType::Read, "s1");
+            Synonym stmtSyn2(EntityType::Read, "s2");
+            FollowsPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 1);
+        }
+
+        SECTION("Using Read Print synonym type - gets 1") {
+            Synonym stmtSyn(EntityType::Read, "s1");
+            Synonym stmtSyn2(EntityType::Print, "s2");
+            FollowsPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 1);
+        }
+        */
     }
 
-    // This onwards all fails
-    /*
-    SECTION("Using Print Print synonym type - gets 1") {
-        Synonym stmtSyn(EntityType::Print, "s1");
-        Synonym stmtSyn2(EntityType::Print, "s2");
-        FollowsPredicate followsPred(stmtSyn, stmtSyn2);
-        auto table = followsPred.getTable(qm);
-        REQUIRE(table->getColumnCount() == 2);
-        REQUIRE(table->getRows().size() == 1);
+    SECTION("Using mix of synonyms and statement numbers") {
+        // TODO: To mix and match using the above examples once they are rectified
     }
-
-    SECTION("Using Print Read synonym type - gets 1") {
-        Synonym stmtSyn(EntityType::Print, "s1");
-        Synonym stmtSyn2(EntityType::Read, "s2");
-        FollowsPredicate followsPred(stmtSyn, stmtSyn2);
-        auto table = followsPred.getTable(qm);
-        REQUIRE(table->getColumnCount() == 2);
-        REQUIRE(table->getRows().size() == 1);
-    }
-
-    SECTION("Using Read Read synonym type - gets 1") {
-        Synonym stmtSyn(EntityType::Read, "s1");
-        Synonym stmtSyn2(EntityType::Read, "s2");
-        FollowsPredicate followsPred(stmtSyn, stmtSyn2);
-        auto table = followsPred.getTable(qm);
-        REQUIRE(table->getColumnCount() == 2);
-        REQUIRE(table->getRows().size() == 1);
-    }
-
-    SECTION("Using Read Print synonym type - gets 1") {
-        Synonym stmtSyn(EntityType::Read, "s1");
-        Synonym stmtSyn2(EntityType::Print, "s2");
-        FollowsPredicate followsPred(stmtSyn, stmtSyn2);
-        auto table = followsPred.getTable(qm);
-        REQUIRE(table->getColumnCount() == 2);
-        REQUIRE(table->getRows().size() == 1);
-    }
-    */
 }
