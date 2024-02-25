@@ -37,6 +37,11 @@ shared_ptr<BaseTable> UsesPredicate::getTable(QueryManager& qm) {
     bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
     shared_ptr<BaseTable> resultTable = filteredUses->project({isLhsSynonym, isRhsSynonym});
     if (!resultTable->isBoolean()) {
+        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
+            resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
+                return row[0] == row[1];
+            });
+        }
         resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
     }
     return resultTable;
