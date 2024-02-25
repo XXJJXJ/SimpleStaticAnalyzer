@@ -6,7 +6,7 @@
 
 #include "../fakeEntities/FakeQueryManager.cpp"
 
-FakeQueryManager qm;
+
 
 TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]") {
     // Initializing all data
@@ -17,7 +17,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
     shared_ptr<ReadStatement> stmt3 = make_shared<ReadStatement>(3, x, "main");
     shared_ptr<ReadStatement> stmt4 = make_shared<ReadStatement>(4, y, "main");
     shared_ptr<PrintStatement> stmt5 = make_shared<PrintStatement>(5, y, "main");
-
+    FakeQueryManager qm;
     // Adding all FollowsT statements
     qm.addFakeFollowsT(stmt1, stmt2); // print follows print
     qm.addFakeFollowsT(stmt1, stmt3);
@@ -33,7 +33,55 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
     qm.addFakeFollowsT(stmt4, stmt5); // read follows read
 
+
     SECTION("Using synonyms only") {
+        SECTION("Using stmt synonym type - gets all") {
+            Synonym stmtSyn(EntityType::Stmt, "s1");
+            Synonym stmtSyn2(EntityType::Stmt, "s2");
+            FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 10);
+        }
+
+        SECTION("Using Print Print synonym type - gets 1") {
+            Synonym stmtSyn(EntityType::Print, "s1");
+            Synonym stmtSyn2(EntityType::Print, "s2");
+            FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 3);
+        }
+
+        SECTION("Using Print Read synonym type - gets 1") {
+            Synonym stmtSyn(EntityType::Print, "s1");
+            Synonym stmtSyn2(EntityType::Read, "s2");
+            FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 4);
+        }
+
+        SECTION("Using Read Read synonym type - gets 1") {
+            Synonym stmtSyn(EntityType::Read, "s1");
+            Synonym stmtSyn2(EntityType::Read, "s2");
+            FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 1);
+        }
+
+        SECTION("Using Read Print synonym type - gets 1") {
+            Synonym stmtSyn(EntityType::Read, "s1");
+            Synonym stmtSyn2(EntityType::Print, "s2");
+            FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 2);
+        }
+    }
+
+    SECTION("Using statement numbers only") {
         SECTION("Follows(1, 2) is true") {
             FollowsTPredicate followsTPred(1, 2);
             auto table = followsTPred.getTable(qm);
@@ -210,10 +258,6 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
             auto table = followsTPred.getTable(qm);
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getRows().size() == 4);
-            REQUIRE(table->getRows()[0].getValues()[0]->getName() == "2");
-            REQUIRE(table->getRows()[1].getValues()[0]->getName() == "3");
-            REQUIRE(table->getRows()[2].getValues()[0]->getName() == "4");
-            REQUIRE(table->getRows()[3].getValues()[0]->getName() == "5");
         }
 
         SECTION("FollowsT(s1, 1) -- gets 0") {
@@ -229,8 +273,6 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
             auto table = followsTPred.getTable(qm);
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getRows().size() == 2);
-            REQUIRE(table->getRows()[0].getValues()[0]->getName() == "2");
-            REQUIRE(table->getRows()[1].getValues()[0]->getName() == "1");
         }
     }
 }

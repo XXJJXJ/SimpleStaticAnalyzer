@@ -97,8 +97,6 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
             REQUIRE(table->getRows().size() == 4);
         }
 
-        // This onwards all fails
-
         SECTION("Using Print Print synonym type - gets 1") {
             Synonym stmtSyn(EntityType::Print, "s1");
             Synonym stmtSyn2(EntityType::Print, "s2");
