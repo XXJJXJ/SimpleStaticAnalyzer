@@ -4,7 +4,7 @@
 
 BooleanTable::BooleanTable(const BaseTable& table) : BaseTable() {
     // If the input table is not empty, store false; otherwise, store true
-    this->value = table.isEmpty();
+    this->value = !table.isEmpty();
 }
 
 std::shared_ptr<BaseTable> BooleanTable::join(BaseTable& other) {

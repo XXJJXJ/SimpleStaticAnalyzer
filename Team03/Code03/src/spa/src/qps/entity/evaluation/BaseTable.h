@@ -14,7 +14,7 @@ private:
 
 public:
     BaseTable() = default;
-    explicit BaseTable(const std::vector<std::vector<std::shared_ptr<Entity>>>& entities);
+    explicit BaseTable(const std::vector<std::vector<std::shared_ptr<Entity>>> &entities, int columnCount);
 
     void addRow(const TableRow& row);
     [[nodiscard]] virtual bool isEmpty() const;

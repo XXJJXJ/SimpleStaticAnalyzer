@@ -28,37 +28,12 @@ FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
 shared_ptr<BaseTable> FollowsPredicate::getTable(QueryManager &qm) {
     // Step 1: Fetch all follows relationships as a BaseTable
     auto allFollows = BaseTable(
-            qm.getFollowS()); // Assuming getFollowS returns data compatible with BaseTable constructor
+            qm.getFollowS(), 2); // Assuming getFollowS returns data compatible with BaseTable constructor
 
     // Step 2: Filter based on lhs and rhs
     // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
-    auto filteredFollows = allFollows.filter([&](const std::vector<std::shared_ptr<Entity>> &row) -> bool {
-        if (row.size() != 2) {
-            throw QPSEvaluationException("FollowsPredicate: got a row with size != 2 from PKB");
-        }
-
-        bool lhsMatch = true; // Default to true for wildcard "_"
-        bool rhsMatch = true; // Same as above
-
-        if (std::holds_alternative<int>(lhs)) {
-            int lhsInt = std::get<int>(lhs);
-            auto lhsStatement = std::dynamic_pointer_cast<Statement>(row[0]);
-            if (lhsStatement == nullptr) {
-                throw QPSEvaluationException("FollowsPredicate: got a non-statement entity in the lhs from PKB");
-            }
-            lhsMatch = lhsStatement->getStatementNumber() == lhsInt; // Assuming row[0] is the lhs entity and has an ID method
-        }
-
-        if (std::holds_alternative<int>(rhs)) {
-            int lhsInt = std::get<int>(rhs);
-            auto lhsStatement = std::dynamic_pointer_cast<Statement>(row[1]);
-            if (lhsStatement == nullptr) {
-                throw QPSEvaluationException("FollowsPredicate: got a non-statement entity in the lhs from PKB");
-            }
-            rhsMatch = lhsStatement->getStatementNumber() == lhsInt; // Assuming row[0] is the lhs entity and has an ID method
-        }
-
-        return lhsMatch && rhsMatch;
+    auto filteredFollows = allFollows.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
+        return isValidRow(row);
     });
 
     // Step 3: Project to keep columns associated with a Synonym or determine a boolean result
@@ -70,5 +45,39 @@ shared_ptr<BaseTable> FollowsPredicate::getTable(QueryManager &qm) {
     }
     return resultTable;
 }
+
+bool FollowsPredicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
+    if (row.size() != 2) {
+        throw QPSEvaluationException("FollowsPredicate: got a row with size != 2 from PKB");
+    }
+
+    bool lhsMatch = true; // Default to true for wildcard "_"
+    bool rhsMatch = true; // Same as above
+    auto lhsStatement = std::dynamic_pointer_cast<Statement>(row[0]);
+    auto rhsStatement = std::dynamic_pointer_cast<Statement>(row[1]);
+    if (lhsStatement == nullptr || rhsStatement == nullptr) {
+        throw QPSEvaluationException("FollowsPredicate: got a non-statement entity in the row from PKB");
+    }
+
+    if (std::holds_alternative<int>(lhs)) {
+        int lhsInt = std::get<int>(lhs);
+        lhsMatch = lhsStatement->getStatementNumber() == lhsInt; // Assuming row[0] is the lhs entity and has an ID method
+    } else if (std::holds_alternative<Synonym>(lhs)) {
+        auto lhsSynonym = std::get<Synonym>(lhs);
+        lhsMatch = lhsStatement->isOfType(lhsSynonym.getType());
+    }
+
+    if (std::holds_alternative<int>(rhs)) {
+        int rhsInt = std::get<int>(rhs);
+        rhsMatch = rhsStatement->getStatementNumber() == rhsInt; // Assuming row[1] is the rhs entity and has an ID method
+    } else if (std::holds_alternative<Synonym>(rhs)) {
+        auto rhsSynonym = std::get<Synonym>(rhs);
+        rhsMatch = rhsStatement->isOfType(rhsSynonym.getType());
+    }
+
+    return lhsMatch && rhsMatch;
+}
+
+
 
 // ai-gen end

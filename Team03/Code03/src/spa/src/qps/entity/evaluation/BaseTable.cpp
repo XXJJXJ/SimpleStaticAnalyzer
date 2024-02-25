@@ -4,10 +4,9 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "BooleanTable.h"
 
-BaseTable::BaseTable(const std::vector<std::vector<std::shared_ptr<Entity>>>& entities) {
-    if (!entities.empty()) {
-        columnCount = static_cast<int>(entities.front().size()); // Initialize columnCount based on the first row
-    }
+// Must specify columnCount as entities could be empty.
+BaseTable::BaseTable(const std::vector<std::vector<std::shared_ptr<Entity>>> &entities, int columnCount) {
+    this->columnCount = columnCount;
     for (const auto& rowEntities : entities) {
         this->addRow(TableRow(rowEntities));
     }
@@ -45,7 +44,7 @@ shared_ptr<BaseTable> BaseTable::filter(std::function<bool(const std::vector<std
         }
     }
 
-    return std::make_shared<BaseTable>(filteredEntities);
+    return std::make_shared<BaseTable>(filteredEntities, columnCount);
 }
 
 // This should return either Boolean or BaseTable, depending on the columnMask
@@ -59,6 +58,8 @@ shared_ptr<BaseTable> BaseTable::project(const std::vector<bool>& columnMask) co
         return std::make_shared<BooleanTable>(*this);
     }
 
+    int newColumnCount = std::count(columnMask.begin(), columnMask.end(), true);
+
     // else return a HeaderTable
     std::vector<std::vector<std::shared_ptr<Entity>>> projectedEntities;
     for (const auto& row : rows) {
@@ -70,7 +71,7 @@ shared_ptr<BaseTable> BaseTable::project(const std::vector<bool>& columnMask) co
         }
         projectedEntities.push_back(newRow);
     }
-    return std::make_shared<BaseTable>(projectedEntities);
+    return std::make_shared<BaseTable>(projectedEntities, newColumnCount);
 }
 
 bool BaseTable::isValidRow(const TableRow &row) const {
