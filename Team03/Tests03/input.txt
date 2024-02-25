@@ -1,0 +1,9 @@
+procedure test {
+  while (y < 3) {
+    x = 1;
+    read x;
+    z = ((x + 3) / 7) - (y + 11);
+    z = 0;
+  }
+  print z;
+}
