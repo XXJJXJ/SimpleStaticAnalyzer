@@ -138,7 +138,7 @@ TEST_CASE("Store and retrieve Modifies") {
     REQUIRE((modifiesAllRead[stmt4].find(y) == modifiesAllRead[stmt4].end()));
     REQUIRE((modifiesAllRead[stmt4].find(x) != modifiesAllRead[stmt4].end()));
 
-    auto modifiesByProcedure = qm.getModifyByProcedure();
+    auto modifiesByProcedure = qm.getModifyByProcedureMap();
     REQUIRE((modifiesByProcedure["main"].find(y) == modifiesByProcedure["main"].end()));
     REQUIRE((modifiesByProcedure["main"].find(x) != modifiesByProcedure["main"].end()));
     pop.clear();
@@ -161,7 +161,7 @@ TEST_CASE("Store and retrieve Uses") {
     REQUIRE((useAllPrint[stmt3].find(y) != useAllPrint[stmt3].end()));
     REQUIRE((useAllPrint[stmt3].find(x) == useAllPrint[stmt3].end()));
 
-    auto useByProcedure = qm.getUseByProcedure();
+    auto useByProcedure = qm.getUseByProcedureMap();
     REQUIRE((useByProcedure["main"].find(y) != useByProcedure["main"].end()));
     REQUIRE((useByProcedure["main"].find(x) == useByProcedure["main"].end()));
     pop.clear();

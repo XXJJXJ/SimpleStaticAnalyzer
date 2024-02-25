@@ -1,43 +1,46 @@
-
-#include "QueryFacade.h"
+#include "QpsManager.h"
 #include "QueryEvaluator.h"
 #include "QueryParser.h"
-#include "QueryValidator.h"
 #include "QueryTokenizer.h"
+#include "QueryValidator.h"
+
 #include "qps/entity/evaluation/EvaluationPlanner.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 #include "common/spa_exception/SemanticErrorException.h"
-#include <iostream>
 
-QueryFacade::QueryFacade() {}
-QueryFacade::~QueryFacade() {}
+QpsManager::QpsManager() {}
 
-std::vector<std::string> QueryFacade::processQuery(std::string query) {
+QpsManager::~QpsManager() {}
+
+std::vector<std::string> QpsManager::processQuery(std::string query) {
     try {
         std::vector<std::vector<std::vector<std::string>>> tokens = tokenizeQuery(query);
         std::shared_ptr<Query> parsedQuery = parseQuery(tokens);
         std::vector<std::string> results = evaluateQuery(parsedQuery);
-        return results;
     }
     catch (SyntaxErrorException s) {
-        return { "SyntaxError" };
+        return {"SyntaxError"};
     }
     catch (SemanticErrorException s) {
-        return { "SemanticError" };
-    } 
+        return {"SemanticError"};
+    }
 }
 
-std::vector<std::vector<std::vector<std::string>>> QueryFacade::tokenizeQuery(const std::string& query) {
+// Calls QueryTokenizer to tokenize the query string
+std::vector<std::vector<std::vector<std::string>>>
+QpsManager::tokenizeQuery(const std::string &query) {
     QueryTokenizer tokenizer;
     return tokenizer.tokenize(query);
 }
 
-std::shared_ptr<Query> QueryFacade::parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens) {
+// Calls QueryParser to parse the tokens into a Query object
+std::shared_ptr<Query>
+QpsManager::parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens) {
     QueryParser parser;
     return parser.parse(tokens);
 }
 
-vector<std::string> QueryFacade::evaluateQuery(const std::shared_ptr<Query> parsedQuery) {
+vector<std::string> QpsManager::evaluateQuery(const std::shared_ptr<Query> parsedQuery) {
     auto evaluator = make_shared<QueryEvaluator>();
     auto planner = EvaluationPlanner(parsedQuery, evaluator);
     planner.plan();

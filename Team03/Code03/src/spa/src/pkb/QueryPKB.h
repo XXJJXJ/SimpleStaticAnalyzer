@@ -26,6 +26,9 @@ private:
     shared_ptr<AbstractionManager> am;
     shared_ptr<PatternManager> pm;
     shared_ptr<EntityManager> em;
+
+    // For caching of procedure to variable results
+    unordered_map<string, vector<vector<shared_ptr<Entity>>>> procVarResultCache;
 public:
     QueryManager ();
     // Entity Related API
@@ -54,29 +57,29 @@ public:
     virtual vector<vector<shared_ptr<Entity>>> getUseByCall();
     virtual vector<vector<shared_ptr<Entity>>> getUseByIfWhile();
     virtual vector<vector<shared_ptr<Entity>>> getUseAll();
-    virtual unordered_map<string, set<shared_ptr<Variable>>> getUseByProcedure();
+    virtual vector<vector<shared_ptr<Entity>>> getUseByProcedure();
 
     virtual vector<vector<shared_ptr<Entity>>> getModifyByAssign();
     virtual vector<vector<shared_ptr<Entity>>> getModifyByRead();
     virtual vector<vector<shared_ptr<Entity>>> getModifyByCall();
     virtual vector<vector<shared_ptr<Entity>>> getModifyByIfWhile();
     virtual vector<vector<shared_ptr<Entity>>> getModifyAll();
-    virtual unordered_map<string, set<shared_ptr<Variable>>> getModifyByProcedure();
+    virtual vector<vector<shared_ptr<Entity>>> getModifyByProcedure();
 
     // Pattern Related
     virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
 
-    
-
     // For testing purposes
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowSMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getFollowTMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentSMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Statement>>> getParentTMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseAllMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getUseByPrintMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyAllMap();
-    virtual unordered_map<shared_ptr<Statement>, set<shared_ptr<Variable>>> getModifyByReadMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getParentSMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getParentTMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getUseAllMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getUseByPrintMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getModifyAllMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getModifyByReadMap();
+    virtual unordered_map<string, unordered_set<shared_ptr<Variable>>> getUseByProcedureMap();
+    virtual unordered_map<string, unordered_set<shared_ptr<Variable>>> getModifyByProcedureMap();
 
     virtual void clear();
 };
