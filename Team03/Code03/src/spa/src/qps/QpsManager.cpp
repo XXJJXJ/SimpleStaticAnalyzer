@@ -9,6 +9,7 @@ std::vector<std::string> QpsManager::processQuery(const std::string& query) {
         std::vector<std::vector<std::vector<std::string>>> tokens = tokenizeQuery(query);
         std::shared_ptr<Query> parsedQuery = parseQuery(tokens);
         std::vector<std::string> results = evaluateQuery(parsedQuery);
+        return results;
     }
     catch (SyntaxErrorException syntaxError) {
         return {"SyntaxError"};
@@ -16,8 +17,6 @@ std::vector<std::string> QpsManager::processQuery(const std::string& query) {
     catch (SemanticErrorException semanticError) {
         return {"SemanticError"};
     }
-
-    return {};
 }
 
 // Calls QueryTokenizer to tokenize the query string
