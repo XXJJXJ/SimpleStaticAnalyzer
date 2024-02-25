@@ -1,0 +1,4 @@
+./autotester ../../../tests/milestone1_modifiesp_usesp_call_source.txt ../../../tests/milestone1_modifiesp_usesp_call_queries.txt ../../../tests/out.xml
+./autotester ../../../tests/milestone1_ms1bug_source.txt ../../../tests/milestone1_ms1bug_queries.txt ../../../tests/out.xml
+./autotester ../../../tests/milestone1_nestedIf_source.txt ../../../tests/milestone1_nestedIf_queries.txt ../../../tests/out.xml
+
