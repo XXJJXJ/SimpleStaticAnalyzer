@@ -197,27 +197,40 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
     SECTION("Using mix of synonyms and statement numbers") {
         Synonym stmtSyn(EntityType::Stmt, "s1");
-        SECTION("Follows(1, s1) -- gets 1") {
+
+        // 1:   print x
+        // 2:   print y
+        // 3:   read x
+        // 4:   read y
+        // 5:   print y
+
+        SECTION("FollowsT(1, s1) -- gets 4") {
+            // Return statements that follow statement 1
             FollowsTPredicate followsTPred(1, stmtSyn);
             auto table = followsTPred.getTable(qm);
             REQUIRE(table->getColumnCount() == 1);
-            REQUIRE(table->getRows().size() == 1);
+            REQUIRE(table->getRows().size() == 4);
             REQUIRE(table->getRows()[0].getValues()[0]->getName() == "2");
+            REQUIRE(table->getRows()[1].getValues()[0]->getName() == "3");
+            REQUIRE(table->getRows()[2].getValues()[0]->getName() == "4");
+            REQUIRE(table->getRows()[3].getValues()[0]->getName() == "5");
         }
 
-        SECTION("Follows(s1, 1) -- gets 0") {
+        SECTION("FollowsT(s1, 1) -- gets 0") {
+            // Return statements that come before statement 1 (?)
             FollowsTPredicate followsTPred(stmtSyn, 1);
             auto table = followsTPred.getTable(qm);
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getRows().size() == 0);
         }
 
-        SECTION("Follows(s1, 3) -- gets 1") {
+        SECTION("FollowsT(s1, 3) -- gets 2") {
             FollowsTPredicate followsTPred(stmtSyn, 3);
             auto table = followsTPred.getTable(qm);
             REQUIRE(table->getColumnCount() == 1);
-            REQUIRE(table->getRows().size() == 1);
+            REQUIRE(table->getRows().size() == 2);
             REQUIRE(table->getRows()[0].getValues()[0]->getName() == "2");
+            REQUIRE(table->getRows()[1].getValues()[0]->getName() == "1");
         }
     }
 }
