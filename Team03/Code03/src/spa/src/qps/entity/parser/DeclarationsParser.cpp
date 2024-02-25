@@ -6,6 +6,7 @@
 #include "DeclarationsParser.h"
 #include "common/EntityType.h"
 #include "qps/QueryValidator.h"
+#include "qps/util/EntityTypeConverter.h"
 #include <common/spa_exception/SemanticErrorException.h>
 #include <common/spa_exception/SyntaxErrorException.h>
 
@@ -23,7 +24,7 @@ DeclarationsParser::parse(const std::vector<std::string> &tokens,
     std::vector<std::shared_ptr<Synonym>> declarations;
 
     // Try to parse first token as entity type
-    EntityType currEntityType = mapTokenToEntityType(tokens[0]);
+    EntityType currEntityType = EntityTypeConverter::getEnumFromString(tokens[0]);
 
     // Invalid Entity Type or declaration doesn't start with an entity type
     if (currEntityType == EntityType::Unknown) {
@@ -69,37 +70,5 @@ DeclarationsParser::parse(const std::vector<std::string> &tokens,
     }
 
     return declarations;
-}
-// ai-gen end
-
-
-// TODO: Update this to follow OCP
-// ai-gen start (gpt, 0, e)
-// prompt: https://chat.openai.com/share/4961f207-6946-4c80-8a64-e51b06b24aa1
-EntityType DeclarationsParser::mapTokenToEntityType(const std::string &token) {
-    // Implement mapping from token to EntityType
-    if (token == "stmt") {
-        return EntityType::Stmt;
-    } else if (token == "read") {
-        return EntityType::Read;
-    } else if (token == "print") {
-        return EntityType::Print;
-    } else if (token == "call") {
-        return EntityType::Call;
-    } else if (token == "while") {
-        return EntityType::While;
-    } else if (token == "if") {
-        return EntityType::If;
-    } else if (token == "assign") {
-        return EntityType::Assign;
-    } else if (token == "variable") {
-        return EntityType::Variable;
-    } else if (token == "constant") {
-        return EntityType::Constant;
-    } else if (token == "procedure") {
-        return EntityType::Procedure;
-    } else {
-        return EntityType::Unknown;
-    }
 }
 // ai-gen end

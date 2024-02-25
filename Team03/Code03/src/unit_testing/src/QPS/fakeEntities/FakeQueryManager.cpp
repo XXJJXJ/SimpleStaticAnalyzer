@@ -14,6 +14,7 @@ private:
 
     vector<vector<shared_ptr<Entity>>> fakeFollows;
     vector<vector<shared_ptr<Entity>>> fakeFollowsT;
+    vector<vector<shared_ptr<Entity>>> fakeUses;
 
 public:
     FakeQueryManager() = default;
@@ -34,8 +35,13 @@ public:
         fakeFollowsT.push_back({stmt1, stmt2});
     }
 
+    void addFakeUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
+        fakeUses.push_back({stmt, var});
+    }
+
     // New method to get all entities by type
-    std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType) override {
+    std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType)
+    override {
         auto it = fakeResponses.find(entityType);
         if (it != fakeResponses.end()) {
             return it->second;
@@ -43,12 +49,19 @@ public:
         return {};
     }
 
-    vector<vector<shared_ptr<Entity>>> getFollowS() override {
+    vector<vector<shared_ptr<Entity>>> getFollowS()
+    override {
         return fakeFollows;
     }
 
-    vector<vector<shared_ptr<Entity>>> getFollowT() override {
+    vector<vector<shared_ptr<Entity>>> getFollowT()
+    override {
         return fakeFollowsT;
+    }
+
+    vector<vector<shared_ptr<Entity>>> getUseAll()
+    override {
+        return fakeUses;
     }
 
     // Implement other necessary virtual functions from QueryManager

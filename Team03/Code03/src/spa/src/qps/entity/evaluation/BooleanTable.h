@@ -15,6 +15,7 @@ public:
     bool isEmpty() const override;
     bool isTrue() const;
     bool isBoolean() const override;
+    bool operator==(const BaseTable& other) const override;
 };
 
 #endif // BOOLEAN_TABLE_H

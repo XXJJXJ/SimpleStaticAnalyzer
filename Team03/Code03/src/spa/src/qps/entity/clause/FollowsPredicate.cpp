@@ -77,4 +77,25 @@ bool FollowsPredicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
     return lhsMatch && rhsMatch;
 }
 
+std::string FollowsPredicate::toString() const {
+    // Temp implementation for debugging, TODO: replace with proper implementation
+    // get string presentation of lhs and rhs based on their types
+    std::string lhsStr;
+    std::string rhsStr;
+    if (std::holds_alternative<int>(lhs)) {
+        lhsStr = std::to_string(std::get<int>(lhs));
+    } else if (std::holds_alternative<Synonym>(lhs)) {
+        lhsStr = std::get<Synonym>(lhs).getName();
+    } else {
+        lhsStr = "_";
+    }
+    if (std::holds_alternative<int>(rhs)) {
+        rhsStr = std::to_string(std::get<int>(rhs));
+    } else if (std::holds_alternative<Synonym>(rhs)) {
+        rhsStr = std::get<Synonym>(rhs).getName();
+    } else {
+        rhsStr = "_";
+    }
+    return "FollowsPredicate " + lhsStr + " " + rhsStr;
+}
 // ai-gen end

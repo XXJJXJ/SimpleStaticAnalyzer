@@ -16,6 +16,7 @@
 class QueryEvaluationContext {
 private:
     std::unordered_map<Synonym, std::shared_ptr<BaseTable>> synonymToTableMap;
+    bool resultMustBeEmpty = false;    // A quick indicator of empty result, for early termination
     std::shared_ptr<QueryManager> queryManager;
     std::shared_ptr<BaseTable> resultTable;
     std::vector<SynonymPtrSet> synonymGroups;
@@ -34,8 +35,9 @@ public:
     [[nodiscard]] std::vector<std::string> getResults() const;
     void setResultTable(const std::shared_ptr<BaseTable>& _resultTable);
     [[nodiscard]] std::shared_ptr<BaseTable> getResultTable() const;
-    [[nodiscard]] bool isResultEmpty() const;
+    [[nodiscard]] bool isCurrentResultEmpty() const;
     void setSynonymGroups(const std::vector<SynonymPtrSet>& synonymGroups);
+    void setResultToFalse();
 };
 
 #endif // QUERY_EVALUATION_CONTEXT_H
