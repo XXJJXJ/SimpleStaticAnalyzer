@@ -1,12 +1,4 @@
 #include "QpsManager.h"
-#include "QueryEvaluator.h"
-#include "QueryParser.h"
-#include "QueryTokenizer.h"
-#include "QueryValidator.h"
-
-#include "qps/entity/evaluation/EvaluationPlanner.h"
-#include "common/spa_exception/SyntaxErrorException.h"
-#include "common/spa_exception/SemanticErrorException.h"
 
 QpsManager::QpsManager() {}
 
