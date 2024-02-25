@@ -23,7 +23,7 @@ TEST_CASE("QueryEvaluationContext::getResults throws when multiple tables are pr
     auto table2 = std::make_shared<HeaderTable>(); // Empty table
     qec.addTableForSynonym(*synonym2, table2);
 
-    REQUIRE(qec.isResultEmpty());
+    REQUIRE(qec.isCurrentResultEmpty());
 }
 
 TEST_CASE("QueryEvaluationContext::getResults throws when no tables are present", "[QueryEvaluationContext]") {
@@ -38,7 +38,7 @@ TEST_CASE("QueryEvaluationContext::getResults returns empty vector for context w
     auto table = std::make_shared<HeaderTable>(); // Empty table
     qec.addTableForSynonym(*synonym, table);
 
-    REQUIRE(qec.isResultEmpty());
+    REQUIRE(qec.isCurrentResultEmpty());
 }
 
 TEST_CASE("QueryEvaluationContext::getResults handles special characters in entity names", "[QueryEvaluationContext]") {
