@@ -29,7 +29,6 @@ shared_ptr<BaseTable> FollowsPredicate::getTable(QueryManager &qm) {
     // Step 1: Fetch all follows relationships as a BaseTable
     auto allFollows = BaseTable(
             qm.getFollowS(), 2); // Assuming getFollowS returns data compatible with BaseTable constructor
-
     // Step 2: Filter based on lhs and rhs
     // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
     auto filteredFollows = allFollows.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {

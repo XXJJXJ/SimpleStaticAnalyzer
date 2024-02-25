@@ -7,6 +7,9 @@
 #include <memory>
 #include <variant>
 #include "PredicateUtils.h"
+#include "qps/entity/evaluation/HeaderTable.h"
+#include "common/spa_exception/SyntaxErrorException.h"
+#include "common/spa_exception/QPSEvaluationException.h"
 
 
 class Strategy;
@@ -15,12 +18,13 @@ class ParentTPredicate : public Predicate {
 private:
     StatementRef lhs; // Ancestor statement reference
     StatementRef rhs; // Descendant statement reference
+    std::vector<std::shared_ptr<Synonym>> synonyms;
+    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
 public:
     ParentTPredicate(StatementRef lhs, StatementRef rhs);
     ~ParentTPredicate() override = default;
-
-    // Helper methods for validation
-    static bool isValidStmtRef(const StatementRef& ref);
+    std::shared_ptr<BaseTable> getTable(QueryManager &qm) override;
+    std::string toString() const override;
 
 };
 
