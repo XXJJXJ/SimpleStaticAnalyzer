@@ -5,6 +5,7 @@
 #include <memory>
 #include "common/Entity.h"
 #include "TableRow.h"
+#include <functional>
 
 class BaseTable {
 private:

@@ -26,13 +26,13 @@ TEST_CASE("Predicates Input Validations", "[Predicates]") {
         // ModifiesPredicate: LHS can be stmt, proc (synonym or string); RHS must be a variable (synonym or string)
         REQUIRE_NOTHROW(ModifiesPredicate(stmtSyn, varSyn));
         REQUIRE_NOTHROW(ModifiesPredicate(procSyn, varSyn));
-        REQUIRE_NOTHROW(ModifiesPredicate(validString, varSyn)); // LHS as procedure name string
+        REQUIRE_NOTHROW(ModifiesPredicate(characterString, varSyn)); // LHS as procedure name string
         REQUIRE_NOTHROW(ModifiesPredicate(wildcard, varSyn)); // LHS as wildcard
 
         // UsesPredicate: Similar to Modifies, but for "uses" relationships
         REQUIRE_NOTHROW(UsesPredicate(stmtSyn, varSyn));
         REQUIRE_NOTHROW(UsesPredicate(procSyn, varSyn));
-        REQUIRE_NOTHROW(UsesPredicate(validString, varSyn)); // LHS as procedure name string
+        REQUIRE_NOTHROW(UsesPredicate(characterString, varSyn)); // LHS as procedure name string
         REQUIRE_NOTHROW(UsesPredicate(wildcard, varSyn)); // LHS as wildcard
     }
 
@@ -67,7 +67,7 @@ TEST_CASE("Predicates Input Validations", "[Predicates]") {
         REQUIRE_NOTHROW(ParentTPredicate(wildcard, stmtSyn2));
         REQUIRE_NOTHROW(FollowsTPredicate(wildcard, stmtSyn2));
         REQUIRE_NOTHROW(ModifiesPredicate(wildcard, varSyn));
-        REQUIRE_NOTHROW(UsesPredicate(validString, varSyn)); // Procedure name as LHS
+        REQUIRE_NOTHROW(UsesPredicate(characterString, varSyn)); // Procedure name as LHS
         REQUIRE_THROWS(ModifiesPredicate("", varSyn)); // Empty string for LHS should throw
         REQUIRE_THROWS(UsesPredicate("", varSyn)); // Empty string for LHS should throw
     }

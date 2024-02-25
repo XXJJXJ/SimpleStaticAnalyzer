@@ -13,6 +13,46 @@ bool isValidStatementRef(const StatementRef &ref) {
     return false;
 }
 
+bool isValidEntityRef(const EntityRef& ref) { 
+    if (std::holds_alternative<Synonym>(ref)) {
+        auto synonym = std::get<Synonym>(ref);
+        return VALID_DESIGN_ENTITY_TYPES.find(synonym.getType()) != VALID_DESIGN_ENTITY_TYPES.end();
+    } else if (std::holds_alternative<std::string>(ref)) {
+        std::string refString = std::get<std::string>(ref);
+        size_t len = refString.size();
+        return refString == WILDCARD || (refString[0] == '"' && refString[len - 1] == '"'); 
+    } 
+    return false;
+}
+
+bool isValidUsesLhsRef(const UsesLhsRef& ref) {
+    if (std::holds_alternative<Synonym>(ref)) {
+        auto synonym = std::get<Synonym>(ref);
+        return VALID_STATEMENT_TYPES.find(synonym.getType()) != VALID_STATEMENT_TYPES.end() ||
+               VALID_PROCEDURE_TYPES.find(synonym.getType()) != VALID_PROCEDURE_TYPES.end();
+    } else if (std::holds_alternative<std::string>(ref)) {
+        std::string refString = std::get<std::string>(ref);
+        size_t len = refString.size();
+        return refString == WILDCARD || (refString[0] == '"' && refString[len - 1] == '"'); 
+    } else if (std::holds_alternative<int>(ref)) {
+        // Assuming int is always a valid statement reference
+        return std::get<int>(ref) > 0;
+    }
+    return false;
+}
+
+bool isValidVariable(const EntityRef& ref) {
+    if (std::holds_alternative<Synonym>(ref)) {
+        auto synonym = std::get<Synonym>(ref);
+        return synonym.getType() == EntityType::Variable;
+    } else if (std::holds_alternative<std::string>(ref)) {
+        std::string refString = std::get<std::string>(ref);
+        size_t len = refString.size();
+        return refString == WILDCARD || (refString[0] == '"' && refString[len - 1] == '"');
+    }
+    return false;
+}
+
 bool isWildcard(StatementRef& ref) {
     return std::holds_alternative<std::string>(ref) && std::get<std::string>(ref) != WILDCARD;
 }
