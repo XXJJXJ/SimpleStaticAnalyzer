@@ -7,6 +7,7 @@
 #include <memory>
 #include "qps/entity/evaluation/QueryEvaluationContext.h"
 #include "qps/entity/query/Query.h"
+using namespace std;
 
 class QueryEvaluator {
 private:

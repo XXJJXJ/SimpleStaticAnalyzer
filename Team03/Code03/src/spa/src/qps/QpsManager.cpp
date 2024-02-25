@@ -1,28 +1,21 @@
-/*
- * Created by ZHENGTAO JIANG on 8/2/24.
- */
-
-#include <fstream>
 #include "QpsManager.h"
 
-QpsManager::QpsManager() = default;
+QpsManager::QpsManager() {}
 
-QpsManager::~QpsManager() = default;
+QpsManager::~QpsManager() {}
 
-std::vector<std::string> QpsManager::processQuery(const std::string &query) {
+std::vector<std::string> QpsManager::processQuery(std::string query) {
     try {
         std::vector<std::vector<std::vector<std::string>>> tokens = tokenizeQuery(query);
         std::shared_ptr<Query> parsedQuery = parseQuery(tokens);
         std::vector<std::string> results = evaluateQuery(parsedQuery);
     }
-    catch (SyntaxErrorException syntaxError) {
+    catch (SyntaxErrorException s) {
         return {"SyntaxError"};
     }
-    catch (SemanticErrorException semanticError) {
+    catch (SemanticErrorException s) {
         return {"SemanticError"};
     }
-
-    return {};
 }
 
 // Calls QueryTokenizer to tokenize the query string
