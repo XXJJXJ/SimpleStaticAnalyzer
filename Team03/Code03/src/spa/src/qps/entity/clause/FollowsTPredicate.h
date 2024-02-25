@@ -1,5 +1,6 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
+
 #ifndef FOLLOWSTPREDICATE_H
 #define FOLLOWSTPREDICATE_H
 
@@ -8,19 +9,20 @@
 #include <variant>
 #include "PredicateUtils.h"
 
-
+// Forward declaration of Strategy to avoid circular dependency
 class Strategy;
 
 class FollowsTPredicate : public Predicate {
 private:
     StatementRef lhs; // Left-hand statement reference
     StatementRef rhs; // Right-hand statement reference
+    bool isValidRow(const std::vector<std::shared_ptr<Entity>> &row) const;
+
 public:
     FollowsTPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsTPredicate() override = default;
 
-    // Helper methods for validation
-    static bool isValidStmtRef(const StatementRef& ref);
+    [[nodiscard]] std::shared_ptr<BaseTable> getTable(QueryManager &qm) override;
 };
 
 #endif // FOLLOWSTPREDICATE_H
