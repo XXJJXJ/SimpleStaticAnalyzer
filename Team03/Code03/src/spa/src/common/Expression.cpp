@@ -1,7 +1,7 @@
 #include "Expression.h"
 
 Expression::Expression(string name_, EntityType expressionType_)
-    : name(move(name_)), expressionType(move(expressionType_)) {}
+    : name(std::move(name_)), expressionType(std::move(expressionType_)) {}
 
 EntityType Expression::getExpressionType() const {
     return expressionType;

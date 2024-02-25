@@ -4,7 +4,7 @@ Operation::Operation(
     string name, 
     EntityType operationType, 
     PairOfArguments arguments_)
-    : Expression(move(name), move(operationType)) {
+    : Expression(std::move(name), std::move(operationType)) {
         arguments = arguments_;
 }
 

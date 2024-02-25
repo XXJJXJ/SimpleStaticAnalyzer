@@ -5,8 +5,8 @@ Statement::Statement(
     EntityType statementType,
     string procedureName_)
     : statementNumber(statementNumber_),
-      statementType(move(statementType)),
-      procedureName(move(procedureName_)) {
+      statementType(std::move(statementType)),
+      procedureName(std::move(procedureName_)) {
 }
 
 int Statement::getStatementNumber() const {

@@ -6,7 +6,7 @@ IfStatement::IfStatement(
     string procedureName) : Statement(
         statementNumber,
         EntityType::If,
-        move(procedureName)), condition(move(condition)) {}
+        std::move(procedureName)), condition(std::move(condition)) {}
 
 void IfStatement::addThenStatement(shared_ptr<Statement> statement) {
     thenStatementList.push_back(statement);
