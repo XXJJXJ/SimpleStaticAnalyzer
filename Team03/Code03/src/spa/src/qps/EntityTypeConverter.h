@@ -22,8 +22,8 @@ public:
     static bool initialize();
 
 private:
-    static std::unordered_map<std::string, EntityType> stringToEntityTypeMap;
-    static std::unordered_map<EntityType, std::string> entityTypeToStringMap;
+    static const std::unordered_map<std::string, EntityType> stringToEntityTypeMap;
+    static const std::unordered_map<EntityType, std::string> entityTypeToStringMap;
     [[maybe_unused]] static bool initialized;
 };
 //ai-gen end

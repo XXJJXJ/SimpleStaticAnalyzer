@@ -3,7 +3,7 @@
 // ai-gen start (gpt, 2, e)
 // prompt: https://chat.openai.com/share/c3d59194-4f71-41b5-b045-642450edca7a
 
-std::unordered_map<std::string, EntityType> EntityTypeConverter::stringToEntityTypeMap = {
+const std::unordered_map<std::string, EntityType> EntityTypeConverter::stringToEntityTypeMap = {
         {"stmt",      EntityType::Stmt},
         {"read",      EntityType::Read},
         {"print",     EntityType::Print},
@@ -16,7 +16,7 @@ std::unordered_map<std::string, EntityType> EntityTypeConverter::stringToEntityT
         {"procedure", EntityType::Procedure}
 };
 
-std::unordered_map<EntityType, std::string> EntityTypeConverter::entityTypeToStringMap;
+const std::unordered_map<EntityType, std::string> EntityTypeConverter::entityTypeToStringMap;
 
 bool EntityTypeConverter::initialized = initialize();
 
