@@ -14,6 +14,7 @@ file(GLOB headers
 
 add_executable(unit_testing ${srcs} ${headers}
         src/qps/evaluation/strategy/TestJoinWithPredicateStrategy.cpp
-        src/qps/clause/TestParentPredicate.cpp)
+        src/qps/clause/TestParentPredicate.cpp
+        src/qps/clause/TestParentTPredicate.cpp)
 
 target_link_libraries(unit_testing spa)
