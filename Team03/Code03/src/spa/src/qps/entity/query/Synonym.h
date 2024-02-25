@@ -7,6 +7,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <memory>
 
 
 #include <functional> // Required for std::hash
@@ -41,15 +42,13 @@ namespace std {
 
 struct SynonymPtrHash {
     size_t operator()(const std::shared_ptr<Synonym>& synonym) const {
-        // Example hash function; adjust based on Synonym's attributes
-        return std::hash<std::string>()(synonym->getName());
+        return std::hash<Synonym>()(*synonym);
     }
 };
 
 struct SynonymPtrEqual {
     bool operator()(const std::shared_ptr<Synonym>& lhs, const std::shared_ptr<Synonym>& rhs) const {
-        // Example equality function; adjust based on Synonym's attributes
-        return lhs->getName() == rhs->getName();
+        return *lhs == *rhs;
     }
 };
 

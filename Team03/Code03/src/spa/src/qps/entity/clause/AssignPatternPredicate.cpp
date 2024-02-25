@@ -15,7 +15,7 @@ bool AssignPatternPredicate::isValidAssignSyn(const Synonym& assignSyn) {
 bool AssignPatternPredicate::isValidLhs(const EntityRef& lhs) {
 	return std::visit(overloaded{
 			[](const Synonym& syn) { return syn.getType() == EntityType::Variable; },
-			[](const std::string& str) { return str == "_" || (str.size() > 2 && str[0] == '"' && str[str.size()-1] == '"'); }
+			[](const std::string& str) { return true; }
 	}, lhs);
 }
 
@@ -26,7 +26,7 @@ bool AssignPatternPredicate::isValidLhs(const EntityRef& lhs) {
 bool AssignPatternPredicate::isValidRhs(const std::string& rhs) {
 	size_t len = rhs.size();
 	return rhs == "_" ||
-		len > 2 && rhs[0] == '"' && rhs[len - 1] == '"' ||
+		len > 1 && rhs[0] != '"' && rhs[len - 1] != '"' ||
 		len > 4 && rhs[0] == '_' && rhs[1] == '"' && rhs[len - 2] == '"' && rhs[len - 1] == '_';
 	}
 
