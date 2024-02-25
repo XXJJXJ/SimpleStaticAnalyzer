@@ -1,6 +1,5 @@
 #pragma once
 
-#include <set>
 #include <unordered_map>
 #include "common/Statement.h"
 #include "StmtStmtStore.h"

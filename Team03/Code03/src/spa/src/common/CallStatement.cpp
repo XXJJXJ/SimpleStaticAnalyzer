@@ -5,5 +5,5 @@ EntityType CallStatement::getType() const {
 }
 
 bool CallStatement::isOfType(EntityType type) const {
-    return type == getType() || Statement::isOfType(type);
+    return type == EntityType::Call || Statement::isOfType(type);
 }

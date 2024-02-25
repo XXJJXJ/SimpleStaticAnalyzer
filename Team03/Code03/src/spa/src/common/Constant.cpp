@@ -26,5 +26,5 @@ EntityType Constant::getType() const {
 }
 
 bool Constant::isOfType(EntityType type) const {
-    return type == this->getType() || Expression::isOfType(type);
+    return type == EntityType::Constant || Expression::isOfType(type);
 }

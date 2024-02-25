@@ -28,5 +28,5 @@ EntityType Variable::getType() const {
 }
 
 bool Variable::isOfType(EntityType type) const {
-    return type == this->getType() || Expression::isOfType(type);
+    return type == EntityType::Variable || Expression::isOfType(type);
 }

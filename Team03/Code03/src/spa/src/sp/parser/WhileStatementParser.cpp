@@ -1,25 +1,32 @@
 #include "WhileStatementParser.h"
 
 shared_ptr<Statement> WhileStatementParser::parseEntity(Tokens& tokens) {
-    checkStartOfWhileStatement(tokens);  
-    
+    checkStartOfWhileStatement(tokens);
+
     auto condition = extractCondition(tokens);
     auto whileStatement = make_shared<WhileStatement>(Program::getAndIncrementStatementNumber(),
         condition, getProcedureName());
-    
+
     // Erase '{' from tokens
     tokens.erase(tokens.begin());
-        
+
     while (!tokens.empty() && !isEndOfWhileStatement(tokens)) {
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(getProcedureName());
         auto loopStatement = statementParser->parseEntity(tokens);
         whileStatement->addStatement(loopStatement);
     }
-    
+
+    if (whileStatement->getStatementList().size() == 0) {
+        throw SyntaxErrorException("While statement's block cannot be empty");
+    }
+
     if (isEndOfWhileStatement(tokens)) {
         // Erase '}' from tokens
         tokens.erase(tokens.begin());
+    }
+    else {
+        throw SyntaxErrorException("While statement is missing a }");
     }
 
     return whileStatement;
@@ -29,7 +36,7 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens& 
     Tokens conditionTokens;
     // Erase 'while and (' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
-    
+
     auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token>& token) {
         return token->getType() == TokenType::LEFT_BRACE;
         });
@@ -72,5 +79,10 @@ void WhileStatementParser::checkStartOfWhileStatement(Tokens& tokens) const {
 }
 
 bool WhileStatementParser::isEndOfWhileStatement(Tokens& tokens) const {
-    return tokens[0]->getType() == TokenType::RIGHT_BRACE;
+    if (tokens.size() > 0) {
+        return tokens[0]->getType() == TokenType::RIGHT_BRACE;
+    }
+    else {
+        return false;
+    }
 }

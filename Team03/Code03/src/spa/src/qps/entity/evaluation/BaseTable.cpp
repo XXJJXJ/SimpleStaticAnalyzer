@@ -85,6 +85,10 @@ int BaseTable::getColumnCount() const {
     return columnCount;
 }
 
+void BaseTable::setColumnCount(int count) {
+    columnCount = count;
+}
+
 void BaseTable::clearRows() {
     rows.clear();
 }

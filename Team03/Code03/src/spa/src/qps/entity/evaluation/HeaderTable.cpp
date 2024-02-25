@@ -32,6 +32,7 @@ bool HeaderTable::isValidRow(const TableRow &row) const {
 
 void HeaderTable::setHeaders(const vector<shared_ptr<Synonym>> &headers) {
     this->headers = headers;
+    setColumnCount(headers.size());
     updateHeaderIndexMap();
 }
 
@@ -168,6 +169,7 @@ bool HeaderTable::hasHeader(const Synonym &synonym) const {
 
 HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, const vector<vector<shared_ptr<Entity>>> &entities) {
     this->headers = headers;
+    setColumnCount(headers.size());
     for (const auto &row: entities) {
         this->addRow(TableRow(row));
     }
@@ -179,6 +181,7 @@ HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, BaseTable &
         throw QPSEvaluationException("HeaderTable: headers size does not match baseTable column count");
     }
     this->headers = headers;
+    setColumnCount(headers.size());
     for (const auto &row: baseTable.getRows()) {
         this->addRow(row);
     }

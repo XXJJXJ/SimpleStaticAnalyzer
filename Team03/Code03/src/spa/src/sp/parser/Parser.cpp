@@ -17,5 +17,9 @@ shared_ptr<Program> Parser::parseSource(Tokens& tokens) {
         }
     }
 
+    if (program->getProcedureList().size() == 0) {
+        throw SyntaxErrorException("Program should have at least 1 procedure");
+    }
+
     return program;
 }

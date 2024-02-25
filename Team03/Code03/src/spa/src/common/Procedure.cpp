@@ -24,5 +24,5 @@ EntityType Procedure::getType() const {
 }
 
 bool Procedure::isOfType(EntityType type) const {
-    return type == this->getType();
+    return type == EntityType::Procedure;
 }

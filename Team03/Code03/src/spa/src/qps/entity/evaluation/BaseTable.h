@@ -24,6 +24,7 @@ public:
     shared_ptr<BaseTable> project(const std::vector<bool>& columnMask) const; // Projection function
     const vector<TableRow> getRows() const;
     int getColumnCount() const;
+    void setColumnCount(int count);
     void clearRows();
     virtual bool isBoolean() const;
     virtual shared_ptr<BaseTable> join(BaseTable& other);

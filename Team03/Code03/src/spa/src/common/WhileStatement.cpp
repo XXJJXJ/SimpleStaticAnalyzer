@@ -29,5 +29,5 @@ EntityType WhileStatement::getType() const {
 }
 
 bool WhileStatement::isOfType(EntityType type) const {
-    return type == this->getType() || Statement::isOfType(type);
+    return type == EntityType::While || Statement::isOfType(type);
 }

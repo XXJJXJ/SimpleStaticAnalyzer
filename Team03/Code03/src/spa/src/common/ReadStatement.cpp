@@ -22,5 +22,5 @@ EntityType ReadStatement::getType() const {
 }
 
 bool ReadStatement::isOfType(EntityType type) const {
-    return type == this->getType() || Statement::isOfType(type);
+    return type == EntityType::Read || Statement::isOfType(type);
 }
