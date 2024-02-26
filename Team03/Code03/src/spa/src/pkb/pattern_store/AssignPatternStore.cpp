@@ -12,6 +12,9 @@ string infixToPostfix(std::string expression) {
     map<char, int> precedence;
     precedence['+'] = precedence['-'] = 1;
     precedence['*'] = precedence['/'] = precedence['%'] = 2;
+    if (isOperator(expression[0])) {
+        throw SyntaxErrorException();
+    }
 
     for (size_t i = 0; i < expression.length(); ++i) {
         if (isdigit(expression[i])) {
