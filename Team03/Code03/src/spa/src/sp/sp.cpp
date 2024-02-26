@@ -29,3 +29,19 @@ void Sp::ProcessSIMPLE(string fileName) {
         std::cout << e.what() << std::endl;
     }
 }
+
+// FOR TESTING PURPOSES
+shared_ptr<Program> Sp::triggerTokenizerAndParser(std::string simple_string) {
+    std::regex token_regex(
+        R"(\bprocedure\b|\bwhile\b|\bif\b|\bthen\b|\belse\b|\bcall\b|\bread\b|\bprint\b|\btrue\b|\bfalse\b|\+|-|\*|/|%|==|!=|<|<=|>|>=|\(|\)|\{|\}|;|\=|\"|&&|\|\||!|((?!;)[a-zA-Z0-9]+))");
+    std::sregex_iterator iter(simple_string.begin(), simple_string.end(), token_regex);
+    std::sregex_iterator end;
+    Tokens tokens;
+    shared_ptr<Tokenizer> tokenizer = make_shared<Tokenizer>();
+    while (iter != end) {
+        tokens.push_back(tokenizer->stringToToken(iter->str()));
+        ++iter;
+    }
+    shared_ptr<Parser> parser = make_shared<Parser>();
+    return parser->parseSource(tokens);
+}
