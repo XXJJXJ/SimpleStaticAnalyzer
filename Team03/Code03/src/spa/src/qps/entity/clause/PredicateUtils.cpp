@@ -86,7 +86,8 @@ bool hasWildcard(std::string& expr) {
 
 std::string stripWildcard(std::string& expr) {
     if (hasWildcard(expr)) {
-        return expr.substr(1, expr.size() - 2);
+        // Remove _" and "_
+        return expr.substr(2, expr.size() - 4);
     }
     return expr;
 }

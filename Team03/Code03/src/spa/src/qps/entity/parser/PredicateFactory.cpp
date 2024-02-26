@@ -42,7 +42,7 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
 
     if (predicateType == PredicateType::Pattern) {
         std::vector<std::string> patternTokens(tokens.begin() + 1, tokens.end());
-        refs = extractRefs(patternTokens);
+        refs = extractPatternRefs(patternTokens);
     } else {
         refs = extractRefs(tokens);
     }
@@ -112,7 +112,57 @@ std::vector<std::string> PredicateFactory::extractRefs(const std::vector<std::st
 	else {
 		throw SyntaxErrorException("Invalid syntax in clause");
 	}
+	return results;
+}
 
+std::vector<std::string> PredicateFactory::extractPatternRefs(const std::vector<std::string>& tokens) {
+	std::vector<std::string> results;
+
+	size_t len = tokens.size();
+	bool isRef = true;
+	// a **** ( **** _ **** , **** _ **** " **** +temp" **** _ **** ) ****
+	bool isSecond = false;
+	bool isPattern = false;
+	if (len > 3 && tokens[1] == "(" && tokens[len - 1] == ")") {
+		for (size_t i = 2; i < len - 1; i++) {
+			std::string token = tokens[i];
+			size_t tokenLen = token.size();
+			if (isRef) {
+				if (isSecond) {
+					if (token == "_") {
+						string res = token;
+						i++;
+						while (i < len - 1) {
+							res.append(tokens[i]);
+							if (tokens[i] == "_") {
+								break;
+							}
+							i++;
+						}
+						if (res.back() != '_') {
+							throw SyntaxErrorException("ExtractPatternRefs: pattern no matching _ : " + res + " " + res.back());
+						}
+						results.push_back(res);
+					} else {
+						results.push_back(token);
+					}
+				} else {
+					results.push_back(token);
+				}
+				isRef = false;
+			}
+			else if (token == "," && i < len-2) {
+				isSecond = true;
+				isRef = true;
+			}
+			else {
+				throw SyntaxErrorException("ExtractPatternRefs: Invalid syntax in clause");
+			}
+		}
+	}
+	else {
+		throw SyntaxErrorException("ExtractPatternRefs: Invalid syntax in clause");
+	}
 	return results;
 }
 
