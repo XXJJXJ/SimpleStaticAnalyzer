@@ -1,4 +1,7 @@
 ./autotester ../../../tests/milestone1_modifiesp_usesp_call_source.txt ../../../tests/milestone1_modifiesp_usesp_call_queries.txt ../../../tests/out.xml
 ./autotester ../../../tests/milestone1_ms1bug_source.txt ../../../tests/milestone1_ms1bug_queries.txt ../../../tests/out.xml
 ./autotester ../../../tests/milestone1_nestedIf_source.txt ../../../tests/milestone1_nestedIf_queries.txt ../../../tests/out.xml
+./autotester ../../../tests/milestone1_nestedWhile_source.txt ../../../tests/milestone1_nestedWhile_queries.txt ../../../tests/out.xml
+./autotester ../../../tests/milestone1_stress_source.txt ../../../tests/milestone1_stress_queries.txt ../../../tests/out.xml
+./autotester ../../../tests/milestone1_super_source.txt ../../../tests/milestone1_super_queries.txt ../../../tests/out.xml
 

@@ -62,10 +62,17 @@ TEST_CASE("Multiple FollowsPredicates form separate groups for connected synonym
     SynonymGraph graph(predicates);
     auto groups = graph.groupSynonyms();
 
-    REQUIRE(groups.size() == 1);
-    REQUIRE(groups[0].size() == 2);
-    REQUIRE(groups[0].count(s1) == 1);
-    REQUIRE(groups[0].count(s2) == 1);
+    REQUIRE(groups.size() == 2);
+
+    if (groups[0].size() == 2) {
+        REQUIRE(groups[0].size() == 2);
+        REQUIRE(groups[0].count(s1) == 1);
+        REQUIRE(groups[0].count(s2) == 1);
+    } else {
+        REQUIRE(groups[1].size() == 2);
+        REQUIRE(groups[1].count(s1) == 1);
+        REQUIRE(groups[1].count(s2) == 1);
+    }
 }
 
 // Test case for circular dependencies between synonyms
