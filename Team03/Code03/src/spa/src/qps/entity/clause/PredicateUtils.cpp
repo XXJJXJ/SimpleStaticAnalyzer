@@ -81,10 +81,13 @@ bool isWildcard(EntityRef & ref) {
 
 bool hasWildcard(std::string& expr) {
     // if both first and last are "_", then it's a wildcard
-    return expr.size() > 1 && expr[0] == '_' && expr[expr.size() - 1] == '_';
+    return (expr.size() > 1 && expr[0] == '_' && expr[expr.size() - 1] == '_') || expr == "_";
 }
 
 std::string stripWildcard(std::string& expr) {
+    if (expr == "_") {
+        return "";
+    }
     if (hasWildcard(expr)) {
         // Remove _" and "_
         return expr.substr(2, expr.size() - 4);

@@ -190,6 +190,7 @@ vector<shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityT
         case EntityType::If: addEntities(getAllIfStatements()); break;
         case EntityType::While: addEntities(getAllWhileStatements()); break;
         case EntityType::Variable: addEntities(getAllVariables()); break;
+        case EntityType::Constant: addEntities(getAllConstants()); break;
         default: throw std::invalid_argument("Unknown entity type");
     }
 

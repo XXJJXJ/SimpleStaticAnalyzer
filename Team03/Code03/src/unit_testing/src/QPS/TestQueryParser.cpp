@@ -14,7 +14,8 @@
 //TEST_CASE("QueryParser::parse should return a Query object") {
 //	QueryParser qp;
 //	std::vector<std::vector<std::vector<std::string>>> tokens = { {{"variable", "a", ";"}}, {{"Select", "a"}}, {{"such", "that", "Follows", "(", "a", ",", "_", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}} };
-//	REQUIRE_NOTHROW(qp.parse(tokens));
+//	auto q = qp.parse(tokens);
+//    REQUIRE_NOTHROW(qp.parse(tokens));
 //}
 
 TEST_CASE("SelectionsParser::parse should correctly parse and return a vector of Synonym objects") {
@@ -147,7 +148,7 @@ TEST_CASE("Integration test") {
     auto sp = Sp();
     sp.ProcessSIMPLE("milestone1_nestedIf_source.txt");
 
-    string query = "constant c; Select c";
+    string query = "if ifs; Select ifs such that Parent*(3, ifs)";
     QueryTokenizer qt;
     QueryParser qp;
     std::vector<std::vector<std::vector<std::string>>> tokens = qt.tokenize(query);
@@ -158,7 +159,7 @@ TEST_CASE("Integration test") {
     EvaluationPlanner ep = EvaluationPlanner(q, qe);
     ep.plan();
     auto res = qe->evaluate(q);
-    REQUIRE(res.size() == 3);
+    REQUIRE(res.size() == 7);
 
 //    auto stmt1 = make_shared<Statement>(1, EntityType::Stmt ,"p");
 //    auto stmt2 = make_shared<Statement>(2, EntityType::Call ,"p");
