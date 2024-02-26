@@ -22,20 +22,20 @@ void AbstractionExtractor::extractParent(StatementListContainer statementList, s
 	}
 }
 
-void AbstractionExtractor::extractArgumentsForUses(shared_ptr<Expression> expression, shared_ptr<AssignStatement> assignStatement) {
+void AbstractionExtractor::extractArgumentsForUses(shared_ptr<Expression> expression, shared_ptr<Statement> statement) {
 	if (expression->isLeafNodeExpression()) {
 		if (expression->getExpressionType() == EntityType::Variable) {
-			pkbPopulator->addUses(assignStatement, dynamic_pointer_cast<Variable>(expression));
+			pkbPopulator->addUses(statement, dynamic_pointer_cast<Variable>(expression));
 		}
 	}
 	else {
 		auto arguments = expression->getArguments();
 		auto& [lhs, rhs] = *arguments;
 		if (lhs) {
-			extractArgumentsForUses(lhs, assignStatement);
+			extractArgumentsForUses(lhs, statement);
 		}
 		if (rhs) {
-			extractArgumentsForUses(rhs, assignStatement);
+			extractArgumentsForUses(rhs, statement);
 		}
 	}
 }
@@ -59,6 +59,7 @@ void AbstractionExtractor::visitAssignStatement(shared_ptr<AssignStatement> assi
 }
 
 void AbstractionExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement) {
+	extractArgumentsForUses(ifStatement->getCondition(), ifStatement);
 	extractParent(ifStatement->getThenStatementList(), ifStatement);
 	extractParent(ifStatement->getElseStatementList(), ifStatement);
 	extractFollows(ifStatement->getThenStatementList());
@@ -69,6 +70,7 @@ void AbstractionExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement)
 }
 
 void AbstractionExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatement) {
+	extractArgumentsForUses(whileStatement->getCondition(), whileStatement);
 	extractFollows(whileStatement->getStatementList());
 	extractParent(whileStatement->getStatementList(), whileStatement);
 	processStatements(whileStatement->getStatementList());
