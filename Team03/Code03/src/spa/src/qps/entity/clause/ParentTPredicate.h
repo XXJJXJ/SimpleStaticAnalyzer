@@ -18,7 +18,6 @@ class ParentTPredicate : public Predicate {
 private:
     StatementRef lhs; // Ancestor statement reference
     StatementRef rhs; // Descendant statement reference
-    std::vector<std::shared_ptr<Synonym>> synonyms;
     bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
 public:
     ParentTPredicate(StatementRef lhs, StatementRef rhs);

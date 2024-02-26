@@ -159,7 +159,7 @@ TEST_CASE("Integration test") {
     EvaluationPlanner ep = EvaluationPlanner(q, qe);
     ep.plan();
     auto res = qe->evaluate(q);
-    REQUIRE(res.size() == 7);
+    REQUIRE(res.size() == 2);
 
 //    auto stmt1 = make_shared<Statement>(1, EntityType::Stmt ,"p");
 //    auto stmt2 = make_shared<Statement>(2, EntityType::Call ,"p");
