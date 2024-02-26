@@ -59,12 +59,13 @@ void AbstractionExtractor::visitAssignStatement(shared_ptr<AssignStatement> assi
 }
 
 void AbstractionExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement) {
+	extractParent(ifStatement->getThenStatementList(), ifStatement);
+	extractParent(ifStatement->getElseStatementList(), ifStatement);
 	extractFollows(ifStatement->getThenStatementList());
 	processStatements(ifStatement->getThenStatementList());
 	extractFollows(ifStatement->getElseStatementList());
 	processStatements(ifStatement->getElseStatementList());
-	extractParent(ifStatement->getThenStatementList(), ifStatement);
-	extractParent(ifStatement->getElseStatementList(), ifStatement);
+	
 }
 
 void AbstractionExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatement) {
