@@ -6,6 +6,10 @@
 SynonymGraph::SynonymGraph(const std::vector<std::shared_ptr<Predicate>>& predicates) : predicates(predicates) {
     for (const auto& predicate : predicates) {
         auto synonyms = predicate->getSynonyms();
+        // add self loop for each synonym
+        for (const auto& synonym : synonyms) {
+            addEdge(synonym, synonym);
+        }
         for (size_t i = 0; i < synonyms.size(); ++i) {
             for (size_t j = i + 1; j < synonyms.size(); ++j) {
                 addEdge(synonyms[i], synonyms[j]);

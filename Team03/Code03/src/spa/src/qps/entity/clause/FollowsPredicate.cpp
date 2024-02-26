@@ -5,7 +5,6 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
-
 FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs)) {
         throw SyntaxErrorException("Invalid argument for FollowsPredicate constructor");
@@ -29,7 +28,6 @@ shared_ptr<BaseTable> FollowsPredicate::getTable(QueryManager &qm) {
     // Step 1: Fetch all follows relationships as a BaseTable
     auto allFollows = BaseTable(
             qm.getFollowS(), 2); // Assuming getFollowS returns data compatible with BaseTable constructor
-
     // Step 2: Filter based on lhs and rhs
     // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
     auto filteredFollows = allFollows.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
@@ -41,6 +39,12 @@ shared_ptr<BaseTable> FollowsPredicate::getTable(QueryManager &qm) {
     bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
     shared_ptr<BaseTable> resultTable = filteredFollows->project({isLhsSynonym, isRhsSynonym});
     if (!resultTable->isBoolean()) {
+        // an additional filter to drop row if all headers are the same and the values are different
+        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
+            resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
+                return row[0] == row[1];
+            });
+        }
         resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
     }
     return resultTable;
@@ -78,6 +82,25 @@ bool FollowsPredicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
     return lhsMatch && rhsMatch;
 }
 
-
-
+std::string FollowsPredicate::toString() const {
+    // Temp implementation for debugging, TODO: replace with proper implementation
+    // get string presentation of lhs and rhs based on their types
+    std::string lhsStr;
+    std::string rhsStr;
+    if (std::holds_alternative<int>(lhs)) {
+        lhsStr = std::to_string(std::get<int>(lhs));
+    } else if (std::holds_alternative<Synonym>(lhs)) {
+        lhsStr = std::get<Synonym>(lhs).getName();
+    } else {
+        lhsStr = "_";
+    }
+    if (std::holds_alternative<int>(rhs)) {
+        rhsStr = std::to_string(std::get<int>(rhs));
+    } else if (std::holds_alternative<Synonym>(rhs)) {
+        rhsStr = std::get<Synonym>(rhs).getName();
+    } else {
+        rhsStr = "_";
+    }
+    return "FollowsPredicate " + lhsStr + " " + rhsStr;
+}
 // ai-gen end

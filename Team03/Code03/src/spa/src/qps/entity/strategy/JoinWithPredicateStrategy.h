@@ -13,6 +13,7 @@ private:
 public:
     explicit JoinWithPredicateStrategy(std::shared_ptr<Predicate> pred);
     void execute(QueryEvaluationContext &context) override;
+    std::string toString() const;
 };
 
 #endif // JOIN_WITH_PREDICATE_STRATEGY_H

@@ -29,7 +29,7 @@ std::shared_ptr<BaseTable> BooleanTable::join(BaseTable& other) {
 
 // A special logic for boolean table, false implies empty and true implies non-empty
 bool BooleanTable::isEmpty() const {
-    return this->value;
+    return !this->value;
 }
 
 bool BooleanTable::isTrue() const {
@@ -38,4 +38,16 @@ bool BooleanTable::isTrue() const {
 
 bool BooleanTable::isBoolean() const {
     return true;
+}
+
+bool BooleanTable::operator==(const BaseTable &other) const {
+    // Try to cast 'other' to BooleanTable
+    auto otherBoolTable = dynamic_cast<const BooleanTable*>(&other);
+    if (otherBoolTable != nullptr) {
+        // If 'other' is a BooleanTable, compare the values of both tables
+        return this->value == otherBoolTable->value;
+    } else {
+        // If 'other' is not a BooleanTable, return false
+        return false;
+    }
 }

@@ -32,9 +32,15 @@ template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 using StatementRef = std::variant<int, Synonym, std::string>; // stmtRef: synonym | '_' | INTEGER
 using EntityRef = std::variant<Synonym, std::string>; // entRef : synonym | '_' | '"' IDENT '"'
-
+using UsesLhsRef = std::variant<int, Synonym, std::string>;
+using ModifiesLhsRef = std::variant<int, Synonym, std::string>;
 
 bool isValidStatementRef(const StatementRef &ref);
 bool isValidEntityRef(const EntityRef &ref);
+bool isValidUsesLhsRef(const UsesLhsRef& ref);
+bool isValidModifiesLhsRef(const ModifiesLhsRef& ref);
+bool isValidVariable(const EntityRef& ref);
 bool isWildcard(StatementRef& ref);
 bool isWildcard(EntityRef & ref);
+bool hasWildcard(std::string& expr);
+std::string stripWildcard(std::string& expr);

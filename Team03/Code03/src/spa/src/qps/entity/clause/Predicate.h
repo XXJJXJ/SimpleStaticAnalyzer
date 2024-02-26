@@ -24,6 +24,9 @@ public:
         // Temp implementation to get code compiling, TODO: remove and set pure virtual
         return make_shared<BaseTable>();
     };
+    virtual std::string toString() const {
+        return "Predicate";
+    };
 };
 
 #endif // RELATIONSHIPPREDICATE_H

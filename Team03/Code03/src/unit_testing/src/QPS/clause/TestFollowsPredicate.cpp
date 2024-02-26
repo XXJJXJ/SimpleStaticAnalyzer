@@ -97,8 +97,6 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
             REQUIRE(table->getRows().size() == 4);
         }
 
-        // This onwards all fails
-
         SECTION("Using Print Print synonym type - gets 1") {
             Synonym stmtSyn(EntityType::Print, "s1");
             Synonym stmtSyn2(EntityType::Print, "s2");
@@ -133,6 +131,13 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
             auto table = followsPred.getTable(qm);
             REQUIRE(table->getColumnCount() == 2);
             REQUIRE(table->getRows().size() == 1);
+        }
+        SECTION("Using same synonyms - gets 0") {
+            Synonym stmtSyn(EntityType::Stmt, "s1");
+            FollowsPredicate followsPred(stmtSyn, stmtSyn);
+            auto table = followsPred.getTable(qm);
+            REQUIRE(table->getColumnCount() == 2);
+            REQUIRE(table->getRows().size() == 0);
         }
     }
 
