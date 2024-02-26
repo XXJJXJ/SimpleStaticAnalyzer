@@ -21,12 +21,12 @@ void EntityExtractor::extractArgs(optional<PairOfArguments> arguments) {
 }
 
 void EntityExtractor::visitReadStatement(shared_ptr<ReadStatement> readStatement) {
-	pkbPopulator->addVariable(readStatement->getVariable());
+	readStatement->getVariable()->accept(make_shared<EntityExtractor>(*this));
 	pkbPopulator->addReadStatement(readStatement);
 }
 
 void EntityExtractor::visitPrintStatement(shared_ptr<PrintStatement> printStatement) {
-	pkbPopulator->addVariable(printStatement->getVariable());
+	printStatement->getVariable()->accept(make_shared<EntityExtractor>(*this));
 	pkbPopulator->addPrintStatement(printStatement);
 }
 
@@ -48,6 +48,10 @@ void EntityExtractor::visitArithmeticalOperation(shared_ptr<ArithmeticOperation>
 };
 
 void EntityExtractor::visitAssignStatement(shared_ptr<AssignStatement> assignStatement) {
+	auto variable = assignStatement->getVariable();
+	auto expression = assignStatement->getExpression();
+	variable->accept(make_shared<EntityExtractor>(*this));
+	expression->accept(make_shared<EntityExtractor>(*this));
 	pkbPopulator->addAssignStatement(assignStatement);
 };
 
