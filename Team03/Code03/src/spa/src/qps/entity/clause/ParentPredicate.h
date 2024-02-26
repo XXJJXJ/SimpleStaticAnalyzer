@@ -14,7 +14,6 @@ class ParentPredicate : public Predicate {
 private:
     StatementRef lhs;
     StatementRef rhs;
-    std::vector<std::shared_ptr<Synonym>> synonyms;
     bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
 
 public:
