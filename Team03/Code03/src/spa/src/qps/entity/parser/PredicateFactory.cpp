@@ -199,7 +199,7 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 		return stringToSynonym(token, synonymMap);
 	}
 	else {
-		throw SyntaxErrorException("Invalid syntax in clause");
+		throw SemanticErrorException("Invalid synonym in clause");
 	}
 }
 
