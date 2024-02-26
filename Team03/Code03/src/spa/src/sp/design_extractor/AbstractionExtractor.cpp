@@ -70,6 +70,6 @@ void AbstractionExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement)
 
 void AbstractionExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatement) {
 	extractFollows(whileStatement->getStatementList());
-	processStatements(whileStatement->getStatementList());
 	extractParent(whileStatement->getStatementList(), whileStatement);
+	processStatements(whileStatement->getStatementList());
 }
