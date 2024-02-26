@@ -120,7 +120,6 @@ std::vector<std::string> PredicateFactory::extractPatternRefs(const std::vector<
 
 	size_t len = tokens.size();
 	bool isRef = true;
-	// a **** ( **** _ **** , **** _ **** " **** +temp" **** _ **** ) ****
 	bool isSecond = false;
 	bool isPattern = false;
 	if (len > 3 && tokens[1] == "(" && tokens[len - 1] == ")") {
@@ -132,7 +131,7 @@ std::vector<std::string> PredicateFactory::extractPatternRefs(const std::vector<
 					if (token == "_") {
 						string res = token;
 						i++;
-						while (i < len - 1) {
+						while (i < len - 1 && token[i] != ')') {
 							res.append(tokens[i]);
 							if (tokens[i] == "_") {
 								break;
