@@ -6,7 +6,7 @@
 ParentTPredicate::ParentTPredicate(StatementRef lhs, StatementRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidStatementRef(this->lhs) || !isValidStatementRef(this->rhs)) {
-        throw SyntaxErrorException("Invalid arguments for ParentTPredicate constructor");
+        throw SemanticErrorException("Invalid arguments for ParentTPredicate constructor");
     }
     if (std::holds_alternative<Synonym>(this->lhs)) {
         auto synonym = std::get<Synonym>(this->lhs);

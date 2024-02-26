@@ -6,6 +6,7 @@
 #include <string>
 #include <variant>
 #include "qps/entity/strategy/Strategy.h"
+#include "common/spa_exception/SemanticErrorException.h"
 
 
 

@@ -11,7 +11,7 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
     }
     bool isRhsValid = isValidRhs(this->rhs);
 	if (!isValidAssignSyn || !isLhsValid || !isRhsValid) {
-		throw SyntaxErrorException("Invalid argument for AssignPatternPredicate constructor");
+		throw SemanticErrorException("Invalid argument for AssignPatternPredicate constructor");
 	}
 
     synonyms.push_back(make_shared<Synonym>(this->assignSyn));

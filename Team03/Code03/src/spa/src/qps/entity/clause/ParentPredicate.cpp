@@ -5,7 +5,7 @@
 
 ParentPredicate::ParentPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs)) {
-        throw SyntaxErrorException("Invalid argument for ParentPredicate constructor");
+        throw SemanticErrorException("Invalid argument for ParentPredicate constructor");
     }
 
     this->lhs = std::move(lhs);

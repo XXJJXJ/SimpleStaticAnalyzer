@@ -5,10 +5,12 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
+
+
 ModifiesPredicate::ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidModifiesLhsRef(this->lhs) || !isValidVariable(this->rhs)) {
-        throw SyntaxErrorException("Invalid arguments for ModifiesPredicate constructor");
+        throw SemanticErrorException("Invalid arguments for ModifiesPredicate constructor");
     }
 
     if (std::holds_alternative<Synonym>(this->lhs)) {

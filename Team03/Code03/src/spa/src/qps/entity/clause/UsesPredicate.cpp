@@ -8,7 +8,7 @@
 UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidUsesLhsRef(this->lhs) || !isValidVariable(this->rhs)) {
-        throw SyntaxErrorException("Invalid arguments for UsesPredicate constructor");
+        throw SemanticErrorException("Invalid arguments for UsesPredicate constructor");
     }
 
     if (std::holds_alternative<Synonym>(this->lhs)) {
@@ -25,7 +25,14 @@ shared_ptr<BaseTable> UsesPredicate::getTable(QueryManager& qm) {
     // Step 1: Fetch all follows relationships as a BaseTable
     auto allUses =
             BaseTable(qm.getUseAll(),
-                      2); // Assuming getFollowS returns data compatible with BaseTable constructor
+                      2);
+    // Assuming getFollowS returns data compatible with BaseTable constructor
+    int count = 0;
+    for (auto row: allUses.getRows()) {
+        if (row.getValues()[0]->getName() == "3") {
+            count++;
+        }
+    }
 
     // Step 2: Filter based on lhs and rhs
     // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)

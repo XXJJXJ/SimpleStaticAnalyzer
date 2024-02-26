@@ -148,12 +148,12 @@ TEST_CASE("Integration test") {
     auto sp = Sp();
     sp.ProcessSIMPLE("milestone1_nestedIf_source.txt");
 
-    string query = "if ifs; Select ifs such that Parent*(3, ifs)";
+    string query = "assign a; stmt s; constant c; Select s such that Modifies(_, c) pattern a(_, _)";
     QueryTokenizer qt;
     QueryParser qp;
     std::vector<std::vector<std::vector<std::string>>> tokens = qt.tokenize(query);
-    REQUIRE_NOTHROW(qp.parse(tokens));
     auto q = qp.parse(tokens);
+    REQUIRE_NOTHROW(qp.parse(tokens));
     auto qe = make_shared<QueryEvaluator>();
 
     EvaluationPlanner ep = EvaluationPlanner(q, qe);
