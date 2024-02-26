@@ -145,9 +145,9 @@ TEST_CASE("PredicateFactory::createPredicate should throw errors for invalid que
 
 TEST_CASE("Integration test") {
     auto sp = Sp();
-    sp.ProcessSIMPLE("milestone1_modifiesp_usesp_call_source.txt");
+    sp.ProcessSIMPLE("milestone1_nestedIf_source.txt");
 
-    string query = "stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl; Select a such that Parent(8,a)";
+    string query = "constant c; Select c";
     QueryTokenizer qt;
     QueryParser qp;
     std::vector<std::vector<std::vector<std::string>>> tokens = qt.tokenize(query);
