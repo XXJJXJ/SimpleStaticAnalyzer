@@ -17,8 +17,8 @@ private:
     EntityManager() {}
     static shared_ptr<EntityManager> instance;
 
-    NormalStore<Constant> constantStore;
-    NormalStore<Variable> variableStore;
+    NormalStore constantStore;
+    NormalStore variableStore;
     ProcedureStore procStore;
     StatementStore stmtStore;
 
@@ -28,10 +28,11 @@ public:
     static shared_ptr<EntityManager> getInstance();
 
     bool addConstant(shared_ptr<Constant> c);
-    vector<shared_ptr<Constant>> getAllConstants();
+    vector<shared_ptr<Entity>> getAllConstants();
 
     bool addVariable(shared_ptr<Variable> var);
-    vector<shared_ptr<Variable>> getAllVariables();
+    vector<shared_ptr<Entity>> getAllVariables();
+    shared_ptr<Entity> getVariableByName(string var);
 
     bool addProcedure(shared_ptr<Procedure> proc);
     vector<shared_ptr<Procedure>> getAllProcedures();

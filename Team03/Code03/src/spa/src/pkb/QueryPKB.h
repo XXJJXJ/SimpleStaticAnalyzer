@@ -32,8 +32,9 @@ private:
 public:
     QueryManager ();
     // Entity Related API
-    virtual vector<shared_ptr<Constant>> getAllConstants();
-    virtual vector<shared_ptr<Variable>> getAllVariables();
+    virtual vector<shared_ptr<Entity>> getAllConstants();
+    virtual vector<shared_ptr<Entity>> getAllVariables();
+    virtual shared_ptr<Entity> getVariableByName(string var);
     virtual vector<shared_ptr<Procedure>> getAllProcedures();
     virtual vector<shared_ptr<Statement>> getAllStatements();
     virtual vector<shared_ptr<AssignStatement>> getAllAssignStatements();

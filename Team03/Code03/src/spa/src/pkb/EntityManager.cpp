@@ -22,8 +22,12 @@ bool EntityManager::addVariable(shared_ptr<Variable> var) {
     return variableStore.add(var);
 }
 
-vector<shared_ptr<Variable>> EntityManager::getAllVariables() {
+vector<shared_ptr<Entity>> EntityManager::getAllVariables() {
     return variableStore.getAll();
+}
+
+shared_ptr<Entity> EntityManager::getVariableByName(string var) {
+    return variableStore.get(var);
 }
 
 // Procedures
@@ -62,7 +66,7 @@ bool EntityManager::addConstant(shared_ptr<Constant> c) {
     return constantStore.add(c);
 }
 
-vector<shared_ptr<Constant>> EntityManager::getAllConstants() {
+vector<shared_ptr<Entity>> EntityManager::getAllConstants() {
     return constantStore.getAll();
 }
 
@@ -101,7 +105,7 @@ vector<shared_ptr<CallStatement>> EntityManager::getAllCallStatements() {
 }
 
 shared_ptr<Procedure> EntityManager::getProcByName(const string& procName) {
-    return procStore.getProcByName(procName);
+    return procStore.get(procName);
 }
 
 

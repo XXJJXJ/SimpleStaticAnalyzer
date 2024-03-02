@@ -13,12 +13,16 @@ void QueryManager::clear() {
     procVarResultCache.clear();
 }
 
-vector<shared_ptr<Constant>> QueryManager::getAllConstants() {
+vector<shared_ptr<Entity>> QueryManager::getAllConstants() {
     return em->getAllConstants();
 }
 
-vector<shared_ptr<Variable>> QueryManager::getAllVariables() {
+vector<shared_ptr<Entity>> QueryManager::getAllVariables() {
     return em->getAllVariables();
+}
+
+shared_ptr<Entity> QueryManager::getVariableByName(string var) {
+    return em->getVariableByName(var);
 }
 
 vector<shared_ptr<Procedure>> QueryManager::getAllProcedures() {

@@ -15,9 +15,9 @@ TEST_CASE("Store and retrieve Variables") {
     shared_ptr<Variable> v = make_shared<Variable>("x");
     populator.addVariable(v);
     QueryManager queryM;
-    vector<shared_ptr<Variable>> varStore = queryM.getAllVariables();
+    vector<shared_ptr<Entity>> varStore = queryM.getAllVariables();
     REQUIRE(varStore.size() == 1);
-    shared_ptr<Variable> v2 = varStore.front();
+    shared_ptr<Variable> v2 = dynamic_pointer_cast<Variable>(varStore.front());
     REQUIRE(v2->getName() == "x");
     REQUIRE(v2 == v);
     populator.clear();
@@ -31,8 +31,8 @@ TEST_CASE("Store duplicate variables") {
     populator.addVariable(x);
     populator.addVariable(x_dup);
     QueryManager queryM;
-    vector<shared_ptr<Variable>> varStore = queryM.getAllVariables();
-    shared_ptr<Variable> x2 = varStore.front();
+    vector<shared_ptr<Entity>> varStore = queryM.getAllVariables();
+    shared_ptr<Variable> x2 = dynamic_pointer_cast<Variable>(varStore.front());
     REQUIRE((x2->getName() == "x"));
     REQUIRE(varStore.size() == 1);
     shared_ptr<Variable> y = make_shared<Variable>("y");
@@ -190,9 +190,9 @@ TEST_CASE("Test store and retrieve Constants") {
     shared_ptr<Constant> c = make_shared<Constant>("2");
     populator.addConstant(c);
     QueryManager queryM;
-    vector<shared_ptr<Constant>> constStore = queryM.getAllConstants();
+    vector<shared_ptr<Entity>> constStore = queryM.getAllConstants();
     REQUIRE(constStore.size() == 1);
-    shared_ptr<Constant> c2 = constStore.front();
+    shared_ptr<Constant> c2 = dynamic_pointer_cast<Constant>(constStore.front());
     REQUIRE(c2->getName() == "2");
     REQUIRE(c2 == c);
     populator.clear();
@@ -206,9 +206,9 @@ TEST_CASE("Test Store duplicate constants") {
     populator.addConstant(c);
     populator.addConstant(c_dup);
     QueryManager queryM;
-    vector<shared_ptr<Constant>> constStore = queryM.getAllConstants();
+    vector<shared_ptr<Entity>> constStore = queryM.getAllConstants();
     REQUIRE(constStore.size() == 1);
-    shared_ptr<Constant> c2 = constStore.front();
+    shared_ptr<Constant> c2 = dynamic_pointer_cast<Constant>(constStore.front());
     REQUIRE(c2->getName() == "2");
     shared_ptr<Constant> c3 = make_shared<Constant>("3");
     populator.addConstant(c3);

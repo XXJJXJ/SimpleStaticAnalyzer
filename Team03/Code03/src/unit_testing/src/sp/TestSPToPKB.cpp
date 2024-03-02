@@ -14,7 +14,7 @@ TEST_CASE("1st SP-PKB integration Test: entity store test") {
     design_extractor->extractDesign(program);
 
     QueryManager qm;
-    vector<shared_ptr<Variable>> varStore = qm.getAllVariables();
+    vector<shared_ptr<Entity>> varStore = qm.getAllVariables();
     vector<shared_ptr<Procedure>> procStore = qm.getAllProcedures();
     vector<shared_ptr<ReadStatement>> readStore = qm.getAllReadStatements();
     vector<shared_ptr<PrintStatement>> printStore = qm.getAllPrintStatements();
@@ -203,7 +203,7 @@ TEST_CASE("9th SP-PKB integration Test: entity store test") {
     design_extractor->extractDesign(program);
 
     QueryManager qm;
-    vector<shared_ptr<Variable>> varStore = qm.getAllVariables();
+    vector<shared_ptr<Entity>> varStore = qm.getAllVariables();
     REQUIRE(varStore.size() == 3);
     pkbPopulator->clear();
 }
