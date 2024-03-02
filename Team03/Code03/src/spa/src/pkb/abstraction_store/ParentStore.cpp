@@ -1,13 +1,15 @@
 #include "ParentStore.h"
 
 
-bool ParentStore::add(shared_ptr<Statement> parent, shared_ptr<Statement> child) {
+bool ParentStore::add(shared_ptr<Entity> parent, shared_ptr<Entity> child) {
     // Tree like structure
     if (parent == child) {
         // Cannot be parent of itself
         return false;
     }
-    if (childToParentMap.find(child) != childToParentMap.end()) {
+    auto castedParent = dynamic_pointer_cast<Statement>(parent);
+    auto castedChild = dynamic_pointer_cast<Statement>(child);
+    if (childToParentMap.find(castedChild) != childToParentMap.end()) {
         // should only have 1 direct parent
         return false;
     }
@@ -17,10 +19,10 @@ bool ParentStore::add(shared_ptr<Statement> parent, shared_ptr<Statement> child)
     }
     directMap[parent].insert(child);
     transitiveMap[parent].insert(child);
-    childToParentMap[child] = parent;
+    childToParentMap[castedChild] = castedParent;
     // iterate through all parents to craft the transitive map
     // assumes that whatever traversal of the program follows dfs order / is correct
-    auto ancestor = parent;
+    auto ancestor = castedParent;
     while (childToParentMap.find(ancestor) != childToParentMap.end()) {
         ancestor = childToParentMap[ancestor];
         transitiveMap[ancestor].insert(child);

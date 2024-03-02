@@ -136,16 +136,16 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByProcedure() {
     return res;
 }
 
-unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getFollowSMap() {
+unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> QueryManager::getFollowSMap() {
     return am->getFollowSMap();
 }
-unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getFollowTMap() {
+unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> QueryManager::getFollowTMap() {
     return am->getFollowTMap();
 }
-unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getParentSMap() {
+unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> QueryManager::getParentSMap() {
     return am->getParentSMap();
 }
-unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getParentTMap() {
+unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> QueryManager::getParentTMap() {
     return am->getParentTMap();
 }
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> QueryManager::getUseAllMap() {

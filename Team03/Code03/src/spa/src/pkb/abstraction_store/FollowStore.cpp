@@ -1,6 +1,6 @@
 #include "FollowStore.h"
 
-bool FollowStore::add(shared_ptr<Statement> follower, shared_ptr<Statement> followed) {
+bool FollowStore::add(shared_ptr<Entity> follower, shared_ptr<Entity> followed) {
     if (directMap.find(follower) != directMap.end()) {
         // can only follow 1 stmt, already following something
         return false;

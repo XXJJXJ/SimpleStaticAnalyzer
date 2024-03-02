@@ -53,10 +53,10 @@ public:
     unordered_map<string, unordered_set<shared_ptr<Variable>>> getUseByProcedureMap();
     unordered_map<string, unordered_set<shared_ptr<Variable>>> getModifyByProcedureMap();
 
-    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
-    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();
-    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getParentSMap();
-    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getParentTMap();
+    unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getFollowSMap();
+    unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getFollowTMap();
+    unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getParentSMap();
+    unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getParentTMap();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getUseAllMap();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getUseByPrintMap();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getModifyAllMap();
