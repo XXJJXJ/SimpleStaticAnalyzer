@@ -7,15 +7,6 @@
 #include "entity_store/NormalStore.h"
 #include "entity_store/ProcedureStore.h"
 #include "entity_store/StatementStore.h"
-#include "entity_store/AssignStatementStore.h"
-#include "entity_store/PrintStatementStore.h"
-#include "entity_store/ReadStatementStore.h"
-#include "entity_store/IfStatementStore.h"
-#include "entity_store/WhileStatementStore.h"
-
-// Temp include to remove after implementation of stores
-#include "common/CallStatement.h"
-// End of Temp include
 
 
 using namespace std;
@@ -29,13 +20,7 @@ private:
     NormalStore<Constant> constantStore;
     NormalStore<Variable> variableStore;
     ProcedureStore procStore;
-    // Statement stores
-    StatementStore allStmtStore;
-    AssignStatementStore assignStore;
-    PrintStatementStore printStore;
-    ReadStatementStore readStore;
-    IfStatementStore ifStore;
-    WhileStatementStore whileStore;
+    StatementStore stmtStore;
 
     void clearStore();
 public:
