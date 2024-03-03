@@ -198,8 +198,7 @@ TEST_CASE("Test container stmt Uses and Modifies") {
     pop.addModifies(stmt4, x);
     pop.addModifies(stmt6, y);
 
-    pop.tabulateUses();
-    pop.tabulateModifies();
+    pop.tabulate();
 
     QueryManager qm;
     SECTION("Test stmt container uses") {

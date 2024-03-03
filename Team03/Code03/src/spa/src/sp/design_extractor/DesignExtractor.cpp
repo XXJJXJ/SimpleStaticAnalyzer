@@ -13,7 +13,6 @@ void DesignExtractor::extractDesign(shared_ptr<Program> program) {
 	for (shared_ptr<Procedure> p : procedures) {
 		p->accept(entity_extractor);
 		p->accept(abstraction_extractor);
-		pkbPopulator->tabulateUses();
-		pkbPopulator->tabulateModifies();
+		pkbPopulator->tabulate();
 	}
 }
