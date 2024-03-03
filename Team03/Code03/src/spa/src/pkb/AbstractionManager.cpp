@@ -40,6 +40,10 @@ bool AbstractionManager::addModifies(shared_ptr<Statement> stmt, shared_ptr<Vari
     return modifyStore.add(stmt, var);
 }
 
+bool AbstractionManager::addCalls(shared_ptr<Procedure> proc1, shared_ptr<Procedure> proc2) {
+    return callStore.add(proc1, proc2);
+}
+
 // Private helper function
 void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
     auto childToParent = parentStore.getChildToParentMap();
@@ -56,12 +60,10 @@ void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
     }
 }
 
-void AbstractionManager::tabulateUses() {
+void AbstractionManager::tabulate() {
     tabulateContainerStmtVarRelation(useStore);
-}
-
-void AbstractionManager::tabulateModifies() {
     tabulateContainerStmtVarRelation(modifyStore);
+    callStore.tabulate();
 }
 
 
