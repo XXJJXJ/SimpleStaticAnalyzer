@@ -48,23 +48,20 @@ vector<vector<shared_ptr<Entity>>> SPVStore::getStmtVarPairs(
     return res;
 }
 
-vector<vector<shared_ptr<Entity>>> SPVStore::getByAssign() {
-    return getStmtVarPairs(assignStmts, EntityType::Assign);
-}
-vector<vector<shared_ptr<Entity>>> SPVStore::getByPrint() {
-    return getStmtVarPairs(printStmts, EntityType::Print);
-}
-vector<vector<shared_ptr<Entity>>> SPVStore::getByRead() {
-    return getStmtVarPairs(readStmts, EntityType::Read);
-}
-vector<vector<shared_ptr<Entity>>> SPVStore::getByIfWhileStmt() {
-    return getStmtVarPairs(ifWhileStmts, EntityType::If);
-}
-vector<vector<shared_ptr<Entity>>> SPVStore::getByCall() {
-    return getStmtVarPairs(callStmts, EntityType::Call);
-}
-vector<vector<shared_ptr<Entity>>> SPVStore::getByAllStmt() {
-    return getStmtVarPairs(allStmts, EntityType::Stmt);
+vector<vector<shared_ptr<Entity>>> SPVStore::getByType(EntityType entType) {
+    switch (entType) 
+    {
+    case EntityType::Assign: return getStmtVarPairs(assignStmts, entType); break;
+    case EntityType::Print: return getStmtVarPairs(printStmts, entType); break;
+    case EntityType::Read: return getStmtVarPairs(readStmts, entType); break;
+    case EntityType::Call: return getStmtVarPairs(callStmts, entType); break;
+    case EntityType::Stmt: return getStmtVarPairs(allStmts, entType); break;
+    case EntityType::While:
+    case EntityType::If: getStmtVarPairs(ifWhileStmts, EntityType::If); break;
+    default:
+        // should throw error
+        return {};
+    }
 }
 
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> SPVStore::getAllMap() {

@@ -56,10 +56,10 @@ public:
     virtual vector<vector<shared_ptr<Entity>>> getParentS();
     virtual vector<vector<shared_ptr<Entity>>> getParentT();
 
-    virtual vector<vector<shared_ptr<Entity>>> getUseAll();
+    virtual vector<vector<shared_ptr<Entity>>> getUseByType(EntityType entType);
     virtual vector<vector<shared_ptr<Entity>>> getUseByProcedure();
 
-    virtual vector<vector<shared_ptr<Entity>>> getModifyAll();
+    virtual vector<vector<shared_ptr<Entity>>> getModifyByType(EntityType entType);
     virtual vector<vector<shared_ptr<Entity>>> getModifyByProcedure();
 
     // Pattern Related

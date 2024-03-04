@@ -96,14 +96,14 @@ public:
     }
 
     vector<vector<shared_ptr<Entity>>> getParentT() override {
-                return fakeParentT;
+        return fakeParentT;
     }
   
-    vector<vector<shared_ptr<Entity>>> getUseAll() override {
+    vector<vector<shared_ptr<Entity>>> getUseByType(EntityType entType) override {
         return fakeUses;
     }
 
-    vector<vector<shared_ptr<Entity>>> getModifyAll() override {
+    vector<vector<shared_ptr<Entity>>> getModifyByType(EntityType entType) override {
         return fakeModifies;
     }
 

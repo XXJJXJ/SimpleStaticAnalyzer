@@ -25,12 +25,7 @@ private:
 public:
     virtual bool add(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
 
-    virtual vector<vector<shared_ptr<Entity>>> getByAssign();
-    virtual vector<vector<shared_ptr<Entity>>> getByPrint();
-    virtual vector<vector<shared_ptr<Entity>>> getByRead();
-    virtual vector<vector<shared_ptr<Entity>>> getByIfWhileStmt();
-    virtual vector<vector<shared_ptr<Entity>>> getByCall();
-    virtual vector<vector<shared_ptr<Entity>>> getByAllStmt();
+    virtual vector<vector<shared_ptr<Entity>>> getByType(EntityType entType);
 
     // For testing
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getAllMap();

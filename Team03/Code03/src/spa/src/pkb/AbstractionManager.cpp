@@ -81,36 +81,13 @@ vector<vector<shared_ptr<Entity>>> AbstractionManager::getParentT() {
     return parentStore.getTransitive();
 }
 
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByAssign() {
-    return useStore.getByAssign();
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByType(EntityType entType) {
+    return useStore.getByType(entType);
 }
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByPrint() {
-    return useStore.getByPrint();
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByType(EntityType entType) {
+    return modifyStore.getByType(entType);
 }
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByCall() {
-    return useStore.getByCall();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByIfWhile() {
-    return useStore.getByIfWhileStmt();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseAll() {
-    return useStore.getByAllStmt();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByAssign() {
-    return modifyStore.getByAssign();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByRead() {
-    return modifyStore.getByRead();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByCall() {
-    return modifyStore.getByCall();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByIfWhile() {
-    return modifyStore.getByIfWhileStmt();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyAll() {
-    return modifyStore.getByAllStmt();
-}
+
 unordered_map<string, unordered_set<shared_ptr<Variable>>> AbstractionManager::getUseByProcedureMap() {
     return useStore.getByProcedureMap();
 }

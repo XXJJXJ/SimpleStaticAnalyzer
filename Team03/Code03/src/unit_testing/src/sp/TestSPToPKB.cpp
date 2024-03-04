@@ -42,8 +42,8 @@ TEST_CASE("2nd SP-PKB integration Test: relation store test") {
     QueryManager qm;
     vector<vector<shared_ptr<Entity>>> followsStore = qm.getFollowS();
     vector<vector<shared_ptr<Entity>>> parentStore = qm.getParentS();
-    vector<vector<shared_ptr<Entity>>> usesStore = qm.getUseAll();
-    vector<vector<shared_ptr<Entity>>> modifiesStore = qm.getModifyAll();
+    vector<vector<shared_ptr<Entity>>> usesStore = qm.getUseByType(EntityType::Stmt);
+    vector<vector<shared_ptr<Entity>>> modifiesStore = qm.getModifyByType(EntityType::Stmt);
 
     REQUIRE(followsStore.size() == 3);
     REQUIRE(parentStore.size() == 5);

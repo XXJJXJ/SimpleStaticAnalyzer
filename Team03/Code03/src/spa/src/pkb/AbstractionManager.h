@@ -40,17 +40,8 @@ public:
     vector<vector<shared_ptr<Entity>>> getParentS();
     vector<vector<shared_ptr<Entity>>> getParentT();
 
-    vector<vector<shared_ptr<Entity>>> getUseByAssign();
-    vector<vector<shared_ptr<Entity>>> getUseByPrint(); 
-    vector<vector<shared_ptr<Entity>>> getUseByCall();
-    vector<vector<shared_ptr<Entity>>> getUseByIfWhile();
-    vector<vector<shared_ptr<Entity>>> getUseAll();
-
-    vector<vector<shared_ptr<Entity>>> getModifyByAssign();
-    vector<vector<shared_ptr<Entity>>> getModifyByRead();
-    vector<vector<shared_ptr<Entity>>> getModifyByCall();
-    vector<vector<shared_ptr<Entity>>> getModifyByIfWhile();
-    vector<vector<shared_ptr<Entity>>> getModifyAll();
+    vector<vector<shared_ptr<Entity>>> getUseByType(EntityType entType);
+    vector<vector<shared_ptr<Entity>>> getModifyByType(EntityType entType);
 
     unordered_map<string, unordered_set<shared_ptr<Variable>>> getUseByProcedureMap();
     unordered_map<string, unordered_set<shared_ptr<Variable>>> getModifyByProcedureMap();

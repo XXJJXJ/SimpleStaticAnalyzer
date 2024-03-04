@@ -71,8 +71,8 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getParentS() {
 vector<vector<shared_ptr<Entity>>> QueryManager::getParentT() {
     return am->getParentT();
 }
-vector<vector<shared_ptr<Entity>>>QueryManager::getUseAll() {
-    return am->getUseAll();
+vector<vector<shared_ptr<Entity>>>QueryManager::getUseByType(EntityType entType) {
+    return am->getUseByType(entType);
 }
 vector<vector<shared_ptr<Entity>>> QueryManager::getUseByProcedure() {
     const string uses = "uses";
@@ -91,8 +91,8 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getUseByProcedure() {
     return res;
 }
 
-vector<vector<shared_ptr<Entity>>> QueryManager::getModifyAll() {
-    return am->getModifyAll();
+vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByType(EntityType entType) {
+    return am->getModifyByType(entType);
 }
 vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByProcedure() {
     const string modifies = "modifies";
