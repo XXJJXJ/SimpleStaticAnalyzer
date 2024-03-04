@@ -34,7 +34,6 @@ void CallStore::tabulate() {
     }
     for (auto & r : roots) {
         // Should be guaranteed to be not within visited (due to above prep chunk)
-        visited.insert(r);
         dfsAdd(r);
     }
     visited.clear();
