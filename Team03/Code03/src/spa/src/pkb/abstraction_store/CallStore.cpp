@@ -4,7 +4,6 @@ bool CallStore::add(shared_ptr<Procedure> caller, shared_ptr<Procedure> callee) 
     // Can't detect cycles here anyways
     directMap[caller].insert(callee);
     // Calculate transitive at the very end
-    // transitiveMap[caller].insert(callee);
     return true;
 }
 
@@ -16,17 +15,15 @@ void CallStore::tabulate() {
     unordered_set<shared_ptr<Procedure>> roots;
     for (auto & _pair : directMap) {
         for (auto & callee : _pair.second) {
-            auto castedCallee = dynamic_pointer_cast<Procedure>(callee);
-            nonRoots.insert(castedCallee);
+            nonRoots.insert(callee);
             // if a root is now called, remove
-            if (roots.find(castedCallee) != roots.end()) {
-                roots.erase(castedCallee);
+            if (roots.find(callee) != roots.end()) {
+                roots.erase(callee);
             }
         }
         // Only insert the node if not inside called
-        auto castedCaller = dynamic_pointer_cast<Procedure>(_pair.first);
-        if (nonRoots.find(castedCaller) == nonRoots.end()) {
-            roots.insert(castedCaller);
+        if (nonRoots.find(_pair.first) == nonRoots.end()) {
+            roots.insert(_pair.first);
         }
     }
     // Start DFS from the roots - returns a vector of shared_ptr<Procedures> to be added to the set
@@ -48,7 +45,6 @@ unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> pro
         return transitiveMap[proc];
     }
     if (visited.find(proc) != visited.end()) {
-        // cycle detected
         throw SemanticErrorException("Procedures have call cycles");
     }
     visited.insert(proc);

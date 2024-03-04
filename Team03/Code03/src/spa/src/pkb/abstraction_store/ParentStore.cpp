@@ -7,9 +7,7 @@ bool ParentStore::add(shared_ptr<Statement> parent, shared_ptr<Statement> child)
         // Cannot be parent of itself
         return false;
     }
-    auto castedParent = dynamic_pointer_cast<Statement>(parent);
-    auto castedChild = dynamic_pointer_cast<Statement>(child);
-    if (childToParentMap.find(castedChild) != childToParentMap.end()) {
+    if (childToParentMap.find(child) != childToParentMap.end()) {
         // should only have 1 direct parent
         return false;
     }
@@ -19,10 +17,10 @@ bool ParentStore::add(shared_ptr<Statement> parent, shared_ptr<Statement> child)
     }
     directMap[parent].insert(child);
     transitiveMap[parent].insert(child);
-    childToParentMap[castedChild] = castedParent;
+    childToParentMap[child] = parent;
     // iterate through all parents to craft the transitive map
     // assumes that whatever traversal of the program follows dfs order / is correct
-    auto ancestor = castedParent;
+    auto ancestor = parent;
     while (childToParentMap.find(ancestor) != childToParentMap.end()) {
         ancestor = childToParentMap[ancestor];
         transitiveMap[ancestor].insert(child);
