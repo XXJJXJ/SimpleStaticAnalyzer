@@ -57,7 +57,7 @@ vector<vector<shared_ptr<Entity>>> SPVStore::getByType(EntityType entType) {
     case EntityType::Call: return getStmtVarPairs(callStmts, entType); break;
     case EntityType::Stmt: return getStmtVarPairs(allStmts, entType); break;
     case EntityType::While:
-    case EntityType::If: getStmtVarPairs(ifWhileStmts, EntityType::If); break;
+    case EntityType::If: return getStmtVarPairs(ifWhileStmts, EntityType::If); break;
     default:
         // should throw error
         return {};
