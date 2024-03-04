@@ -103,16 +103,16 @@ vector<vector<shared_ptr<Entity>>> AbstractionManager::getCallT() {
 }
 
 // For testing
-unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> AbstractionManager::getFollowSMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> AbstractionManager::getFollowSMap() {
     return followStore.getDirectMap();
 }
-unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> AbstractionManager::getFollowTMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> AbstractionManager::getFollowTMap() {
     return followStore.getTransitiveMap();
 }
-unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> AbstractionManager::getParentSMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> AbstractionManager::getParentSMap() {
     return parentStore.getDirectMap();
 }
-unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> AbstractionManager::getParentTMap() {
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> AbstractionManager::getParentTMap() {
     return parentStore.getTransitiveMap();
 }
 

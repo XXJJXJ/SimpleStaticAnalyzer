@@ -2,13 +2,13 @@
 
 #include <unordered_map>
 #include "common/Statement.h"
-#include "DirectTransitiveStore.h"
+#include "StmtStmtStore.h"
 
-class FollowStore : public DirectTransitiveStore {
+class FollowStore : public StmtStmtStore {
 private:
-    unordered_map<shared_ptr<Entity>, shared_ptr<Entity>> followedToFollowerMap;
+    unordered_map<shared_ptr<Statement>, shared_ptr<Statement>> followedToFollowerMap;
 public:
-    bool add(shared_ptr<Entity> follower, shared_ptr<Entity> followed) override;
+    bool add(shared_ptr<Statement> follower, shared_ptr<Statement> followed) override;
     void clear() override;
     ~FollowStore();
 };

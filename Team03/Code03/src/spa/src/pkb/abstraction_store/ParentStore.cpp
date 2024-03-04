@@ -1,7 +1,7 @@
 #include "ParentStore.h"
 
 
-bool ParentStore::add(shared_ptr<Entity> parent, shared_ptr<Entity> child) {
+bool ParentStore::add(shared_ptr<Statement> parent, shared_ptr<Statement> child) {
     // Tree like structure
     if (parent == child) {
         // Cannot be parent of itself

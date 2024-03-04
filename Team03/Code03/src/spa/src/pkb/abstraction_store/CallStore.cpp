@@ -1,6 +1,6 @@
 #include "CallStore.h"
 
-bool CallStore::add(shared_ptr<Entity> caller, shared_ptr<Entity> callee) {
+bool CallStore::add(shared_ptr<Procedure> caller, shared_ptr<Procedure> callee) {
     // Can't detect cycles here anyways
     directMap[caller].insert(callee);
     // Calculate transitive at the very end
@@ -8,28 +8,31 @@ bool CallStore::add(shared_ptr<Entity> caller, shared_ptr<Entity> callee) {
     return true;
 }
 
-unordered_set<shared_ptr<Entity>> visited;
+// Cannot use entity here since comparator for entity not establish
+unordered_set<shared_ptr<Procedure>> visited;
 void CallStore::tabulate() {
     // Prep for DFS
-    unordered_set<shared_ptr<Entity>> called;
-    unordered_set<shared_ptr<Entity>> roots;
+    unordered_set<shared_ptr<Procedure>> nonRoots;
+    unordered_set<shared_ptr<Procedure>> roots;
     for (auto & _pair : directMap) {
-        for (auto & proc : _pair.second) {
-            called.insert(proc);
+        for (auto & callee : _pair.second) {
+            auto castedCallee = dynamic_pointer_cast<Procedure>(callee);
+            nonRoots.insert(castedCallee);
             // if a root is now called, remove
-            if (roots.find(proc) != roots.end()) {
-                roots.erase(proc);
+            if (roots.find(castedCallee) != roots.end()) {
+                roots.erase(castedCallee);
             }
         }
         // Only insert the node if not inside called
-        if (called.find(_pair.first) == called.end()) {
-            roots.insert(_pair.first);
+        auto castedCaller = dynamic_pointer_cast<Procedure>(_pair.first);
+        if (nonRoots.find(castedCaller) == nonRoots.end()) {
+            roots.insert(castedCaller);
         }
     }
     // Start DFS from the roots - returns a vector of shared_ptr<Procedures> to be added to the set
     // And memoize
     // in a post order way
-    if (roots.size() == 0 && called.size() > 0) {
+    if (roots.size() == 0 && nonRoots.size() > 0) {
         throw SemanticErrorException("Call cycles detected: No main procedure");
     }
     for (auto & r : roots) {
@@ -40,7 +43,7 @@ void CallStore::tabulate() {
 }
 
 // Transitive map used as memoized map
-unordered_set<shared_ptr<Entity>> CallStore::dfsAdd(shared_ptr<Entity> proc) {
+unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> proc) {
     if (transitiveMap.find(proc) != transitiveMap.end()) {
         return transitiveMap[proc];
     }
@@ -49,7 +52,7 @@ unordered_set<shared_ptr<Entity>> CallStore::dfsAdd(shared_ptr<Entity> proc) {
         throw SemanticErrorException("Procedures have call cycles");
     }
     visited.insert(proc);
-    unordered_set<shared_ptr<Entity>> res;
+    unordered_set<shared_ptr<Procedure>> res;
     if (directMap.find(proc) != directMap.end()) {
         auto calledByThis = directMap[proc];
         for (auto & c : calledByThis) {
@@ -61,6 +64,25 @@ unordered_set<shared_ptr<Entity>> CallStore::dfsAdd(shared_ptr<Entity> proc) {
     res.insert(proc);
     transitiveMap[proc] = res; // memoize
     return res;
+}
+
+
+vector<vector<shared_ptr<Entity>>> getProcPairs(const unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>>& table) {
+    vector<vector<shared_ptr<Entity>>> res;
+    for (auto &v : table) {
+        auto stmt1 = v.first;
+        for (auto &stmt2 : v.second) {
+            res.push_back({stmt1, stmt2});
+        }
+    }
+    return res;
+}
+
+vector<vector<shared_ptr<Entity>>> CallStore::getDirect() {
+    return getProcPairs(directMap);
+}
+vector<vector<shared_ptr<Entity>>> CallStore::getTransitive() {
+    return getProcPairs(transitiveMap);
 }
 
 void CallStore::clear() {

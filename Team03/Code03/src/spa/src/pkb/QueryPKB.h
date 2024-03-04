@@ -69,10 +69,10 @@ public:
     virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
 
     // For testing purposes
-    virtual unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getFollowSMap();
-    virtual unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getFollowTMap();
-    virtual unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getParentSMap();
-    virtual unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getParentTMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getParentSMap();
+    virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getParentTMap();
     virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getUseAllMap();
     virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getUseByPrintMap();
     virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> getModifyAllMap();
