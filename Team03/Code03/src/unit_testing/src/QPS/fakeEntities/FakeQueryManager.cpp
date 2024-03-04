@@ -23,7 +23,6 @@ private:
     vector<vector<shared_ptr<Entity>>> fakeModifies;
 
     vector<shared_ptr<AssignStatement>> fakeAssignsWithPattern;
-    vector<shared_ptr<Entity>> allFakeVariables;
 
 public:
     FakeQueryManager() = default;
@@ -45,12 +44,8 @@ public:
         return fakeAssignsWithPattern;
     }
 
-    vector<shared_ptr<Entity>> getAllVariables() override {
-        return allFakeVariables;
-    }
-
     void setAllFakeVariable(vector<shared_ptr<Entity>> var) {
-        allFakeVariables = var;
+        fakeResponses[EntityType::Variable] = var;
     }
 
     void addFakeFollows(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {

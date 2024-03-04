@@ -14,12 +14,12 @@ TEST_CASE("1st SP-PKB integration Test: entity store test") {
     design_extractor->extractDesign(program);
 
     QueryManager qm;
-    vector<shared_ptr<Entity>> varStore = qm.getAllVariables();
-    vector<shared_ptr<Procedure>> procStore = qm.getAllProcedures();
-    vector<shared_ptr<ReadStatement>> readStore = qm.getAllReadStatements();
-    vector<shared_ptr<PrintStatement>> printStore = qm.getAllPrintStatements();
-    vector<shared_ptr<IfStatement>> ifStore = qm.getAllIfStatements();
-    vector<shared_ptr<WhileStatement>> whileStore = qm.getAllWhileStatements();
+    vector<shared_ptr<Entity>> varStore = qm.getAllEntitiesByType(EntityType::Variable);
+    vector<shared_ptr<Entity>> procStore = qm.getAllEntitiesByType(EntityType::Procedure);
+    vector<shared_ptr<Entity>> readStore = qm.getAllEntitiesByType(EntityType::Read);
+    vector<shared_ptr<Entity>> printStore = qm.getAllEntitiesByType(EntityType::Print);
+    vector<shared_ptr<Entity>> ifStore = qm.getAllEntitiesByType(EntityType::If);
+    vector<shared_ptr<Entity>> whileStore = qm.getAllEntitiesByType(EntityType::While);
 
     REQUIRE(varStore.size() == 3);
     REQUIRE(procStore.size() == 1);
@@ -203,7 +203,7 @@ TEST_CASE("9th SP-PKB integration Test: entity store test") {
     design_extractor->extractDesign(program);
 
     QueryManager qm;
-    vector<shared_ptr<Entity>> varStore = qm.getAllVariables();
+    vector<shared_ptr<Entity>> varStore = qm.getAllEntitiesByType(EntityType::Variable);
     REQUIRE(varStore.size() == 3);
     pkbPopulator->clear();
 }
