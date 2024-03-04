@@ -46,6 +46,9 @@ public:
     unordered_map<string, unordered_set<shared_ptr<Variable>>> getUseByProcedureMap();
     unordered_map<string, unordered_set<shared_ptr<Variable>>> getModifyByProcedureMap();
 
+    vector<vector<shared_ptr<Entity>>> getCallS();
+    vector<vector<shared_ptr<Entity>>> getCallT();
+
     unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getFollowSMap();
     unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getFollowTMap();
     unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> getParentSMap();

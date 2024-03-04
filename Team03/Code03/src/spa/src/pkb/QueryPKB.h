@@ -62,6 +62,9 @@ public:
     virtual vector<vector<shared_ptr<Entity>>> getModifyByType(EntityType entType);
     virtual vector<vector<shared_ptr<Entity>>> getModifyByProcedure();
 
+    virtual vector<vector<shared_ptr<Entity>>> getCallS();
+    virtual vector<vector<shared_ptr<Entity>>> getCallT();
+
     // Pattern Related
     virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
 

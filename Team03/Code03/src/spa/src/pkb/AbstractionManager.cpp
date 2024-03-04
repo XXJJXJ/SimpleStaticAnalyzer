@@ -95,6 +95,12 @@ unordered_map<string, unordered_set<shared_ptr<Variable>>> AbstractionManager::g
     return modifyStore.getByProcedureMap();
 }
 
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getCallS() {
+    return callStore.getDirect();
+}
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getCallT() {
+    return callStore.getTransitive();
+}
 
 // For testing
 unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> AbstractionManager::getFollowSMap() {

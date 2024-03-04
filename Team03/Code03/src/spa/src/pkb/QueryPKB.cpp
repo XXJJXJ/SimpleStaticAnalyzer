@@ -111,6 +111,14 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByProcedure() {
     return res;
 }
 
+vector<vector<shared_ptr<Entity>>> QueryManager::getCallS() {
+    return am->getCallS();
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getCallT() {
+    return am->getCallT();
+}
+
+
 unordered_map<shared_ptr<Entity>, unordered_set<shared_ptr<Entity>>> QueryManager::getFollowSMap() {
     return am->getFollowSMap();
 }
