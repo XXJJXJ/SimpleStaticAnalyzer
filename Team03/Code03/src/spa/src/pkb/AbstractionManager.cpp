@@ -60,10 +60,44 @@ void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
     }
 }
 
-void AbstractionManager::tabulate() {
+void AbstractionManager::tabulateByCalls(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts) {
+    auto procVarMap = store.getByProcedureMap();
+    auto callMap = callStore.getTransitiveMap();
+    unordered_map<string, unordered_set<string>> callMapString;
+    for (auto & _pair : callMap) {
+        for (auto & callee : _pair.second) {
+            callMapString[_pair.first->getName()].insert(callee->getName());
+        }
+    }
+    // get each callStmt - find out the chain/all procedures invoked by the target procedure
+    for (auto & stmt : callStmts) {
+        // Potential to bugs / slowness
+        // **** Order of adding very important ****
+        // This gets all the transitive procedures under the called procedures and adds all possible
+        // modifies / uses variables to this statement
+        // This way the order of adding shouldn't matter anymore
+        auto allProcsCalled = callMapString[stmt->getTargetProcedureName()];
+        for (auto & proc : allProcsCalled) {
+            auto setOfVar = procVarMap[proc];
+            for (auto & var : setOfVar) {
+                store.add(stmt, var);
+            }
+        }
+        // dont forget the targetProcedure itself might have uses / modifies
+        auto setOfVar = procVarMap[stmt->getTargetProcedureName()];
+        for (auto & var : setOfVar) {
+            store.add(stmt, var);
+        }
+    }
+}
+
+void AbstractionManager::tabulate(vector<shared_ptr<CallStatement>>& callStmts) {
+    // tabulate call store first
+    callStore.tabulate();
     tabulateContainerStmtVarRelation(useStore);
     tabulateContainerStmtVarRelation(modifyStore);
-    callStore.tabulate();
+    tabulateByCalls(useStore, callStmts);
+    tabulateByCalls(modifyStore, callStmts);
 }
 
 

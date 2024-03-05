@@ -6,6 +6,7 @@
 #include "abstraction_store/FollowStore.h"
 #include "abstraction_store/ParentStore.h"
 #include "abstraction_store/CallStore.h"
+#include "common/CallStatement.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ private:
 
     // Helper
     void tabulateContainerStmtVarRelation(SPVStore& store);
+    void tabulateByCalls(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts);
 public:
     static shared_ptr<AbstractionManager> getInstance();
 
@@ -32,7 +34,7 @@ public:
     bool addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     bool addCalls(shared_ptr<Procedure> proc1, shared_ptr<Procedure> proc2);
 
-    void tabulate();
+    void tabulate(vector<shared_ptr<CallStatement>>& callStmts);
 
     vector<vector<shared_ptr<Entity>>> getFollowS();
     vector<vector<shared_ptr<Entity>>> getFollowT();
