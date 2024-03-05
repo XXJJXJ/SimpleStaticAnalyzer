@@ -22,4 +22,6 @@ public:
     void clear();
     void tabulate();
     ~CallStore();
+    // Used internall
+    unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>> getTransitiveMap();
 };

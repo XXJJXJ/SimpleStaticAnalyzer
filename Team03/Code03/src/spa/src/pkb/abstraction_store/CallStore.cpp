@@ -81,6 +81,10 @@ vector<vector<shared_ptr<Entity>>> CallStore::getTransitive() {
     return getProcPairs(transitiveMap);
 }
 
+unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>> CallStore::getTransitiveMap() {
+    return transitiveMap;
+}
+
 void CallStore::clear() {
     directMap.clear();
     transitiveMap.clear();
