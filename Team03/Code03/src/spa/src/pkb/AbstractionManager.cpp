@@ -60,7 +60,7 @@ void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
     }
 }
 
-void AbstractionManager::tabulateByCalls(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts) {
+void AbstractionManager::tabulateByCallStatements(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts) {
     auto procVarMap = store.getByProcedureMap();
     auto callMap = callStore.getTransitiveMap();
     unordered_map<string, unordered_set<string>> callMapString;
@@ -96,8 +96,8 @@ void AbstractionManager::tabulate(vector<shared_ptr<CallStatement>>& callStmts) 
     callStore.tabulate();
     tabulateContainerStmtVarRelation(useStore);
     tabulateContainerStmtVarRelation(modifyStore);
-    tabulateByCalls(useStore, callStmts);
-    tabulateByCalls(modifyStore, callStmts);
+    tabulateByCallStatements(useStore, callStmts);
+    tabulateByCallStatements(modifyStore, callStmts);
 }
 
 

@@ -24,7 +24,7 @@ private:
 
     // Helper
     void tabulateContainerStmtVarRelation(SPVStore& store);
-    void tabulateByCalls(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts);
+    void tabulateByCallStatements(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts);
 public:
     static shared_ptr<AbstractionManager> getInstance();
 

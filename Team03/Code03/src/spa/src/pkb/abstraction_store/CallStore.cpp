@@ -7,8 +7,7 @@ bool CallStore::add(shared_ptr<Procedure> caller, shared_ptr<Procedure> callee) 
     return true;
 }
 
-// Cannot use entity here since comparator for entity not establish
-unordered_set<shared_ptr<Procedure>> visited;
+
 void CallStore::tabulate() {
     // Prep for DFS
     unordered_set<shared_ptr<Procedure>> nonRoots;
@@ -32,15 +31,17 @@ void CallStore::tabulate() {
     if (roots.size() == 0 && nonRoots.size() > 0) {
         throw SemanticErrorException("Call cycles detected: No main procedure");
     }
+    // Cannot use entity here since comparator for entity not establish
+    unordered_set<shared_ptr<Procedure>> visited;
     for (auto & r : roots) {
         // Should be guaranteed to be not within visited (due to above prep chunk)
-        dfsAdd(r);
+        dfsAdd(r, visited);
     }
     visited.clear();
 }
 
 // Transitive map used as memoized map
-unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> proc) {
+unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> proc, unordered_set<shared_ptr<Procedure>>& visited) {
     if (transitiveMap.find(proc) != transitiveMap.end()) {
         return transitiveMap[proc];
     }
@@ -52,7 +53,7 @@ unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> pro
     if (directMap.find(proc) != directMap.end()) {
         auto calledByThis = directMap[proc];
         for (auto & c : calledByThis) {
-            auto cRes = dfsAdd(c);
+            auto cRes = dfsAdd(c, visited);
             res.insert(cRes.begin(), cRes.end());
         }
     }
