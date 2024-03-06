@@ -68,8 +68,8 @@ public:
 
     // Pattern Related
     virtual vector<shared_ptr<Entity>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
-    virtual vector<shared_ptr<Entity>> getIfPattern(string targetVariable, bool hasWildcard);
-    virtual vector<shared_ptr<Entity>> getWhilePattern(string targetVariable, bool hasWildcard);
+    virtual vector<shared_ptr<Entity>> getIfPattern(string targetVariable);
+    virtual vector<shared_ptr<Entity>> getWhilePattern(string targetVariable);
 
 
     // For testing purposes

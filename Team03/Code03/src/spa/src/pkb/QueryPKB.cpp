@@ -173,12 +173,12 @@ vector<shared_ptr<Entity>> QueryManager::getAssignPattern(string targetVariable,
     }
 }
 
-vector<shared_ptr<Entity>> QueryManager::getIfPattern(string targetVariable, bool hasWildcard) {
-    return {};
+vector<shared_ptr<Entity>> QueryManager::getIfPattern(string targetVariable) {
+    return pm->getIfPattern(targetVariable);
 }
 
-vector<shared_ptr<Entity>> QueryManager::getWhilePattern(string targetVariable, bool hasWildcard) {
-    return {};
+vector<shared_ptr<Entity>> QueryManager::getWhilePattern(string targetVariable) {
+    return pm->getWhilePattern(targetVariable);
 }
 
 vector<shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityType) {
