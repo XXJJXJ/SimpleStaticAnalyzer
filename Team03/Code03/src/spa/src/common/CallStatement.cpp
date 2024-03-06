@@ -13,7 +13,7 @@ void CallStatement::accept(shared_ptr<Visitor> visitor) {
     visitor->visitCallStatement(make_shared<CallStatement>(*this));
 }
 
-string CallStatement::getProcedureName() {
+string CallStatement::getTargetProcedureName() {
     return procedure.getName();
 }
 
