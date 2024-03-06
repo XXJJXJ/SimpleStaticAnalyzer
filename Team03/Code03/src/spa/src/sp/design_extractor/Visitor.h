@@ -33,4 +33,5 @@ public:
 	virtual void visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) = 0;
 	virtual void visitIfStatement(shared_ptr<IfStatement> ifStatement) = 0;
 	virtual void visitWhileStatement(shared_ptr<WhileStatement> whileStatement) = 0;
+	virtual void visitCallStatement(shared_ptr<CallStatement> callStatement) = 0;
 };
