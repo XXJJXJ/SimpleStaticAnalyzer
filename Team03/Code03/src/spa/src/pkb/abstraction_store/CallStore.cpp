@@ -9,7 +9,7 @@ bool CallStore::add(shared_ptr<Procedure> caller, shared_ptr<Procedure> callee) 
 
 
 void CallStore::tabulate() {
-    // Prep for DFS
+    // Prep: Toposort the procedures
     unordered_set<shared_ptr<Procedure>> nonRoots;
     unordered_set<shared_ptr<Procedure>> roots;
     for (auto & _pair : directMap) {
@@ -31,10 +31,9 @@ void CallStore::tabulate() {
     if (roots.size() == 0 && nonRoots.size() > 0) {
         throw SemanticErrorException("Call cycles detected: No main procedure");
     }
-    // Cannot use entity here since comparator for entity not establish
+    // Cannot use entity here since comparator for entity not established
     unordered_set<shared_ptr<Procedure>> visited;
     for (auto & r : roots) {
-        // Should be guaranteed to be not within visited (due to above prep chunk)
         dfsAdd(r, visited);
     }
     visited.clear();
