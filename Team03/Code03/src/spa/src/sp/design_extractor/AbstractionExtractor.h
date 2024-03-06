@@ -32,6 +32,6 @@ private:
 	void processStatements(StatementListContainer statementList);
 	void extractFollows(StatementListContainer statementList);
 	void extractParent(StatementListContainer statementList, shared_ptr<Statement> statement);
-	void extractArgumentsForUses(shared_ptr<Expression> expression, shared_ptr<AssignStatement> assignStatement);
+	void extractArgumentsForUses(shared_ptr<Expression> expression, shared_ptr<Statement> statement);
 	shared_ptr<Populator> pkbPopulator;
 };

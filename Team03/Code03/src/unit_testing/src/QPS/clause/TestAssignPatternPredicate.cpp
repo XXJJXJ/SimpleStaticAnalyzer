@@ -113,7 +113,7 @@ TEST_CASE("AssignPatternPredicate Constructor - Invalid Inputs") {
         Synonym lhsSyn(EntityType::Variable, "v");
         std::string rhs = "x+1";
 
-        REQUIRE_THROWS_AS(AssignPatternPredicate(assignSyn, lhsSyn, rhs), SyntaxErrorException);
+        REQUIRE_THROWS_AS(AssignPatternPredicate(assignSyn, lhsSyn, rhs), SemanticErrorException);
     }
 
     SECTION("Invalid lhs as non-variable synonym") {
@@ -121,7 +121,7 @@ TEST_CASE("AssignPatternPredicate Constructor - Invalid Inputs") {
         Synonym lhsSyn(EntityType::Procedure, "p"); // Incorrect type for lhs
         std::string rhs = "x+1";
 
-        REQUIRE_THROWS_AS(AssignPatternPredicate(assignSyn, lhsSyn, rhs), SyntaxErrorException);
+        REQUIRE_THROWS_AS(AssignPatternPredicate(assignSyn, lhsSyn, rhs), SemanticErrorException);
     }
 
 
