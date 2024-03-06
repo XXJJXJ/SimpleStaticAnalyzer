@@ -22,7 +22,7 @@ private:
 
     vector<vector<shared_ptr<Entity>>> fakeModifies;
 
-    vector<shared_ptr<AssignStatement>> fakeAssignsWithPattern;
+    vector<shared_ptr<Entity>> fakeAssignsWithPattern;
     vector<shared_ptr<Variable>> allFakeVariables;  // Special case, since PKB doesn't return entity, TODO: fix
 
 public:
@@ -37,11 +37,11 @@ public:
     }
 
     // Specifies the return value of getAssignPattern()
-    void setFakeAssignsWithPattern(vector<shared_ptr<AssignStatement>> stmt) {
+    void setFakeAssignsWithPattern(vector<shared_ptr<Entity>> stmt) {
         fakeAssignsWithPattern = stmt;
     }
 
-    vector<shared_ptr<AssignStatement>> getAssignPattern(string useless1, string useless2, bool useless3) override {
+    vector<shared_ptr<Entity>> getAssignPattern(string useless1, string useless2, bool useless3) override {
         return fakeAssignsWithPattern;
     }
 

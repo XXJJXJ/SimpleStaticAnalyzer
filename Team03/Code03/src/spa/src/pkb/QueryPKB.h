@@ -67,7 +67,10 @@ public:
     virtual vector<vector<shared_ptr<Entity>>> getModifyByProcedure();
 
     // Pattern Related
-    virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
+    virtual vector<shared_ptr<Entity>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
+    virtual vector<shared_ptr<Entity>> getIfPattern(string targetVariable, bool hasWildcard);
+    virtual vector<shared_ptr<Entity>> getWhilePattern(string targetVariable, bool hasWildcard);
+
 
     // For testing purposes
     virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
