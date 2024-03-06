@@ -18,11 +18,12 @@ void Sp::ProcessSIMPLE(string fileName) {
         else {
             shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
             shared_ptr<Tokenizer> tokenizer = make_shared<Tokenizer>();
+            shared_ptr<Cfg> cfg = make_shared<Cfg>();
             Tokens tokens = tokenizer->tokenize(inputfile);
             shared_ptr<Parser> parser = make_shared<Parser>();
             shared_ptr<Program> program = parser->parseSource(tokens);
-            shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
-            design_extractor->extractDesign(program);
+            shared_ptr<DesignExtractor> designExtractor = make_shared<DesignExtractor>(pkbPopulator, cfg);
+            designExtractor->extractDesign(program);
         }
     }
     catch (SpaException& e) {

@@ -15,6 +15,7 @@ class RelationalOperation;
 class AssignStatement;
 class IfStatement;
 class WhileStatement;
+class CallStatement;
 
 using namespace std;
 
