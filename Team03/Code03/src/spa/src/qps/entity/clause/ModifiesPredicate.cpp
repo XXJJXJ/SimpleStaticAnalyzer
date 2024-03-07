@@ -10,7 +10,7 @@
 ModifiesPredicate::ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidModifiesLhsRef(this->lhs) || !isValidVariable(this->rhs)) {
-        throw SemanticErrorException("Invalid arguments for ModifiesPredicate constructor");
+        throw SyntaxErrorException("Invalid arguments for ModifiesPredicate constructor");
     }
 
     if (std::holds_alternative<Synonym>(this->lhs)) {

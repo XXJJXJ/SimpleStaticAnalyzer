@@ -7,7 +7,7 @@
 
 FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs)) {
-        throw SemanticErrorException("Invalid argument for FollowsPredicate constructor");
+        throw SyntaxErrorException("Invalid argument for FollowsPredicate constructor");
     }
 
     this->lhs = std::move(lhs);

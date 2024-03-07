@@ -8,7 +8,7 @@
 UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidUsesLhsRef(this->lhs) || !isValidVariable(this->rhs)) {
-        throw SemanticErrorException("Invalid arguments for UsesPredicate constructor");
+        throw SyntaxErrorException("Invalid arguments for UsesPredicate constructor");
     }
 
     if (std::holds_alternative<Synonym>(this->lhs)) {

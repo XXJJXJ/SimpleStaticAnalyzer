@@ -7,7 +7,7 @@
 
 FollowsTPredicate::FollowsTPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs)) {
-        throw SemanticErrorException("Invalid arguments for FollowsTPredicate constructor");
+        throw SyntaxErrorException("Invalid arguments for FollowsTPredicate constructor");
     }
 
     this->lhs = std::move(lhs);
