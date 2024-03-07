@@ -13,6 +13,6 @@ public:
     StatementNumberToNodeMap getStatementToCfg();
 
 private:
-    ProcedureToCfgNodeMap cfgRootNodes;
-    StatementNumberToNodeMap statementToCfg;
+    ProcedureToCfgNodeMap procedureCfgToCfgRootNodes;
+    StatementNumberToNodeMap statementNumberToCfgNode;
 };
