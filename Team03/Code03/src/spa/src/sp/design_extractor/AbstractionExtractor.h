@@ -11,6 +11,7 @@
 #include "common/ArithmeticOperation.h"
 #include "common/ConditionalOperation.h"
 #include "common/RelationalOperation.h"
+#include "common/CallStatement.h"
 #include "pkb/PopulatePKB.h"
 
 class AbstractionExtractor : public Visitor {
@@ -27,6 +28,7 @@ public:
 	void visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) override {};
 	void visitIfStatement(shared_ptr<IfStatement> ifStatement) override;
 	void visitWhileStatement(shared_ptr<WhileStatement> whileStatement) override;
+	void visitCallStatement(shared_ptr<CallStatement> callStatement) override;
 
 private:
 	void processStatements(StatementListContainer statementList);
