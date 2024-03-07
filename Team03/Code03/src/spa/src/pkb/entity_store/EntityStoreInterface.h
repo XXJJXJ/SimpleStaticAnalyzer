@@ -7,6 +7,7 @@ class EntityStoreInterface {
 public:
     virtual bool add(shared_ptr<T> item) = 0;
     virtual vector<shared_ptr<T>> getAll() const = 0;
+    virtual shared_ptr<T> get(const string& name) = 0;
     virtual void clear() = 0;
     virtual ~EntityStoreInterface() {};
 };

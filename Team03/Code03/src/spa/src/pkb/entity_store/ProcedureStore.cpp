@@ -17,8 +17,11 @@ vector<shared_ptr<Procedure>> ProcedureStore::getAll() const {
     return allProcedures;
 }
 
-shared_ptr<Procedure> ProcedureStore::getProcByName(const string& name) {
-    return nameToProcMap[name];
+shared_ptr<Procedure> ProcedureStore::get(const string& name) {
+    if (nameToProcMap.find(name) != nameToProcMap.end()) {
+        return nameToProcMap[name];
+    }
+    return nullptr;
 }
 
 void ProcedureStore::clear() {

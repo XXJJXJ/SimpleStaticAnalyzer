@@ -13,9 +13,7 @@ private:
 public:
     bool add(shared_ptr<Procedure> procedure) override;
     vector<shared_ptr<Procedure>> getAll() const override;
-
-    // Internal API not exposed to SP or QPS
-    shared_ptr<Procedure> getProcByName(const string& name);
+    shared_ptr<Procedure> get(const string& name) override;
     void clear() override;
     ~ProcedureStore();
 };
