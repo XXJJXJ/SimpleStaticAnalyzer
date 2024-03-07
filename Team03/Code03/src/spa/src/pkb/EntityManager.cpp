@@ -22,8 +22,12 @@ bool EntityManager::addVariable(shared_ptr<Variable> var) {
     return variableStore.add(var);
 }
 
-vector<shared_ptr<Variable>> EntityManager::getAllVariables() {
+vector<shared_ptr<Entity>> EntityManager::getAllVariables() {
     return variableStore.getAll();
+}
+
+shared_ptr<Entity> EntityManager::getVariableByName(string var) {
+    return variableStore.get(var);
 }
 
 // Procedures
@@ -37,30 +41,24 @@ vector<shared_ptr<Procedure>> EntityManager::getAllProcedures() {
 
 // Print Statements
 bool EntityManager::addPrintStatement(shared_ptr<PrintStatement> printStmt) {
-    if (allStmtStore.add(printStmt)) {
-        return printStore.add(printStmt);
-    }
-    return false;
+    return stmtStore.addPrint(printStmt);
 }
 
 vector<shared_ptr<PrintStatement>> EntityManager::getAllPrintStatements() {
-    return printStore.getAll();
+    return stmtStore.getAllPrint();
 }
 
 // Read Statements
 bool EntityManager::addReadStatement(shared_ptr<ReadStatement> readStmt) {
-    if (allStmtStore.add(readStmt)) {
-        return readStore.add(readStmt);
-    }
-    return false;
+    return stmtStore.addRead(readStmt);
 }
 
 vector<shared_ptr<ReadStatement>> EntityManager::getAllReadStatements() {
-    return readStore.getAll();
+    return stmtStore.getAllRead();
 }
 
 vector<shared_ptr<Statement>> EntityManager::getAllStatements() {
-    return allStmtStore.getAll();
+    return stmtStore.getAll();
 }
 
 // Constants
@@ -68,58 +66,46 @@ bool EntityManager::addConstant(shared_ptr<Constant> c) {
     return constantStore.add(c);
 }
 
-vector<shared_ptr<Constant>> EntityManager::getAllConstants() {
+vector<shared_ptr<Entity>> EntityManager::getAllConstants() {
     return constantStore.getAll();
 }
 
 // Assign statements
 bool EntityManager::addAssignStatement(shared_ptr<AssignStatement> assignStmt) {
-    if (allStmtStore.add(assignStmt)) {
-        return assignStore.add(assignStmt);
-    }
-    return false;
+    return stmtStore.addAssign(assignStmt);
 }
 
 vector<shared_ptr<AssignStatement>> EntityManager::getAllAssignStatements() {
-    return assignStore.getAll();
+    return stmtStore.getAllAssign();
 }
 
 // If
 bool EntityManager::addIfStatement(shared_ptr<IfStatement> ifStmt) {
-    if (allStmtStore.add(ifStmt)) {
-        return ifStore.add(ifStmt);
-    }
-    return false;
+    return stmtStore.addIf(ifStmt);
 }
 vector<shared_ptr<IfStatement>> EntityManager::getAllIfStatements() {
-    return ifStore.getAll();
+    return stmtStore.getAllIf();
 }
 
 // While 
 bool EntityManager::addWhileStatement(shared_ptr<WhileStatement> whileStmt) {
-    if (allStmtStore.add(whileStmt)) {
-        return whileStore.add(whileStmt);
-    }
-    return false;
+    return stmtStore.addWhile(whileStmt);
 }
 vector<shared_ptr<WhileStatement>> EntityManager::getAllWhileStatements() {
-    return whileStore.getAll();
+    return stmtStore.getAllWhile();
 }
 
 
 // Call
 bool EntityManager::addCallStatement(shared_ptr<CallStatement> callStmt) {
-    if (allStmtStore.add(callStmt)) {
-        return true;
-    }
-    return false;
+    return stmtStore.addCall(callStmt);
 }
 vector<shared_ptr<CallStatement>> EntityManager::getAllCallStatements() {
-    return {};
+    return stmtStore.getAllCall();
 }
 
 shared_ptr<Procedure> EntityManager::getProcByName(const string& procName) {
-    return procStore.getProcByName(procName);
+    return procStore.get(procName);
 }
 
 
@@ -134,11 +120,5 @@ void EntityManager::clearStore() {
     constantStore.clear();
     variableStore.clear();
     procStore.clear();
-
-    allStmtStore.clear();
-    readStore.clear();
-    printStore.clear();
-    assignStore.clear();
-    ifStore.clear();
-    whileStore.clear();
+    stmtStore.clear();
 }

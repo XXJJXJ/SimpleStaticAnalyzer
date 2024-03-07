@@ -31,7 +31,8 @@ bool Populator::addAssignStatement(shared_ptr<AssignStatement> stmt) {
     return em->addAssignStatement(stmt);
 }
 bool Populator::addCallStatement(shared_ptr<CallStatement> stmt) {
-    return true;
+    callTempStore.push_back({stmt->getProcedureName(), stmt->getTargetProcedureName()});
+    return em->addCallStatement(stmt);
 }
 bool Populator::addIfStatement(shared_ptr<IfStatement> stmt) {
     return em->addIfStatement(stmt);
@@ -56,9 +57,15 @@ bool Populator::addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var
     return am->addModifies(stmt, var);
 }
 
-void Populator::tabulateUses() {
-    am->tabulateUses();
-}
-void Populator::tabulateModifies() {
-    am->tabulateModifies();
+void Populator::tabulate() {
+    for (auto & _pair : callTempStore) {
+        auto calledProcedure = em->getProcByName(_pair.second);
+        if (calledProcedure == nullptr) {
+            throw SemanticErrorException("Called procedure not found: " + _pair.second);
+        }
+        am->addCalls(em->getProcByName(_pair.first), calledProcedure);
+    }
+    auto callStmts = em->getAllCallStatements();
+    am->tabulate(callStmts);
+    callTempStore.clear();
 }

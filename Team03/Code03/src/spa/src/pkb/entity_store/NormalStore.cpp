@@ -2,34 +2,33 @@
 #include "common/Variable.h"
 #include "NormalStore.h"
 
-template <typename T>
-NormalStore<T>::NormalStore() : items() {};
+NormalStore::NormalStore() : items() {};
 
-template <typename T>
-bool NormalStore<T>::add(shared_ptr<T> item) {
-    items.insert(item);
+bool NormalStore::add(shared_ptr<Entity> item) {
+    items[item->getName()] = item;
     return true;
 }
 
-template <typename T>
-vector<shared_ptr<T>> NormalStore<T>::getAll() const {
-    vector<shared_ptr<T>> allItems;
+vector<shared_ptr<Entity>> NormalStore::getAll() const {
+    vector<shared_ptr<Entity>> allItems;
     for (const auto& item : items) {
-        allItems.push_back(item);
+        allItems.push_back(item.second);
     }
     return allItems;
 }
 
-template <typename T>
-void NormalStore<T>::clear() {
+shared_ptr<Entity> NormalStore::get(const string& name) {
+    if (items.find(name) != items.end()) {
+        return items[name];
+    }
+    return nullptr;
+}
+
+void NormalStore::clear() {
     items.clear();
 }
 
-template <typename T>
-NormalStore<T>::~NormalStore() {
+
+NormalStore::~NormalStore() {
     clear();
 }
-
-template class NormalStore<Variable>;
-template class NormalStore<Constant>;
-// template class NormalStore<float>;
