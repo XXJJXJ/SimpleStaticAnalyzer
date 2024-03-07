@@ -30,7 +30,7 @@ vector<shared_ptr<Entity>> PatternManager::findAssignPattern(vector<shared_ptr<A
     return res;
 }
 
-void PatternManager::addIfWhileUses(shared_ptr<Statement> stmt, const string& var) {
+void PatternManager::addIfWhileUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
     switch (stmt->getType())
     {
     case EntityType::While: whilePatternStore.add(stmt, var); return;
@@ -41,11 +41,11 @@ void PatternManager::addIfWhileUses(shared_ptr<Statement> stmt, const string& va
     }
 }
 // If related
-vector<shared_ptr<Entity>> PatternManager::getIfPattern(string& targetVar) {
+vector<vector<shared_ptr<Entity>>> PatternManager::getIfPattern(string& targetVar) {
     return ifPatternStore.getPattern(targetVar);
 }
 // While related
-vector<shared_ptr<Entity>> PatternManager::getWhilePattern(string& targetVar) {
+vector<vector<shared_ptr<Entity>>> PatternManager::getWhilePattern(string& targetVar) {
     return whilePatternStore.getPattern(targetVar);
 }
 

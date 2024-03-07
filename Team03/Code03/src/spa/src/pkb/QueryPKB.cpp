@@ -173,11 +173,11 @@ vector<shared_ptr<Entity>> QueryManager::getAssignPattern(string targetVariable,
     }
 }
 
-vector<shared_ptr<Entity>> QueryManager::getIfPattern(string targetVariable) {
+vector<vector<shared_ptr<Entity>>> QueryManager::getIfPattern(string targetVariable) {
     return pm->getIfPattern(targetVariable);
 }
 
-vector<shared_ptr<Entity>> QueryManager::getWhilePattern(string targetVariable) {
+vector<vector<shared_ptr<Entity>>> QueryManager::getWhilePattern(string targetVariable) {
     return pm->getWhilePattern(targetVariable);
 }
 

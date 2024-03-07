@@ -24,9 +24,9 @@ public:
     vector<shared_ptr<Entity>> getAssignPattern(string& targetVar, string& expr, bool hasWildcard);
     vector<shared_ptr<Entity>> findAssignPattern(vector<shared_ptr<AssignStatement>>& allAssign, string& targetVar, string& expr, bool hasWildcard);
     
-    void addIfWhileUses(shared_ptr<Statement> stmt, const string& var);
+    void addIfWhileUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     // If related
-    vector<shared_ptr<Entity>> getIfPattern(string& targetVar);
+    vector<vector<shared_ptr<Entity>>> getIfPattern(string& targetVar);
     // While related
-    vector<shared_ptr<Entity>> getWhilePattern(string& targetVar);
+    vector<vector<shared_ptr<Entity>>> getWhilePattern(string& targetVar);
 };
