@@ -52,7 +52,7 @@ vector<shared_ptr<Entity>> PatternManager::getWhilePattern(string& targetVar) {
 void PatternManager::clearStore() {
     assignPatternStore.clear();
     ifPatternStore.clear();
-    whilePatternStore.clear();
+    // whilePatternStore.clear();
 }
 
 void PatternManager::clear() {
