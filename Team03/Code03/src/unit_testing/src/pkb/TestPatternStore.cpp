@@ -194,20 +194,15 @@ TEST_CASE("Store detect pattern in if statement") {
     shared_ptr<Variable> x = make_shared<Variable>("x");
     shared_ptr<Variable> y = make_shared<Variable>("y");
     shared_ptr<Variable> z = make_shared<Variable>("z");
+    // bare minimal for test
     shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
     shared_ptr<IfStatement> stmt1 = make_shared<IfStatement>(1, cond, "main");
-    // cond2 not needed actually?
-    shared_ptr<ConditionalOperation> cond2 = make_shared<ConditionalOperation>("test_expression2", make_pair<>(x, z));
-    shared_ptr<IfStatement> stmt6 = make_shared<IfStatement>(6, cond2, "main");
-    // shared_ptr<PrintStatement> stmt7 = make_shared<PrintStatement>(7, y, "main");
-    // shared_ptr<ReadStatement> stmt8 = make_shared<ReadStatement>(8, x, "main");
-    // shared_ptr<PrintStatement> stmt9 = make_shared<PrintStatement>(9, y, "main");
-    // shared_ptr<ReadStatement> stmt10 = make_shared<ReadStatement>(10, x, "main");
-    // pop.addIfStatement(stmt1);
-    // pop.addIfStatement(stmt6);
-    // pop.addUses(stmt1, x);
-    // pop.addUses(stmt1, y);
-    // pop.addUses(stmt6, x);
+    shared_ptr<IfStatement> stmt6 = make_shared<IfStatement>(6, cond, "main");
+    pop.addIfStatement(stmt1);
+    pop.addIfStatement(stmt6);
+    pop.addUses(stmt1, x);
+    pop.addUses(stmt1, y);
+    pop.addUses(stmt6, x);
     pop.addUses(stmt6, z);
 
     QueryManager qm;
@@ -225,7 +220,33 @@ TEST_CASE("Store detect pattern in if statement") {
 }
 
 TEST_CASE("Store detect pattern in while statement") {
-    
+    Populator pop;
+    pop.clear();
+
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<Variable> z = make_shared<Variable>("z");
+    // bare minimal for test
+    shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
+    shared_ptr<WhileStatement> stmt1 = make_shared<WhileStatement>(1, cond, "main");
+    shared_ptr<WhileStatement> stmt6 = make_shared<WhileStatement>(6, cond, "main");
+    pop.addUses(stmt1, x);
+    pop.addUses(stmt1, y);
+    pop.addUses(stmt6, x);
+    pop.addUses(stmt6, z);
+
+    QueryManager qm;
+    SECTION("Wildcard or synonym pattern - while(_,_) or while(v, _)") {
+        REQUIRE(qm.getWhilePattern("").size() == 4);
+    }
+
+    SECTION("Variable value - while(\"var\",_,_)") {
+        REQUIRE(qm.getWhilePattern("x").size() == 2);
+        REQUIRE(qm.getWhilePattern("y").size() == 1);
+        REQUIRE(qm.getWhilePattern("z").size() == 1);
+    }
+
+    qm.clear();
 }
 
 TEST_CASE("Check clear") {
