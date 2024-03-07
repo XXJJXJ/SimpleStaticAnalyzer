@@ -8,10 +8,9 @@
 
 class DesignExtractor {
 public:
-	DesignExtractor(shared_ptr<Populator> pkb, shared_ptr<Cfg> cfg);
+	DesignExtractor(shared_ptr<Populator> pkb);
 	void extractDesign(shared_ptr<Program> program);
 
 private:
 	shared_ptr<Populator> pkbPopulator;
-	shared_ptr<Cfg> cfg;
 };

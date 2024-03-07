@@ -9,9 +9,8 @@ TEST_CASE("1st SP-PKB integration Test: entity store test") {
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
-    shared_ptr<Cfg> cfg = make_shared<Cfg>();
     pkbPopulator->clear();
-    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator, cfg);
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
     design_extractor->extractDesign(program);
 
     QueryManager qm;
@@ -36,9 +35,8 @@ TEST_CASE("2nd SP-PKB integration Test: relation store test") {
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
-    shared_ptr<Cfg> cfg = make_shared<Cfg>();
     pkbPopulator->clear();
-    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator, cfg);
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
     design_extractor->extractDesign(program);
 
     QueryManager qm;
@@ -201,9 +199,8 @@ TEST_CASE("9th SP-PKB integration Test: entity store test") {
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
-    shared_ptr<Cfg> cfg = make_shared<Cfg>();
     pkbPopulator->clear();
-    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator, cfg);
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
     design_extractor->extractDesign(program);
 
     QueryManager qm;
