@@ -19,6 +19,8 @@ private:
     shared_ptr<EntityManager> em;
     shared_ptr<AbstractionManager> am;
     shared_ptr<PatternManager> pm;
+
+    vector<pair<string, string>> callTempStore;
 public:
     Populator();
     bool addConstant(shared_ptr<Constant>  c);
@@ -36,8 +38,7 @@ public:
     bool addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     bool addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
 
-    void tabulateUses();
-    void tabulateModifies();
+    void tabulate();
 
     void clear();
 };

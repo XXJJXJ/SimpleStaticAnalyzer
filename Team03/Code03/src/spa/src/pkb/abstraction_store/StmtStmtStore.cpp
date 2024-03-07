@@ -5,7 +5,7 @@ vector<vector<shared_ptr<Entity>>> getStmtPairs(const unordered_map<shared_ptr<S
     vector<vector<shared_ptr<Entity>>> res;
     for (auto &v : table) {
         auto stmt1 = v.first;
-        for (auto stmt2 : v.second) {
+        for (auto &stmt2 : v.second) {
             res.push_back({stmt1, stmt2});
         }
     }

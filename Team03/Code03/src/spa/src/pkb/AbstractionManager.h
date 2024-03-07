@@ -5,6 +5,8 @@
 #include "abstraction_store/UseStore.h"
 #include "abstraction_store/FollowStore.h"
 #include "abstraction_store/ParentStore.h"
+#include "abstraction_store/CallStore.h"
+#include "common/CallStatement.h"
 
 using namespace std;
 
@@ -18,9 +20,11 @@ private:
     UseStore useStore;
     FollowStore followStore;
     ParentStore parentStore;
+    CallStore callStore;
 
     // Helper
     void tabulateContainerStmtVarRelation(SPVStore& store);
+    void tabulateByCallStatements(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts);
 public:
     static shared_ptr<AbstractionManager> getInstance();
 
@@ -28,9 +32,9 @@ public:
     bool addParent(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2);
     bool addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     bool addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
+    bool addCalls(shared_ptr<Procedure> proc1, shared_ptr<Procedure> proc2);
 
-    void tabulateUses();
-    void tabulateModifies();
+    void tabulate(vector<shared_ptr<CallStatement>>& callStmts);
 
     vector<vector<shared_ptr<Entity>>> getFollowS();
     vector<vector<shared_ptr<Entity>>> getFollowT();
@@ -38,20 +42,14 @@ public:
     vector<vector<shared_ptr<Entity>>> getParentS();
     vector<vector<shared_ptr<Entity>>> getParentT();
 
-    vector<vector<shared_ptr<Entity>>> getUseByAssign();
-    vector<vector<shared_ptr<Entity>>> getUseByPrint(); 
-    vector<vector<shared_ptr<Entity>>> getUseByCall();
-    vector<vector<shared_ptr<Entity>>> getUseByIfWhile();
-    vector<vector<shared_ptr<Entity>>> getUseAll();
-
-    vector<vector<shared_ptr<Entity>>> getModifyByAssign();
-    vector<vector<shared_ptr<Entity>>> getModifyByRead();
-    vector<vector<shared_ptr<Entity>>> getModifyByCall();
-    vector<vector<shared_ptr<Entity>>> getModifyByIfWhile();
-    vector<vector<shared_ptr<Entity>>> getModifyAll();
+    vector<vector<shared_ptr<Entity>>> getUseByType(EntityType entType);
+    vector<vector<shared_ptr<Entity>>> getModifyByType(EntityType entType);
 
     unordered_map<string, unordered_set<shared_ptr<Variable>>> getUseByProcedureMap();
     unordered_map<string, unordered_set<shared_ptr<Variable>>> getModifyByProcedureMap();
+
+    vector<vector<shared_ptr<Entity>>> getCallS();
+    vector<vector<shared_ptr<Entity>>> getCallT();
 
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();
