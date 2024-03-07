@@ -15,9 +15,9 @@ TEST_CASE("Store and retrieve Variables") {
     shared_ptr<Variable> v = make_shared<Variable>("x");
     populator.addVariable(v);
     QueryManager queryM;
-    vector<shared_ptr<Variable>> varStore = queryM.getAllVariables();
+    vector<shared_ptr<Entity>> varStore = queryM.getAllEntitiesByType(EntityType::Variable);
     REQUIRE(varStore.size() == 1);
-    shared_ptr<Variable> v2 = varStore.front();
+    shared_ptr<Variable> v2 = dynamic_pointer_cast<Variable>(varStore.front());
     REQUIRE(v2->getName() == "x");
     REQUIRE(v2 == v);
     populator.clear();
@@ -31,13 +31,13 @@ TEST_CASE("Store duplicate variables") {
     populator.addVariable(x);
     populator.addVariable(x_dup);
     QueryManager queryM;
-    vector<shared_ptr<Variable>> varStore = queryM.getAllVariables();
-    shared_ptr<Variable> x2 = varStore.front();
+    vector<shared_ptr<Entity>> varStore = queryM.getAllEntitiesByType(EntityType::Variable);
+    shared_ptr<Variable> x2 = dynamic_pointer_cast<Variable>(varStore.front());
     REQUIRE((x2->getName() == "x"));
     REQUIRE(varStore.size() == 1);
     shared_ptr<Variable> y = make_shared<Variable>("y");
     populator.addVariable(y);
-    varStore = queryM.getAllVariables();
+    varStore = queryM.getAllEntitiesByType(EntityType::Variable);
     REQUIRE(varStore.size() == 2);
     REQUIRE((varStore[1]->getName() == "y" || varStore[0]->getName() == "y"));
     populator.clear();
@@ -53,12 +53,12 @@ TEST_CASE("Store and retrieve procedures") {
     populator.addProcedure(proc1);
     populator.addProcedure(proc2);
     populator.addProcedure(proc3);
-    vector<shared_ptr<Procedure>> procList = queryM.getAllProcedures();
+    vector<shared_ptr<Entity>> procList = queryM.getAllEntitiesByType(EntityType::Procedure);
     REQUIRE(procList.size() == 3);
     // check names
     unordered_set<string> set;
     for (int i = 0; i < 3; i++) {
-        shared_ptr<Procedure> proc = procList[i];
+        shared_ptr<Entity> proc = procList[i];
         set.insert(proc->getName());
     }
     REQUIRE(set.size() == 3);
@@ -84,7 +84,7 @@ TEST_CASE("Store duplicate procedures") {
     shared_ptr<Procedure> proc3 = make_shared<Procedure>("second");
     REQUIRE(populator.addProcedure(proc3)); // Should return true
 
-    REQUIRE(queryM.getAllProcedures().size() == 2);
+    REQUIRE(queryM.getAllEntitiesByType(EntityType::Procedure).size() == 2);
     populator.clear();
 }
 
@@ -98,11 +98,11 @@ TEST_CASE("Store and retrieve read statements") {
     shared_ptr<ReadStatement> readY = make_shared<ReadStatement>(2, y, "main");
     populator.addReadStatement(readX);
     populator.addReadStatement(readY);
-    vector<shared_ptr<ReadStatement>> stmtLst = queryM.getAllReadStatements();
+    vector<shared_ptr<Entity>> stmtLst = queryM.getAllEntitiesByType(EntityType::Read);
     REQUIRE(stmtLst.size() == 2);
     unordered_set<string> set;
     for (int i = 0; i < 2; i++) {
-        shared_ptr<ReadStatement> stmt = stmtLst[i];
+        shared_ptr<ReadStatement> stmt = dynamic_pointer_cast<ReadStatement>(stmtLst[i]);
         set.insert(stmt->getVariable()->getName());
         REQUIRE(stmt->getProcedureName() == "main");
     }
@@ -122,11 +122,11 @@ TEST_CASE("Store and retrieve print statements") {
     shared_ptr<PrintStatement> printY = make_shared<PrintStatement>(2, y, "main");
     populator.addPrintStatement(printX);
     populator.addPrintStatement(printY);
-    vector<shared_ptr<PrintStatement>> stmtLst = queryM.getAllPrintStatements();
+    vector<shared_ptr<Entity>> stmtLst = queryM.getAllEntitiesByType(EntityType::Print);
     REQUIRE(stmtLst.size() == 2);
     unordered_set<string> set;
     for (int i = 0; i < 2; i++) {
-        shared_ptr<PrintStatement> stmt = stmtLst[i];
+        shared_ptr<PrintStatement> stmt = dynamic_pointer_cast<PrintStatement>(stmtLst[i]);
         set.insert(stmt->getVariable()->getName());
         REQUIRE(stmt->getProcedureName() == "main");
     }
@@ -156,11 +156,11 @@ TEST_CASE("Store duplicate statements") {
     REQUIRE(!populator.addReadStatement(readX));
     REQUIRE(!populator.addPrintStatement(printY));
 
-    vector<shared_ptr<PrintStatement>> printStmtLst = queryM.getAllPrintStatements();
+    vector<shared_ptr<Entity>> printStmtLst = queryM.getAllEntitiesByType(EntityType::Print);;
     REQUIRE(printStmtLst.size() == 1);
-    vector<shared_ptr<ReadStatement>> readStmtLst = queryM.getAllReadStatements();
+    vector<shared_ptr<Entity>> readStmtLst = queryM.getAllEntitiesByType(EntityType::Read);;
     REQUIRE(readStmtLst.size() == 1);
-    vector<shared_ptr<Statement>> allStmtLst = queryM.getAllStatements();
+    vector<shared_ptr<Entity>> allStmtLst = queryM.getAllEntitiesByType(EntityType::Stmt);
     REQUIRE(allStmtLst.size() == 2);
     populator.clear();
 }
@@ -169,19 +169,19 @@ TEST_CASE("Clear store") {
     Populator populator;
     populator.clear();
     QueryManager queryM;
-    REQUIRE(queryM.getAllVariables().size() == 0);
+    REQUIRE(queryM.getAllEntitiesByType(EntityType::Variable).size() == 0);
     shared_ptr<Variable> v = make_shared<Variable>("x");
     populator.addVariable(v);
-    REQUIRE(queryM.getAllVariables().size() == 1);
+    REQUIRE(queryM.getAllEntitiesByType(EntityType::Variable).size() == 1);
     shared_ptr<Procedure> proc = make_shared<Procedure>("main");
     populator.addProcedure(proc);
-    REQUIRE(queryM.getAllProcedures().size() == 1);
+    REQUIRE(queryM.getAllEntitiesByType(EntityType::Procedure).size() == 1);
     shared_ptr<ReadStatement> read = make_shared<ReadStatement>(1, v, "main");
     populator.addReadStatement(read);
-    REQUIRE(queryM.getAllReadStatements().size() == 1);
+    REQUIRE(queryM.getAllEntitiesByType(EntityType::Read).size() == 1);
     populator.clear();
-    REQUIRE(queryM.getAllVariables().size() == 0);
-    REQUIRE(queryM.getAllProcedures().size() == 0);
+    REQUIRE(queryM.getAllEntitiesByType(EntityType::Variable).size() == 0);
+    REQUIRE(queryM.getAllEntitiesByType(EntityType::Procedure).size() == 0);
 }
 
 TEST_CASE("Test store and retrieve Constants") {
@@ -190,9 +190,9 @@ TEST_CASE("Test store and retrieve Constants") {
     shared_ptr<Constant> c = make_shared<Constant>("2");
     populator.addConstant(c);
     QueryManager queryM;
-    vector<shared_ptr<Constant>> constStore = queryM.getAllConstants();
+    vector<shared_ptr<Entity>> constStore = queryM.getAllEntitiesByType(EntityType::Constant);
     REQUIRE(constStore.size() == 1);
-    shared_ptr<Constant> c2 = constStore.front();
+    shared_ptr<Constant> c2 = dynamic_pointer_cast<Constant>(constStore.front());
     REQUIRE(c2->getName() == "2");
     REQUIRE(c2 == c);
     populator.clear();
@@ -206,13 +206,13 @@ TEST_CASE("Test Store duplicate constants") {
     populator.addConstant(c);
     populator.addConstant(c_dup);
     QueryManager queryM;
-    vector<shared_ptr<Constant>> constStore = queryM.getAllConstants();
+    vector<shared_ptr<Entity>> constStore = queryM.getAllEntitiesByType(EntityType::Constant);
     REQUIRE(constStore.size() == 1);
-    shared_ptr<Constant> c2 = constStore.front();
+    shared_ptr<Constant> c2 = dynamic_pointer_cast<Constant>(constStore.front());
     REQUIRE(c2->getName() == "2");
     shared_ptr<Constant> c3 = make_shared<Constant>("3");
     populator.addConstant(c3);
-    constStore = queryM.getAllConstants();
+    constStore = queryM.getAllEntitiesByType(EntityType::Constant);
     REQUIRE(constStore.size() == 2);
     REQUIRE((constStore[1]->getName() == "3" || constStore[0]->getName() == "3")); // it is unordered, so the vector is unordered
     populator.clear();
