@@ -45,9 +45,9 @@ shared_ptr<BaseTable> AssignPatternPredicate::getTable(QueryManager &qm) {
 
     } else {
         // TODO: Ask PKB to return Entity and refactor this
-        for (auto& variable : qm.getAllVariables()) {
+        for (auto& variable : qm.getAllEntitiesByType(EntityType::Variable)) {
             // cast to shared_ptr<Entity>
-            allPossibleLhs.push_back(static_pointer_cast<Entity>(variable));
+            allPossibleLhs.push_back(variable);
         }
     }
 

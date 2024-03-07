@@ -21,8 +21,8 @@ void Sp::ProcessSIMPLE(string fileName) {
             Tokens tokens = tokenizer->tokenize(inputfile);
             shared_ptr<Parser> parser = make_shared<Parser>();
             shared_ptr<Program> program = parser->parseSource(tokens);
-            shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
-            design_extractor->extractDesign(program);
+            shared_ptr<DesignExtractor> designExtractor = make_shared<DesignExtractor>(pkbPopulator);
+            designExtractor->extractDesign(program);
         }
     }
     catch (SpaException& e) {

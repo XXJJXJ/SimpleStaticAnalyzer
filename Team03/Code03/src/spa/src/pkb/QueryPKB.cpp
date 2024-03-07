@@ -13,12 +13,16 @@ void QueryManager::clear() {
     procVarResultCache.clear();
 }
 
-vector<shared_ptr<Constant>> QueryManager::getAllConstants() {
+vector<shared_ptr<Entity>> QueryManager::getAllConstants() {
     return em->getAllConstants();
 }
 
-vector<shared_ptr<Variable>> QueryManager::getAllVariables() {
+vector<shared_ptr<Entity>> QueryManager::getAllVariables() {
     return em->getAllVariables();
+}
+
+shared_ptr<Entity> QueryManager::getVariableByName(string var) {
+    return em->getVariableByName(var);
 }
 
 vector<shared_ptr<Procedure>> QueryManager::getAllProcedures() {
@@ -67,26 +71,13 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getParentS() {
 vector<vector<shared_ptr<Entity>>> QueryManager::getParentT() {
     return am->getParentT();
 }
-
-vector<vector<shared_ptr<Entity>>> QueryManager::getUseByAssign() {
-    return am->getUseByAssign();
-}
-vector<vector<shared_ptr<Entity>>> QueryManager::getUseByPrint() {
-    return am->getUseByPrint();
-}
-vector<vector<shared_ptr<Entity>>>QueryManager::getUseByCall() {
-    return am->getUseByCall();
-}
-vector<vector<shared_ptr<Entity>>> QueryManager::getUseByIfWhile() {
-    return am->getUseByIfWhile();
-}
-vector<vector<shared_ptr<Entity>>>QueryManager::getUseAll() {
-    return am->getUseAll();
+vector<vector<shared_ptr<Entity>>>QueryManager::getUseByType(EntityType entType) {
+    return am->getUseByType(entType);
 }
 vector<vector<shared_ptr<Entity>>> QueryManager::getUseByProcedure() {
-    const string modifies = "modifies";
-    if (procVarResultCache.find(modifies) != procVarResultCache.end()) {
-        return procVarResultCache[modifies];
+    const string uses = "uses";
+    if (procVarResultCache.find(uses) != procVarResultCache.end()) {
+        return procVarResultCache[uses];
     }
     auto procUseMap = am->getUseByProcedureMap();
     vector<vector<shared_ptr<Entity>>> res;
@@ -96,29 +87,17 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getUseByProcedure() {
             res.push_back({proc, var});
         }
     }
-    procVarResultCache[modifies] = res;
+    procVarResultCache[uses] = res;
     return res;
 }
 
-vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByAssign() {
-    return am->getModifyByAssign();
-}
-vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByRead() {
-    return am->getModifyByRead();
-}
-vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByCall() {
-    return am->getModifyByCall();
-}
-vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByIfWhile() {
-    return am->getModifyByIfWhile();
-}
-vector<vector<shared_ptr<Entity>>> QueryManager::getModifyAll() {
-    return am->getModifyAll();
+vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByType(EntityType entType) {
+    return am->getModifyByType(entType);
 }
 vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByProcedure() {
-    const string uses = "uses";
-    if (procVarResultCache.find(uses) != procVarResultCache.end()) {
-        return procVarResultCache[uses];
+    const string modifies = "modifies";
+    if (procVarResultCache.find(modifies) != procVarResultCache.end()) {
+        return procVarResultCache[modifies];
     }
     auto procModifyMap = am->getModifyByProcedureMap();
     vector<vector<shared_ptr<Entity>>> res;
@@ -128,9 +107,17 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByProcedure() {
             res.push_back({proc, var});
         }
     }
-    procVarResultCache[uses] = res;
+    procVarResultCache[modifies] = res;
     return res;
 }
+
+vector<vector<shared_ptr<Entity>>> QueryManager::getCallS() {
+    return am->getCallS();
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getCallT() {
+    return am->getCallT();
+}
+
 
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getFollowSMap() {
     return am->getFollowSMap();

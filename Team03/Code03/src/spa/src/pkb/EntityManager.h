@@ -7,15 +7,6 @@
 #include "entity_store/NormalStore.h"
 #include "entity_store/ProcedureStore.h"
 #include "entity_store/StatementStore.h"
-#include "entity_store/AssignStatementStore.h"
-#include "entity_store/PrintStatementStore.h"
-#include "entity_store/ReadStatementStore.h"
-#include "entity_store/IfStatementStore.h"
-#include "entity_store/WhileStatementStore.h"
-
-// Temp include to remove after implementation of stores
-#include "common/CallStatement.h"
-// End of Temp include
 
 
 using namespace std;
@@ -26,16 +17,10 @@ private:
     EntityManager() {}
     static shared_ptr<EntityManager> instance;
 
-    NormalStore<Constant> constantStore;
-    NormalStore<Variable> variableStore;
+    NormalStore constantStore;
+    NormalStore variableStore;
     ProcedureStore procStore;
-    // Statement stores
-    StatementStore allStmtStore;
-    AssignStatementStore assignStore;
-    PrintStatementStore printStore;
-    ReadStatementStore readStore;
-    IfStatementStore ifStore;
-    WhileStatementStore whileStore;
+    StatementStore stmtStore;
 
     void clearStore();
 public:
@@ -43,10 +28,11 @@ public:
     static shared_ptr<EntityManager> getInstance();
 
     bool addConstant(shared_ptr<Constant> c);
-    vector<shared_ptr<Constant>> getAllConstants();
+    vector<shared_ptr<Entity>> getAllConstants();
 
     bool addVariable(shared_ptr<Variable> var);
-    vector<shared_ptr<Variable>> getAllVariables();
+    vector<shared_ptr<Entity>> getAllVariables();
+    shared_ptr<Entity> getVariableByName(string var);
 
     bool addProcedure(shared_ptr<Procedure> proc);
     vector<shared_ptr<Procedure>> getAllProcedures();

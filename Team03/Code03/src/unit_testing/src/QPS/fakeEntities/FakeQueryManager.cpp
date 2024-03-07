@@ -23,7 +23,6 @@ private:
     vector<vector<shared_ptr<Entity>>> fakeModifies;
 
     vector<shared_ptr<AssignStatement>> fakeAssignsWithPattern;
-    vector<shared_ptr<Variable>> allFakeVariables;  // Special case, since PKB doesn't return entity, TODO: fix
 
 public:
     FakeQueryManager() = default;
@@ -45,12 +44,8 @@ public:
         return fakeAssignsWithPattern;
     }
 
-    vector<shared_ptr<Variable>> getAllVariables() override {
-        return allFakeVariables;
-    }
-
-    void setAllFakeVariable(vector<shared_ptr<Variable>> var) {
-        allFakeVariables = var;
+    void setAllFakeVariable(vector<shared_ptr<Entity>> var) {
+        fakeResponses[EntityType::Variable] = var;
     }
 
     void addFakeFollows(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
@@ -101,14 +96,14 @@ public:
     }
 
     vector<vector<shared_ptr<Entity>>> getParentT() override {
-                return fakeParentT;
+        return fakeParentT;
     }
   
-    vector<vector<shared_ptr<Entity>>> getUseAll() override {
+    vector<vector<shared_ptr<Entity>>> getUseByType(EntityType entType) override {
         return fakeUses;
     }
 
-    vector<vector<shared_ptr<Entity>>> getModifyAll() override {
+    vector<vector<shared_ptr<Entity>>> getModifyByType(EntityType entType) override {
         return fakeModifies;
     }
 

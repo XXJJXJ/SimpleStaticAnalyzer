@@ -1,32 +1,30 @@
 #include "StatementParserFactory.h"
+#include <sp/parser/CallStatementParser.h>
 
 shared_ptr<StatementParser> StatementParserFactory::getStatementParser(Tokens& tokens) {
-    try {
-        if (tokens.size() < 2) {
-            throw SyntaxErrorException("Insufficient number of tokens");
-        }
-        if (checkKeywordType(tokens, "if", true)) {
-            return make_shared<IfStatementParser>();
-        }
-        else if (checkKeywordType(tokens, "while", true)) {
-            return make_shared<WhileStatementParser>();
-        }
-        else if (checkAssignment(tokens)) {
-            return make_shared<AssignStatementParser>();
-        }
-        else if (checkKeywordType(tokens, "print", false)) {
-            return make_shared<PrintStatementParser>();
-        }
-        else if (checkKeywordType(tokens, "read", false)) {
-            return make_shared<ReadStatementParser>();
-        }
-
-        throw SemanticErrorException("Unknown Statement Type");
+    if (tokens.size() < 2) {
+        throw SyntaxErrorException("Insufficient number of tokens");
     }
-    catch (SpaException& e) {
-        cout << e.what() << endl;
+    if (checkKeywordType(tokens, "if", true)) {
+        return make_shared<IfStatementParser>();
+    }
+    else if (checkKeywordType(tokens, "while", true)) {
+        return make_shared<WhileStatementParser>();
+    }
+    else if (checkAssignment(tokens)) {
+        return make_shared<AssignStatementParser>();
+    }
+    else if (checkKeywordType(tokens, "print", false)) {
+        return make_shared<PrintStatementParser>();
+    }
+    else if (checkKeywordType(tokens, "read", false)) {
+        return make_shared<ReadStatementParser>();
+    }
+    else if (checkKeywordType(tokens, "call", false)) {
+        return make_shared<CallStatementParser>();
     }
 
+    throw SemanticErrorException("Unknown Statement Type");
 }
 
 bool StatementParserFactory::checkKeywordType(

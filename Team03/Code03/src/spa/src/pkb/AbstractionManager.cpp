@@ -40,6 +40,10 @@ bool AbstractionManager::addModifies(shared_ptr<Statement> stmt, shared_ptr<Vari
     return modifyStore.add(stmt, var);
 }
 
+bool AbstractionManager::addCalls(shared_ptr<Procedure> proc1, shared_ptr<Procedure> proc2) {
+    return callStore.add(proc1, proc2);
+}
+
 // Private helper function
 void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
     auto childToParent = parentStore.getChildToParentMap();
@@ -56,12 +60,44 @@ void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
     }
 }
 
-void AbstractionManager::tabulateUses() {
-    tabulateContainerStmtVarRelation(useStore);
+void AbstractionManager::tabulateByCallStatements(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts) {
+    auto procVarMap = store.getByProcedureMap();
+    auto callMap = callStore.getTransitiveMap();
+    unordered_map<string, unordered_set<string>> callMapString;
+    for (auto & _pair : callMap) {
+        for (auto & callee : _pair.second) {
+            callMapString[_pair.first->getName()].insert(callee->getName());
+        }
+    }
+    // get each callStmt - find out the chain/all procedures invoked by the target procedure
+    for (auto & stmt : callStmts) {
+        // Potential to bugs / slowness
+        // **** Order of adding very important ****
+        // This gets all the transitive procedures under the called procedures and adds all possible
+        // modifies / uses variables to this statement
+        // This way the order of adding shouldn't matter anymore
+        auto allProcsCalled = callMapString[stmt->getTargetProcedureName()];
+        for (auto & proc : allProcsCalled) {
+            auto setOfVar = procVarMap[proc];
+            for (auto & var : setOfVar) {
+                store.add(stmt, var);
+            }
+        }
+        // dont forget the targetProcedure itself might have uses / modifies
+        auto setOfVar = procVarMap[stmt->getTargetProcedureName()];
+        for (auto & var : setOfVar) {
+            store.add(stmt, var);
+        }
+    }
 }
 
-void AbstractionManager::tabulateModifies() {
+void AbstractionManager::tabulate(vector<shared_ptr<CallStatement>>& callStmts) {
+    // tabulate call store first
+    callStore.tabulate();
+    tabulateContainerStmtVarRelation(useStore);
     tabulateContainerStmtVarRelation(modifyStore);
+    tabulateByCallStatements(useStore, callStmts);
+    tabulateByCallStatements(modifyStore, callStmts);
 }
 
 
@@ -79,36 +115,13 @@ vector<vector<shared_ptr<Entity>>> AbstractionManager::getParentT() {
     return parentStore.getTransitive();
 }
 
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByAssign() {
-    return useStore.getByAssign();
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByType(EntityType entType) {
+    return useStore.getByType(entType);
 }
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByPrint() {
-    return useStore.getByPrint();
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByType(EntityType entType) {
+    return modifyStore.getByType(entType);
 }
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByCall() {
-    return useStore.getByCall();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseByIfWhile() {
-    return useStore.getByIfWhileStmt();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getUseAll() {
-    return useStore.getByAllStmt();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByAssign() {
-    return modifyStore.getByAssign();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByRead() {
-    return modifyStore.getByRead();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByCall() {
-    return modifyStore.getByCall();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyByIfWhile() {
-    return modifyStore.getByIfWhileStmt();
-}
-vector<vector<shared_ptr<Entity>>> AbstractionManager::getModifyAll() {
-    return modifyStore.getByAllStmt();
-}
+
 unordered_map<string, unordered_set<shared_ptr<Variable>>> AbstractionManager::getUseByProcedureMap() {
     return useStore.getByProcedureMap();
 }
@@ -116,6 +129,12 @@ unordered_map<string, unordered_set<shared_ptr<Variable>>> AbstractionManager::g
     return modifyStore.getByProcedureMap();
 }
 
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getCallS() {
+    return callStore.getDirect();
+}
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getCallT() {
+    return callStore.getTransitive();
+}
 
 // For testing
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> AbstractionManager::getFollowSMap() {

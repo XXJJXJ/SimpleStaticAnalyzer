@@ -75,3 +75,7 @@ void AbstractionExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileS
 	extractParent(whileStatement->getStatementList(), whileStatement);
 	processStatements(whileStatement->getStatementList());
 }
+
+void AbstractionExtractor::visitCallStatement(shared_ptr<CallStatement> callStatement) {
+
+}
