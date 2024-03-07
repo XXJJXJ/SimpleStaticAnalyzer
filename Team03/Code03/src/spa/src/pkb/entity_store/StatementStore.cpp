@@ -2,12 +2,8 @@
 
 StatementStore::StatementStore() : lineToStatementMap() {}
 
-bool StatementStore::checkStmt(shared_ptr<Statement> stmt) {
-    return lineToStatementMap.find(stmt->getStatementNumber()) != lineToStatementMap.end();
-}
-
 bool StatementStore::add(shared_ptr<Statement> stmt) {
-    if (checkStmt(stmt)) {
+    if (lineToStatementMap.find(stmt->getStatementNumber()) != lineToStatementMap.end()) {
         return false;
     }
     lineToStatementMap[stmt->getStatementNumber()] = stmt;
