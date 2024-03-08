@@ -45,7 +45,7 @@ void IfStatementParser::parseBlock(string value, shared_ptr<IfStatement> ifState
         tokens.erase(tokens.begin());
     }
     else {
-        throw SyntaxErrorException("If statement's then block is missing a }");
+        throw SyntaxErrorException("If statement's " + value + " block is missing a }");
     }
 }
 
