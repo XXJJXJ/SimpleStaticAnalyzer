@@ -16,12 +16,12 @@ class FollowsTPredicate : public Predicate {
 private:
     StatementRef lhs; // Left-hand statement reference
     StatementRef rhs; // Right-hand statement reference
+protected:
+    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
 
 public:
     FollowsTPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsTPredicate() override = default;
-
-    [[nodiscard]] std::shared_ptr<BaseTable> getTable(QueryManager &qm) override;
 };
 
 #endif // FOLLOWSTPREDICATE_H

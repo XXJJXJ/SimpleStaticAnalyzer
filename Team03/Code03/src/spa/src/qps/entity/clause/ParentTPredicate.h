@@ -18,10 +18,11 @@ class ParentTPredicate : public Predicate {
 private:
     StatementRef lhs; // Ancestor statement reference
     StatementRef rhs; // Descendant statement reference
+protected:
+    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
 public:
     ParentTPredicate(StatementRef lhs, StatementRef rhs);
     ~ParentTPredicate() override = default;
-    std::shared_ptr<BaseTable> getTable(QueryManager &qm) override;
     std::string toString() const override;
 
 };

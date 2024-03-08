@@ -10,51 +10,19 @@ UsesPredicate::UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
     if (!isValidProcAndStmtRef(this->lhs) || !isValidVariable(this->rhs)) {
         throw SemanticErrorException("Invalid arguments for UsesPredicate constructor");
     }
-
-    this->validators.push_back(getValidatorForProcAndStmtRef(this->lhs));
-    this->validators.push_back(getValidatorForEntityRef(this->rhs));
-
-    if (std::holds_alternative<Synonym>(this->lhs)) {
-        auto synonym = std::get<Synonym>(this->lhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
-    if (std::holds_alternative<Synonym>(this->rhs)) {
-        auto synonym = std::get<Synonym>(this->rhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
+    addProcAndStmtRef(this->lhs);
+    addEntityRef(this->rhs);
 }
 
-shared_ptr<BaseTable> UsesPredicate::getTable(QueryManager& qm) {
-    // Step 1: Fetch all follows relationships as a BaseTable
-    auto allUses =
-            BaseTable(qm.getUseByType(EntityType::Stmt),
-                      2);
-    // Assuming getFollowS returns data compatible with BaseTable constructor
-    int count = 0;
-    for (auto row: allUses.getRows()) {
-        if (row.getValues()[0]->getName() == "3") {
-            count++;
-        }
+std::shared_ptr<BaseTable> UsesPredicate::getFullTable(QueryManager &qm) {
+    if (std::holds_alternative<Synonym>(this->lhs)) {
+        Synonym synonym = std::get<Synonym>(this->lhs);
+        return std::make_shared<BaseTable>(qm.getUseByType(synonym.getType()), 2);
+    } else if (std::holds_alternative<int>(this->lhs)) {
+        return std::make_shared<BaseTable>(qm.getUseByType(EntityType::Stmt), 2);
+    } else {
+        return std::make_shared<BaseTable>(qm.getUseByProcedure(), 2);
     }
-
-    // Step 2: Filter based on lhs and rhs
-    // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
-    auto filteredUses = allUses.filter(
-            [this](const std::vector<std::shared_ptr<Entity>>& row) { return isValidRow(row); });
-
-    // Step 3: Project to keep columns associated with a Synonym or determine a boolean result
-    bool isLhsSynonym = std::holds_alternative<Synonym>(lhs);
-    bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
-    shared_ptr<BaseTable> resultTable = filteredUses->project({isLhsSynonym, isRhsSynonym});
-    if (!resultTable->isBoolean()) {
-        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
-            resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
-                return row[0] == row[1];
-            });
-        }
-        resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
-    }
-    return resultTable;
 }
 
 

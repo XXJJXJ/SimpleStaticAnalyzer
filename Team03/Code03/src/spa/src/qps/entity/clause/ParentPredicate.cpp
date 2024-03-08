@@ -9,45 +9,9 @@ ParentPredicate::ParentPredicate(StatementRef lhs, StatementRef rhs) {
     }
 
     this->lhs = std::move(lhs);
-    this->validators.push_back(getValidatorForStatementRef(this->lhs));
     this->rhs = std::move(rhs);
-    this->validators.push_back(getValidatorForStatementRef(this->rhs));
-
-    if (std::holds_alternative<Synonym>(this->lhs)) {
-        auto synonym = std::get<Synonym>(this->lhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
-    if (std::holds_alternative<Synonym>(this->rhs)) {
-        auto synonym = std::get<Synonym>(this->rhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
-}
-
-
-std::shared_ptr<BaseTable> ParentPredicate::getTable(QueryManager &qm) {
-    // Step 1: Fetch all parent relationships as a BaseTable
-    auto allParents = BaseTable(
-            qm.getParentS(), 2); // Assuming getParentS returns data compatible with BaseTable constructor
-
-    // Step 2: Filter based on lhs and rhs
-    auto filteredParents = allParents.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
-        return isValidRow(row);
-    });
-
-    // Step 3: Project to keep columns associated with a Synonym or determine a boolean result
-    bool isLhsSynonym = std::holds_alternative<Synonym>(lhs);
-    bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
-    shared_ptr<BaseTable> resultTable = filteredParents->project({isLhsSynonym, isRhsSynonym});
-    if (!resultTable->isBoolean()) {
-        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
-            resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
-                return row[0] == row[1];
-            });
-        }
-        resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
-    }
-
-    return resultTable;
+    addStmtRef(this->lhs);
+    addStmtRef(this->rhs);
 }
 
 
@@ -67,6 +31,10 @@ std::string ParentPredicate::toString() const {
     }, rhs);
 
     return "ParentPredicate " + lhsStr + " " + rhsStr;
+}
+
+std::shared_ptr<BaseTable> ParentPredicate::getFullTable(QueryManager &qm) {
+    return std::make_shared<BaseTable>(qm.getParentS(), 2);
 }
 
 // ai-gen end

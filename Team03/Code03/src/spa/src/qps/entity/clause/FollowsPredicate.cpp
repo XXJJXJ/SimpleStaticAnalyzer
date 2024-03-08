@@ -11,45 +11,9 @@ FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
     }
 
     this->lhs = std::move(lhs);
-    this->validators.push_back(getValidatorForStatementRef(this->lhs));
     this->rhs = std::move(rhs);
-    this->validators.push_back(getValidatorForStatementRef(this->rhs));
-
-    if (std::holds_alternative<Synonym>(this->lhs)) {
-        auto synonym = std::get<Synonym>(this->lhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
-    if (std::holds_alternative<Synonym>(this->rhs)) {
-        auto synonym = std::get<Synonym>(this->rhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
-}
-
-
-shared_ptr<BaseTable> FollowsPredicate::getTable(QueryManager &qm) {
-    // Step 1: Fetch all follows relationships as a BaseTable
-    auto allFollows = BaseTable(
-            qm.getFollowS(), 2); // Assuming getFollowS returns data compatible with BaseTable constructor
-    // Step 2: Filter based on lhs and rhs
-    // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
-    auto filteredFollows = allFollows.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
-        return isValidRow(row);
-    });
-
-    // Step 3: Project to keep columns associated with a Synonym or determine a boolean result
-    bool isLhsSynonym = std::holds_alternative<Synonym>(lhs);
-    bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
-    shared_ptr<BaseTable> resultTable = filteredFollows->project({isLhsSynonym, isRhsSynonym});
-    if (!resultTable->isBoolean()) {
-        // an additional filter to drop row if all headers are the same and the values are different
-        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
-            resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
-                return row[0] == row[1];
-            });
-        }
-        resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
-    }
-    return resultTable;
+    addStmtRef(this->lhs);
+    addStmtRef(this->rhs);
 }
 
 std::string FollowsPredicate::toString() const {
@@ -72,5 +36,9 @@ std::string FollowsPredicate::toString() const {
         rhsStr = "_";
     }
     return "FollowsPredicate " + lhsStr + " " + rhsStr;
+}
+
+std::shared_ptr<BaseTable> FollowsPredicate::getFullTable(QueryManager &qm) {
+    return make_shared<BaseTable>(qm.getFollowS(), 2);
 }
 // ai-gen end

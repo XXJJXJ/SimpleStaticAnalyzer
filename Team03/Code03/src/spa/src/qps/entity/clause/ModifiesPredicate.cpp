@@ -12,42 +12,21 @@ ModifiesPredicate::ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
     if (!isValidProcAndStmtRef(this->lhs) || !isValidVariable(this->rhs)) {
         throw SemanticErrorException("Invalid arguments for ModifiesPredicate constructor");
     }
-    this->validators.push_back(getValidatorForProcAndStmtRef(this->lhs));
-    this->validators.push_back(getValidatorForEntityRef(this->rhs));
+    addProcAndStmtRef(this->lhs);
+    addEntityRef(this->rhs);
+}
+
+std::shared_ptr<BaseTable> ModifiesPredicate::getFullTable(QueryManager& qm) {
     if (std::holds_alternative<Synonym>(this->lhs)) {
-        auto synonym = std::get<Synonym>(this->lhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
-    if (std::holds_alternative<Synonym>(this->rhs)) {
-        auto synonym = std::get<Synonym>(this->rhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+        Synonym synonym = std::get<Synonym>(this->lhs);
+        return std::make_shared<BaseTable>(qm.getModifyByType(synonym.getType()), 2);
+    } else if (std::holds_alternative<int>(this->lhs)) {
+        return std::make_shared<BaseTable>(qm.getModifyByType(EntityType::Stmt), 2);
+    } else {
+        return std::make_shared<BaseTable>(qm.getModifyByProcedure(), 2);
     }
 }
 
-shared_ptr<BaseTable> ModifiesPredicate::getTable(QueryManager& qm) {
-    // Step 1: Fetch all follows relationships as a BaseTable
-    auto allModifies = BaseTable(qm.getModifyByType(EntityType::Stmt), 2); 
-
-    // Step 2: Filter based on lhs and rhs
-    // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
-    auto filteredModifies = allModifies.filter([this](const std::vector<std::shared_ptr<Entity>>& row) { 
-        return isValidRow(row); 
-    });
-
-    // Step 3: Project to keep columns associated with a Synonym or determine a boolean result
-    bool isLhsSynonym = std::holds_alternative<Synonym>(lhs);
-    bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
-    shared_ptr<BaseTable> resultTable = filteredModifies->project({isLhsSynonym, isRhsSynonym});
-    if (!resultTable->isBoolean()) {
-        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
-            resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
-                return row[0] == row[1];
-            });
-        }
-        resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
-    }
-    return resultTable;
-}
 
 
 // ai-gen end

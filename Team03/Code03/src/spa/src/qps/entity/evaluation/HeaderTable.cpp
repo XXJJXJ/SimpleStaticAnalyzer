@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <unordered_set>
 #include <memory>
+#include <set>
+#include <map>
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "BooleanTable.h"
 
@@ -177,13 +179,13 @@ HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, const vecto
     updateHeaderIndexMap();
 }
 
-HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, BaseTable &baseTable) {
-    if (headers.size() != baseTable.getColumnCount()) {
+HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, shared_ptr<BaseTable> baseTable) {
+    if (headers.size() != baseTable->getColumnCount()) {
         throw QPSEvaluationException("HeaderTable: headers size does not match baseTable column count");
     }
     this->headers = headers;
     setColumnCount(headers.size());
-    for (const auto &row: baseTable.getRows()) {
+    for (const auto &row: baseTable->getRows()) {
         this->addRow(row);
     }
     updateHeaderIndexMap();
@@ -202,4 +204,51 @@ bool HeaderTable::operator==(const BaseTable &other) const {
         return BaseTable::operator==(other);
     }
     return false;
+}
+
+/**
+ * Constructs a header table from a base table and a list of synonyms, with some additional checks:
+ * - Filters rows where duplicated columns have mismatched values
+ * - Merges duplicated columns into a single column
+ */
+std::shared_ptr<HeaderTable> HeaderTable::fromBaseTable(const BaseTable& baseTable, const vector<shared_ptr<Synonym>>& synonyms) {
+    // Maps to track synonym occurrences and construct the projection mask
+    std::unordered_map<std::shared_ptr<Synonym>, std::vector<int>, SynonymPtrHash, SynonymPtrEqual> synonymIndices;
+    std::vector<shared_ptr<Synonym>> uniqueSynonyms;
+    std::vector<bool> columnMask(baseTable.getColumnCount(), false); // Initialize with false
+
+    // Populate synonymIndices and uniqueSynonyms, update columnMask for projection
+    for (size_t i = 0; i < synonyms.size(); ++i) {
+        if (synonymIndices.find(synonyms[i]) == synonymIndices.end()) {
+            uniqueSynonyms.push_back(synonyms[i]);
+            synonymIndices[synonyms[i]] = {static_cast<int>(i)};
+            columnMask[i] = true; // Mark this column for inclusion
+        } else {
+            synonymIndices[synonyms[i]].push_back(static_cast<int>(i));
+            // No need to mark additional columns for duplicates, as they will be merged
+        }
+    }
+
+    // Filter rows where duplicated columns have mismatched values
+    auto filteredTable = baseTable.filter([&](const std::vector<std::shared_ptr<Entity>>& row) -> bool {
+        for (const auto& pair : synonymIndices) {
+            const auto& indices = pair.second;
+            if (indices.size() > 1) { // Only check duplicates
+                std::shared_ptr<Entity> firstEntity = row[indices[0]];
+                for (size_t i = 1; i < indices.size(); ++i) {
+                    if (*row[indices[i]] != *firstEntity) {
+                        return false; // Entities in duplicated columns don't match
+                    }
+                }
+            }
+        }
+        return true;
+    });
+
+    // Use project function with the constructed columnMask to create the projected table
+    auto projectedTable = filteredTable->project(columnMask);
+
+    // Since project returns a BaseTable, we convert it to HeaderTable and set the unique headers
+    auto headerTable = std::make_shared<HeaderTable>(uniqueSynonyms, projectedTable);
+    return headerTable;
 }

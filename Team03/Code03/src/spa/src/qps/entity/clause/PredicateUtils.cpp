@@ -34,7 +34,7 @@ bool isValidProcAndStmtRef(const ProcAndStmtRef& ref) {
                VALID_PROCEDURE_TYPES.find(synonym.getType()) != VALID_PROCEDURE_TYPES.end();
     } else if (std::holds_alternative<std::string>(ref)) {
         std::string refString = std::get<std::string>(ref);
-        return refString == WILDCARD || qv.isIdent(refString);
+        return refString != WILDCARD && qv.isIdent(refString);
     } else if (std::holds_alternative<int>(ref)) {
         // Assuming int is always a valid statement reference
         return std::get<int>(ref) > 0;
@@ -127,3 +127,4 @@ std::shared_ptr<ColumnValidator> getValidatorForProcAndStmtRef(const ProcAndStmt
         }
     }, procAndStmtRef);
 }
+

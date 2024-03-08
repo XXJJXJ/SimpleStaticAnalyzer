@@ -9,6 +9,8 @@
 #include "common/spa_exception/SemanticErrorException.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/clause/validator/ColumnValidator.h"
+#include "qps/entity/evaluation/TableFactory.h"
+#include "qps/entity/clause/PredicateUtils.h"
 
 
 
@@ -21,12 +23,18 @@ class Predicate {
 protected:
     vector<shared_ptr<Synonym>> synonyms; // Synonyms used in the predicate
     vector<shared_ptr<ColumnValidator>> validators; // Validators for columns obtained by predicate
+    vector<bool> projectionFilter; // Filter to determine which columns to keep in the result table
+    virtual std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) = 0; // Gets the full table for the predicate
+    void addStmtRef(StatementRef &stmtRef);
+    void addEntityRef(EntityRef& entityRef);
+    void addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef);
+    bool isValidRow(const vector<shared_ptr<Entity>>& row) const;
+//    template<typename T> void addParameterGeneric(T &ref);
 public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion
     [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
-    [[nodiscard]] virtual shared_ptr<BaseTable> getTable(QueryManager& qm) = 0;
-    virtual std::string toString() const;
-    virtual bool isValidRow(const vector<shared_ptr<Entity>>& row) const;
+    [[nodiscard]] virtual shared_ptr<BaseTable> getResultTable(QueryManager& qm);
+    [[nodiscard]] virtual std::string toString() const;
 };
 
 #endif // RELATIONSHIPPREDICATE_H
