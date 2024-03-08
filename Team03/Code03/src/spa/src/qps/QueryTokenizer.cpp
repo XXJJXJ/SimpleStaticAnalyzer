@@ -134,6 +134,14 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
         throw SyntaxErrorException("Invalid query syntax");
     }
 
+    if (declarations.empty()) {
+        throw SyntaxErrorException("No declarations");
+    }
+
+    if (selections.empty()) {
+        throw SyntaxErrorException("No selections");
+    }
+
     splitTokens.push_back(declarations);
     splitTokens.push_back(selections);
     splitTokens.push_back(clauses);

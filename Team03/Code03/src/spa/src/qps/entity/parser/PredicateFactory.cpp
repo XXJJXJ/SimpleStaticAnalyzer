@@ -79,7 +79,7 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
             return std::make_shared<AssignPatternPredicate>(predicate);
         }
 		default:
-			throw new SyntaxErrorException("Invalid relationship keyword");
+			throw SyntaxErrorException("Invalid relationship keyword");
 		}
 	}
 	else {
@@ -198,7 +198,7 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 		return stringToSynonym(token, synonymMap);
 	}
 	else {
-		throw SemanticErrorException("Invalid synonym in clause");
+		throw SyntaxErrorException("Invalid synonym in clause");
 	}
 }
 

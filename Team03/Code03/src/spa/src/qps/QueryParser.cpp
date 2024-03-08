@@ -53,7 +53,7 @@ QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     }
     // Create predicate objects for clauses
     for (auto tokens: predicateTokens) {
-        if (tokens.size() > 2 && tokens[0] == "such" && tokens[1] == "that") {
+        if (tokens.size() > 3 && tokens[0] == "such" && tokens[1] == "that" && tokens[2] != "pattern") {
             std::vector<std::string> predicateTokens(tokens.begin() + 2, tokens.end());
             std::shared_ptr<Predicate> predicate = pf.createPredicate(predicateTokens, synonymMap);
             predicates.push_back(predicate);
