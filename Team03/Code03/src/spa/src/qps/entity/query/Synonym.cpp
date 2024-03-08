@@ -10,9 +10,6 @@ Synonym::Synonym(EntityType type, const std::string& name) {
 
 Synonym::Synonym(const std::string& synonymName, const std::unordered_map<std::string, EntityType>& synonymMap) {
 	QueryValidator qv;
-    if (!qv.isSynonym(synonymName)) {
-        throw SyntaxErrorException("Invalid synonym name");
-    }
     try {
 		EntityType synonymType = synonymMap.at(synonymName);
 		this->type = synonymType;
