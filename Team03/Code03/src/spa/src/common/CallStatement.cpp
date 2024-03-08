@@ -3,7 +3,7 @@
 CallStatement::CallStatement(int statementNumber,
     shared_ptr<Procedure> procedure_,
     string procedureName) :
-    procedure(move(procedure_)),
+    procedure(std::move(procedure_)),
     Statement(
         statementNumber,
         EntityType::Call,
