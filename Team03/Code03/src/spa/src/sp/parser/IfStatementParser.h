@@ -9,8 +9,11 @@ class IfStatementParser : public StatementParser {
 public:
 	shared_ptr<Statement> parseEntity(Tokens& tokens) override;
 	shared_ptr<ConditionalOperation> extractCondition(Tokens& tokens);
+	void parseThenBlock(shared_ptr<IfStatement> ifStatement, Tokens& tokens);
+	void parseElseBlock(shared_ptr<IfStatement> ifStatement, Tokens& tokens);
 	void checkStartOfIfStatement(Tokens& tokens) const;
-	void checkStartOfElseStatement(Tokens& tokens) const;
-	bool hasElseStatements(Tokens& tokens) const;
+	Tokens::iterator checkConditionOfIfStatement(Tokens& tokens) const;
+	void checkStartOfThenBlock(Tokens& tokens) const;
+	void checkStartOfElseBlock (Tokens& tokens) const;
 	bool isEndOfStatement(Tokens& tokens) const;
 };
