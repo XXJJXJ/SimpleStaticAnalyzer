@@ -49,7 +49,7 @@ bool isWildcard(StatementRef& ref);
 bool isWildcard(EntityRef & ref);
 bool hasWildcard(std::string& expr);
 std::string stripWildcard(std::string& expr);
-std::shared_ptr<CellFilter> getValidatorForStatementRef(const StatementRef& stmtRef);
-std::shared_ptr<CellFilter> getValidatorForEntityRef(const EntityRef& entRef);
-std::shared_ptr<CellFilter> getValidatorForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef);
+std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef);
+std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef& entRef);
+std::shared_ptr<CellFilter> getFilterForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef);
 

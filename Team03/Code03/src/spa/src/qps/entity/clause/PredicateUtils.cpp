@@ -80,7 +80,7 @@ std::string stripWildcard(std::string& expr) {
     return expr;
 }
 
-std::shared_ptr<CellFilter> getValidatorForStatementRef(const StatementRef& stmtRef) {
+std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef) {
     return std::visit([](auto&& arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, int>) {
@@ -97,7 +97,7 @@ std::shared_ptr<CellFilter> getValidatorForStatementRef(const StatementRef& stmt
     }, stmtRef);
 }
 
-std::shared_ptr<CellFilter> getValidatorForEntityRef(const EntityRef& entRef) {
+std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef& entRef) {
     return std::visit([](auto&& arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Synonym>) {
@@ -114,16 +114,16 @@ std::shared_ptr<CellFilter> getValidatorForEntityRef(const EntityRef& entRef) {
     }, entRef);
 }
 
-std::shared_ptr<CellFilter> getValidatorForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef) {
+std::shared_ptr<CellFilter> getFilterForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef) {
     return std::visit([&](auto&& arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, int>) {
             // Directly treat as StatementRef and fetch its cell filter
-            return getValidatorForStatementRef(arg);
+            return getFilterForStatementRef(arg);
         } else {
             // Convert to EntityRef and fetch its cell filter
             EntityRef entRef = arg; // Implicitly casts Synonym or std::string to EntityRef
-            return getValidatorForEntityRef(entRef);
+            return getFilterForEntityRef(entRef);
         }
     }, procAndStmtRef);
 }

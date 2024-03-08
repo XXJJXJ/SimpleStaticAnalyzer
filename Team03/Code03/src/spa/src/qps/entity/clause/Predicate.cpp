@@ -1,12 +1,12 @@
 #include "Predicate.h"
 
 bool Predicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
-    if (row.size() != validators.size()) {
+    if (row.size() != rowFilter.size()) {
         throw QPSEvaluationException("Predicate: mismatch between row size and row filter size, row size: "
-        + to_string(row.size()) + ", row filter size: " + to_string(validators.size()));
+        + to_string(row.size()) + ", row filter size: " + to_string(rowFilter.size()));
     }
     for (int i = 0; i < row.size(); i++) {
-        if (!validators[i]->passFilter(row[i])) {
+        if (!rowFilter[i]->passFilter(row[i])) {
             return false;
         }
     }
@@ -22,7 +22,7 @@ std::shared_ptr<BaseTable> Predicate::getResultTable(QueryManager& qm) {
     // Step 1: Fetch the full table, depending on the type of predicate
     auto fullTable = getFullTable(qm);
 
-    // Step 2: Filter based on the validators
+    // Step 2: Filter based on the rowFilter
     auto filteredTable = fullTable->filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
         return isValidRow(row);
     });
@@ -39,7 +39,7 @@ std::shared_ptr<BaseTable> Predicate::getResultTable(QueryManager& qm) {
 //  refs, and use template function. Currently we can't use template function because the refs are variants and C++
 //  doesn't know how to handle them.
 void Predicate::addStmtRef(StatementRef &stmtRef) {
-    this->validators.push_back(getValidatorForStatementRef(stmtRef));
+    this->rowFilter.push_back(getFilterForStatementRef(stmtRef));
     if (std::holds_alternative<Synonym>(stmtRef)) {
         auto synonym = std::get<Synonym>(stmtRef);
         this->synonyms.push_back(std::make_shared<Synonym>(synonym));
@@ -50,7 +50,7 @@ void Predicate::addStmtRef(StatementRef &stmtRef) {
 }
 
 void Predicate::addEntityRef(EntityRef &entityRef) {
-    this->validators.push_back(getValidatorForEntityRef(entityRef));
+    this->rowFilter.push_back(getFilterForEntityRef(entityRef));
     if (std::holds_alternative<Synonym>(entityRef)) {
         auto synonym = std::get<Synonym>(entityRef);
         this->synonyms.push_back(std::make_shared<Synonym>(synonym));
@@ -61,7 +61,7 @@ void Predicate::addEntityRef(EntityRef &entityRef) {
 }
 
 void Predicate::addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef) {
-    this->validators.push_back(getValidatorForProcAndStmtRef(procAndStmtRef));
+    this->rowFilter.push_back(getFilterForProcAndStmtRef(procAndStmtRef));
     if (std::holds_alternative<Synonym>(procAndStmtRef)) {
         auto synonym = std::get<Synonym>(procAndStmtRef);
         this->synonyms.push_back(std::make_shared<Synonym>(synonym));
