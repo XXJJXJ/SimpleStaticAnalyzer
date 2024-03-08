@@ -2,7 +2,7 @@
 
 shared_ptr<Statement> CallStatementParser::parseEntity(Tokens& tokens) {
     string procedureName = extractProcedureName(tokens);
-    Procedure procedure(procedureName);
+    shared_ptr<Procedure> procedure = make_shared<Procedure>(procedureName);
     auto printStatement =
         make_shared<CallStatement>(
             Program::getAndIncrementStatementNumber(),

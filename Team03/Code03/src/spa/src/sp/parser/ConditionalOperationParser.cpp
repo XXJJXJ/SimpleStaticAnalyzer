@@ -18,13 +18,13 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         }
     }
     catch (SpaException& e) {
-        string check = "Parsing of Relational Operation failed";
+        string check = "Initial parsing of Relational Operation failed";
     }
     
     this->setArguments(
         make_shared<int>(index),
         isSubExpression,
-        make_shared < bool>(isProcessedToken));
+        make_shared<bool>(isProcessedToken));
 
     if (getTokenType() == TokenType::NOT) {
         getNextToken();
