@@ -1,7 +1,7 @@
 #include "CallStatement.h"
 
 CallStatement::CallStatement(int statementNumber,
-    Procedure procedure_,
+    shared_ptr<Procedure> procedure_,
     string procedureName) :
     procedure(move(procedure_)),
     Statement(
@@ -14,7 +14,7 @@ void CallStatement::accept(shared_ptr<Visitor> visitor) {
 }
 
 string CallStatement::getTargetProcedureName() {
-    return procedure.getName();
+    return procedure->getName();
 }
 
 EntityType CallStatement::getType() const {
