@@ -6,11 +6,11 @@
 #include "common/EntityType.h"
 #include "qps/entity/query/Synonym.h"
 #include "common/Util.h"
-#include "qps/entity/clause/validator/ColumnValidator.h"
-#include "qps/entity/clause/validator/StatementNumberValidator.h"
-#include "qps/entity/clause/validator/WildcardValidator.h"
-#include "qps/entity/clause/validator/SynonymValidator.h"
-#include "qps/entity/clause/validator/IdentifierValidator.h"
+#include "qps/entity/clause/cellFilter/CellFilter.h"
+#include "qps/entity/clause/cellFilter/StatementNumberFilter.h"
+#include "qps/entity/clause/cellFilter/SynonymFilter.h"
+#include "qps/entity/clause/cellFilter/IdentifierFilter.h"
+#include "qps/entity/clause/cellFilter/WildcardFilter.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 
 
@@ -49,7 +49,7 @@ bool isWildcard(StatementRef& ref);
 bool isWildcard(EntityRef & ref);
 bool hasWildcard(std::string& expr);
 std::string stripWildcard(std::string& expr);
-std::shared_ptr<ColumnValidator> getValidatorForStatementRef(const StatementRef& stmtRef);
-std::shared_ptr<ColumnValidator> getValidatorForEntityRef(const EntityRef& entRef);
-std::shared_ptr<ColumnValidator> getValidatorForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef);
+std::shared_ptr<CellFilter> getValidatorForStatementRef(const StatementRef& stmtRef);
+std::shared_ptr<CellFilter> getValidatorForEntityRef(const EntityRef& entRef);
+std::shared_ptr<CellFilter> getValidatorForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef);
 

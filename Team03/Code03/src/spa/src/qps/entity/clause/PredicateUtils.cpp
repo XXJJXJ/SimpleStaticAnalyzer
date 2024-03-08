@@ -80,48 +80,48 @@ std::string stripWildcard(std::string& expr) {
     return expr;
 }
 
-std::shared_ptr<ColumnValidator> getValidatorForStatementRef(const StatementRef& stmtRef) {
-    return std::visit([](auto&& arg) -> std::shared_ptr<ColumnValidator> {
+std::shared_ptr<CellFilter> getValidatorForStatementRef(const StatementRef& stmtRef) {
+    return std::visit([](auto&& arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, int>) {
-            return std::make_shared<StatementNumberValidator>(arg);
+            return std::make_shared<StatementNumberFilter>(arg);
         } else if constexpr (std::is_same_v<T, Synonym>) {
-            return std::make_shared<SynonymValidator>(arg);
+            return std::make_shared<SynonymFilter>(arg);
         } else if constexpr (std::is_same_v<T, std::string>) {
             if (arg == "_") {
-                return std::make_shared<WildcardValidator>();
+                return std::make_shared<WildcardFilter>();
             }
         }
         // Fallback for unrecognized types
-        throw QPSEvaluationException("Unsupported StatementRef type for validator creation.");
+        throw QPSEvaluationException("Unsupported StatementRef type for cellFilter creation.");
     }, stmtRef);
 }
 
-std::shared_ptr<ColumnValidator> getValidatorForEntityRef(const EntityRef& entRef) {
-    return std::visit([](auto&& arg) -> std::shared_ptr<ColumnValidator> {
+std::shared_ptr<CellFilter> getValidatorForEntityRef(const EntityRef& entRef) {
+    return std::visit([](auto&& arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Synonym>) {
-            return std::make_shared<SynonymValidator>(arg);
+            return std::make_shared<SynonymFilter>(arg);
         } else if constexpr (std::is_same_v<T, std::string>) {
             if (arg == "_") {
-                return std::make_shared<WildcardValidator>();
+                return std::make_shared<WildcardFilter>();
             } else {
-                return std::make_shared<IdentifierValidator>(arg);
+                return std::make_shared<IdentifierFilter>(arg);
             }
         }
         // Fallback for unrecognized types
-        throw std::invalid_argument("Unsupported EntityRef type for validator creation.");
+        throw std::invalid_argument("Unsupported EntityRef type for cellFilter creation.");
     }, entRef);
 }
 
-std::shared_ptr<ColumnValidator> getValidatorForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef) {
-    return std::visit([&](auto&& arg) -> std::shared_ptr<ColumnValidator> {
+std::shared_ptr<CellFilter> getValidatorForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef) {
+    return std::visit([&](auto&& arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, int>) {
-            // Directly treat as StatementRef and fetch its validator
+            // Directly treat as StatementRef and fetch its cell filter
             return getValidatorForStatementRef(arg);
         } else {
-            // Convert to EntityRef and fetch its validator
+            // Convert to EntityRef and fetch its cell filter
             EntityRef entRef = arg; // Implicitly casts Synonym or std::string to EntityRef
             return getValidatorForEntityRef(entRef);
         }
