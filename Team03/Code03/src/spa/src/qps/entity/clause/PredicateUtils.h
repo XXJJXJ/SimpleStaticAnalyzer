@@ -50,8 +50,7 @@ using ModifiesLhsRef = std::variant<int, Synonym, std::string>;
 
 bool isValidStatementRef(const StatementRef &ref);
 bool isValidEntityRef(const EntityRef &ref);
-bool isValidUsesLhsRef(const UsesLhsRef& ref);
-bool isValidModifiesLhsRef(const ModifiesLhsRef& ref);
+bool isValidStatementOrEntityRef(const UsesLhsRef& ref);
 bool isValidVariable(const EntityRef& ref);
 bool isWildcard(StatementRef& ref);
 bool isWildcard(EntityRef & ref);

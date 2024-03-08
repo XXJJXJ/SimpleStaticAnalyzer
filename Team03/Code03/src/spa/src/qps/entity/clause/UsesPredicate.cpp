@@ -1,14 +1,13 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "UsesPredicate.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
 UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
-    if (!isValidUsesLhsRef(this->lhs) || !isValidVariable(this->rhs)) {
-        throw SyntaxErrorException("Invalid arguments for UsesPredicate constructor");
+    if (!isValidStatementOrEntityRef(this->lhs) || !isValidVariable(this->rhs)) {
+        throw SemanticErrorException("Invalid arguments for UsesPredicate constructor");
     }
 
     if (std::holds_alternative<Synonym>(this->lhs)) {

@@ -1,13 +1,12 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "FollowsTPredicate.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
 FollowsTPredicate::FollowsTPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs)) {
-        throw SyntaxErrorException("Invalid arguments for FollowsTPredicate constructor");
+        throw SemanticErrorException("Invalid arguments for FollowsTPredicate constructor");
     }
 
     this->lhs = std::move(lhs);

@@ -1,12 +1,11 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "ParentTPredicate.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 
 ParentTPredicate::ParentTPredicate(StatementRef lhs, StatementRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidStatementRef(this->lhs) || !isValidStatementRef(this->rhs)) {
-        throw SyntaxErrorException("Invalid arguments for ParentTPredicate constructor");
+        throw SemanticErrorException("Invalid arguments for ParentTPredicate constructor");
     }
     if (std::holds_alternative<Synonym>(this->lhs)) {
         auto synonym = std::get<Synonym>(this->lhs);

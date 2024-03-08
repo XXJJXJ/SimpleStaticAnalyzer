@@ -6,7 +6,6 @@
 #include "Predicate.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 #include "PredicateUtils.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 #include <memory>
 

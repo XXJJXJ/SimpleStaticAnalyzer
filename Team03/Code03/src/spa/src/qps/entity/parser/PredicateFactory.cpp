@@ -45,7 +45,6 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
 }
 
 std::variant<int, Synonym, std::string> PredicateFactory::stringToStatementRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
-	QueryValidator qv;
 	size_t len = token.size();
     if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
         return token.substr(1, len - 2);
@@ -53,16 +52,15 @@ std::variant<int, Synonym, std::string> PredicateFactory::stringToStatementRef(c
 	else if (token == "_") {
 		return token;
 	}
-	else if (qv.isInteger(token)) {
+	else if (QueryValidator::isInteger(token)) {
 		return stoi(token);
 	}
-	else if (qv.isSynonym(token)) {
+	else if (QueryValidator::isSynonym(token)) {
 		return stringToSynonym(token, synonymMap);
 	}
 }
 
 std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
-	QueryValidator qv;
 	size_t len = token.size();
 	if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
 		return token.substr(1, len - 2);
@@ -70,7 +68,7 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 	else if (token == "_") {
 		return token;
 	}
-	else if (qv.isSynonym(token)) {
+	else if (QueryValidator::isSynonym(token)) {
 		return stringToSynonym(token, synonymMap);
 	}
 }

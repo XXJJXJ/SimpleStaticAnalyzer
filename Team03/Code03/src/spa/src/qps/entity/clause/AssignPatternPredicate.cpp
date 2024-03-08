@@ -1,5 +1,4 @@
 #include "AssignPatternPredicate.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 
 AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs) 
 		: assignSyn(std::move(assignSyn)), lhs(std::move(lhs)), rhs(std::move(rhs)) {
@@ -9,9 +8,8 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
         auto synonym = get<Synonym>(this->lhs);
         isLhsValid &= synonym.getType() == EntityType::Variable;
     }
-    bool isRhsValid = isValidRhs(this->rhs);
-	if (!isValidAssignSyn || !isLhsValid || !isRhsValid) {
-		throw SyntaxErrorException("Invalid argument for AssignPatternPredicate constructor");
+	if (!isValidAssignSyn || !isLhsValid) {
+		throw SemanticErrorException("Invalid argument for AssignPatternPredicate constructor");
 	}
 
     synonyms.push_back(make_shared<Synonym>(this->assignSyn));
@@ -20,20 +18,6 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
         synonyms.push_back(make_shared<Synonym>(synonym));
     }
 }
-
-
-// Allowed RHS expressions:
-// - Wildcard _
-// - Expression for exact match(e.g. "x*y")
-// - Expression for partial match(e.g._"x*y"_)
-bool AssignPatternPredicate::isValidRhs(const std::string& rhs) {
-    size_t len = rhs.size();
-    return rhs == "_" ||
-           len > 1 && rhs[0] != '"' && rhs[len - 1] != '"' ||
-           len > 4 && rhs[0] == '_' && rhs[1] == '"' && rhs[len - 2] == '"' && rhs[len - 1] == '_';
-}
-
-
 
 shared_ptr<BaseTable> AssignPatternPredicate::getTable(QueryManager &qm) {
     // Step 1: get all possible LHS (arg1)

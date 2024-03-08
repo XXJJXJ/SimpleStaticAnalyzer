@@ -1,7 +1,5 @@
 #include "Synonym.h"
-#include "qps/QueryValidator.h"
 #include "common/spa_exception/SemanticErrorException.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 
 Synonym::Synonym(EntityType type, const std::string& name) {
     this->type = type;
@@ -9,7 +7,6 @@ Synonym::Synonym(EntityType type, const std::string& name) {
 }
 
 Synonym::Synonym(const std::string& synonymName, const std::unordered_map<std::string, EntityType>& synonymMap) {
-	QueryValidator qv;
     try {
 		EntityType synonymType = synonymMap.at(synonymName);
 		this->type = synonymType;

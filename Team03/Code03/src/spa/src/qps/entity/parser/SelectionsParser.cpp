@@ -1,7 +1,5 @@
 #include "SelectionsParser.h"
 #include "common/EntityType.h"
-#include "common/spa_exception/SemanticErrorException.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 #include <memory>
 
 SelectionsParser::SelectionsParser() = default;

@@ -8,7 +8,6 @@
 #include <variant>
 #include "PredicateUtils.h"
 #include "qps/entity/evaluation/HeaderTable.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 
 
