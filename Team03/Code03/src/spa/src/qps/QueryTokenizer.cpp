@@ -75,7 +75,6 @@ bool QueryTokenizer::isPunctuation(char c) {
 
 std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(const std::vector<std::string>& tokens) {
     std::vector<std::string> currentList;
-    int openParenthesesCount = 0;
 
     std::vector<std::vector<std::vector<std::string>>> splitTokens = {};
     std::vector<std::vector<std::string>> declarations;
@@ -87,21 +86,12 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
     for (const auto& token : tokens) {
         currentList.push_back(token);
 
-        if (token == "(") {
-            openParenthesesCount++;
-        }
-        else if (token == ")") {
-            openParenthesesCount--;
-            if (openParenthesesCount < 0) {
-                throw SyntaxErrorException("Mismatched parentheses");
+        if (token == ")") {
+            if (!isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
             }
-            else if (openParenthesesCount == 0) {
-                if (!isClause) {
-                    throw SyntaxErrorException("Incorrect order in query");
-                }
-                clauses.push_back(currentList);
-                currentList.clear();
-            }
+            clauses.push_back(currentList);
+            currentList.clear();
         }
         else if (token == ";") {
             if (isClause) {
