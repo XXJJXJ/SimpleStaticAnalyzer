@@ -29,11 +29,11 @@ private:
 
     // For caching of procedure to variable results
     unordered_map<string, vector<vector<shared_ptr<Entity>>>> procVarResultCache;
-public:
-    QueryManager ();
-    // Entity Related API
-    virtual vector<shared_ptr<Constant>> getAllConstants();
-    virtual vector<shared_ptr<Variable>> getAllVariables();
+
+    // Private helpers
+    virtual vector<shared_ptr<Entity>> getAllConstants();
+    virtual vector<shared_ptr<Entity>> getAllVariables();
+    
     virtual vector<shared_ptr<Procedure>> getAllProcedures();
     virtual vector<shared_ptr<Statement>> getAllStatements();
     virtual vector<shared_ptr<AssignStatement>> getAllAssignStatements();
@@ -42,7 +42,11 @@ public:
     virtual vector<shared_ptr<CallStatement>> getAllCallStatements();
     virtual vector<shared_ptr<IfStatement>> getAllIfStatements();
     virtual vector<shared_ptr<WhileStatement>> getAllWhileStatements();
+public:
+    QueryManager ();
+    // Entity Related API
     
+    virtual shared_ptr<Entity> getVariableByName(string var);
     virtual vector<shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
 
     // Abstraction related
@@ -52,19 +56,14 @@ public:
     virtual vector<vector<shared_ptr<Entity>>> getParentS();
     virtual vector<vector<shared_ptr<Entity>>> getParentT();
 
-    virtual vector<vector<shared_ptr<Entity>>> getUseByAssign();
-    virtual vector<vector<shared_ptr<Entity>>> getUseByPrint(); 
-    virtual vector<vector<shared_ptr<Entity>>> getUseByCall();
-    virtual vector<vector<shared_ptr<Entity>>> getUseByIfWhile();
-    virtual vector<vector<shared_ptr<Entity>>> getUseAll();
+    virtual vector<vector<shared_ptr<Entity>>> getUseByType(EntityType entType);
     virtual vector<vector<shared_ptr<Entity>>> getUseByProcedure();
 
-    virtual vector<vector<shared_ptr<Entity>>> getModifyByAssign();
-    virtual vector<vector<shared_ptr<Entity>>> getModifyByRead();
-    virtual vector<vector<shared_ptr<Entity>>> getModifyByCall();
-    virtual vector<vector<shared_ptr<Entity>>> getModifyByIfWhile();
-    virtual vector<vector<shared_ptr<Entity>>> getModifyAll();
+    virtual vector<vector<shared_ptr<Entity>>> getModifyByType(EntityType entType);
     virtual vector<vector<shared_ptr<Entity>>> getModifyByProcedure();
+
+    virtual vector<vector<shared_ptr<Entity>>> getCallS();
+    virtual vector<vector<shared_ptr<Entity>>> getCallT();
 
     // Pattern Related
     virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);

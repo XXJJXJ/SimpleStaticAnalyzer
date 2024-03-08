@@ -27,7 +27,7 @@ UsesPredicate::UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
 shared_ptr<BaseTable> UsesPredicate::getTable(QueryManager& qm) {
     // Step 1: Fetch all follows relationships as a BaseTable
     auto allUses =
-            BaseTable(qm.getUseAll(),
+            BaseTable(qm.getUseByType(EntityType::Stmt),
                       2);
     // Assuming getFollowS returns data compatible with BaseTable constructor
     int count = 0;

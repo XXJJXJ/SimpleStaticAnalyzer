@@ -26,7 +26,7 @@ ModifiesPredicate::ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
 
 shared_ptr<BaseTable> ModifiesPredicate::getTable(QueryManager& qm) {
     // Step 1: Fetch all follows relationships as a BaseTable
-    auto allModifies = BaseTable(qm.getModifyAll(), 2); 
+    auto allModifies = BaseTable(qm.getModifyByType(EntityType::Stmt), 2); 
 
     // Step 2: Filter based on lhs and rhs
     // The filtering logic will depend on the nature of lhs and rhs (integer, wildcard, synonym)
