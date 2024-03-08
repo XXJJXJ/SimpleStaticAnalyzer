@@ -3,7 +3,7 @@
 shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
     checkStartOfIfStatement(tokens);
 
-    // Erase 'if and (' from tokens
+    // Erase 'if' and '(' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
     auto condition = extractCondition(tokens);
     auto ifStatement =
@@ -11,25 +11,33 @@ shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
             condition,
             getProcedureName());
 
-    parseThenBlock(ifStatement, tokens);
-    parseElseBlock(ifStatement, tokens);
+    parseBlock("then", ifStatement, tokens);
+    if (ifStatement->getThenStatementList().size() == 0) {
+        throw SyntaxErrorException("If statement's then block cannot be empty");
+    }
+    parseBlock("else", ifStatement, tokens);
+    if (ifStatement->getElseStatementList().size() == 0) {
+        throw SyntaxErrorException("If statement's else block cannot be empty");
+    }
 
     return ifStatement;
 }
 
-void IfStatementParser::parseThenBlock(shared_ptr<IfStatement> ifStatement, Tokens& tokens) {
-    checkStartOfThenBlock(tokens);
-    // Erase 'then' and '{' from tokens
+void IfStatementParser::parseBlock(string value, shared_ptr<IfStatement> ifStatement, Tokens& tokens) {
+    checkStartOfBlock(value, tokens);
+    // Erase 'then'/'else' and '{' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
 
     while (!tokens.empty() && !isEndOfStatement(tokens)) {
         auto statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(getProcedureName());
         auto statement = statementParser->parseEntity(tokens);
-        ifStatement->addThenStatement(statement);
-    }
-    if (ifStatement->getThenStatementList().size() == 0) {
-        throw SyntaxErrorException("If statement's then block cannot be empty");
+        if (value == "then") {
+            ifStatement->addThenStatement(statement);
+        } 
+        else {
+            ifStatement->addElseStatement(statement);
+        }
     }
 
     if (isEndOfStatement(tokens)) {
@@ -41,30 +49,6 @@ void IfStatementParser::parseThenBlock(shared_ptr<IfStatement> ifStatement, Toke
     }
 }
 
-void IfStatementParser::parseElseBlock(shared_ptr<IfStatement> ifStatement, Tokens& tokens) {
-    checkStartOfElseBlock(tokens);
-    // Erase 'else' and '{' from tokens
-    tokens.erase(tokens.begin(), tokens.begin() + 2);
-
-    while (!tokens.empty() && !isEndOfStatement(tokens)) {
-        auto statementParser = StatementParserFactory::getStatementParser(tokens);
-        statementParser->setProcedureName(getProcedureName());
-        auto statement = statementParser->parseEntity(tokens);
-        ifStatement->addElseStatement(statement);
-    }
-    if (ifStatement->getElseStatementList().size() == 0) {
-        throw SyntaxErrorException("If statement's else block cannot be empty");
-    }
-
-    if (isEndOfStatement(tokens)) {
-        // Erase '}' from tokens
-        tokens.erase(tokens.begin());
-    }
-    else {
-        throw SyntaxErrorException("If statement's else block is missing a }");
-    }
-}
-
 shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tokens) {
     Tokens conditionTokens;
     auto end = checkConditionOfIfStatement(tokens);
@@ -73,7 +57,7 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tok
         conditionTokens.push_back(*i);
     }
 
-    // Erasing all condition tokens and ) from tokens
+    // Erasing all condition tokens and ')' from tokens
     tokens.erase(tokens.begin(), end - 1);
     auto expressionParser = ExpressionParserFactory::getExpressionParser(conditionTokens, EntityType::If);
     auto condition = (expressionParser->parseEntity(conditionTokens));
@@ -114,23 +98,13 @@ Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens& tokens) 
     return end;
 }
 
-void IfStatementParser::checkStartOfThenBlock(Tokens& tokens) const {
-    if (tokens[0]->getValue() != "then") {
-        throw SyntaxErrorException("Missing then block");
+void IfStatementParser::checkStartOfBlock(string value, Tokens& tokens) const {
+    if (tokens[0]->getValue() != value) {
+        throw SyntaxErrorException("Missing " + value + " block");
     }
 
     if (tokens[1]->getType() != TokenType::LEFT_BRACE) {
-        throw SyntaxErrorException("Missing { at the start of then block");
-    }
-}
-
-void IfStatementParser::checkStartOfElseBlock(Tokens& tokens) const {
-    if (tokens[0]->getValue() != "else") {
-        throw SyntaxErrorException("If statement is missing else block");
-    }
-
-    if (tokens[1]->getType() != TokenType::LEFT_BRACE) {
-        throw SyntaxErrorException("Missing { at the start of else block");
+        throw SyntaxErrorException("Missing { at the start of " + value + " then block");
     }
 }
 
