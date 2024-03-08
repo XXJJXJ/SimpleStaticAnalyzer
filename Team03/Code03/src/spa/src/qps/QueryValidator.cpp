@@ -13,7 +13,7 @@
 QueryValidator::QueryValidator() = default;
 QueryValidator::~QueryValidator() = default;
 
-
+// Takes in tokens, validates them for syntax errors, then returns a simplified list of tokens (without unnecessary punctuation marks etc.) to be parsed by QueryParser
 std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(const std::vector<std::vector<std::vector<std::string>>>& tokens) {
     std::vector<std::vector<std::vector<std::string>>> validatedQuery;
 
