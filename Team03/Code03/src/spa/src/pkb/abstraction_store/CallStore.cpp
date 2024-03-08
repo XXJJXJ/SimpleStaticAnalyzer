@@ -54,10 +54,9 @@ unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> pro
         for (auto & c : calledByThis) {
             auto cRes = dfsAdd(c, visited);
             res.insert(cRes.begin(), cRes.end());
+            res.insert(c); // add target
         }
     }
-    // If empty, then just add self can alr
-    res.insert(proc);
     transitiveMap[proc] = res; // memoize
     return res;
 }
