@@ -110,7 +110,7 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
             declarations.push_back(currentList);
             currentList.clear();
         }
-        else if (token == ">") {
+        else if (token == ">" && currentList[0] == "Select") {
             if (isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
             }
@@ -132,14 +132,6 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
     // Query does not end properly
     if (!currentList.empty()) {
         throw SyntaxErrorException("Invalid query syntax");
-    }
-
-    if (declarations.empty()) {
-        throw SyntaxErrorException("No declarations");
-    }
-
-    if (selections.empty()) {
-        throw SyntaxErrorException("No selections");
     }
 
     splitTokens.push_back(declarations);

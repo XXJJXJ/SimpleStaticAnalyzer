@@ -53,16 +53,8 @@ QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     }
     // Create predicate objects for clauses
     for (auto tokens: predicateTokens) {
-        if (tokens.size() > 3 && tokens[0] == "such" && tokens[1] == "that" && tokens[2] != "pattern") {
-            std::vector<std::string> predicateTokens(tokens.begin() + 2, tokens.end());
-            std::shared_ptr<Predicate> predicate = pf.createPredicate(predicateTokens, synonymMap);
-            predicates.push_back(predicate);
-        } else if (tokens.size() > 1 && tokens[0] == "pattern") {
-            std::shared_ptr<Predicate> predicate = pf.createPredicate(tokens, synonymMap);
-            predicates.push_back(predicate);
-        } else {
-            throw SyntaxErrorException("Invalid clause keyword");
-        }
+        std::shared_ptr<Predicate> predicate = pf.createPredicate(tokens, synonymMap);
+        predicates.push_back(predicate);
     }
 
     //Query query(declarations, selections, clauses);
