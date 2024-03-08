@@ -104,7 +104,7 @@ void IfStatementParser::checkStartOfBlock(string value, Tokens& tokens) const {
     }
 
     if (tokens[1]->getType() != TokenType::LEFT_BRACE) {
-        throw SyntaxErrorException("Missing { at the start of " + value + " then block");
+        throw SyntaxErrorException("Missing { at the start of " + value + " block");
     }
 }
 
