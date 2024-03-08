@@ -11,19 +11,16 @@
 
 class Strategy;
 
-using ModifiesLhsRef = std::variant<int, Synonym, std::string>; // Combination of procedure and statements ref
-
 class ModifiesPredicate : public Predicate {
 private:
-    ModifiesLhsRef lhs; // Directly holds int, Synonym, or std::string
+    ProcAndStmtRef lhs; // Directly holds int, Synonym, or std::string
     EntityRef rhs; // Can be a synonym of type variable, a variable name, or "_"
-    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
   public:
-    ModifiesPredicate(ModifiesLhsRef lhs, EntityRef rhs);
+    ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~ModifiesPredicate() override = default;
     [[nodiscard]] shared_ptr<BaseTable> getTable(QueryManager& qm) override;
 
-    static bool isValidLhs(const ModifiesLhsRef& lhs);
+    static bool isValidLhs(const ProcAndStmtRef& lhs);
     static bool isValidRhs(const EntityRef& rhs);
 };
 

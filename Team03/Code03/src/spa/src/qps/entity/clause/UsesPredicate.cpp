@@ -5,11 +5,14 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
-UsesPredicate::UsesPredicate(UsesLhsRef lhs, EntityRef rhs)
+UsesPredicate::UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {
-    if (!isValidUsesLhsRef(this->lhs) || !isValidVariable(this->rhs)) {
+    if (!isValidProcAndStmtRef(this->lhs) || !isValidVariable(this->rhs)) {
         throw SemanticErrorException("Invalid arguments for UsesPredicate constructor");
     }
+
+    this->validators.push_back(getValidatorForProcAndStmtRef(this->lhs));
+    this->validators.push_back(getValidatorForEntityRef(this->rhs));
 
     if (std::holds_alternative<Synonym>(this->lhs)) {
         auto synonym = std::get<Synonym>(this->lhs);
@@ -54,41 +57,5 @@ shared_ptr<BaseTable> UsesPredicate::getTable(QueryManager& qm) {
     return resultTable;
 }
 
-bool UsesPredicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
-    if (row.size() != 2) {
-        throw QPSEvaluationException("UsesPredicate: got a row with size != 2 from PKB");
-    }
-
-    bool lhsMatch = true; // Default to true for wildcard "_"
-    bool rhsMatch = true; // Same as above
-    auto lhsStatement = std::dynamic_pointer_cast<Statement>(row[0]);
-    auto rhsExpression = std::dynamic_pointer_cast<Variable>(row[1]);
-    if (lhsStatement == nullptr || rhsExpression == nullptr) {
-        throw QPSEvaluationException(
-            "UsesPredicate: got a non-statement entity in the row from PKB");
-    }
-
-    if (std::holds_alternative<int>(lhs)) {
-        int lhsInt = std::get<int>(lhs);
-        lhsMatch = lhsStatement->getStatementNumber() ==
-                   lhsInt; // Assuming row[0] is the lhs entity and has an ID method
-    } else if (std::holds_alternative<Synonym>(lhs)) {
-        auto lhsSynonym = std::get<Synonym>(lhs);
-        lhsMatch = lhsStatement->isOfType(lhsSynonym.getType());
-    } else if (std::holds_alternative<std::string>(lhs)) {
-        std::string lhsString = std::get<std::string>(lhs);
-        lhsMatch = lhsString == "_" || lhsStatement->getName() == lhsString;
-    }
-
-    if (std::holds_alternative<std::string>(rhs)) {
-        std::string rhsString = std::get<std::string>(rhs);
-        rhsMatch = rhsString == "_" || rhsExpression->getName() == rhsString; // Assuming row[1] is the rhs entity and has an ID method
-    } else if (std::holds_alternative<Synonym>(rhs)) {
-        auto rhsSynonym = std::get<Synonym>(rhs);
-        rhsMatch = rhsExpression->isOfType(rhsSynonym.getType());
-    }
-
-    return lhsMatch && rhsMatch;
-}
 
 // ai-gen end

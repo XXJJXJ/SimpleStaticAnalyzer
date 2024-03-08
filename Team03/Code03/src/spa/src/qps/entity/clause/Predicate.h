@@ -7,6 +7,8 @@
 #include <variant>
 #include "qps/entity/strategy/Strategy.h"
 #include "common/spa_exception/SemanticErrorException.h"
+#include "common/spa_exception/QPSEvaluationException.h"
+#include "qps/entity/clause/validator/ColumnValidator.h"
 
 
 
@@ -18,16 +20,13 @@
 class Predicate {
 protected:
     vector<shared_ptr<Synonym>> synonyms; // Synonyms used in the predicate
+    vector<shared_ptr<ColumnValidator>> validators; // Validators for columns obtained by predicate
 public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion
     [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
-    [[nodiscard]] virtual shared_ptr<BaseTable> getTable(QueryManager& qm) {
-        // Temp implementation to get code compiling, TODO: remove and set pure virtual
-        return make_shared<BaseTable>();
-    };
-    virtual std::string toString() const {
-        return "Predicate";
-    };
+    [[nodiscard]] virtual shared_ptr<BaseTable> getTable(QueryManager& qm) = 0;
+    virtual std::string toString() const;
+    virtual bool isValidRow(const vector<shared_ptr<Entity>>& row) const;
 };
 
 #endif // RELATIONSHIPPREDICATE_H

@@ -17,7 +17,6 @@ class FollowsPredicate : public Predicate {
 private:
     StatementRef lhs; // Left-hand side can be an int, Synonym, or "_"
     StatementRef rhs; // Right-hand side can be a Synonym or "_"
-    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
 public:
     FollowsPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsPredicate() override = default;

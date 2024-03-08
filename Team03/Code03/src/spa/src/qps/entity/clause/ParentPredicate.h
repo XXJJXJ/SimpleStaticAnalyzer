@@ -14,7 +14,6 @@ class ParentPredicate : public Predicate {
 private:
     StatementRef lhs;
     StatementRef rhs;
-    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
 
 public:
     ParentPredicate(StatementRef lhs, StatementRef rhs);

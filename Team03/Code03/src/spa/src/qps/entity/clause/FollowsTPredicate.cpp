@@ -11,7 +11,9 @@ FollowsTPredicate::FollowsTPredicate(StatementRef lhs, StatementRef rhs) {
     }
 
     this->lhs = std::move(lhs);
+    this->validators.push_back(getValidatorForStatementRef(this->lhs));
     this->rhs = std::move(rhs);
+    this->validators.push_back(getValidatorForStatementRef(this->rhs));
 
     if (std::holds_alternative<Synonym>(this->lhs)) {
         auto synonym = std::get<Synonym>(this->lhs);
@@ -48,35 +50,5 @@ std::shared_ptr<BaseTable> FollowsTPredicate::getTable(QueryManager &qm) {
     return resultTable;
 }
 
-bool FollowsTPredicate::isValidRow(const std::vector<std::shared_ptr<Entity>> &row) const {
-    if (row.size() != 2) {
-        throw QPSEvaluationException("FollowsTPredicate: got a row with size != 2 from PKB");
-    }
-    bool lhsMatch = true; // Default to true for wildcard "-"
-    bool rhsMatch = true; // Same as above
-    auto lhsStatement = std::dynamic_pointer_cast<Statement>(row[0]);
-    auto rhsStatement = std::dynamic_pointer_cast<Statement>(row[1]);
-    if (lhsStatement == nullptr || rhsStatement == nullptr) {
-        throw QPSEvaluationException("FollowsTPredicate: got a non-statement entity in the row from PKB");
-    }
-
-    if (std::holds_alternative<int>(lhs)) {
-        int lhsInt = std::get<int>(lhs);
-        lhsMatch = lhsStatement->getStatementNumber() == lhsInt;
-    } else if (std::holds_alternative<Synonym>(lhs)) {
-        auto lhsSynonym = std::get<Synonym>(lhs);
-        lhsMatch = lhsStatement->isOfType(lhsSynonym.getType());
-    }
-
-    if (std::holds_alternative<int>(rhs)) {
-        int rhsInt = std::get<int>(rhs);
-        rhsMatch = rhsStatement->getStatementNumber() == rhsInt;
-    } else if (std::holds_alternative<Synonym>(rhs)) {
-        auto rhsSynonym = std::get<Synonym>(rhs);
-        rhsMatch = rhsStatement->isOfType(rhsSynonym.getType());
-    }
-
-    return lhsMatch && rhsMatch;
-}
 
 // ai-gen end
