@@ -9,7 +9,7 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
         auto synonym = get<Synonym>(this->lhs);
         isLhsValid &= synonym.getType() == EntityType::Variable;
     }
-    bool isRhsValid = isValidRhs(this->rhs);    // TODO: Get rid of this check, this should be in query cellFilter
+    bool isRhsValid = isValidRhs(this->rhs);    // TODO: Get rid of this check, this should be in query validator
 	if (!isValidAssignSyn || !isLhsValid || !isRhsValid) {
 		throw SemanticErrorException("Invalid argument for AssignPatternPredicate constructor");
 	}
@@ -24,7 +24,7 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
 // - Wildcard _
 // - Expression for exact match(e.g. "x*y")
 // - Expression for partial match(e.g._"x*y"_)
-// TODO: This shouldn't be here, this should be in query cellFilter.
+// TODO: This shouldn't be here, this should be in query validator.
 bool AssignPatternPredicate::isValidRhs(const std::string& rhs) {
     size_t len = rhs.size();
     return rhs == "_" ||
