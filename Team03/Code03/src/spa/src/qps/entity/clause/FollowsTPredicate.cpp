@@ -12,71 +12,13 @@ FollowsTPredicate::FollowsTPredicate(StatementRef lhs, StatementRef rhs) {
 
     this->lhs = std::move(lhs);
     this->rhs = std::move(rhs);
-
-    if (std::holds_alternative<Synonym>(this->lhs)) {
-        auto synonym = std::get<Synonym>(this->lhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
-    if (std::holds_alternative<Synonym>(this->rhs)) {
-        auto synonym = std::get<Synonym>(this->rhs);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-    }
+    addStmtRef(this->lhs);
+    addStmtRef(this->rhs);
 }
 
-std::shared_ptr<BaseTable> FollowsTPredicate::getTable(QueryManager &qm) {
-    // Step 1: Fetch all followsT relationships as BaseTable
-    auto allFollowsT = BaseTable(qm.getFollowT(), 2);
-
-    //Step 2: Filter based on lhs and rhs
-    auto filteredFollowsT = allFollowsT.filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
-        return isValidRow(row);
-    });
-
-    //Step 3: Project to keep columns associated with a Synonym or determine boolean result
-    bool isLhsSynonym = std::holds_alternative<Synonym>(lhs);
-    bool isRhsSynonym = std::holds_alternative<Synonym>(rhs);
-
-    shared_ptr<BaseTable> resultTable = filteredFollowsT->project({isLhsSynonym, isRhsSynonym});
-    if(!resultTable->isBoolean()) {
-        if (synonyms.size() == 2 && *synonyms[0] == *synonyms[1]) {
-            resultTable = resultTable->filter([](const std::vector<std::shared_ptr<Entity>> &row) {
-                return row[0] == row[1];
-            });
-        }
-        resultTable = std::make_shared<HeaderTable>(synonyms, *resultTable);
-    }
-    return resultTable;
+std::shared_ptr<BaseTable> FollowsTPredicate::getFullTable(QueryManager &qm) {
+    return std::make_shared<BaseTable>(qm.getFollowT(), 2);
 }
 
-bool FollowsTPredicate::isValidRow(const std::vector<std::shared_ptr<Entity>> &row) const {
-    if (row.size() != 2) {
-        throw QPSEvaluationException("FollowsTPredicate: got a row with size != 2 from PKB");
-    }
-    bool lhsMatch = true; // Default to true for wildcard "-"
-    bool rhsMatch = true; // Same as above
-    auto lhsStatement = std::dynamic_pointer_cast<Statement>(row[0]);
-    auto rhsStatement = std::dynamic_pointer_cast<Statement>(row[1]);
-    if (lhsStatement == nullptr || rhsStatement == nullptr) {
-        throw QPSEvaluationException("FollowsTPredicate: got a non-statement entity in the row from PKB");
-    }
-
-    if (std::holds_alternative<int>(lhs)) {
-        int lhsInt = std::get<int>(lhs);
-        lhsMatch = lhsStatement->getStatementNumber() == lhsInt;
-    } else if (std::holds_alternative<Synonym>(lhs)) {
-        auto lhsSynonym = std::get<Synonym>(lhs);
-        lhsMatch = lhsStatement->isOfType(lhsSynonym.getType());
-    }
-
-    if (std::holds_alternative<int>(rhs)) {
-        int rhsInt = std::get<int>(rhs);
-        rhsMatch = rhsStatement->getStatementNumber() == rhsInt;
-    } else if (std::holds_alternative<Synonym>(rhs)) {
-        auto rhsSynonym = std::get<Synonym>(rhs);
-        rhsMatch = rhsStatement->isOfType(rhsSynonym.getType());
-    }
-
-    return lhsMatch && rhsMatch;
-}
 
 // ai-gen end

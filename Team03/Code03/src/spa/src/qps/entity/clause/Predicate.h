@@ -7,6 +7,10 @@
 #include <variant>
 #include "qps/entity/strategy/Strategy.h"
 #include "common/spa_exception/SemanticErrorException.h"
+#include "common/spa_exception/QPSEvaluationException.h"
+#include "qps/entity/clause/cellFilter/CellFilter.h"
+#include "qps/entity/evaluation/TableFactory.h"
+#include "qps/entity/clause/PredicateUtils.h"
 
 
 
@@ -18,16 +22,19 @@
 class Predicate {
 protected:
     vector<shared_ptr<Synonym>> synonyms; // Synonyms used in the predicate
+    vector<shared_ptr<CellFilter>> rowFilter; // Cell filters that are used to filter the rows in result table
+    vector<bool> projectionFilter; // Filter to determine which columns to keep in the result table
+    virtual std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) = 0; // Gets the full table for the predicate
+    void addStmtRef(StatementRef &stmtRef);
+    void addEntityRef(EntityRef& entityRef);
+    void addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef);
+    bool isValidRow(const vector<shared_ptr<Entity>>& row) const;
+//    template<typename T> void addParameterGeneric(T &ref);
 public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion
     [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
-    [[nodiscard]] virtual shared_ptr<BaseTable> getTable(QueryManager& qm) {
-        // Temp implementation to get code compiling, TODO: remove and set pure virtual
-        return make_shared<BaseTable>();
-    };
-    virtual std::string toString() const {
-        return "Predicate";
-    };
+    [[nodiscard]] virtual shared_ptr<BaseTable> getResultTable(QueryManager& qm);
+    [[nodiscard]] virtual std::string toString() const;
 };
 
 #endif // RELATIONSHIPPREDICATE_H
