@@ -252,8 +252,14 @@ TEST_CASE("12th SP-PKB integration Test: calls relation test") {
 
     QueryManager qm;
     vector<vector<shared_ptr<Entity>>> callsStore = qm.getCallS();
-    for (vector<shared_ptr<Entity>> v : callsStore) {
-        std::cout << "calls relation 1: " << v[0]->getName() << ", " << v[1]->getName() << std::endl;
-    }
     REQUIRE(callsStore.size() == 2);
+
+    vector<shared_ptr<Entity>> firstCalls = callsStore[0];
+    bool result1 = firstCalls[0]->getName().compare("first") == 0 && firstCalls[1]->getName().compare("second") == 0;
+    REQUIRE(result1);
+
+    vector<shared_ptr<Entity>> secondCalls = callsStore[1];
+    bool result2 = secondCalls[0]->getName().compare("second") == 0 && secondCalls[1]->getName().compare("third") == 0;
+    REQUIRE(result2);
+    pkbPopulator->clear();
 }
