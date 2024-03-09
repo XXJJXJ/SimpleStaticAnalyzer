@@ -55,11 +55,11 @@ shared_ptr<BaseTable> AssignPatternPredicate::getTable(QueryManager &qm) {
     BaseTable table;
     table.setColumnCount(2);
     for (auto& arg : allPossibleLhs) {
-        auto assignments = qm.getAssignPattern(arg->getName(), stripWildcard(rhs), hasWildcard(rhs));
+        auto assignments = qm.getAssignPattern(stripWildcard(rhs), hasWildcard(rhs));
         for (auto& assignment : assignments) {
             // Only need to filter arg
             if (arg->isOfType(EntityType::Variable)) {
-                table.addRow(TableRow({static_pointer_cast<Entity>(assignment), arg}));
+                table.addRow(TableRow({assignment[0], arg}));
             }
         }
     }

@@ -26,7 +26,7 @@ TEST_CASE("AssignPatternPredicate with specific variable and exact match") {
 
     SECTION("Works for Synonym lhs") {
         AssignPatternPredicate predicate(*assignSynonym, *variableSynonym, "unused");
-        qm.setFakeAssignsWithPattern({assignStmt1, assignStmt2, assignStmt3, assignStmt4, assignStmt5});
+        qm.setFakeAssignsWithPattern({{assignStmt1, variableX}, {assignStmt2, variableX}, {assignStmt3,variableX}, {assignStmt4,variableX}, {assignStmt5,variableX}});
         qm.setAllFakeVariable({variableX, variableY, variableZ, variableW});
         auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
         REQUIRE(table != nullptr);
@@ -36,7 +36,7 @@ TEST_CASE("AssignPatternPredicate with specific variable and exact match") {
 
     SECTION("Works for wildcard") {
         AssignPatternPredicate predicate(*assignSynonym, "_", "unused");
-        qm.setFakeAssignsWithPattern({assignStmt1, assignStmt2, assignStmt3, assignStmt4, assignStmt5});
+        qm.setFakeAssignsWithPattern({{assignStmt1, variableX}, {assignStmt2, variableX}, {assignStmt3,variableX}, {assignStmt4,variableX}, {assignStmt5,variableX}});
         qm.setAllFakeVariable({variableX, variableY, variableZ, variableW});
         auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
         REQUIRE(table != nullptr);
@@ -47,7 +47,7 @@ TEST_CASE("AssignPatternPredicate with specific variable and exact match") {
 
     SECTION("Works for specific variable") {
         AssignPatternPredicate predicate(*assignSynonym, "x", "unused");    // x exists
-        qm.setFakeAssignsWithPattern({assignStmt1, assignStmt2, assignStmt3, assignStmt4, assignStmt5});
+        qm.setFakeAssignsWithPattern({{assignStmt1, variableX}, {assignStmt2, variableX}, {assignStmt3,variableX}, {assignStmt4,variableX}, {assignStmt5,variableX}});
         qm.setAllFakeVariable({variableX, variableY, variableZ, variableW});
         auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
         REQUIRE(table != nullptr);
@@ -69,7 +69,7 @@ TEST_CASE("AssignPatternPredicate with specific variable and exact match") {
 
     SECTION("Works when no variables") {
         AssignPatternPredicate predicate(*assignSynonym, "_", "unused");
-        qm.setFakeAssignsWithPattern({assignStmt1, assignStmt2, assignStmt3, assignStmt4, assignStmt5});
+        qm.setFakeAssignsWithPattern({{assignStmt1, variableX}, {assignStmt2, variableX}, {assignStmt3,variableX}, {assignStmt4,variableX}, {assignStmt5,variableX}});
         qm.setAllFakeVariable({});
         auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
         REQUIRE(table != nullptr);

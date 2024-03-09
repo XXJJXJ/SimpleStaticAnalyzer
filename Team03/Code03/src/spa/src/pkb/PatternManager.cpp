@@ -15,13 +15,13 @@ bool PatternManager::hasAssignPattern(string& expr, bool hasWildcard) {
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
     return assignPatternStore.hasAssignPattern(expr, hasWildcard);
 }
-vector<shared_ptr<AssignStatement>> PatternManager::getAssignPattern(string& targetVar, string& expr, bool hasWildcard) {
+vector<vector<shared_ptr<Entity>>> PatternManager::getAssignPattern(string& expr, bool hasWildcard) {
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
-    return assignPatternStore.getAssignPattern(targetVar, expr, hasWildcard);
+    return assignPatternStore.getAssignPattern(expr, hasWildcard);
 }
-vector<shared_ptr<AssignStatement>> PatternManager::findAssignPattern(vector<shared_ptr<AssignStatement>>& allAssign, string& targetVar, string& expr, bool hasWildcard) {
+vector<vector<shared_ptr<Entity>>> PatternManager::findAssignPattern(vector<shared_ptr<AssignStatement>>& allAssign, string& expr, bool hasWildcard) {
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
-    return assignPatternStore.findAssignPattern(allAssign, targetVar, expr, hasWildcard);
+    return assignPatternStore.findAssignPattern(allAssign, expr, hasWildcard);
 }
 
 void PatternManager::clearStore() {

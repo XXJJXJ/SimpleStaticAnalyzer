@@ -22,7 +22,7 @@ private:
 
     vector<vector<shared_ptr<Entity>>> fakeModifies;
 
-    vector<shared_ptr<AssignStatement>> fakeAssignsWithPattern;
+    vector<vector<shared_ptr<Entity>>> fakeAssignsWithPattern;
 
 public:
     FakeQueryManager() = default;
@@ -36,11 +36,11 @@ public:
     }
 
     // Specifies the return value of getAssignPattern()
-    void setFakeAssignsWithPattern(vector<shared_ptr<AssignStatement>> stmt) {
+    void setFakeAssignsWithPattern(vector<vector<shared_ptr<Entity>>> stmt) {
         fakeAssignsWithPattern = stmt;
     }
 
-    vector<shared_ptr<AssignStatement>> getAssignPattern(string useless1, string useless2, bool useless3) override {
+    vector<vector<shared_ptr<Entity>>> getAssignPattern(string useless2, bool useless3) override {
         return fakeAssignsWithPattern;
     }
 
