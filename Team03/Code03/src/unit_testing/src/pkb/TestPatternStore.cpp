@@ -249,4 +249,25 @@ TEST_CASE("Check clear") {
     REQUIRE((qm.getAssignPattern("", "", true).size() == 1));
     qm.clear();
     REQUIRE((qm.getAssignPattern("", "", true).size() == 0));
+
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
+    SECTION("Clears If Pattern Store properly") {
+        shared_ptr<IfStatement> ifStmt = make_shared<IfStatement>(1, cond, "main");
+        pop.addIfStatement(ifStmt);
+        pop.addUses(ifStmt, x);
+        REQUIRE((qm.getIfPattern().size() == 1));
+        qm.clear();
+        REQUIRE((qm.getIfPattern().size() == 0));
+    }
+    
+    SECTION("Clears While Pattern Store properly") {
+        shared_ptr<WhileStatement> whileStmt = make_shared<WhileStatement>(1, cond, "main");
+        pop.addWhileStatement(whileStmt);
+        pop.addUses(whileStmt, x);
+        REQUIRE((qm.getWhilePattern().size() == 1));
+        qm.clear();
+        REQUIRE((qm.getWhilePattern().size() == 0));
+    } 
 }
