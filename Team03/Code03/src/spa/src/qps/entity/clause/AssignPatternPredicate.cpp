@@ -11,28 +11,20 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
 	if (!isValidAssignSyn || !isLhsValid) {
 		throw SemanticErrorException("Invalid argument for AssignPatternPredicate constructor");
 	}
-
-    synonyms.push_back(make_shared<Synonym>(this->assignSyn));
-    if (holds_alternative<Synonym>(this->lhs)) {
-        auto synonym = get<Synonym>(this->lhs);
-        synonyms.push_back(make_shared<Synonym>(synonym));
-    }
+    // Cast to assignSyn to EntityRef
+    EntityRef assignSynRef = this->assignSyn;
+    addEntityRef(assignSynRef);
+    addEntityRef(this->lhs);
 }
 
-shared_ptr<BaseTable> AssignPatternPredicate::getTable(QueryManager &qm) {
+std::shared_ptr<BaseTable> AssignPatternPredicate::getFullTable(QueryManager &qm) {
     // Step 1: get all possible LHS (arg1)
     vector<shared_ptr<Entity>> allPossibleLhs;
     if (holds_alternative<string>(lhs) && get<string>(lhs) != WILDCARD) {
-
-        // TODO: Ask PKB to support querying by variable name and refactor this
+        // We don't have access to the internal of PKB here, so we can only create a new variable with the same name
         allPossibleLhs.push_back(make_shared<Variable>(get<string>(lhs)));
-
     } else {
-        // TODO: Ask PKB to return Entity and refactor this
-        for (auto& variable : qm.getAllEntitiesByType(EntityType::Variable)) {
-            // cast to shared_ptr<Entity>
-            allPossibleLhs.push_back(variable);
-        }
+        allPossibleLhs = qm.getAllEntitiesByType(EntityType::Variable);
     }
 
     // Step 2: construct the table
@@ -47,16 +39,9 @@ shared_ptr<BaseTable> AssignPatternPredicate::getTable(QueryManager &qm) {
             }
         }
     }
-
-    // Step 3: project to keep columns associated with a Synonym or determine a boolean result
-    bool isAssignSynonym = true;
-    bool isLhsSynonym = holds_alternative<Synonym>(lhs);
-    shared_ptr<BaseTable> resultTable = table.project({isAssignSynonym, isLhsSynonym});
-
-    // Result table can't be boolean, as assign must be synonym
-    resultTable = make_shared<HeaderTable>(synonyms, *resultTable);
-    return resultTable;
+    return make_shared<BaseTable>(table);
 }
+
 
 
 

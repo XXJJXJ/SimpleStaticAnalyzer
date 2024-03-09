@@ -23,7 +23,7 @@ private:
 public:
     HeaderTable() = default;
     HeaderTable(const vector<shared_ptr<Synonym>>& headers, const vector<vector<shared_ptr<Entity>>>& entities);
-    HeaderTable(const vector<shared_ptr<Synonym>>& headers, BaseTable& baseTable);
+    HeaderTable(const vector<shared_ptr<Synonym>>& headers, shared_ptr<BaseTable> baseTable);
     void setHeaders(const vector<shared_ptr<Synonym>>& headers);
     [[nodiscard]] const vector<shared_ptr<Synonym>>& getHeaders() const;
     [[nodiscard]] HeaderTable selectColumns(const vector<shared_ptr<Synonym>>& synonyms) const; // Projection operation
@@ -32,6 +32,7 @@ public:
     void updateHeaderIndexMap(); // Utility function to update headerIndexMap
     int indexOf(const Synonym& synonym) const; // Get index of a synonym
     bool hasHeader(const Synonym& synonym) const; // Check if a header exists
+    static std::shared_ptr<HeaderTable> fromBaseTable(const BaseTable& baseTable, const vector<shared_ptr<Synonym>>& synonyms);
     bool operator==(const BaseTable& other) const override;
 };
 

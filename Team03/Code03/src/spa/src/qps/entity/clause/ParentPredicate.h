@@ -13,11 +13,11 @@ class ParentPredicate : public Predicate {
 private:
     StatementRef lhs;
     StatementRef rhs;
-    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
+protected:
+    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
 
 public:
     ParentPredicate(StatementRef lhs, StatementRef rhs);
-    std::shared_ptr<BaseTable> getTable(QueryManager &qm) override;
     std::string toString() const override;
 };
 
