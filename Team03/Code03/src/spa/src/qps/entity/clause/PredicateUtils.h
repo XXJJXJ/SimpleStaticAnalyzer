@@ -6,6 +6,13 @@
 #include "common/EntityType.h"
 #include "qps/entity/query/Synonym.h"
 #include "common/Util.h"
+#include "qps/entity/clause/cellFilter/CellFilter.h"
+#include "qps/entity/clause/cellFilter/StatementNumberFilter.h"
+#include "qps/entity/clause/cellFilter/SynonymFilter.h"
+#include "qps/entity/clause/cellFilter/IdentifierFilter.h"
+#include "qps/entity/clause/cellFilter/WildcardFilter.h"
+#include "common/spa_exception/QPSEvaluationException.h"
+
 
 // We cannot do subtype check without initializing the Entity and call .isOfType(), let's get back to something simple.
 const unordered_set<EntityType> VALID_STATEMENT_TYPES = {EntityType::Stmt, EntityType::Assign, EntityType::Call,
@@ -31,16 +38,18 @@ template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 
 using StatementRef = std::variant<int, Synonym, std::string>; // stmtRef: synonym | '_' | INTEGER
-using EntityRef = std::variant<Synonym, std::string>; // entRef : synonym | '_' | '"' IDENT '"'
-using UsesLhsRef = std::variant<int, Synonym, std::string>;
-using ModifiesLhsRef = std::variant<int, Synonym, std::string>;
+using EntityRef = std::variant<Synonym, std::string>; // entRef : synonym | '_' | 'IDENT'
+using ProcAndStmtRef = std::variant<int, Synonym, std::string>; // procAndStmtRef: synonym | '_' | 'IDENT' | INTEGER
 
 bool isValidStatementRef(const StatementRef &ref);
 bool isValidEntityRef(const EntityRef &ref);
-bool isValidUsesLhsRef(const UsesLhsRef& ref);
-bool isValidModifiesLhsRef(const ModifiesLhsRef& ref);
+bool isValidProcAndStmtRef(const ProcAndStmtRef& ref);
 bool isValidVariable(const EntityRef& ref);
 bool isWildcard(StatementRef& ref);
 bool isWildcard(EntityRef & ref);
 bool hasWildcard(std::string& expr);
 std::string stripWildcard(std::string& expr);
+std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef);
+std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef& entRef);
+std::shared_ptr<CellFilter> getFilterForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef);
+

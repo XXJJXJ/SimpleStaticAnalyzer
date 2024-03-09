@@ -17,11 +17,11 @@ class FollowsPredicate : public Predicate {
 private:
     StatementRef lhs; // Left-hand side can be an int, Synonym, or "_"
     StatementRef rhs; // Right-hand side can be a Synonym or "_"
-    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
+protected:
+    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
 public:
     FollowsPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsPredicate() override = default;
-    [[nodiscard]] shared_ptr<BaseTable> getTable(QueryManager& qm) override;
     std::string toString() const override;
 };
 
