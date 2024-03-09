@@ -12,17 +12,16 @@
 
 class Strategy;
 
-using UsesLhsRef = std::variant<int, Synonym, std::string>; // Combination of procedure and statements ref
 
 class UsesPredicate : public Predicate {
 private:
-    UsesLhsRef lhs; // Directly holds int, Synonym, or std::string
+    ProcAndStmtRef lhs; // Directly holds int, Synonym, or std::string
     EntityRef rhs; // Can be a synonym of type variable, a variable name, or "_"
-    bool isValidRow(const std::vector<std::shared_ptr<Entity>>& row) const;
-  public:
-    UsesPredicate(UsesLhsRef lhs, EntityRef rhs);
+protected:
+    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
+public:
+    UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~UsesPredicate() override = default;
-    [[nodiscard]] shared_ptr<BaseTable> getTable(QueryManager& qm) override;
 };
 
 #endif // USESPREDICATE_H

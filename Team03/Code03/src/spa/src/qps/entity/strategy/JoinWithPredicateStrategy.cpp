@@ -17,7 +17,7 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
 
     if (synonyms.empty()) {
         // No synonym involved in the predicate, returns boolean table
-        auto table = predicate->getTable(*context.getQueryManager());
+        auto table = predicate->getResultTable(*context.getQueryManager());
         if (table->isEmpty()) {
             context.setResultToFalse();
         }
@@ -30,7 +30,7 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
 
     if (!isTableInitialized) {
         // If no table is initialized, fetch the table for the predicate and initialize for the group
-        auto targetTable = predicate->getTable(*context.getQueryManager());
+        auto targetTable = predicate->getResultTable(*context.getQueryManager());
         if (targetTable) {
             if (targetTable->isEmpty()) {
                 context.setResultToFalse();
@@ -43,7 +43,7 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
         // If the table is already initialized, update the table for the corresponding group
         for (const auto& synonym : synonyms) {
             auto currentTable = context.getTableForSynonym(*synonym);
-            auto targetTable = predicate->getTable(*context.getQueryManager());
+            auto targetTable = predicate->getResultTable(*context.getQueryManager());
             if (currentTable && targetTable) {
                 auto updatedTable = currentTable->join(*targetTable);
                 if (updatedTable->isEmpty()) {

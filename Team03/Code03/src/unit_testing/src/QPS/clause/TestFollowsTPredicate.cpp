@@ -39,7 +39,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
             Synonym stmtSyn(EntityType::Stmt, "s1");
             Synonym stmtSyn2(EntityType::Stmt, "s2");
             FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
-            auto table = followsPred.getTable(qm);
+            auto table = followsPred.getResultTable(qm);
             REQUIRE(table->getColumnCount() == 2);
             REQUIRE(table->getRows().size() == 10);
         }
@@ -48,7 +48,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
             Synonym stmtSyn(EntityType::Print, "s1");
             Synonym stmtSyn2(EntityType::Print, "s2");
             FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
-            auto table = followsPred.getTable(qm);
+            auto table = followsPred.getResultTable(qm);
             REQUIRE(table->getColumnCount() == 2);
             REQUIRE(table->getRows().size() == 3);
         }
@@ -57,7 +57,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
             Synonym stmtSyn(EntityType::Print, "s1");
             Synonym stmtSyn2(EntityType::Read, "s2");
             FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
-            auto table = followsPred.getTable(qm);
+            auto table = followsPred.getResultTable(qm);
             REQUIRE(table->getColumnCount() == 2);
             REQUIRE(table->getRows().size() == 4);
         }
@@ -66,7 +66,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
             Synonym stmtSyn(EntityType::Read, "s1");
             Synonym stmtSyn2(EntityType::Read, "s2");
             FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
-            auto table = followsPred.getTable(qm);
+            auto table = followsPred.getResultTable(qm);
             REQUIRE(table->getColumnCount() == 2);
             REQUIRE(table->getRows().size() == 1);
         }
@@ -75,7 +75,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
             Synonym stmtSyn(EntityType::Read, "s1");
             Synonym stmtSyn2(EntityType::Print, "s2");
             FollowsTPredicate followsPred(stmtSyn, stmtSyn2);
-            auto table = followsPred.getTable(qm);
+            auto table = followsPred.getResultTable(qm);
             REQUIRE(table->getColumnCount() == 2);
             REQUIRE(table->getRows().size() == 2);
         }
@@ -84,7 +84,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
     SECTION("Using statement numbers only") {
         SECTION("Follows(1, 2) is true") {
             FollowsTPredicate followsTPred(1, 2);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -92,7 +92,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(1, 3) is true") {
             FollowsTPredicate followsTPred(1, 3);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -100,7 +100,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(1, 4) is true") {
             FollowsTPredicate followsTPred(1, 4);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -108,7 +108,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(1, 5) is true") {
             FollowsTPredicate followsTPred(1, 5);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -116,7 +116,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(2, 3) is true") {
             FollowsTPredicate followsTPred(2, 3);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -124,7 +124,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(2, 4) is true") {
             FollowsTPredicate followsTPred(2, 4);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -132,7 +132,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(2, 5) is true") {
             FollowsTPredicate followsTPred(2, 5);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -140,7 +140,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(3, 4) is true") {
             FollowsTPredicate followsTPred(3, 4);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -148,7 +148,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(3, 5) is true") {
             FollowsTPredicate followsTPred(3, 5);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -156,7 +156,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(4, 5) is true") {
             FollowsTPredicate followsTPred(4, 5);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
@@ -164,7 +164,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(5, 4) is false") {
             FollowsTPredicate followsTPred(5, 4);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -172,7 +172,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(4, 3) is false") {
             FollowsTPredicate followsTPred(4, 3);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -180,7 +180,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(5, 3) is false") {
             FollowsTPredicate followsTPred(5, 3);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -188,7 +188,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(3, 2) is false") {
             FollowsTPredicate followsTPred(3, 2);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -196,7 +196,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(4, 2) is false") {
             FollowsTPredicate followsTPred(4, 2);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -204,7 +204,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(5, 2) is false") {
             FollowsTPredicate followsTPred(5, 2);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -212,7 +212,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(2, 1) is false") {
             FollowsTPredicate followsTPred(2, 1);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -220,7 +220,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(3, 1) is false") {
             FollowsTPredicate followsTPred(3, 1);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -228,7 +228,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(4, 1) is false") {
             FollowsTPredicate followsTPred(4, 1);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -236,7 +236,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
 
         SECTION("Follows(5, 1) is false") {
             FollowsTPredicate followsTPred(5, 1);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(!boolTable->isTrue());
@@ -255,7 +255,7 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
         SECTION("FollowsT(1, s1) -- gets 4") {
             // Return statements that follow statement 1
             FollowsTPredicate followsTPred(1, stmtSyn);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getRows().size() == 4);
         }
@@ -263,14 +263,14 @@ TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]"
         SECTION("FollowsT(s1, 1) -- gets 0") {
             // Return statements that come before statement 1 (?)
             FollowsTPredicate followsTPred(stmtSyn, 1);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getRows().size() == 0);
         }
 
         SECTION("FollowsT(s1, 3) -- gets 2") {
             FollowsTPredicate followsTPred(stmtSyn, 3);
-            auto table = followsTPred.getTable(qm);
+            auto table = followsTPred.getResultTable(qm);
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getRows().size() == 2);
         }

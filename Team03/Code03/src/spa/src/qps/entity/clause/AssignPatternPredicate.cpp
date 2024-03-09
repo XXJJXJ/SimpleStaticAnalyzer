@@ -9,16 +9,14 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
         auto synonym = get<Synonym>(this->lhs);
         isLhsValid &= synonym.getType() == EntityType::Variable;
     }
-    bool isRhsValid = isValidRhs(this->rhs);
+    bool isRhsValid = isValidRhs(this->rhs);    // TODO: Get rid of this check, this should be in query validator
 	if (!isValidAssignSyn || !isLhsValid || !isRhsValid) {
 		throw SemanticErrorException("Invalid argument for AssignPatternPredicate constructor");
 	}
-
-    synonyms.push_back(make_shared<Synonym>(this->assignSyn));
-    if (holds_alternative<Synonym>(this->lhs)) {
-        auto synonym = get<Synonym>(this->lhs);
-        synonyms.push_back(make_shared<Synonym>(synonym));
-    }
+    // Cast to assignSyn to EntityRef
+    EntityRef assignSynRef = this->assignSyn;
+    addEntityRef(assignSynRef);
+    addEntityRef(this->lhs);
 }
 
 
@@ -26,6 +24,7 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
 // - Wildcard _
 // - Expression for exact match(e.g. "x*y")
 // - Expression for partial match(e.g._"x*y"_)
+// TODO: This shouldn't be here, this should be in query validator.
 bool AssignPatternPredicate::isValidRhs(const std::string& rhs) {
     size_t len = rhs.size();
     return rhs == "_" ||
@@ -33,46 +32,12 @@ bool AssignPatternPredicate::isValidRhs(const std::string& rhs) {
            len > 4 && rhs[0] == '_' && rhs[1] == '"' && rhs[len - 2] == '"' && rhs[len - 1] == '_';
 }
 
+std::shared_ptr<BaseTable> AssignPatternPredicate::getFullTable(QueryManager &qm) {
 
-
-shared_ptr<BaseTable> AssignPatternPredicate::getTable(QueryManager &qm) {
-    // Step 1: get all possible LHS (arg1)
-    vector<shared_ptr<Entity>> allPossibleLhs;
-    if (holds_alternative<string>(lhs) && get<string>(lhs) != WILDCARD) {
-
-        // TODO: Ask PKB to support querying by variable name and refactor this
-        allPossibleLhs.push_back(make_shared<Variable>(get<string>(lhs)));
-
-    } else {
-        // TODO: Ask PKB to return Entity and refactor this
-        for (auto& variable : qm.getAllEntitiesByType(EntityType::Variable)) {
-            // cast to shared_ptr<Entity>
-            allPossibleLhs.push_back(variable);
-        }
-    }
-
-    // Step 2: construct the table
-    BaseTable table;
-    table.setColumnCount(2);
-    for (auto& arg : allPossibleLhs) {
-        auto assignments = qm.getAssignPattern(stripWildcard(rhs), hasWildcard(rhs));
-        for (auto& assignment : assignments) {
-            // Only need to filter arg
-            if (arg->isOfType(EntityType::Variable)) {
-                table.addRow(TableRow({assignment[0], arg}));
-            }
-        }
-    }
-
-    // Step 3: project to keep columns associated with a Synonym or determine a boolean result
-    bool isAssignSynonym = true;
-    bool isLhsSynonym = holds_alternative<Synonym>(lhs);
-    shared_ptr<BaseTable> resultTable = table.project({isAssignSynonym, isLhsSynonym});
-
-    // Result table can't be boolean, as assign must be synonym
-    resultTable = make_shared<HeaderTable>(synonyms, *resultTable);
-    return resultTable;
+    return make_shared<BaseTable>(
+            qm.getAssignPattern(stripWildcard(rhs), hasWildcard(rhs)), 2);
 }
+
 
 
 

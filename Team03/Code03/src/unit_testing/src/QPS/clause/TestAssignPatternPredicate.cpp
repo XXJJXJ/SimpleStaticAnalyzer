@@ -27,18 +27,16 @@ TEST_CASE("AssignPatternPredicate with specific variable and exact match") {
     SECTION("Works for Synonym lhs") {
         AssignPatternPredicate predicate(*assignSynonym, *variableSynonym, "unused");
         qm.setFakeAssignsWithPattern({{assignStmt1, variableX}, {assignStmt2, variableX}, {assignStmt3,variableX}, {assignStmt4,variableX}, {assignStmt5,variableX}});
-        qm.setAllFakeVariable({variableX, variableY, variableZ, variableW});
-        auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
+        auto table = static_pointer_cast<HeaderTable>(predicate.getResultTable(qm));
         REQUIRE(table != nullptr);
-        REQUIRE(table->getSize() == 20); // all combinations of 5 assignments and 4 variables
+        REQUIRE(table->getSize() == 5); // all combinations of 5 assignments and 4 variables
         REQUIRE(table->getHeaders().size() == 2);
     }
 
     SECTION("Works for wildcard") {
         AssignPatternPredicate predicate(*assignSynonym, "_", "unused");
         qm.setFakeAssignsWithPattern({{assignStmt1, variableX}, {assignStmt2, variableX}, {assignStmt3,variableX}, {assignStmt4,variableX}, {assignStmt5,variableX}});
-        qm.setAllFakeVariable({variableX, variableY, variableZ, variableW});
-        auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
+        auto table = static_pointer_cast<HeaderTable>(predicate.getResultTable(qm));
         REQUIRE(table != nullptr);
         REQUIRE(table->getSize() == 5); // all 5 assignments
         REQUIRE(table->getHeaders().size() == 1);
@@ -48,8 +46,7 @@ TEST_CASE("AssignPatternPredicate with specific variable and exact match") {
     SECTION("Works for specific variable") {
         AssignPatternPredicate predicate(*assignSynonym, "x", "unused");    // x exists
         qm.setFakeAssignsWithPattern({{assignStmt1, variableX}, {assignStmt2, variableX}, {assignStmt3,variableX}, {assignStmt4,variableX}, {assignStmt5,variableX}});
-        qm.setAllFakeVariable({variableX, variableY, variableZ, variableW});
-        auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
+        auto table = static_pointer_cast<HeaderTable>(predicate.getResultTable(qm));
         REQUIRE(table != nullptr);
         REQUIRE(table->getSize() == 5); // all 5 assignments, since there's match
         REQUIRE(table->getHeaders().size() == 1);
@@ -59,24 +56,13 @@ TEST_CASE("AssignPatternPredicate with specific variable and exact match") {
     SECTION("Works when no assignments") {
         AssignPatternPredicate predicate(*assignSynonym, "_", "unused");
         qm.setFakeAssignsWithPattern({});
-        qm.setAllFakeVariable({variableX, variableY, variableZ, variableW});
-        auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
+        auto table = static_pointer_cast<HeaderTable>(predicate.getResultTable(qm));
         REQUIRE(table != nullptr);
         REQUIRE(table->getSize() == 0);
         REQUIRE(table->getHeaders().size() == 1);
         REQUIRE(table->getHeaders()[0]->getName() == "a");
     }
 
-    SECTION("Works when no variables") {
-        AssignPatternPredicate predicate(*assignSynonym, "_", "unused");
-        qm.setFakeAssignsWithPattern({{assignStmt1, variableX}, {assignStmt2, variableX}, {assignStmt3,variableX}, {assignStmt4,variableX}, {assignStmt5,variableX}});
-        qm.setAllFakeVariable({});
-        auto table = static_pointer_cast<HeaderTable>(predicate.getTable(qm));
-        REQUIRE(table != nullptr);
-        REQUIRE(table->getSize() == 0);
-        REQUIRE(table->getHeaders().size() == 1);
-        REQUIRE(table->getHeaders()[0]->getName() == "a");
-    }
 }
 
 // ai-gen start(gpt, 1, e)
