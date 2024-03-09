@@ -206,15 +206,7 @@ TEST_CASE("Store detect pattern in if statement") {
     pop.addUses(stmt6, z);
 
     QueryManager qm;
-    SECTION("Wildcard or synonym pattern - if(_,_,_) or if(v, _, _)") {
-        REQUIRE(qm.getIfPattern("").size() == 4);
-    }
-
-    SECTION("Variable value - if(\"var\",_,_)") {
-        REQUIRE(qm.getIfPattern("x").size() == 2);
-        REQUIRE(qm.getIfPattern("y").size() == 1);
-        REQUIRE(qm.getIfPattern("z").size() == 1);
-    }
+    REQUIRE(qm.getIfPattern().size() == 4);
 
     qm.clear();
 }
@@ -236,15 +228,7 @@ TEST_CASE("Store detect pattern in while statement") {
     pop.addUses(stmt6, z);
 
     QueryManager qm;
-    SECTION("Wildcard or synonym pattern - while(_,_) or while(v, _)") {
-        REQUIRE(qm.getWhilePattern("").size() == 4);
-    }
-
-    SECTION("Variable value - while(\"var\",_,_)") {
-        REQUIRE(qm.getWhilePattern("x").size() == 2);
-        REQUIRE(qm.getWhilePattern("y").size() == 1);
-        REQUIRE(qm.getWhilePattern("z").size() == 1);
-    }
+    REQUIRE(qm.getWhilePattern().size() == 4);
 
     qm.clear();
 }

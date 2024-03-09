@@ -20,7 +20,7 @@ private:
 
 public:
     void add(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
-    vector<vector<shared_ptr<Entity>>> getPattern(const string& targetVar);
+    vector<vector<shared_ptr<Entity>>> getPattern();
     void clear();
     ~IfWhilePatternStore();
 };

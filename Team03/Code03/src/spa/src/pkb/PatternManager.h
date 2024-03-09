@@ -26,7 +26,7 @@ public:
     
     void addIfWhileUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     // If related
-    vector<vector<shared_ptr<Entity>>> getIfPattern(string& targetVar);
+    vector<vector<shared_ptr<Entity>>> getIfPattern();
     // While related
-    vector<vector<shared_ptr<Entity>>> getWhilePattern(string& targetVar);
+    vector<vector<shared_ptr<Entity>>> getWhilePattern();
 };

@@ -41,18 +41,18 @@ void PatternManager::addIfWhileUses(shared_ptr<Statement> stmt, shared_ptr<Varia
     }
 }
 // If related
-vector<vector<shared_ptr<Entity>>> PatternManager::getIfPattern(string& targetVar) {
-    return ifPatternStore.getPattern(targetVar);
+vector<vector<shared_ptr<Entity>>> PatternManager::getIfPattern() {
+    return ifPatternStore.getPattern();
 }
 // While related
-vector<vector<shared_ptr<Entity>>> PatternManager::getWhilePattern(string& targetVar) {
-    return whilePatternStore.getPattern(targetVar);
+vector<vector<shared_ptr<Entity>>> PatternManager::getWhilePattern() {
+    return whilePatternStore.getPattern();
 }
 
 void PatternManager::clearStore() {
     assignPatternStore.clear();
     ifPatternStore.clear();
-    // whilePatternStore.clear();
+    whilePatternStore.clear();
 }
 
 void PatternManager::clear() {
