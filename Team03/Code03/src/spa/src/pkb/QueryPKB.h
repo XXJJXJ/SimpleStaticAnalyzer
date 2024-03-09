@@ -66,7 +66,7 @@ public:
     virtual vector<vector<shared_ptr<Entity>>> getCallT();
 
     // Pattern Related
-    virtual vector<shared_ptr<Entity>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
+    virtual vector<shared_ptr<AssignStatement>> getAssignPattern(string targetVariable, string expr, bool hasWildcard);
     // slightly different from assign pattern because if and while pattern may have multiple variables
     virtual vector<vector<shared_ptr<Entity>>> getIfPattern();
     virtual vector<vector<shared_ptr<Entity>>> getWhilePattern();

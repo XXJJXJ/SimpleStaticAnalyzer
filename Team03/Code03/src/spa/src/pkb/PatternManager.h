@@ -21,8 +21,8 @@ public:
     static void clear();
     // Assign related
     bool hasAssignPattern(string& expr, bool hasWildcard);
-    vector<shared_ptr<Entity>> getAssignPattern(string& targetVar, string& expr, bool hasWildcard);
-    vector<shared_ptr<Entity>> findAssignPattern(vector<shared_ptr<AssignStatement>>& allAssign, string& targetVar, string& expr, bool hasWildcard);
+    vector<shared_ptr<AssignStatement>> getAssignPattern(string& targetVar, string& expr, bool hasWildcard);
+    vector<shared_ptr<AssignStatement>> findAssignPattern(vector<shared_ptr<AssignStatement>>& allAssign, string& targetVar, string& expr, bool hasWildcard);
     
     void addIfWhileUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     // If related

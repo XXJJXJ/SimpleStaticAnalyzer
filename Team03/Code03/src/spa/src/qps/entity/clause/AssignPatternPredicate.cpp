@@ -59,7 +59,7 @@ shared_ptr<BaseTable> AssignPatternPredicate::getTable(QueryManager &qm) {
         for (auto& assignment : assignments) {
             // Only need to filter arg
             if (arg->isOfType(EntityType::Variable)) {
-                table.addRow(TableRow({assignment, arg}));
+                table.addRow(TableRow({static_pointer_cast<Entity>(assignment), arg}));
             }
         }
     }

@@ -151,7 +151,7 @@ unordered_map<string, unordered_set<shared_ptr<Variable>>> QueryManager::getModi
 }
 
 
-vector<shared_ptr<Entity>> QueryManager::getAssignPattern(string targetVariable, string expr, bool hasWildcard) {
+vector<shared_ptr<AssignStatement>> QueryManager::getAssignPattern(string targetVariable, string expr, bool hasWildcard) {
     if (pm->hasAssignPattern(expr, hasWildcard)) {
         return pm->getAssignPattern(targetVariable, expr, hasWildcard);
     } else {
