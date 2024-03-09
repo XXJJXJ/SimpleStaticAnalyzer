@@ -145,7 +145,7 @@ std::vector<std::string> QueryValidator::validateSelection(const std::vector<std
 std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std::string>& tokens) {
     if (tokens.size() > 3 && tokens[0] == "such" && tokens[1] == "that") {
         PredicateType predicateType = getPredicateType(tokens[2]);
-        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        std::vector<std::string> predicateTokens(tokens.begin() + 2, tokens.end());
         switch (predicateType) {
             case PredicateType::Follows:
             case PredicateType::FollowsT:
@@ -159,7 +159,7 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
             case PredicateType::Invalid:
                 throw SyntaxErrorException("Invalid such that clause keyword " + tokens[2]);
         }
-    } else if (tokens.size() > 3) {
+    } else if (tokens.size() > 2 && getPredicateType(tokens[0]) == PredicateType::Pattern) {
         return validateAssignPatternPredicate(tokens);
     } else {
         throw SyntaxErrorException("Invalid clause keyword");
@@ -194,7 +194,7 @@ std::vector<std::string> QueryValidator::validateStatementEntityPredicate(const 
     if (tokens.size() == 6 && tokens[1] == "(" && tokens[3] == "," && tokens[5] == ")") {
         const std::string& lhs = tokens[2];
         const std::string& rhs = tokens[4];
-        if (!(isStmtRef(lhs) || isEntRef(lhs)) || isWildcard(lhs) || !isStmtRef(rhs)) {
+        if (!isStmtRef(lhs) && !isEntRef(lhs) || !isEntRef(rhs)) {
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
         validatedTokens.push_back(lhs);
@@ -214,6 +214,7 @@ std::vector<std::string> QueryValidator::validateAssignPatternPredicate(const st
         const std::string& assignSyn = tokens[1];
         const std::string& lhs = tokens[3];
         const std::string& rhs = tokens[5];
+
         if (!isSynonym(assignSyn) || !isEntRef(lhs) || !isExpressionSpec(rhs)) {
             throw SyntaxErrorException("Invalid pattern clause arguments");
         }
@@ -294,7 +295,7 @@ bool QueryValidator::isName(std::string const& token) { return isIdent(token); }
 bool QueryValidator::isSynonym(std::string const& token) { return isIdent(token); }
 
 bool QueryValidator::isWildcard(std::string const& token) {
-    return token == "\"_\"";
+    return token == "_";
 }
 
 // Check if token is a valid statement reference
@@ -314,10 +315,43 @@ bool QueryValidator::isEntRef(std::string const& token) {
 // Definition of expressionSpec :  '"' expr'"' | '_' '"' expr '"' '_' | '_'
 bool QueryValidator::isExpressionSpec(std::string const& token) {
     size_t len = token.length();
-
-    return len > 2 && token[0] != '"' && token[len - 1] != '"' ||
-           len > 4 && token[0] == '_' && token[1] == '"' && token[len - 2] == '"' && token[len - 1] == '_'||
+    return (len > 2 && token[0] == '"' && token[len - 1] == '"' && isExpr(token.substr(1, len-2)))||
+           (len > 4 && token[0] == '_' && token[1] == '"' && token[len - 2] == '"' && token[len - 1] == '_' && isExpr(token.substr(2, len-4)))||
            isWildcard(token);
+}
+
+bool QueryValidator::isExpr(const std::string& input) {
+    std::cout << "expr " << input << std::endl;
+    for (size_t i = 0; i < input.size(); ++i) {
+        if (input[i] == '+' || input[i] == '-') {
+            if (isExpr(input.substr(0, i)) && isTerm(input.substr(i + 1))) {
+                return true;
+            }
+        }
+    }
+
+    return isTerm(input);
+}
+
+bool QueryValidator::isTerm(const std::string& input) {
+    std::cout << "term " << input << std::endl;
+    for (size_t i = 0; i < input.size(); i++) {
+        if (input[i] == '*' || input[i] == '/' || input[i] == '%') {
+            if (isTerm(input.substr(0, i)) && isFactor(input.substr(i + 1))) {
+                return true;
+            }
+        }
+    }
+    return isFactor(input);
+}
+
+bool QueryValidator::isFactor(const std::string& input) {
+    std::cout << "factor " << input << std::endl;
+    if (input.size() >= 2 && input.front() == '(' && input.back() == ')') {
+        return isExpr(input.substr(1, input.size() - 2));
+    } else {
+        return isName(input) || isInteger(input);
+    }
 }
 
 // ai-gen end

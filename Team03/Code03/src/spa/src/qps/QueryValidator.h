@@ -26,15 +26,15 @@ public:
     static bool isStmtRef(const std::string& token);
     static bool isEntRef(const std::string& token);
     static bool isExpressionSpec(std::string const& token);
-
-private:
+    static bool isExpr(std::string const& token);
+    static bool isTerm(std::string const& token);
+    static bool isFactor(std::string const& token);
     static std::vector<std::string> validateDeclaration(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateSelection(const std::vector<std::string>& tokens);
     static std::vector<std::string> validatePredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateStatementStatementPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateStatementEntityPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateAssignPatternPredicate(const std::vector<std::string>& tokens);
-
 };
 
 #endif // SPA_QUERYVALIDATOR_H
