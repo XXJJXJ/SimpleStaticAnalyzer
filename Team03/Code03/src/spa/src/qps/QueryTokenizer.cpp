@@ -119,9 +119,8 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
         }
     }
 
-    // Query does not end properly
     if (!currentList.empty()) {
-        throw SyntaxErrorException("Invalid query syntax");
+        clauses.push_back(currentList);;
     }
 
     splitTokens.push_back(declarations);
