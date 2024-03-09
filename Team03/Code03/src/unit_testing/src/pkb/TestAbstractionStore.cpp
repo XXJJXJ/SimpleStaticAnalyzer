@@ -6,7 +6,6 @@
 #include "common/Statement.h"
 #include "pkb/PopulatePKB.h"
 #include "pkb/QueryPKB.h"
-// Statement classes indirectly imported in QueryPKB.h
 
 using namespace std;
 
@@ -255,5 +254,101 @@ TEST_CASE("Test container stmt Uses and Modifies") {
             REQUIRE((modifiesAllStmt[stmt7].find(x) == modifiesAllStmt[stmt7].end()));
             REQUIRE((modifiesAllStmt[stmt7].find(y) == modifiesAllStmt[stmt7].end()));
         }
+    }
+}
+
+TEST_CASE("Test Uses and Modifies with Call Statement") {
+    /* ===== Context ======
+    4 procedures
+
+    procedure first {
+        call second;
+    }
+    procedure second {
+        print x;
+        call third;
+        call fourth;
+    }
+    procedure third {
+        read y;
+    }
+    procedure fourth {
+        read z;
+    }
+    */
+    Populator pop;
+    pop.clear();
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<Variable> z = make_shared<Variable>("z");
+    shared_ptr<Procedure> first = make_shared<Procedure>("first");
+    shared_ptr<Procedure> second = make_shared<Procedure>("second");
+    shared_ptr<CallStatement> stmt1 = make_shared<CallStatement>(1, second, "first");
+    shared_ptr<PrintStatement> stmt2 = make_shared<PrintStatement>(2, x, "second");
+    shared_ptr<Procedure> third = make_shared<Procedure>("third");
+    shared_ptr<Procedure> fourth = make_shared<Procedure>("fourth");
+    shared_ptr<CallStatement> stmt3 = make_shared<CallStatement>(3, third, "second");
+    shared_ptr<CallStatement> stmt4 = make_shared<CallStatement>(4, fourth, "second");
+    shared_ptr<ReadStatement> stmt5 = make_shared<ReadStatement>(5, y, "third");
+    shared_ptr<ReadStatement> stmt6 = make_shared<ReadStatement>(6, z, "fourth");
+
+    // Adding to populator
+    pop.addProcedure(first);
+    pop.addProcedure(second);
+    pop.addProcedure(third);
+    pop.addProcedure(fourth);
+    pop.addUses(stmt2, x);
+    pop.addModifies(stmt5, y);
+    pop.addModifies(stmt6, z);
+    pop.addCallStatement(stmt1);
+    pop.addCallStatement(stmt3);
+    pop.addCallStatement(stmt4);
+    pop.tabulate();
+
+    QueryManager qm;
+    /* ==== Expected relations ====
+    calls: (x3) {(first, second), (second, third), (second,fourth)}
+    calls*: (x5) {
+                (first, second), (first, third), (first,fourth)
+                (second, third), (second, fourth)
+            }
+    */
+    SECTION("Calls and Calls* test") {
+        REQUIRE(qm.getCallS().size() == 3);
+        REQUIRE(qm.getCallT().size() == 5);
+    }
+    /* ==== Expected relations ====
+    Uses(c, _): {
+        (1, x)
+    }
+    */
+    SECTION("Uses with call statement") {
+        auto res = qm.getUseByType(EntityType::Call);
+        REQUIRE(res.size() == 1);
+        // Only 1, so can compare this way
+        REQUIRE(res[0][0]->getName() == "1");
+        REQUIRE(res[0][1]->getName() == "x");
+    }
+    /* ==== Expected relations ====
+    Modifies(c, _): {
+        (1, y), (1, z)
+        (3, y),
+        (4, z)
+    }
+    */
+    SECTION("Modifies with call statement") {
+        auto res = qm.getModifyByType(EntityType::Call);
+        REQUIRE(res.size() == 4);
+        unordered_map<string, unordered_set<string>> resMap;
+        for (auto & p : res) {
+            resMap[p[0]->getName()].insert(p[1]->getName());
+        }
+        REQUIRE(resMap["1"].size() == 2);
+        REQUIRE(resMap["1"].find("y") != resMap["1"].end());
+        REQUIRE(resMap["1"].find("z") != resMap["1"].end());
+        REQUIRE(resMap["3"].size() == 1);
+        REQUIRE(resMap["3"].find("y") != resMap["3"].end());
+        REQUIRE(resMap["4"].size() == 1);
+        REQUIRE(resMap["4"].find("z") != resMap["4"].end());
     }
 }
