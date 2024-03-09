@@ -15,7 +15,7 @@ TEST_CASE("Milestone 1 failed test cases") {
 	std::string string8 = "stmt s; variable v; Select s such that Modifies (_, v)";
 	std::string string9 = "assign a; variable v; constant c; Select a such that Uses (a, c) pattern a (\"8\", _)";
 
-	std::vector<std::string> result1 = qm.processQuery(string1);
+    std::vector<std::string> result1 = qm.processQuery(string1);
 	std::vector<std::string> result2 = qm.processQuery(string2);
 	std::vector<std::string> result3 = qm.processQuery(string3);
 	std::vector<std::string> result4 = qm.processQuery(string4);
@@ -25,16 +25,17 @@ TEST_CASE("Milestone 1 failed test cases") {
 	std::vector<std::string> result8 = qm.processQuery(string8);
 	std::vector<std::string> result9 = qm.processQuery(string9);
 
-	std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
+    std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
+    std::vector<std::string> expectedSemanticError = { "SemanticError" };
 
-	REQUIRE(result1 == expectedSyntaxError);
+    REQUIRE(result1 == expectedSyntaxError);
 	REQUIRE(result2 == expectedSyntaxError);
 	REQUIRE(result3 == expectedSyntaxError);
 	REQUIRE(result4 == expectedSyntaxError);
 	REQUIRE(result5 == expectedSyntaxError);
 	REQUIRE(result6 == expectedSyntaxError);
 	REQUIRE(result7 == expectedSyntaxError);
-	REQUIRE(result8 == expectedSyntaxError);
+	REQUIRE(result8 == expectedSemanticError);
 	REQUIRE(result9 == expectedSyntaxError);
 }
 

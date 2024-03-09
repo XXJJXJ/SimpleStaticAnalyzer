@@ -166,10 +166,12 @@ TEST_CASE("Test QueryValidator::validateAssignPatternPredicate") {
         std::vector<std::string> tokens1 = {"pattern", "a", "(", "_", ",", "_", ")"}; // Both wildcard
         std::vector<std::string> tokens2 = {"pattern", "a", "(", "\"validString\"", ",", "_\"x+y\"_", ")"}; // LHS valid string, RHS partial match
         std::vector<std::string> tokens3 = {"pattern", "a", "(", "validName", ",", "\"x+y\"", ")"}; // LHS valid synonym, RHS complete match
+//        std::vector<std::string> tokens4 = {"pattern", "a", "(", "\"print\"", ",", "_\"read\"_"};
 
         std::vector<std::string> expectedResults1 = {"pattern", "a", "_", "_"};
         std::vector<std::string> expectedResults2 = {"pattern", "a", "\"validString\"", "_\"x+y\"_"};
         std::vector<std::string> expectedResults3 = {"pattern", "a", "validName", "\"x+y\""};
+//        std::vector<std::string> expectedResults4 = {"pattern", "a", \"print\"", ",", "_\"read\"_"};
 
         std::vector<std::string> results1 = QueryValidator::validateAssignPatternPredicate(tokens1);
         std::vector<std::string> results2 = QueryValidator::validateAssignPatternPredicate(tokens2);
@@ -200,8 +202,12 @@ TEST_CASE("Test QueryValidator::validate") {
         std::vector<std::vector<std::vector<std::string>>> tokens1 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
                                                                       {{"Select", "a"}, {"Select", "<", "a", ",", "b", ",", "c",">"}},
                                                                       {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}};
+        std::vector<std::vector<std::vector<std::string>>> tokens2 = {{},
+                                                                      {{"Select", "a"}, {"Select", "<", "a", ",", "b", ",", "c",">"}},
+                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}}; // No declaration, syntactically valid but semantically invalid
 
         REQUIRE_NOTHROW(QueryValidator::validate(tokens1));
+        REQUIRE_NOTHROW(QueryValidator::validate(tokens2));
     }
 
     SECTION("Invalid query") {
@@ -214,10 +220,7 @@ TEST_CASE("Test QueryValidator::validate") {
         std::vector<std::vector<std::vector<std::string>>> tokens3 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
                                                                       {{"Select", "a"}, {"Select", "<", "a", ",", "b", ",", "c",">"}},
                                                                       {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "123invalidName", "(", "_", ",", "_", ")"}}}; // Invalid predicate
-        std::vector<std::vector<std::vector<std::string>>> tokens4 = {{},
-                                                                      {{"Select", "a"}, {"Select", "<", "a", ",", "b", ",", "c",">"}},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}}; // No declaration
-        std::vector<std::vector<std::vector<std::string>>> tokens5 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
+        std::vector<std::vector<std::vector<std::string>>> tokens4 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
                                                                       {},
                                                                       {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}}; // No selection
 
@@ -225,7 +228,6 @@ TEST_CASE("Test QueryValidator::validate") {
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens2), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens3), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens4), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validate(tokens5), SyntaxErrorException);
     }
 }
 
@@ -322,6 +324,7 @@ TEST_CASE("Test isExpr", "[isExpr]") {
     REQUIRE(QueryValidator::isExpr("a+b*(c-d)"));
     REQUIRE(QueryValidator::isExpr("a"));
     REQUIRE(QueryValidator::isExpr("(a)"));
+    REQUIRE(QueryValidator::isExpr("2"));
 
     REQUIRE_FALSE(QueryValidator::isExpr(""));
     REQUIRE_FALSE(QueryValidator::isExpr("a+b+c+"));

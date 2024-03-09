@@ -70,7 +70,7 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::tokenize(cons
 }
 
 bool QueryTokenizer::isPunctuation(char c) {
-    return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>' || c == '_';
+    return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>';
 }
 
 std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(const std::vector<std::string>& tokens) {

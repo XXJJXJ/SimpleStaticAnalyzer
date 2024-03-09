@@ -21,10 +21,6 @@ std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(cons
     std::vector<std::vector<std::string>> selectionsTokens = tokens[1];
     std::vector<std::vector<std::string>> predicateTokens = tokens[2];
 
-    if (declarationsTokens.empty()) {
-        throw SyntaxErrorException("No declarations made");
-    }
-
     if (selectionsTokens.empty()) {
         throw SyntaxErrorException("No selections made");
     }
@@ -321,7 +317,6 @@ bool QueryValidator::isExpressionSpec(std::string const& token) {
 }
 
 bool QueryValidator::isExpr(const std::string& input) {
-    std::cout << "expr " << input << std::endl;
     for (size_t i = 0; i < input.size(); ++i) {
         if (input[i] == '+' || input[i] == '-') {
             if (isExpr(input.substr(0, i)) && isTerm(input.substr(i + 1))) {
@@ -334,7 +329,6 @@ bool QueryValidator::isExpr(const std::string& input) {
 }
 
 bool QueryValidator::isTerm(const std::string& input) {
-    std::cout << "term " << input << std::endl;
     for (size_t i = 0; i < input.size(); i++) {
         if (input[i] == '*' || input[i] == '/' || input[i] == '%') {
             if (isTerm(input.substr(0, i)) && isFactor(input.substr(i + 1))) {
@@ -346,7 +340,6 @@ bool QueryValidator::isTerm(const std::string& input) {
 }
 
 bool QueryValidator::isFactor(const std::string& input) {
-    std::cout << "factor " << input << std::endl;
     if (input.size() >= 2 && input.front() == '(' && input.back() == ')') {
         return isExpr(input.substr(1, input.size() - 2));
     } else {

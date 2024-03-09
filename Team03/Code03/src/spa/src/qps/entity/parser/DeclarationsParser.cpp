@@ -6,6 +6,7 @@
 #include "DeclarationsParser.h"
 #include "common/EntityType.h"
 #include "qps/util/EntityTypeConverter.h"
+#include <common/spa_exception/SemanticErrorException.h>
 
 DeclarationsParser::DeclarationsParser() = default;
 
@@ -21,6 +22,9 @@ DeclarationsParser::parse(const std::vector<std::string> &tokens,
 
     for (size_t i = 1; i < tokens.size(); i++) {
         std::string name = tokens[i];
+        if (synonymMap.find(name) != synonymMap.end()) {
+            throw SemanticErrorException("Duplicate declaration of " + name);
+        }
         synonymMap[name] = currEntityType;
         declarations.push_back(std::make_shared<Synonym>(currEntityType, name));
     }
