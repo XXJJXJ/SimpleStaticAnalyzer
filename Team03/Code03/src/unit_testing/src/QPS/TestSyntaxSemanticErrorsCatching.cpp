@@ -14,8 +14,6 @@ TEST_CASE("Milestone 1 failed test cases") {
 	std::string string7 = "constant c; assign a; variable v; Select c such that Uses (a, v) pattern a (_, c)";
 	std::string string8 = "stmt s; variable v; Select s such that Modifies (_, v)";
 	std::string string9 = "assign a; variable v; constant c; Select a such that Uses (a, c) pattern a (\"8\", _)";
-    std::string string10 = "assign a; variable v; constant c; Select a such that Uses (a, c) pattern a (\"8\", _) invalid words";
-
 
     std::vector<std::string> result1 = qm.processQuery(string1);
 	std::vector<std::string> result2 = qm.processQuery(string2);
@@ -26,7 +24,6 @@ TEST_CASE("Milestone 1 failed test cases") {
 	std::vector<std::string> result7 = qm.processQuery(string7);
 	std::vector<std::string> result8 = qm.processQuery(string8);
 	std::vector<std::string> result9 = qm.processQuery(string9);
-    std::vector<std::string> result10 = qm.processQuery(string10);
 
     std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
     std::vector<std::string> expectedSemanticError = { "SemanticError" };
@@ -40,6 +37,21 @@ TEST_CASE("Milestone 1 failed test cases") {
 	REQUIRE(result7 == expectedSyntaxError);
 	REQUIRE(result8 == expectedSemanticError);
 	REQUIRE(result9 == expectedSyntaxError);
-    REQUIRE(result10 == expectedSyntaxError);
+}
+
+TEST_CASE("Debugging whole strings") {
+    QpsManager qm;
+    std::string string1 = "assign a; variable v; constant c; Select a such that Uses (a, c) pattern a (\"8\", _) invalid words";
+    std::string string2 = "stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl; Select a pattern a(_, _\"x+y*v \"_)";
+
+    std::vector<std::string> result1 = qm.processQuery(string1);
+    std::vector<std::string> result2 = qm.processQuery(string2);
+
+    std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
+    std::vector<std::string> expectedSemanticError = { "SemanticError" };
+
+    REQUIRE(result1 == expectedSyntaxError);
+    REQUIRE(result2 != expectedSyntaxError);
+    REQUIRE(result2 != expectedSemanticError);
 }
 

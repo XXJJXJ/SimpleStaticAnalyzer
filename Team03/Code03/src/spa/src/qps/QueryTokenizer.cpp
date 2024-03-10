@@ -20,26 +20,35 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::tokenize(cons
     std::vector<std::string> tokens;
     std::string token;
     bool trailingWhitespace = false;
+    bool isWithinQuotes = false;
 
     for (char c : query) {
         if (isspace(c)) {
-            if (!token.empty()) {
-                if (trailingWhitespace) {
-                    // Remove trailing whitespace from token
-                    while (!token.empty() && isspace(token.back())) {
-                        token.pop_back();
-                    }
-                    if (!token.empty()) {
+            if (!isWithinQuotes) {
+                if (!token.empty()) {
+                    if (trailingWhitespace) {
+                        // Remove trailing whitespace from token
+                        while (!token.empty() && isspace(token.back())) {
+                            token.pop_back();
+                        }
+                        if (!token.empty()) {
+                            tokens.push_back(token);
+                            token.clear();
+                        }
+                    } else {
                         tokens.push_back(token);
                         token.clear();
                     }
+                    trailingWhitespace = true;
                 }
-                else {
-                    tokens.push_back(token);
-                    token.clear();
-                }
-                trailingWhitespace = true;
+            } else {
+                token.push_back(c);
+                trailingWhitespace = false;
             }
+        } else if (c == '"') {
+            isWithinQuotes = !isWithinQuotes;
+            token.push_back(c);
+            trailingWhitespace = false;
         }
         else {
             token.push_back(c);
