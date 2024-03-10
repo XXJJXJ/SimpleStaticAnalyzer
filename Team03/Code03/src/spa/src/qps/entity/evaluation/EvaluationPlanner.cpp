@@ -36,7 +36,7 @@ void EvaluationPlanner::plan() {
 }
 
 void EvaluationPlanner::setSynonymGroups() {
-    SynonymGraph graph = SynonymGraph(query->getPredicates());
+    SynonymGraph graph = SynonymGraph(query->getPredicates(), query->getDeclarations());
     auto synonymGroups = graph.groupSynonyms();
     evaluator->getContext()->setSynonymGroups(synonymGroups);
 }

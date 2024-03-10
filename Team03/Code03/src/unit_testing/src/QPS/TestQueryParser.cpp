@@ -145,21 +145,21 @@ TEST_CASE("PredicateFactory::createPredicate should throw errors for invalid que
 	REQUIRE_THROWS(pf.createPredicate(tokens4, synonymMap));
 }
 
-// TEST_CASE("Integration test") {
-//     auto sp = Sp();
-//     sp.ProcessSIMPLE("milestone1_modifiesp_usesp_call_source.txt");
-//     string query = "stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl; Select a such that Parent(8,a)";
-//     QueryTokenizer qt;
-//     QueryParser qp;
-//     std::vector<std::vector<std::vector<std::string>>> tokens = qt.tokenize(query);
-//     REQUIRE_NOTHROW(qp.parse(tokens));
-//     auto q = qp.parse(tokens);
-//     auto qe = make_shared<QueryEvaluator>();
+ TEST_CASE("Integration test") {
+     auto sp = Sp();
+     sp.ProcessSIMPLE("milestone1_modifiesp_usesp_call_source.txt");
+     string query = "stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl; Select c";
+     QueryTokenizer qt;
+     QueryParser qp;
+     std::vector<std::vector<std::vector<std::string>>> tokens = qt.tokenize(query);
+     REQUIRE_NOTHROW(qp.parse(tokens));
+     auto q = qp.parse(tokens);
+     auto qe = make_shared<QueryEvaluator>();
 
-//     EvaluationPlanner ep = EvaluationPlanner(q, qe);
-//     ep.plan();
-//     auto res = qe->evaluate(q);
-//     REQUIRE(res.size() == 3);
+     EvaluationPlanner ep = EvaluationPlanner(q, qe);
+     ep.plan();
+     auto res = qe->evaluate(q);
+     REQUIRE(res.size() == 5);
 
 //    auto stmt1 = make_shared<Statement>(1, EntityType::Stmt ,"p");
 //    auto stmt2 = make_shared<Statement>(2, EntityType::Call ,"p");
@@ -181,4 +181,4 @@ TEST_CASE("PredicateFactory::createPredicate should throw errors for invalid que
 //    qm->addFakeFollows(stmt7, stmt8);
 //    qm->addFakeFollows(stmt8, stmt9);
 //    qe->getContext()->setQueryManager(qm);
-// }
+ }

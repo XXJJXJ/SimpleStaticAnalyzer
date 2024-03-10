@@ -36,6 +36,7 @@ TEST_CASE("ProjectionStrategy queries and sets new table when synonym not in any
     qec.setQueryManager(fakeManager);
 
     auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
+    qec.setSynonymGroups({{synonym}});
     ProjectionStrategy strategy({synonym});
 
     strategy.execute(qec);
@@ -56,6 +57,7 @@ TEST_CASE("ProjectionStrategy projects column correctly when table with synonym 
     table->setHeaders({synonym});
     table->addRow(TableRow({std::make_shared<MockEntity>("entityValue")}));
     qec.addTableForSynonym(*synonym, table);
+    qec.setSynonymGroups({{synonym}});
 
     ProjectionStrategy strategy({synonym});
 
@@ -98,6 +100,7 @@ TEST_CASE("ProjectionStrategy with table having multiple columns", "[ProjectionS
     table->setHeaders({synonym1, synonym2});
     table->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
     qec.addTableForSynonym(*synonym1, table);
+    qec.setSynonymGroups({{synonym1, synonym2}});
 
     ProjectionStrategy strategy({synonym1});
     strategy.execute(qec);
@@ -119,6 +122,7 @@ TEST_CASE("ProjectionStrategy selects specific column when multiple synonyms exi
     table->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var2")}));
     qec.addTableForSynonym(*synonym1, table);
     qec.addTableForSynonym(*synonym2, table);
+    qec.setSynonymGroups({{synonym1, synonym2}});
 
     ProjectionStrategy strategy({synonym2}); // Projecting only the second column
     strategy.execute(qec);
@@ -142,6 +146,7 @@ TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrat
     table2->addRow(TableRow({std::make_shared<MockEntity>("var1")}));
     qec.addTableForSynonym(*synonym1, table1);
     qec.addTableForSynonym(*synonym2, table2);
+    qec.setSynonymGroups({{synonym1}, {synonym2}});
 
     ProjectionStrategy strategy({synonym1}); // Projecting only the first synonym
     strategy.execute(qec);

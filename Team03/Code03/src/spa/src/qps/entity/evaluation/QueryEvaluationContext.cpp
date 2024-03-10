@@ -20,10 +20,7 @@ void QueryEvaluationContext::clearTables() {
 std::shared_ptr<HeaderTable> QueryEvaluationContext::getTableForSynonym(const Synonym& synonym) {
     // If synonym is not in the context, report error
     if (!containsSynonym(synonym)) {
-    throw QPSEvaluationException("QEC: Trying to access table for a nonexistent synonym.");
-    }
-    if (synonymToTableMap.find(synonym) == synonymToTableMap.end()) {
-        throw std::runtime_error("Table for synonym not found");
+        throw QPSEvaluationException("QEC: Trying to access table for a nonexistent synonym.");
     }
     auto it = synonymToTableMap.find(synonym);
     if (it != synonymToTableMap.end()) {

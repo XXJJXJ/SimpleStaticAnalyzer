@@ -64,7 +64,7 @@ vector<SynonymPtrSet> ProjectionStrategy::groupTargetSynonyms(QueryEvaluationCon
             }
         }
     }
-    return synonymGroups;
+    return groupsToTargetSynonyms;
 }
 
 std::vector<shared_ptr<HeaderTable>> ProjectionStrategy::getProjectedTables(QueryEvaluationContext& context) {
