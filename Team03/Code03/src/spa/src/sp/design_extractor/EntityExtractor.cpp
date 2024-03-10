@@ -78,3 +78,7 @@ void EntityExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatem
 	pkbPopulator->addWhileStatement(whileStatement);
 	processStatements(whileStatement->getStatementList());
 };
+
+void EntityExtractor::visitCallStatement(shared_ptr<CallStatement> callStatement) {
+
+}
