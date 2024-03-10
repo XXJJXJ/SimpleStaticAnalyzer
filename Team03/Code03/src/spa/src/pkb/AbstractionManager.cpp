@@ -95,10 +95,10 @@ void AbstractionManager::tabulateByCallStatements(SPVStore& store, vector<shared
 void AbstractionManager::tabulate(vector<shared_ptr<CallStatement>>& callStmts) {
     // tabulate call store first
     callStore.tabulate();
-    tabulateContainerStmtVarRelation(useStore);
-    tabulateContainerStmtVarRelation(modifyStore);
     tabulateByCallStatements(useStore, callStmts);
     tabulateByCallStatements(modifyStore, callStmts);
+    tabulateContainerStmtVarRelation(useStore);
+    tabulateContainerStmtVarRelation(modifyStore);
 }
 
 
