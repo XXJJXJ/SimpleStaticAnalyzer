@@ -1,7 +1,7 @@
 procedure rearChickens {
     eggs = 100000;
     chicks = 0;
-    while (chicks < 100000 && eggs > 0) {
+    while ((chicks < 100000) && (eggs > 0)) {
         if (chicks > eggs) then {
             call wiggle;
             print eggs;

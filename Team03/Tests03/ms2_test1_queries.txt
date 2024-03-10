@@ -1,0 +1,5 @@
+1 - Get all constants
+stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
+Select c
+0 1 100000 2
+5000
