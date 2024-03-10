@@ -6,15 +6,19 @@
 #include <memory>
 #include <list>
 #include "Strategy.h"
+#include "common/spa_exception/QPSEvaluationException.h"
+#include "qps/entity/evaluation/BooleanTable.h"
 
 class ProjectionStrategy : public Strategy {
 public:
-    // TODO: support multiple synonyms
-    explicit ProjectionStrategy(std::shared_ptr<Synonym> synonym);
+    explicit ProjectionStrategy(vector<std::shared_ptr<Synonym>> synonyms);
     void execute(QueryEvaluationContext &context) override;
 
 private:
-    std::shared_ptr<Synonym> targetSynonym;
+    vector<std::shared_ptr<Synonym>> targetSynonyms;
+    vector<SynonymPtrSet> groupTargetSynonyms(QueryEvaluationContext &context) const;
+
+    vector<shared_ptr<HeaderTable>> getProjectedTables(QueryEvaluationContext &context);
 };
 
 #endif // PROJECTIONSTRATEGY_H

@@ -10,6 +10,7 @@ private:
 
 public:
     explicit BooleanTable(const BaseTable& table);
+    explicit BooleanTable(bool value);
     [[nodiscard]] bool getValue() const { return value; }
     std::shared_ptr<BaseTable> join(BaseTable& other) override;
     bool isEmpty() const override;

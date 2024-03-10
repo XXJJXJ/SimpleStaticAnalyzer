@@ -6,40 +6,90 @@
 #include <algorithm>
 #include "qps/entity/evaluation/HeaderTable.h"
 
-ProjectionStrategy::ProjectionStrategy(std::shared_ptr<Synonym> synonym) : targetSynonym(std::move(synonym)) {}
+ProjectionStrategy::ProjectionStrategy(vector<std::shared_ptr<Synonym>> synonyms) : targetSynonyms(std::move(synonyms)) {}
 
 void ProjectionStrategy::execute(QueryEvaluationContext &context) {
-    // Check all tables in the context; if any is empty, return an empty table directly.
+    // Select boolean case
+    if (targetSynonyms.empty()) {
+        context.setResultTable(std::make_shared<BooleanTable>(!context.isCurrentResultEmpty()));
+        return;
+    }
+    // Short-circuiting for empty result
     if (context.isCurrentResultEmpty()) {
         HeaderTable emptyTable;
-        emptyTable.setHeaders({targetSynonym});
+        // Convert targetSynonyms to the format expected by setHeaders
+        emptyTable.setHeaders(targetSynonyms);
         context.setResultTable(std::make_shared<HeaderTable>(emptyTable));
         return;
     }
 
-    // Proceed if no empty tables are found
-    auto table = context.getTableForSynonym(*targetSynonym);
-    if (!table) {
-        // Synonym not used in constructing tables, query QueryManager for entities by type
-        auto entities = context.getQueryManager()->getAllEntitiesByType(targetSynonym->getType());
-        HeaderTable newTable;
-        newTable.setHeaders({targetSynonym}); // Assuming setHeaders method exists
+    // Get the projected tables
+    auto projectedTables = getProjectedTables(context);
 
-        for (const auto& entity : entities) {
-            // Convert entity to TableRow and add to newTable
-            // This step assumes you have a mechanism to convert an Entity to a TableRow
-            newTable.addRow(TableRow({entity}));
-        }
-
-        context.setResultTable(std::make_shared<HeaderTable>(newTable));
-    } else {
-        // If the synonym's table exists and is not empty, select the column and project it.
-        auto castedTable = std::dynamic_pointer_cast<HeaderTable>(table);
-        if (!castedTable) {
-            throw std::runtime_error("ProjectionStrategy: table for synonym is not a HeaderTable");
-        }
-        HeaderTable projectedTable = castedTable->selectColumns({targetSynonym});
-        context.setResultTable(std::make_shared<HeaderTable>(projectedTable));
+    // Get the cross product for the projected tables
+    shared_ptr<BaseTable> resultTable = projectedTables[0];
+    for (size_t i = 1; i < projectedTables.size(); ++i) {
+        resultTable = resultTable->join(*projectedTables[i]);
     }
+
+    // Reorder the headers to match the order of the target synonyms
+    shared_ptr<HeaderTable> resultHeaderTable = std::dynamic_pointer_cast<HeaderTable>(resultTable);
+    if (!resultHeaderTable) {
+        throw QPSEvaluationException("Projection strategy: result table is not a header table unexpectedly");
+    }
+    resultHeaderTable = make_shared<HeaderTable>(resultHeaderTable->selectColumns(targetSynonyms));
+    context.setResultTable(resultHeaderTable);
+}
+
+vector<SynonymPtrSet> ProjectionStrategy::groupTargetSynonyms(QueryEvaluationContext& context) const {
+    // Get the synonym groups from the context
+    auto synonymGroups = context.getSynonymGroups();
+
+    // This will hold the mapping of groups to their synonyms
+    std::vector<SynonymPtrSet> groupsToTargetSynonyms;
+
+    // Initialize groupsToTargetSynonyms with empty sets for each group
+    for (size_t i = 0; i < synonymGroups.size(); ++i) {
+        groupsToTargetSynonyms.emplace_back();
+    }
+
+    // Iterate over each target synonym
+    for (const auto& targetSynonym : targetSynonyms) {
+        // Check which group this synonym belongs to
+        for (size_t i = 0; i < synonymGroups.size(); ++i) {
+            if (synonymGroups[i].find(targetSynonym) != synonymGroups[i].end()) {
+                // If the synonym is found in the current group, add it to the corresponding set
+                groupsToTargetSynonyms[i].insert(targetSynonym);
+                break; // Move to the next target synonym as each synonym belongs to only one group
+            }
+        }
+    }
+    return synonymGroups;
+}
+
+std::vector<shared_ptr<HeaderTable>> ProjectionStrategy::getProjectedTables(QueryEvaluationContext& context) {
+    // First, group the target synonyms using the helper function
+    auto groupsToTargetSynonyms = groupTargetSynonyms(context);
+
+    std::vector<shared_ptr<HeaderTable>> projectedTables;
+
+    // Iterate over each group
+    for (const auto& group : groupsToTargetSynonyms) {
+        // Skip empty groups
+        if (group.empty()) continue;
+
+        // Get the table for the group
+        std::shared_ptr<HeaderTable> tableForGroup = context.getTableForSynonym(**group.begin());
+        if (!tableForGroup) {
+            throw QPSEvaluationException("Projection strategy: cannot find table for synonym in group");
+        }
+
+        HeaderTable projectedTable = tableForGroup->selectColumns({group.begin(), group.end()});
+
+        // Add the projected table to the vector
+        projectedTables.push_back(make_shared<HeaderTable>(projectedTable));
+    }
+
+    return projectedTables;
 }
 // ai-gen end

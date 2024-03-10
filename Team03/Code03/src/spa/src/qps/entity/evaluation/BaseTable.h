@@ -28,7 +28,6 @@ public:
     [[nodiscard]] std::vector<std::string> toStrings();
     shared_ptr<BaseTable> filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const;
     shared_ptr<BaseTable> project(const std::vector<bool>& columnMask) const; // Projection function
-    shared_ptr<BaseTable> addHeader(const std::vector<std::shared_ptr<Synonym>>& synonyms) const;
     const vector<TableRow> getRows() const;
     int getColumnCount() const;
     void setColumnCount(int count);

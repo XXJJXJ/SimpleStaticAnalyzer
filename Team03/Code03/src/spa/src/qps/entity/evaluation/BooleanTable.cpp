@@ -51,3 +51,7 @@ bool BooleanTable::operator==(const BaseTable &other) const {
         return false;
     }
 }
+
+BooleanTable::BooleanTable(bool value) {
+    this->value = value;
+}
