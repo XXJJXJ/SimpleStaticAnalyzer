@@ -22,6 +22,7 @@ void AbstractionManager::clearStore() {
     useStore.clear();
     followStore.clear();
     parentStore.clear();
+    callStore.clear();
 }
 
 bool AbstractionManager::addFollow(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
