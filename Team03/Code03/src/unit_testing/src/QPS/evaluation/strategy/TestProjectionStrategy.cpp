@@ -43,10 +43,12 @@ TEST_CASE("ProjectionStrategy queries and sets new table when synonym not in any
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
 
+    auto resultStrings = resultTable->toStrings();
+
     REQUIRE(resultTable != nullptr);
     REQUIRE_FALSE(resultTable->isEmpty());
     REQUIRE(resultTable->getSize() == 1);
-    REQUIRE(resultTable->toStrings().front() == "mockName");
+    REQUIRE(resultStrings.count("mockName") == 1);
 }
 
 TEST_CASE("ProjectionStrategy projects column correctly when table with synonym exists", "[ProjectionStrategy]") {
@@ -63,11 +65,12 @@ TEST_CASE("ProjectionStrategy projects column correctly when table with synonym 
 
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
+    auto resultStrings = resultTable->toStrings();
 
     REQUIRE(resultTable != nullptr);
     REQUIRE_FALSE(resultTable->isEmpty());
     REQUIRE(resultTable->getSize() == 1);
-    REQUIRE(resultTable->toStrings().front() == "entityValue");
+    REQUIRE(resultStrings.count("entityValue") == 1);
 }
 
 TEST_CASE("ProjectionStrategy with multiple tables, some empty", "[ProjectionStrategy]") {
@@ -105,8 +108,10 @@ TEST_CASE("ProjectionStrategy with table having multiple columns", "[ProjectionS
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
     REQUIRE_FALSE(resultTable->isEmpty());
+    auto resultStrings = resultTable->toStrings();
+
     REQUIRE(resultTable->getSize() == 1);
-    REQUIRE(resultTable->toStrings().front() == "entity1");
+    REQUIRE(resultStrings.count("entity1") == 1);
 }
 
 TEST_CASE("ProjectionStrategy selects specific column when multiple synonyms exist", "[ProjectionStrategy]") {
@@ -125,9 +130,10 @@ TEST_CASE("ProjectionStrategy selects specific column when multiple synonyms exi
 
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
+    auto resultStrings = resultTable->toStrings();
     REQUIRE(resultTable->getSize() == 2);
-    REQUIRE(resultTable->toStrings()[0] == "var1");
-    REQUIRE(resultTable->toStrings()[1] == "var2");
+    REQUIRE(resultStrings.count("var1") == 1);
+    REQUIRE(resultStrings.count("var2") == 1);
 }
 
 TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrategy]") {
@@ -148,8 +154,10 @@ TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrat
 
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
+    auto resultStrings = resultTable->toStrings();
+
     REQUIRE(resultTable->getSize() == 1);
-    REQUIRE(resultTable->toStrings()[0] == "entity1");
+    REQUIRE(resultStrings.count("entity1") == 1);
 }
 
 // ai-gen end

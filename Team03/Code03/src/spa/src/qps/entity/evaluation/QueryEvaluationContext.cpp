@@ -49,7 +49,13 @@ std::vector<std::string> QueryEvaluationContext::getResults() const {
     if (resultTable == nullptr) {
         throw std::runtime_error("No result table present");
     }
-    return resultTable->toStrings();
+    // temp fix
+    std::unordered_set resultTableString = resultTable->toStrings();
+    std::vector<std::string> stringVector(resultTableString.begin(), resultTableString.end());
+
+    return stringVector;
+
+    // return resultTable->toStrings();
 }
 
 void QueryEvaluationContext::setResultTable(const shared_ptr<BaseTable> &_resultTable) {
