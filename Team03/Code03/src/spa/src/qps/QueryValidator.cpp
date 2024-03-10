@@ -319,7 +319,8 @@ bool QueryValidator::isExpressionSpec(std::string const& token) {
            isWildcard(token);
 }
 
-bool QueryValidator::isExpr(const std::string& input) {
+bool QueryValidator::isExpr(std::string input) {
+    input.erase(std::remove_if(input.begin(), input.end(), ::isspace), input.end());
     for (size_t i = 0; i < input.size(); ++i) {
         if (input[i] == '+' || input[i] == '-') {
             if (isExpr(input.substr(0, i)) && isTerm(input.substr(i + 1))) {

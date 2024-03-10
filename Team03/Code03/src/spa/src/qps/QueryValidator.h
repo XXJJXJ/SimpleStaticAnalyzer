@@ -27,7 +27,7 @@ public:
     static bool isStmtRef(const std::string& token);
     static bool isEntRef(const std::string& token);
     static bool isExpressionSpec(std::string const& token);
-    static bool isExpr(std::string const& token);
+    static bool isExpr(std::string token);
     static bool isTerm(std::string const& token);
     static bool isFactor(std::string const& token);
     static std::vector<std::string> validateDeclaration(const std::vector<std::string>& tokens);
