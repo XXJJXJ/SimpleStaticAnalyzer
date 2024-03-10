@@ -156,6 +156,52 @@ TEST_CASE("Store detect pattern in assignment") {
     // Check cleared
 }
 
+TEST_CASE("Store detect pattern in if statement") {
+    Populator pop;
+    pop.clear();
+
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<Variable> z = make_shared<Variable>("z");
+    // bare minimal for test
+    shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
+    shared_ptr<IfStatement> stmt1 = make_shared<IfStatement>(1, cond, "main");
+    shared_ptr<IfStatement> stmt6 = make_shared<IfStatement>(6, cond, "main");
+    pop.addIfStatement(stmt1);
+    pop.addIfStatement(stmt6);
+    pop.addUses(stmt1, x);
+    pop.addUses(stmt1, y);
+    pop.addUses(stmt6, x);
+    pop.addUses(stmt6, z);
+
+    QueryManager qm;
+    REQUIRE(qm.getIfPattern().size() == 4);
+
+    qm.clear();
+}
+
+TEST_CASE("Store detect pattern in while statement") {
+    Populator pop;
+    pop.clear();
+
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<Variable> z = make_shared<Variable>("z");
+    // bare minimal for test
+    shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
+    shared_ptr<WhileStatement> stmt1 = make_shared<WhileStatement>(1, cond, "main");
+    shared_ptr<WhileStatement> stmt6 = make_shared<WhileStatement>(6, cond, "main");
+    pop.addUses(stmt1, x);
+    pop.addUses(stmt1, y);
+    pop.addUses(stmt6, x);
+    pop.addUses(stmt6, z);
+
+    QueryManager qm;
+    REQUIRE(qm.getWhilePattern().size() == 4);
+
+    qm.clear();
+}
+
 TEST_CASE("Check clear") {
     AssignStatementParser parser;
     Tokenizer tker;
@@ -173,5 +219,26 @@ TEST_CASE("Check clear") {
         REQUIRE((qm.getAssignPattern("", true).size() == 1));
         qm.clear();
         REQUIRE((qm.getAssignPattern("", true).size() == 0));
+    }
+
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
+    SECTION("Clears If Pattern Store properly") {
+        shared_ptr<IfStatement> ifStmt = make_shared<IfStatement>(1, cond, "main");
+        pop.addIfStatement(ifStmt);
+        pop.addUses(ifStmt, x);
+        REQUIRE((qm.getIfPattern().size() == 1));
+        qm.clear();
+        REQUIRE((qm.getIfPattern().size() == 0));
+    }
+    
+    SECTION("Clears While Pattern Store properly") {
+        shared_ptr<WhileStatement> whileStmt = make_shared<WhileStatement>(1, cond, "main");
+        pop.addWhileStatement(whileStmt);
+        pop.addUses(whileStmt, x);
+        REQUIRE((qm.getWhilePattern().size() == 1));
+        qm.clear();
+        REQUIRE((qm.getWhilePattern().size() == 0));
     }
 }

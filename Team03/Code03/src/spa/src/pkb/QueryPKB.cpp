@@ -160,6 +160,14 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getAssignPattern(string expr, b
     }
 }
 
+vector<vector<shared_ptr<Entity>>> QueryManager::getIfPattern() {
+    return pm->getIfPattern();
+}
+
+vector<vector<shared_ptr<Entity>>> QueryManager::getWhilePattern() {
+    return pm->getWhilePattern();
+}
+
 vector<shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityType) {
     vector<shared_ptr<Entity>> baseClassEntities;
 

@@ -24,8 +24,29 @@ vector<vector<shared_ptr<Entity>>> PatternManager::findAssignPattern(vector<shar
     return assignPatternStore.findAssignPattern(allAssign, expr, hasWildcard);
 }
 
+void PatternManager::addIfWhileUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
+    switch (stmt->getType())
+    {
+    case EntityType::While: whilePatternStore.add(stmt, var); return;
+    case EntityType::If: ifPatternStore.add(stmt, var); return;
+    default:
+        // Nothing happens
+        return;
+    }
+}
+// If related
+vector<vector<shared_ptr<Entity>>> PatternManager::getIfPattern() {
+    return ifPatternStore.getPattern();
+}
+// While related
+vector<vector<shared_ptr<Entity>>> PatternManager::getWhilePattern() {
+    return whilePatternStore.getPattern();
+}
+
 void PatternManager::clearStore() {
     assignPatternStore.clear();
+    ifPatternStore.clear();
+    whilePatternStore.clear();
 }
 
 void PatternManager::clear() {

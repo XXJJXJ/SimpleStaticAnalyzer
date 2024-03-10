@@ -20,4 +20,5 @@ public:
     vector<vector<shared_ptr<Entity>>> getAssignPattern(string& expr, bool hasWildcard);
     vector<vector<shared_ptr<Entity>>> findAssignPattern(vector<shared_ptr<AssignStatement>>& allAssign, string& expr, bool hasWildcard);
     void clear();
+    ~AssignPatternStore();
 };

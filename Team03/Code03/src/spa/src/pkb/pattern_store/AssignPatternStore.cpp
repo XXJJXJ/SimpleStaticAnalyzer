@@ -192,3 +192,7 @@ void AssignPatternStore::clear() {
     wildMatch.clear();
     exactMatch.clear();
 }
+
+AssignPatternStore::~AssignPatternStore() {
+    clear();
+}
