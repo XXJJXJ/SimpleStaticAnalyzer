@@ -26,7 +26,7 @@ public:
     [[nodiscard]] virtual bool isEmpty() const;
     [[nodiscard]] int getSize();
     //[[nodiscard]] std::vector<std::string> toStrings();
-    [[nodiscard]] std::unordered_set<std::string> BaseTable::toStrings();
+    std::unordered_set<std::string> BaseTable::toStrings();
     shared_ptr<BaseTable> filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const;
     shared_ptr<BaseTable> project(const std::vector<bool>& columnMask) const; // Projection function
     shared_ptr<BaseTable> addHeader(const std::vector<std::shared_ptr<Synonym>>& synonyms) const;
