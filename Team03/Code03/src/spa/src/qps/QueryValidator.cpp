@@ -124,10 +124,14 @@ std::vector<std::string> QueryValidator::validateSelection(const std::vector<std
         }
     } else if (len == 2) {
         const std::string &token = tokens[1];
-        if (!isName(token)) {
+        if (isName(token)) {
+            if (!isBoolean(token)) {
+                validatedTokens.push_back(token);
+            }
+        }
+        else {
             throw SyntaxErrorException("Invalid synonym name " + token);
         }
-        validatedTokens.push_back(token);
     } else {
         throw SyntaxErrorException("Invalid selection syntax");
     }
@@ -231,23 +235,23 @@ std::vector<std::string> QueryValidator::validateAssignPatternPredicate(const st
 // ai-gen start(copilot, 2, e)
 
 // Check if token is a single letter
-bool QueryValidator::isLetter(std::string const& token) {
+bool QueryValidator::isLetter(const std::string& token) {
     return token.length() == 1 && std::isalpha(token[0]);
 }
 
 // Check if token is a single digit from 0-9
-bool QueryValidator::isDigit(std::string const& token) {
+bool QueryValidator::isDigit(const std::string& token) {
     return token.length() == 1 && isdigit(token[0]);
 }
 
 // Check if token is a single non-zero digit from 1-9
-bool QueryValidator::isNzDigit(std::string const& token) {
+bool QueryValidator::isNzDigit(const std::string& token) {
     return isDigit(token) && token[0] >= '1';
 }
 
 // Check if token is a number (can be multiple digits)
 // Definition of integer: 0 | NZDIGIT ( DIGIT )* - no leading zero
-bool QueryValidator::isInteger(std::string const& token) {
+bool QueryValidator::isInteger(const std::string& token) {
     if (token.empty()) {
         return false;
     }
@@ -263,7 +267,7 @@ bool QueryValidator::isInteger(std::string const& token) {
 
 // Check if token is a valid identifier
 // Definition of identifier: LETTER ( LETTER | DIGIT )*
-bool QueryValidator::isIdent(std::string const& token) {
+bool QueryValidator::isIdent(const std::string& token) {
 
     if (token.empty()) {
         return false;
@@ -287,68 +291,73 @@ bool QueryValidator::isIdent(std::string const& token) {
 
 // Check if token is a valid name
 // Definition of name: LETTER ( LETTER | DIGIT )*
-bool QueryValidator::isName(std::string const& token) { return isIdent(token); }
+bool QueryValidator::isName(const std::string& token) { return isIdent(token); }
 
 // Check if token is a valid synonym
 // Definition of synonym: IDENT
-bool QueryValidator::isSynonym(std::string const& token) { return isIdent(token); }
+bool QueryValidator::isSynonym(const std::string& token) { return isIdent(token); }
 
-bool QueryValidator::isWildcard(std::string const& token) {
+bool QueryValidator::isWildcard(const std::string& token) {
     return token == "_";
 }
 
 // Check if token is a valid statement reference
 // Definition of stmtRef: synonym | '_' | INTEGER
-bool QueryValidator::isStmtRef(std::string const& token) {
+bool QueryValidator::isStmtRef(const std::string& token) {
     return isSynonym(token) || isWildcard(token) || isInteger(token);
 }
 
 // Check if token is a valid entity reference
 // Definition of entRef: synonym | '_' | '"' IDENT '"'
-bool QueryValidator::isEntRef(std::string const& token) {
+bool QueryValidator::isEntRef(const std::string& token) {
     return isSynonym(token) || isWildcard(token) ||
            (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
             isIdent(token.substr(1, token.length() - 2)));
 }
 
 // Definition of expressionSpec :  '"' expr'"' | '_' '"' expr '"' '_' | '_'
-bool QueryValidator::isExpressionSpec(std::string const& token) {
+bool QueryValidator::isExpressionSpec(const std::string& token) {
     size_t len = token.length();
     return (len > 2 && token[0] == '"' && token[len - 1] == '"' && isExpr(token.substr(1, len-2)))||
            (len > 4 && token[0] == '_' && token[1] == '"' && token[len - 2] == '"' && token[len - 1] == '_' && isExpr(token.substr(2, len-4)))||
            isWildcard(token);
 }
 
-bool QueryValidator::isExpr(std::string input) {
-    input.erase(std::remove_if(input.begin(), input.end(), ::isspace), input.end());
-    for (size_t i = 0; i < input.size(); ++i) {
-        if (input[i] == '+' || input[i] == '-') {
-            if (isExpr(input.substr(0, i)) && isTerm(input.substr(i + 1))) {
+bool QueryValidator::isExpr(std::string token) {
+    token.erase(std::remove_if(token.begin(), token.end(), ::isspace), token.end());
+    for (size_t i = 0; i < token.size(); ++i) {
+        if (token[i] == '+' || token[i] == '-') {
+            if (isExpr(token.substr(0, i)) && isTerm(token.substr(i + 1))) {
                 return true;
             }
         }
     }
 
-    return isTerm(input);
+    return isTerm(token);
 }
 
-bool QueryValidator::isTerm(const std::string& input) {
-    for (size_t i = 0; i < input.size(); i++) {
-        if (input[i] == '*' || input[i] == '/' || input[i] == '%') {
-            if (isTerm(input.substr(0, i)) && isFactor(input.substr(i + 1))) {
+bool QueryValidator::isTerm(const std::string& token) {
+    for (size_t i = 0; i < token.size(); i++) {
+        if (token[i] == '*' || token[i] == '/' || token[i] == '%') {
+            if (isTerm(token.substr(0, i)) && isFactor(token.substr(i + 1))) {
                 return true;
             }
         }
     }
-    return isFactor(input);
+    return isFactor(token);
 }
 
-bool QueryValidator::isFactor(const std::string& input) {
-    if (input.size() >= 2 && input.front() == '(' && input.back() == ')') {
-        return isExpr(input.substr(1, input.size() - 2));
+bool QueryValidator::isFactor(const std::string& token) {
+    if (token.size() >= 2 && token.front() == '(' && token.back() == ')') {
+        return isExpr(token.substr(1, token.size() - 2));
     } else {
-        return isName(input) || isInteger(input);
+        return isName(token) || isInteger(token);
     }
+}
+
+
+bool QueryValidator::isBoolean(const std::string& token) {
+    return token == "BOOLEAN";
 }
 
 // ai-gen end
