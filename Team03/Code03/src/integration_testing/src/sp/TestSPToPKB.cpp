@@ -208,3 +208,99 @@ TEST_CASE("9th SP-PKB integration Test: entity store test") {
     REQUIRE(varStore.size() == 3);
     pkbPopulator->clear();
 }
+
+TEST_CASE("10th SP-PKB integration Test: multiple procedure store test") {
+    std::string simple_string = "procedure first {z = ((x + 3) / 7) - (y + 11);} procedure second {a = b + c;} procedure third {read i; read j; print i; print j;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<shared_ptr<Entity>> procStore = qm.getAllEntitiesByType(EntityType::Procedure);
+    REQUIRE(procStore.size() == 3);
+    vector<shared_ptr<Entity>> varStore = qm.getAllEntitiesByType(EntityType::Variable);
+    REQUIRE(varStore.size() == 8);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("11th SP-PKB integration Test: call store test") {
+    std::string simple_string = "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<shared_ptr<Entity>> callStore = qm.getAllEntitiesByType(EntityType::Call);
+    REQUIRE(callStore.size() == 2);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("12th SP-PKB integration Test: calls relation test") {
+    std::string simple_string = "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> callsStore = qm.getCallS();
+    REQUIRE(callsStore.size() == 2);
+
+
+  /*  for (vector<shared_ptr<Entity>> v : callsStore) {
+        std::cout << v[0]->getName() << ", " << v[1]->getName() << std::endl;
+    }*/
+
+    /*vector<shared_ptr<Entity>> firstCalls = callsStore[0];
+    bool result1 = firstCalls[0]->getName().compare("first") == 0 && firstCalls[1]->getName().compare("second") == 0;
+    REQUIRE(result1);
+
+    vector<shared_ptr<Entity>> secondCalls = callsStore[1];
+    bool result2 = secondCalls[0]->getName().compare("second") == 0 && secondCalls[1]->getName().compare("third") == 0;
+    REQUIRE(result2);*/
+    pkbPopulator->clear();
+}
+
+TEST_CASE("13th SP-PKB integration Test: transitive calls relation test") {
+    std::string simple_string = "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> callsStore = qm.getCallT();
+   /* for (vector<shared_ptr<Entity>> v : callsStore) {
+        std::cout << v[0]->getName() << ", " << v[1]->getName() << std::endl;
+    }*/
+    REQUIRE(callsStore.size() == 3);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("14th SP-PKB integration Test: cyclic calls error detection test") {
+    bool result = false;
+    std::string simple_string = "procedure first {call second;} procedure second {call third;} procedure third {call first;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    try {
+        shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+        design_extractor->extractDesign(program);
+    }
+    catch (SemanticErrorException) {
+        result = true;
+    }
+    REQUIRE(result);
+    pkbPopulator->clear();
+}

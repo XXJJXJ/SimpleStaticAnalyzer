@@ -155,35 +155,24 @@ bool AssignPatternStore::hasAssignPattern(string& expr, bool hasWildcard) {
     }
 }
 
-vector<shared_ptr<AssignStatement>> AssignPatternStore::getAssignPattern(string& targetVar, string& expr, bool hasWildcard) {
+vector<vector<shared_ptr<Entity>>> AssignPatternStore::getAssignPattern(string& expr, bool hasWildcard) {
     string rpn = infixToPostfix(expr);
-    vector<shared_ptr<AssignStatement>> res;
+    vector<vector<shared_ptr<Entity>>> res;
     if (hasWildcard) {
-        if (targetVar == "") {
-            return wildMatch[rpn];
-        }
-        // Need to filter
         for (auto &s : wildMatch[rpn]) {
-            if (s->getVariable()->getName() == targetVar) {
-                res.push_back(s);
-            }
+            res.push_back({s, s->getVariable()});
         }
     } else {
-        if (targetVar == "") {
-            return exactMatch[rpn];
-        }
         for (auto &s : exactMatch[rpn]) {
-            if (s->getVariable()->getName() == targetVar) {
-                res.push_back(s);
-            }
+            res.push_back({s, s->getVariable()});
         }
     }
     return res;
 }
 
-vector<shared_ptr<AssignStatement>> AssignPatternStore::findAssignPattern(
+vector<vector<shared_ptr<Entity>>> AssignPatternStore::findAssignPattern(
     vector<shared_ptr<AssignStatement>>& allAssign, 
-    string& targetVar, string& expr, bool hasWildcard) 
+    string& expr, bool hasWildcard) 
 {
     string rpn = infixToPostfix(expr);
     if (expr == "" && hasWildcard) {
@@ -196,10 +185,14 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::findAssignPattern(
         exactMatch[rpn] = exactMatched;
     }
     // Reuse similar logic
-    return getAssignPattern(targetVar, expr, hasWildcard);
+    return getAssignPattern(expr, hasWildcard);
 }
 
 void AssignPatternStore::clear() {
     wildMatch.clear();
     exactMatch.clear();
+}
+
+AssignPatternStore::~AssignPatternStore() {
+    clear();
 }

@@ -73,6 +73,7 @@ bool QueryTokenizer::isPunctuation(char c) {
     return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>';
 }
 
+// TODO: move this part to QueryValidator as well
 std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(const std::vector<std::string>& tokens) {
     std::vector<std::string> currentList;
 

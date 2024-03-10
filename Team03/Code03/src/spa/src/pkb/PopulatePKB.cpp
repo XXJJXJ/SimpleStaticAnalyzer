@@ -3,6 +3,7 @@
 Populator::Populator() {
     em = EntityManager::getInstance();
     am = AbstractionManager::getInstance();
+    pm = PatternManager::getInstance();
 }
 void Populator::clear() {
     EntityManager::clear();
@@ -47,6 +48,9 @@ bool Populator::addParent(shared_ptr<Statement> stmt1, shared_ptr<Statement> stm
     return am->addParent(stmt1, stmt2);
 }
 bool Populator::addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
+    if (stmt->isOfType(EntityType::While) || stmt->isOfType(EntityType::If)) {
+        pm->addIfWhileUses(stmt, var);
+    }
     return am->addUses(stmt, var);
 }
 bool Populator::addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {

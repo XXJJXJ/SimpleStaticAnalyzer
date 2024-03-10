@@ -151,13 +151,21 @@ unordered_map<string, unordered_set<shared_ptr<Variable>>> QueryManager::getModi
 }
 
 
-vector<shared_ptr<AssignStatement>> QueryManager::getAssignPattern(string targetVariable, string expr, bool hasWildcard) {
+vector<vector<shared_ptr<Entity>>> QueryManager::getAssignPattern(string expr, bool hasWildcard) {
     if (pm->hasAssignPattern(expr, hasWildcard)) {
-        return pm->getAssignPattern(targetVariable, expr, hasWildcard);
+        return pm->getAssignPattern(expr, hasWildcard);
     } else {
         auto allAssign = em->getAllAssignStatements();
-        return pm->findAssignPattern(allAssign, targetVariable, expr, hasWildcard); // will cache results
+        return pm->findAssignPattern(allAssign, expr, hasWildcard); // will cache results
     }
+}
+
+vector<vector<shared_ptr<Entity>>> QueryManager::getIfPattern() {
+    return pm->getIfPattern();
+}
+
+vector<vector<shared_ptr<Entity>>> QueryManager::getWhilePattern() {
+    return pm->getWhilePattern();
 }
 
 vector<shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityType) {

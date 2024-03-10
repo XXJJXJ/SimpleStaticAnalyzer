@@ -22,6 +22,7 @@ void AbstractionManager::clearStore() {
     useStore.clear();
     followStore.clear();
     parentStore.clear();
+    callStore.clear();
 }
 
 bool AbstractionManager::addFollow(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
@@ -94,10 +95,10 @@ void AbstractionManager::tabulateByCallStatements(SPVStore& store, vector<shared
 void AbstractionManager::tabulate(vector<shared_ptr<CallStatement>>& callStmts) {
     // tabulate call store first
     callStore.tabulate();
-    tabulateContainerStmtVarRelation(useStore);
-    tabulateContainerStmtVarRelation(modifyStore);
     tabulateByCallStatements(useStore, callStmts);
     tabulateByCallStatements(modifyStore, callStmts);
+    tabulateContainerStmtVarRelation(useStore);
+    tabulateContainerStmtVarRelation(modifyStore);
 }
 
 
