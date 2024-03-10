@@ -135,10 +135,10 @@ TEST_CASE("Test QueryValidator::validateStatementEntityPredicate") {
         std::vector<std::string> expectedResults3 = {"Modifies", "\"validProcName\"", "\"validVarName\""};
         std::vector<std::string> expectedResults4 = {"Modifies", "_", "b"};
 
-        std::vector<std::string> results1 = QueryValidator::validateStatementEntityPredicate(tokens1);
-        std::vector<std::string> results2 = QueryValidator::validateStatementEntityPredicate(tokens2);
-        std::vector<std::string> results3 = QueryValidator::validateStatementEntityPredicate(tokens3);
-        std::vector<std::string> results4 = QueryValidator::validateStatementEntityPredicate(tokens4);
+        std::vector<std::string> results1 = QueryValidator::validateStmtEntEntityPredicate(tokens1);
+        std::vector<std::string> results2 = QueryValidator::validateStmtEntEntityPredicate(tokens2);
+        std::vector<std::string> results3 = QueryValidator::validateStmtEntEntityPredicate(tokens3);
+        std::vector<std::string> results4 = QueryValidator::validateStmtEntEntityPredicate(tokens4);
 
         REQUIRE(results1 == expectedResults1);
         REQUIRE(results2 == expectedResults2);
@@ -153,11 +153,11 @@ TEST_CASE("Test QueryValidator::validateStatementEntityPredicate") {
         std::vector<std::string> tokens4 = {"Modifies", "(", "a", ",", "123invalidName", ")"}; // RHS invalid name
         std::vector<std::string> tokens5 = {"Modifies", "(", "a", ",", "\"123invalidString\"", ")"}; // RHS invalid string
 
-        REQUIRE_THROWS_AS(QueryValidator::validateStatementEntityPredicate(tokens1), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validateStatementEntityPredicate(tokens2), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validateStatementEntityPredicate(tokens3), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validateStatementEntityPredicate(tokens4), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validateStatementEntityPredicate(tokens5), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateStmtEntEntityPredicate(tokens1), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateStmtEntEntityPredicate(tokens2), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateStmtEntEntityPredicate(tokens3), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateStmtEntEntityPredicate(tokens4), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateStmtEntEntityPredicate(tokens5), SyntaxErrorException);
     }
 }
 

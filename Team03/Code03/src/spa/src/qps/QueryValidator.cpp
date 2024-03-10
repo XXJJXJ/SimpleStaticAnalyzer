@@ -150,7 +150,7 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
                 return validateStatementStatementPredicate(predicateTokens);
             case PredicateType::Modifies:
             case PredicateType::Uses:
-                return validateStatementEntityPredicate(predicateTokens);
+                return validateStmtEntEntityPredicate(predicateTokens);
             case PredicateType::Pattern:
             case PredicateType::Invalid:
                 throw SyntaxErrorException("Invalid such that clause keyword " + tokens[2]);
@@ -161,6 +161,9 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
         throw SyntaxErrorException("Invalid clause keyword");
     }
 }
+
+// TODO: add another layer of abstraction for the 3 functions below
+// TODO: get rid of magic numbers
 
 // For relationships between statements, i.e. Follows, FollowsT, Parent, ParentT
 std::vector<std::string> QueryValidator::validateStatementStatementPredicate(const std::vector<std::string>& tokens) {
@@ -183,7 +186,7 @@ std::vector<std::string> QueryValidator::validateStatementStatementPredicate(con
 }
 
 // For relationships between statements/entities and entities, i.e. Modifies, Uses
-std::vector<std::string> QueryValidator::validateStatementEntityPredicate(const std::vector<std::string>& tokens) {
+std::vector<std::string> QueryValidator::validateStmtEntEntityPredicate(const std::vector<std::string>& tokens) {
     std::vector<std::string> validatedTokens;
     const std::string& predicateType = tokens[0];
     validatedTokens.push_back(predicateType);

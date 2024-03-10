@@ -17,7 +17,6 @@ private:
 	Synonym assignSyn;
 	EntityRef lhs;
 	std::string rhs;
-    static bool isValidRhs(const std::string& rhs);
 protected:
     std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
 public:

@@ -8,6 +8,7 @@
 #ifndef SPA_QUERYVALIDATOR_H
 #define SPA_QUERYVALIDATOR_H
 #include <string>
+#include <vector>
 
 class QueryValidator {
 public:
@@ -33,7 +34,7 @@ public:
     static std::vector<std::string> validateSelection(const std::vector<std::string>& tokens);
     static std::vector<std::string> validatePredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateStatementStatementPredicate(const std::vector<std::string>& tokens);
-    static std::vector<std::string> validateStatementEntityPredicate(const std::vector<std::string>& tokens);
+    static std::vector<std::string> validateStmtEntEntityPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateAssignPatternPredicate(const std::vector<std::string>& tokens);
 };
 
