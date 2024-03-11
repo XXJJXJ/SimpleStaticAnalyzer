@@ -25,7 +25,7 @@ public:
     void addRow(const TableRow& row);
     [[nodiscard]] virtual bool isEmpty() const;
     [[nodiscard]] int getSize();
-    [[nodiscard]] std::vector<std::string> toStrings();
+    [[nodiscard]] virtual std::vector<std::string> toStrings();
     shared_ptr<BaseTable> filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const;
     shared_ptr<BaseTable> project(const std::vector<bool>& columnMask) const; // Projection function
     const vector<TableRow> getRows() const;

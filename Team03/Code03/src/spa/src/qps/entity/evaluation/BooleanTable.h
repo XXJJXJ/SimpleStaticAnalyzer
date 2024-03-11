@@ -17,6 +17,7 @@ public:
     bool isTrue() const;
     bool isBoolean() const override;
     bool operator==(const BaseTable& other) const override;
+    vector<string> toStrings() override;
 };
 
 #endif // BOOLEAN_TABLE_H

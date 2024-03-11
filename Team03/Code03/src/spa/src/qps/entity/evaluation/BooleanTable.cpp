@@ -55,3 +55,7 @@ bool BooleanTable::operator==(const BaseTable &other) const {
 BooleanTable::BooleanTable(bool value) {
     this->value = value;
 }
+
+vector<string> BooleanTable::toStrings() {
+    return {this->value ? "TRUE" : "FALSE"};
+}
