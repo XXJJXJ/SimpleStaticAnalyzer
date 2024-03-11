@@ -304,3 +304,71 @@ TEST_CASE("14th SP-PKB integration Test: cyclic calls error detection test") {
     REQUIRE(result);
     pkbPopulator->clear();
 }
+
+TEST_CASE("15th SP-PKB integration Test: container nested while condition uses relation test 1") {
+    std::string simple_string = "procedure test {while ((y < 3)  && ((b < c) || (d > e))) {z = ((x + 3) / 7) - (y + 11);}}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> whileUsesStore = qm.getUseByType(EntityType::While);
+    REQUIRE(whileUsesStore.size() == 6);
+    vector<vector<shared_ptr<Entity>>> ProcedureUsesStore = qm.getUseByProcedure();
+    REQUIRE(ProcedureUsesStore.size() == 6);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("16th SP-PKB integration Test: container nested while condition uses relation test 2") {
+    std::string simple_string = "procedure test {while (((y < 3) || (a > z)) && ((b < c) || (d > e))) {z = ((x + 3) / 7) - (y + 11);}}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> whileUsesStore = qm.getUseByType(EntityType::While);
+    REQUIRE(whileUsesStore.size() == 8);
+    vector<vector<shared_ptr<Entity>>> ProcedureUsesStore = qm.getUseByProcedure();
+    REQUIRE(ProcedureUsesStore.size() == 8);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("17th SP-PKB integration Test: container nested if condition uses relation test 1") {
+    std::string simple_string = "procedure test {if ((y < 3) && ((b < c) || (d > e))) then {z = ((x + 3) / 7) - (y + 11);} else {z = ((x + 3) / 7) - (y + 11);}}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> IfUsesStore = qm.getUseByType(EntityType::If);
+    REQUIRE(IfUsesStore.size() == 6);
+    vector<vector<shared_ptr<Entity>>> ProcedureUsesStore = qm.getUseByProcedure();
+    REQUIRE(ProcedureUsesStore.size() == 6);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("18th SP-PKB integration Test: container nested if condition uses relation test 2") {
+    std::string simple_string = "procedure test {if (((y < 3) || (a > z)) && ((b < c) || (d > e))) then {z = ((x + 3) / 7) - (y + 11);} else {z = ((x + 3) / 7) - (y + 11);}}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> IfUsesStore = qm.getUseByType(EntityType::If);
+    REQUIRE(IfUsesStore.size() == 8);
+    vector<vector<shared_ptr<Entity>>> ProcedureUsesStore = qm.getUseByProcedure();
+    REQUIRE(ProcedureUsesStore.size() == 8);
+    pkbPopulator->clear();
+}
