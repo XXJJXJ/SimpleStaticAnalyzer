@@ -7,6 +7,8 @@
 #include "qps/entity/clause/ParentPredicate.h"
 #include "qps/entity/clause/ParentTPredicate.h"
 #include "qps/entity/clause/UsesPredicate.h"
+#include "qps/entity/clause/CallsPredicate.h"
+#include "qps/entity/clause/CallsTPredicate.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
 std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {	
@@ -36,6 +38,18 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
     case PredicateType::Uses: {
         UsesPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap));
         return std::make_shared<UsesPredicate>(predicate);
+    } case PredicateType::Calls: {
+        CallsPredicate predicate(stringToEntityRef(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap));
+        return std::make_shared<CallsPredicate>(predicate);
+    } case PredicateType::CallsT: {
+        CallsTPredicate predicate(stringToEntityRef(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap));
+        return std::make_shared<CallsTPredicate>(predicate);
+    } case PredicateType::Next: {
+
+    } case PredicateType::NextT: {
+
+    } case PredicateType::Affects: {
+
     }
     case PredicateType::Pattern: {
         AssignPatternPredicate predicate(Synonym(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap), tokens[3]);

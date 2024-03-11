@@ -22,6 +22,11 @@ enum class PredicateType {
     ParentT,
     Uses,
     Pattern,
+    Calls,
+    CallsT,
+    Next,
+    NextT,
+    Affects,
     Invalid
 };
 
@@ -58,6 +63,7 @@ bool isValidStatementRef(const StatementRef &ref);
 bool isValidEntityRef(const EntityRef &ref);
 bool isValidProcAndStmtRef(const ProcAndStmtRef& ref);
 bool isValidVariable(const EntityRef& ref);
+bool isValidProcedure(const EntityRef& ref);
 bool isWildcard(StatementRef& ref);
 bool isWildcard(EntityRef & ref);
 bool hasWildcard(std::string& expr);

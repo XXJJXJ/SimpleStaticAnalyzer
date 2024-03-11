@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "qps/QpsManager.h"
 
+// Used for debugging syntax or semantic errors in whole query strings
 
 TEST_CASE("Milestone 1 failed test cases") {
 	QpsManager qm;
@@ -43,9 +44,17 @@ TEST_CASE("Debugging whole strings") {
     QpsManager qm;
     std::string string1 = "assign a; variable v; constant c; Select a such that Uses (a, c) pattern a (\"8\", _) invalid words";
     std::string string2 = "stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl; Select a pattern a(_, _\"x+y*v \"_)";
+	std::string string3 = "assign a, b; Select a Select <a, b>";
+	std::string string4 = "Select BOOLEAN";
+	std::string string5 = "assign a; Select a such that Calls(a, a)";
+	std::string string6 = "procedure a; Select a such that Calls(a, a)";
 
     std::vector<std::string> result1 = qm.processQuery(string1);
     std::vector<std::string> result2 = qm.processQuery(string2);
+	std::vector<std::string> result3 = qm.processQuery(string3);
+	//std::vector<std::string> result4 = qm.processQuery(string4);
+	std::vector<std::string> result5 = qm.processQuery(string5);
+	std::vector<std::string> result6 = qm.processQuery(string6);
 
     std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
     std::vector<std::string> expectedSemanticError = { "SemanticError" };
@@ -53,5 +62,12 @@ TEST_CASE("Debugging whole strings") {
     REQUIRE(result1 == expectedSyntaxError);
     REQUIRE(result2 != expectedSyntaxError);
     REQUIRE(result2 != expectedSemanticError);
+	REQUIRE(result3 == expectedSyntaxError);
+	// To be uncommented out when select boolean evaluation is implemented
+	//REQUIRE(result4 != expectedSyntaxError);
+	//REQUIRE(result4 != expectedSemanticError);
+	REQUIRE(result5 == expectedSemanticError);
+	REQUIRE(result6 != expectedSyntaxError);
+	REQUIRE(result6 != expectedSemanticError);
 }
 
