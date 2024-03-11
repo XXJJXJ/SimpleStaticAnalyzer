@@ -82,4 +82,29 @@ TEST_CASE("Test table retrieval for Calls*") {
             REQUIRE(table->getRows().size() == 3);
         }
     }
+    SECTION("Using partial wildcards") {
+        Synonym procSyn(EntityType::Procedure, "p");
+        SECTION("Calls*(_, p) -- gets 5") {
+            CallsTPredicate callsTPred("_", procSyn);
+            auto table = callsTPred.getResultTable(qm);
+            REQUIRE(table->getColumnCount() == 1);
+            REQUIRE(table->getSize() == 5);
+        }
+
+        SECTION("Calls*(p, _) -- gets 6") {
+            CallsTPredicate callsTPred(procSyn, "_");
+            auto table = callsTPred.getResultTable(qm);
+            REQUIRE(table->getColumnCount() == 1);
+            REQUIRE(table->getSize() == 6);
+        }
+    }
+    SECTION("Using pure wildcards") {
+        SECTION("Calls*(_, _) -- gets true") {
+            CallsTPredicate callsTPred("_", "_");
+            auto table = callsTPred.getResultTable(qm);
+            REQUIRE(table->isBoolean());
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(boolTable->getValue());
+        }
+    }
 }

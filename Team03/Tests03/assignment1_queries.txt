@@ -138,3 +138,38 @@ procedure p, p1;
 Select p1 such that Calls*("Bedok", p1)
 Yishun,Serangoon
 5000
+28 - tests tuple
+procedure p, p1;
+Select <p, p1>
+Bedok Serangoon,Bedok Yishun,Yishun Serangoon,Serangoon Yishun,Yishun Bedok,Serangoon Bedok,Bedok Bedok,Serangoon Serangoon,Yishun Yishun
+5000
+29 - tests tuple
+procedure p, p1;
+Select <p, p1> such that Calls(p, p1)
+Bedok Yishun,Yishun Serangoon
+5000
+30 - test tuple 2
+procedure p, p1;
+Select <p, p1> such that Calls*(p, p1)
+Bedok Yishun,Yishun Serangoon,Bedok Serangoon
+5000
+31 - test wildcard calls
+procedure p;
+Select p such that Calls*(_, p)
+Yishun,Serangoon
+5000
+32 - test wildcard calls
+procedure p;
+Select p such that Calls*(p, _)
+Yishun,Bedok
+5000
+33 - test Boolean get false
+procedure p;
+Select BOOLEAN such that Calls(_, "Bedok")
+FALSE
+5000
+34 - test Boolean get true
+procedure p;
+Select BOOLEAN such that Calls(_, "Yishun")
+TRUE
+5000
