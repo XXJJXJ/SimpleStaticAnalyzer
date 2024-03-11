@@ -28,12 +28,22 @@ int BaseTable::getSize() {
     return static_cast<int>(rows.size());
 }
 
-std::vector<std::string> BaseTable::toStrings() {
+//std::vector<std::string> BaseTable::toStrings() {
+//    makeRowsUnique();
+//    std::vector<std::string> rowStrings;
+//    rowStrings.reserve(rows.size());
+//    std::transform(rows.begin(), rows.end(), std::back_inserter(rowStrings),
+//                   [](const TableRow& row) { return row.toString(); });
+//    return rowStrings;
+//}
+
+std::unordered_set<std::string> BaseTable::toStrings() {
     makeRowsUnique();
-    std::vector<std::string> rowStrings;
+    std::unordered_set<std::string> rowStrings;
     rowStrings.reserve(rows.size());
-    std::transform(rows.begin(), rows.end(), std::back_inserter(rowStrings),
-                   [](const TableRow& row) { return row.toString(); });
+    for (const auto& row : rows) {
+        auto result = rowStrings.insert(row.toString());
+    }
     return rowStrings;
 }
 

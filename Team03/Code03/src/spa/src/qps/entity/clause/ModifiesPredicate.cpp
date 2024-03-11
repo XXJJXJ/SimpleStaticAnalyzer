@@ -1,11 +1,8 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "ModifiesPredicate.h"
-#include "common/spa_exception/SyntaxErrorException.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
-
-
 
 ModifiesPredicate::ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
         : lhs(std::move(lhs)), rhs(std::move(rhs)) {

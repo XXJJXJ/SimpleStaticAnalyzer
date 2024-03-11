@@ -7,7 +7,8 @@ QpsManager::~QpsManager() = default;
 std::vector<std::string> QpsManager::processQuery(const std::string& query) {
     try {
         std::vector<std::vector<std::vector<std::string>>> tokens = tokenizeQuery(query);
-        std::shared_ptr<Query> parsedQuery = parseQuery(tokens);
+        std::vector<std::vector<std::vector<std::string>>> validatedTokens = validateQuery(tokens);
+        std::shared_ptr<Query> parsedQuery = parseQuery(validatedTokens);
         std::vector<std::string> results = evaluateQuery(parsedQuery);
         return results;
     }
@@ -24,6 +25,10 @@ std::vector<std::vector<std::vector<std::string>>>
 QpsManager::tokenizeQuery(const std::string &query) {
     QueryTokenizer tokenizer;
     return tokenizer.tokenize(query);
+}
+
+std::vector<std::vector<std::vector<std::string>>> QpsManager::validateQuery(std::vector<std::vector<std::vector<std::string>>> tokens) {
+    return QueryValidator::validate(tokens);
 }
 
 // Calls QueryParser to parse the tokens into a Query object
