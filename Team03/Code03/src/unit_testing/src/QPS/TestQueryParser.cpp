@@ -84,7 +84,7 @@ TEST_CASE("PredicateFactory::createPredicate successfully creates predicate obje
 //    auto sp = Sp();
 //    sp.ProcessSIMPLE("milestone1_modifiesp_usesp_call_source.txt");
 //    string query = "stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;\n"
-//                   "Select cl";
+//                   "Select <a, a>";
 //    QueryTokenizer qt;
 //    QueryParser qp;
 //    QueryValidator qv;
@@ -97,5 +97,5 @@ TEST_CASE("PredicateFactory::createPredicate successfully creates predicate obje
 //    EvaluationPlanner ep = EvaluationPlanner(q, qe);
 //    ep.plan();
 //    auto res = qe->evaluate(q);
-//    REQUIRE(res.size() == 25);
+//    REQUIRE(res.size() == 11);
 //}

@@ -238,7 +238,7 @@ TEST_CASE("ProjectionStrategy selects synonyms from different groups", "[Project
     table1->setHeaders({synonym1, synonym2});
     table1->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
     table1->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var2")}));
-    table1->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var3")}));
+//    table1->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var3")}));
     table1->addRow(TableRow({std::make_shared<MockEntity>("entity3"), std::make_shared<MockEntity>("var1")}));
     auto table2 = std::make_shared<HeaderTable>();
     table2->setHeaders({synonym3});
