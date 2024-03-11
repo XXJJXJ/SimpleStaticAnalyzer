@@ -23,18 +23,19 @@ public:
     static bool isIdent(const std::string& token);
     static bool isName(const std::string& token);
     static bool isSynonym(const std::string& token);
-    static bool isWildcard(std::string const& token);
+    static bool isWildcard(const std::string& token);
     static bool isStmtRef(const std::string& token);
     static bool isEntRef(const std::string& token);
-    static bool isExpressionSpec(std::string const& token);
+    static bool isExpressionSpec(const std::string& token);
     static bool isExpr(std::string token);
-    static bool isTerm(std::string const& token);
-    static bool isFactor(std::string const& token);
+    static bool isTerm(const std::string& token);
+    static bool isFactor(const std::string& token);
     static std::vector<std::string> validateDeclaration(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateSelection(const std::vector<std::string>& tokens);
     static std::vector<std::string> validatePredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateStatementStatementPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateStmtEntEntityPredicate(const std::vector<std::string>& tokens);
+    static std::vector<std::string> validateEntityEntityPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateAssignPatternPredicate(const std::vector<std::string>& tokens);
 };
 

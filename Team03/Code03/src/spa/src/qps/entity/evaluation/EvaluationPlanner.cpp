@@ -29,7 +29,13 @@ void EvaluationPlanner::plan() {
     }
     // Projection strategy, only one selection is supported for now due to the implementation of the ProjectionStrategy.
     // TODO: Implement multiple selections.
-    strategies.push_back(make_shared<ProjectionStrategy>(query->getSelections()[0]));
+    // strategies.push_back(make_shared<ProjectionStrategy>(query->getSelections()[0]));
+    // Temp fix to accept empty selections for select boolean
+    // TODO: support empty selections for select boolean
+    auto selections = query->getSelections();
+    if (!selections.empty()) {
+        strategies.push_back(make_shared<ProjectionStrategy>(selections[0]));
+    }
 
     evaluator->setStrategies(strategies);
 

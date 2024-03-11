@@ -8,7 +8,12 @@ PredicateType getPredicateType(const std::string& keyword) {
             {"Parent", PredicateType::Parent},
             {"Parent*", PredicateType::ParentT},
             {"Uses", PredicateType::Uses},
-            {"pattern", PredicateType::Pattern}
+            {"pattern", PredicateType::Pattern},
+            {"Calls", PredicateType::Calls},
+            {"Calls*", PredicateType::CallsT},
+            {"Next", PredicateType::Next},
+            {"Next*", PredicateType::NextT},
+            {"Affects", PredicateType::Affects}
     };
 
     auto it = keywordMap.find(keyword);
@@ -57,6 +62,15 @@ bool isValidVariable(const EntityRef& ref) {
     if (std::holds_alternative<Synonym>(ref)) {
         auto synonym = std::get<Synonym>(ref);
         return synonym.getType() == EntityType::Variable;
+    }
+    return true;
+}
+
+// Semantic check for whether synonym is a procedure
+bool isValidProcedure(const EntityRef& ref) {
+    if (std::holds_alternative<Synonym>(ref)) {
+        auto synonym = std::get<Synonym>(ref);
+        return synonym.getType() == EntityType::Procedure;
     }
     return true;
 }
