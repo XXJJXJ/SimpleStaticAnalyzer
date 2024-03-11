@@ -129,7 +129,7 @@ void BaseTable::makeRowsUnique() {
         for (size_t i = 0; i < a.getValues().size(); ++i) {
             // Assuming Entity has a method to compare which defines a strict weak ordering
             if (*(a.getValues()[i]) != *(b.getValues()[i])) {
-                return *(a.getValues()[i]) < *(b.getValues()[i]); // You may need to implement this comparison
+                return *(a.getValues()[i]) < *(b.getValues()[i]);
             }
         }
         return false; // Consider equal if all elements are equal

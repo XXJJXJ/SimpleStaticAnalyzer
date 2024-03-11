@@ -51,3 +51,11 @@ bool BooleanTable::operator==(const BaseTable &other) const {
         return false;
     }
 }
+
+BooleanTable::BooleanTable(bool value) {
+    this->value = value;
+}
+
+unordered_set<string> BooleanTable::toStrings() {
+    return {this->value ? "TRUE" : "FALSE"};
+}

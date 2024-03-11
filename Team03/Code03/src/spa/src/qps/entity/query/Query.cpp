@@ -17,3 +17,7 @@ vector<shared_ptr<Synonym>> Query::getSelections() const {
     return selections;
 }
 
+vector<shared_ptr<Synonym>> Query::getDeclarations() const {
+    return declarations;
+}
+

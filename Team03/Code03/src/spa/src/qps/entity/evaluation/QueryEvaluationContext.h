@@ -12,10 +12,12 @@
 #include "BaseTable.h" // Include the BaseTable class header
 #include "qps/entity/query/Synonym.h"
 #include "pkb/QueryPKB.h"
+#include "qps/entity/evaluation/HeaderTable.h"
+#include "common/spa_exception/QPSEvaluationException.h"
 
 class QueryEvaluationContext {
 private:
-    std::unordered_map<Synonym, std::shared_ptr<BaseTable>> synonymToTableMap;
+    std::unordered_map<Synonym, std::shared_ptr<HeaderTable>> synonymToTableMap;
     bool resultMustBeEmpty = false;    // A quick indicator of empty result, for early termination
     std::shared_ptr<QueryManager> queryManager;
     std::shared_ptr<BaseTable> resultTable;
@@ -23,12 +25,12 @@ private:
 
 public:
     QueryEvaluationContext();
-    void addTableForSynonym(const Synonym& synonym, const std::shared_ptr<BaseTable>& table);
+    void addTableForSynonym(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table);
     void clearTables();
-    [[nodiscard]] std::shared_ptr<BaseTable> getTableForSynonym(const Synonym& synonym) const;
+    [[nodiscard]] std::shared_ptr<HeaderTable> getTableForSynonym(const Synonym& synonym);
     [[nodiscard]] bool containsSynonym(const Synonym& synonym) const;
     [[nodiscard]] bool isTableInitialized(const Synonym& synonym) const;
-    void putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<BaseTable>& table);
+    void putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table);
     [[nodiscard]] std::vector<Synonym> getSynonyms() const;
     [[nodiscard]] std::shared_ptr<QueryManager> getQueryManager() const;
     void setQueryManager(const std::shared_ptr<QueryManager>& queryManager);
@@ -37,6 +39,7 @@ public:
     [[nodiscard]] std::shared_ptr<BaseTable> getResultTable() const;
     [[nodiscard]] bool isCurrentResultEmpty() const;
     void setSynonymGroups(const std::vector<SynonymPtrSet>& synonymGroups);
+    [[nodiscard]] std::vector<SynonymPtrSet> getSynonymGroups() const;
     void setResultToFalse();
 };
 

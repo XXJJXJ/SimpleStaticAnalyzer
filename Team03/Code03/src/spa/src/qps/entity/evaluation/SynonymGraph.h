@@ -11,7 +11,8 @@
 
 class SynonymGraph {
 public:
-    SynonymGraph(const std::vector<std::shared_ptr<Predicate>>& predicates);
+    SynonymGraph(const std::vector<std::shared_ptr<Predicate>>& predicates,
+                 const std::vector<shared_ptr<Synonym>>& declaredSynonyms);
     std::vector<SynonymPtrSet> groupSynonyms();
 
 private:

@@ -36,6 +36,7 @@ TEST_CASE("ProjectionStrategy queries and sets new table when synonym not in any
     qec.setQueryManager(fakeManager);
 
     auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
+    qec.setSynonymGroups({{synonym}});
     ProjectionStrategy strategy({synonym});
 
     strategy.execute(qec);
@@ -58,6 +59,7 @@ TEST_CASE("ProjectionStrategy projects column correctly when table with synonym 
     table->setHeaders({synonym});
     table->addRow(TableRow({std::make_shared<MockEntity>("entityValue")}));
     qec.addTableForSynonym(*synonym, table);
+    qec.setSynonymGroups({{synonym}});
 
     ProjectionStrategy strategy({synonym});
 
@@ -101,6 +103,7 @@ TEST_CASE("ProjectionStrategy with table having multiple columns", "[ProjectionS
     table->setHeaders({synonym1, synonym2});
     table->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
     qec.addTableForSynonym(*synonym1, table);
+    qec.setSynonymGroups({{synonym1, synonym2}});
 
     ProjectionStrategy strategy({synonym1});
     strategy.execute(qec);
@@ -124,6 +127,7 @@ TEST_CASE("ProjectionStrategy selects specific column when multiple synonyms exi
     table->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var2")}));
     qec.addTableForSynonym(*synonym1, table);
     qec.addTableForSynonym(*synonym2, table);
+    qec.setSynonymGroups({{synonym1, synonym2}});
 
     ProjectionStrategy strategy({synonym2}); // Projecting only the second column
     strategy.execute(qec);
@@ -148,6 +152,7 @@ TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrat
     table2->addRow(TableRow({std::make_shared<MockEntity>("var1")}));
     qec.addTableForSynonym(*synonym1, table1);
     qec.addTableForSynonym(*synonym2, table2);
+    qec.setSynonymGroups({{synonym1}, {synonym2}});
 
     ProjectionStrategy strategy({synonym1}); // Projecting only the first synonym
     strategy.execute(qec);
@@ -161,5 +166,107 @@ TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrat
 }
 
 // ai-gen end
+
+TEST_CASE("ProjectionStrategy selects multiple synonyms from same group", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
+    auto synonym2 = std::make_shared<Synonym>(EntityType::Variable, "v1");
+    auto table1 = std::make_shared<HeaderTable>();
+    table1->setHeaders({synonym1, synonym2});
+    table1->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
+    qec.addTableForSynonym(*synonym1, table1);
+    qec.addTableForSynonym(*synonym2, table1);
+    qec.setSynonymGroups({{synonym1, synonym2}});
+
+    ProjectionStrategy strategy({synonym1, synonym2}); // Projecting both synonyms
+    strategy.execute(qec);
+
+    auto resultBaseTable = qec.getResultTable();
+    auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
+
+    REQUIRE_FALSE(resultTable->isEmpty());
+    REQUIRE(resultTable->getSize() == 1);
+    auto resultRows = resultTable->toStrings();
+    REQUIRE(resultRows.find("entity1 var1") != resultRows.end());
+}
+
+TEST_CASE("ProjectionStrategy gives TRUE for queries with 0 predicates", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto fakeManager = std::make_shared<FakeQueryManager>();
+    qec.setQueryManager(fakeManager);
+
+    // Assuming you have a way to signify no predicates, possibly by not adding any synonyms or specific setup
+    ProjectionStrategy strategy({}); // Empty synonym list represents 0 predicates in this context
+
+    strategy.execute(qec);
+
+    // Assuming `getQueryResultBool` retrieves the boolean result of the query
+    auto queryResult = qec.getResultTable();
+    auto result = queryResult->toStrings();
+
+    REQUIRE(result.size() == 1);
+    REQUIRE(result.find("TRUE") != result.end());  // No constraints in query
+
+}
+
+TEST_CASE("ProjectionStrategy gives FALSE for queries with empty result", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto fakeManager = std::make_shared<FakeQueryManager>();
+    qec.setQueryManager(fakeManager);
+    qec.setResultToFalse();     // The API called when the result is empty
+
+    // Assuming you have a way to signify no predicates, possibly by not adding any synonyms or specific setup
+    ProjectionStrategy strategy({}); // Empty synonym list represents 0 predicates in this context
+
+    strategy.execute(qec);
+
+    // Assuming `getQueryResultBool` retrieves the boolean result of the query
+    auto queryResult = qec.getResultTable();
+    auto result = queryResult->toStrings();
+
+    REQUIRE(result.size() == 1);
+    REQUIRE(result.find("FALSE") != result.end());  // No constraints in query
+
+}
+
+TEST_CASE("ProjectionStrategy selects synonyms from different groups", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
+    auto synonym2 = std::make_shared<Synonym>(EntityType::Variable, "v1");
+    auto synonym3 = std::make_shared<Synonym>(EntityType::Stmt, "s2");
+    auto table1 = std::make_shared<HeaderTable>();
+    table1->setHeaders({synonym1, synonym2});
+    table1->addRow(TableRow({std::make_shared<MockEntity>("entity1"), std::make_shared<MockEntity>("var1")}));
+    table1->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var2")}));
+//    table1->addRow(TableRow({std::make_shared<MockEntity>("entity2"), std::make_shared<MockEntity>("var3")}));
+    table1->addRow(TableRow({std::make_shared<MockEntity>("entity3"), std::make_shared<MockEntity>("var1")}));
+    auto table2 = std::make_shared<HeaderTable>();
+    table2->setHeaders({synonym3});
+    table2->addRow(TableRow({std::make_shared<MockEntity>("entity999")}));
+    table2->addRow(TableRow({std::make_shared<MockEntity>("entity998")}));
+
+    qec.addTableForSynonym(*synonym1, table1);
+    qec.addTableForSynonym(*synonym2, table1);
+    qec.addTableForSynonym(*synonym3, table2);
+    qec.setSynonymGroups({{synonym1, synonym2}, {synonym3}});
+
+    ProjectionStrategy strategy({synonym1, synonym3}); // Selecting synonyms from different groups
+    strategy.execute(qec);
+
+    auto resultBaseTable = qec.getResultTable();
+    auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
+
+    REQUIRE_FALSE(resultTable->isEmpty());
+    REQUIRE(resultTable->getSize() == 6);
+    auto resultRows = resultTable->toStrings();
+    REQUIRE(resultRows.find("entity1 entity999") != resultRows.end());
+    REQUIRE(resultRows.find("entity2 entity999") != resultRows.end());
+    REQUIRE(resultRows.find("entity2 entity998") != resultRows.end());
+    REQUIRE(resultRows.find("entity3 entity999") != resultRows.end());
+    REQUIRE(resultRows.find("entity1 entity998") != resultRows.end());
+    REQUIRE(resultRows.find("entity2 entity998") != resultRows.end());
+
+}
+
 
 

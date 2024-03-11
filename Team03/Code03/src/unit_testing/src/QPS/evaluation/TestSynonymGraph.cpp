@@ -16,7 +16,7 @@ shared_ptr<Synonym> makeSynonym(const string& name, EntityType type) {
 // Test case for no predicates
 TEST_CASE("SynonymGraph with no predicates results in no groups", "[SynonymGraph]") {
     vector<shared_ptr<Predicate>> predicates;
-    SynonymGraph graph(predicates);
+    SynonymGraph graph(predicates, {});
     auto groups = graph.groupSynonyms();
     REQUIRE(groups.empty());
 }
@@ -28,7 +28,7 @@ TEST_CASE("Single FollowsPredicate connects two synonyms into one group", "[Syno
     auto predicate = make_shared<FollowsPredicate>(*s1, *s2);
 
     vector<shared_ptr<Predicate>> predicates{predicate};
-    SynonymGraph graph(predicates);
+    SynonymGraph graph(predicates, {s1, s2});
     auto groups = graph.groupSynonyms();
 
     REQUIRE(groups.size() == 1);
@@ -44,10 +44,10 @@ TEST_CASE("Isolated synonyms are not grouped", "[SynonymGraph]") {
     // No predicates connecting s1 and s2
 
     vector<shared_ptr<Predicate>> predicates;
-    SynonymGraph graph(predicates);
+    SynonymGraph graph(predicates, {s1, s2});
     auto groups = graph.groupSynonyms();
 
-    REQUIRE(groups.empty());
+    REQUIRE(groups.size() == 2);
 }
 
 // Test case for multiple FollowsPredicates forming separate groups
@@ -59,7 +59,7 @@ TEST_CASE("Multiple FollowsPredicates form separate groups for connected synonym
     auto predicate2 = make_shared<FollowsPredicate>(*s3, "_"); // s3 is isolated
 
     vector<shared_ptr<Predicate>> predicates{predicate1, predicate2};
-    SynonymGraph graph(predicates);
+    SynonymGraph graph(predicates, {s1, s2, s3});
     auto groups = graph.groupSynonyms();
 
     REQUIRE(groups.size() == 2);
@@ -85,7 +85,7 @@ TEST_CASE("Circular dependencies between synonyms are correctly grouped", "[Syno
     auto predicate3 = make_shared<FollowsPredicate>(*s3, *s1);
 
     vector<shared_ptr<Predicate>> predicates{predicate1, predicate2, predicate3};
-    SynonymGraph graph(predicates);
+    SynonymGraph graph(predicates, {s1, s2, s3});
     auto groups = graph.groupSynonyms();
 
     REQUIRE(groups.size() == 1);
@@ -99,7 +99,7 @@ TEST_CASE("FollowsPredicate with no synonyms does not form groups", "[SynonymGra
     auto predicate = make_shared<FollowsPredicate>(StatementRef(1), StatementRef("_"));
 
     vector<shared_ptr<Predicate>> predicates{predicate};
-    SynonymGraph graph(predicates);
+    SynonymGraph graph(predicates, {});
     auto groups = graph.groupSynonyms();
 
     REQUIRE(groups.empty());
@@ -111,7 +111,7 @@ TEST_CASE("Synonyms with subtypes of stmt are correctly grouped", "[SynonymGraph
     auto predicate = make_shared<FollowsPredicate>(*assignSynonym, *whileSynonym);
 
     vector<shared_ptr<Predicate>> predicates{predicate};
-    SynonymGraph graph(predicates);
+    SynonymGraph graph(predicates, {assignSynonym, whileSynonym});
     auto groups = graph.groupSynonyms();
 
     REQUIRE(groups.size() == 1);
@@ -121,7 +121,7 @@ TEST_CASE("Synonyms with subtypes of stmt are correctly grouped", "[SynonymGraph
 }
 TEST_CASE("SynonymGraph initialized with empty predicates results in no groups", "[SynonymGraph]") {
     vector<shared_ptr<Predicate>> predicates; // Empty list of predicates
-    SynonymGraph graph(predicates);
+    SynonymGraph graph(predicates, {});
     auto groups = graph.groupSynonyms();
 
     REQUIRE(groups.empty());
