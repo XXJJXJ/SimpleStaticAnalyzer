@@ -21,6 +21,8 @@ private:
     vector<vector<shared_ptr<Entity>>> fakeUses;
 
     vector<vector<shared_ptr<Entity>>> fakeModifies;
+    vector<vector<shared_ptr<Entity>>> fakeCalls;
+    vector<vector<shared_ptr<Entity>>> fakeCallsT;
 
     vector<vector<shared_ptr<Entity>>> fakeAssignsWithPattern;
 
@@ -72,6 +74,14 @@ public:
         fakeModifies.push_back({ stmt, var });
     }
 
+    void addFakeCalls(shared_ptr<Procedure> caller, shared_ptr<Procedure> callee) {
+        fakeCalls.push_back({caller, callee});
+    }
+
+    void addFakeCallsT(shared_ptr<Procedure> caller, shared_ptr<Procedure> callee) {
+        fakeCallsT.push_back({caller, callee});
+    }
+
     // New method to get all entities by type
     std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType)
     override {
@@ -105,6 +115,14 @@ public:
 
     vector<vector<shared_ptr<Entity>>> getModifyByType(EntityType entType) override {
         return fakeModifies;
+    }
+
+    vector<vector<shared_ptr<Entity>>> getCallS() override {
+        return fakeCalls;
+    }
+
+    vector<vector<shared_ptr<Entity>>> getCallT() override {
+        return fakeCallsT;
     }
 
     // Implement other necessary virtual functions from QueryManager

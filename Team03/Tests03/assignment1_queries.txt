@@ -113,3 +113,28 @@ variable v;
 Select v such that Uses(4, v)
 west
 5000
+23 - test Calls p
+procedure p, p1;
+Select p such that Calls(p, p1)
+Bedok,Yishun
+5000
+24 - test Calls p1
+procedure p, p1;
+Select p1 such that Calls(p, p1)
+Yishun,Serangoon
+5000
+25 - test Calls* p
+procedure p, p1;
+Select p such that Calls*(p, p1)
+Bedok,Yishun
+5000
+26 - test Calls* p1
+procedure p, p1;
+Select p1 such that Calls*(p, p1)
+Yishun,Serangoon
+5000
+27 - test Calls* by Bedok
+procedure p, p1;
+Select p1 such that Calls*("Bedok", p1)
+Yishun,Serangoon
+5000

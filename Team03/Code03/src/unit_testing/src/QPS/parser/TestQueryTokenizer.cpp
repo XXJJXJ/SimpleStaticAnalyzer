@@ -5,15 +5,20 @@ TEST_CASE("QueryTokenizer::tokenize should remove trailing whitespaces") {
 	QueryTokenizer qe;
 	std::string testQuery1 = "variable a      ;";
 	std::string testQuery2 = "assign     a   ;   Select    a";
+	std::string testQuery3 = "procedure   p,   p1; Select     p such      that      Calls(   p,    p1   )    ";
 
 	std::vector<std::vector<std::vector<std::string>>> result1 = qe.tokenize(testQuery1);
 	std::vector<std::vector<std::vector<std::string>>> result2 = qe.tokenize(testQuery2);
+	std::vector<std::vector<std::vector<std::string>>> result3 = qe.tokenize(testQuery3);
 
 	std::vector<std::vector<std::vector<std::string>>> expectedResult1 = { {{"variable", "a", ";"}}, {}, {} };
 	std::vector<std::vector<std::vector<std::string>>> expectedResult2 = { {{"assign", "a", ";"}}, {{"Select", "a"}}, {} };
+	std::vector<std::vector<std::vector<std::string>>> expectedResult3 = { {{"procedure", "p", ",", "p1", ";"}}, {{"Select", "p"}}, {{"such", "that", "Calls", "(", "p", ",", "p1", ")"}} };
 
 	REQUIRE(result1 == expectedResult1);
 	REQUIRE(result2 == expectedResult2);
+	REQUIRE(result3 == expectedResult3);
+
 }
 
 TEST_CASE("QueryTokenizer::tokenize should recognise each punctuation as a separate token") {
