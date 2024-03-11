@@ -155,6 +155,9 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
             case PredicateType::Modifies:
             case PredicateType::Uses:
                 return validateStmtEntEntityPredicate(predicateTokens);
+            case PredicateType::Calls:
+            case PredicateType::CallsT:
+                return validateEntityEntityPredicate(predicateTokens);
             case PredicateType::Pattern:
             case PredicateType::Invalid:
                 throw SyntaxErrorException("Invalid such that clause keyword " + tokens[2]);
@@ -166,7 +169,7 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
     }
 }
 
-// TODO: add another layer of abstraction for the 3 functions below
+// TODO: add another layer of abstraction for the 4 functions below
 // TODO: get rid of magic numbers
 
 // For relationships between statements, i.e. Follows, FollowsT, Parent, ParentT
@@ -203,6 +206,27 @@ std::vector<std::string> QueryValidator::validateStmtEntEntityPredicate(const st
         validatedTokens.push_back(lhs);
         validatedTokens.push_back(rhs);
     } else {
+        throw SyntaxErrorException("Invalid " + predicateType + " clause syntax");
+    }
+
+    return validatedTokens;
+}
+
+// For relationships between entities and entities, i.e. Calls, CallsT
+std::vector<std::string> QueryValidator::validateEntityEntityPredicate(const std::vector<std::string>& tokens) {
+    std::vector<std::string> validatedTokens;
+    const std::string& predicateType = tokens[0];
+    validatedTokens.push_back(predicateType);
+    if (tokens.size() == 6 && tokens[1] == "(" && tokens[3] == "," && tokens[5] == ")") {
+        const std::string& lhs = tokens[2];
+        const std::string& rhs = tokens[4];
+        if (!isEntRef(lhs) || !isEntRef(rhs)) {
+            throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
+        }
+        validatedTokens.push_back(lhs);
+        validatedTokens.push_back(rhs);
+    }
+    else {
         throw SyntaxErrorException("Invalid " + predicateType + " clause syntax");
     }
 

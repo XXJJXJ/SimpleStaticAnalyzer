@@ -72,7 +72,9 @@ TEST_CASE("Test QueryValidator::validatePredicate") {
         std::vector<std::string> tokens4 = {"such", "that", "Parent", "(", "a", ",", "b", ")"};
         std::vector<std::string> tokens5 = {"such", "that", "Parent*", "(", "a", ",", "b", ")"};
         std::vector<std::string> tokens6 = {"such", "that", "Uses", "(", "a", ",", "b", ")"};
-        std::vector<std::string> tokens7 = {"pattern", "a", "(", "_", ",", "_", ")"};
+        std::vector<std::string> tokens7 = {"such", "that", "Calls", "(", "a", ",", "b", ")"};
+        std::vector<std::string> tokens8 = {"such", "that", "Calls*", "(", "a", ",", "b", ")"};
+        std::vector<std::string> tokens9 = {"pattern", "a", "(", "_", ",", "_", ")"};
 
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens1));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens2));
@@ -81,6 +83,8 @@ TEST_CASE("Test QueryValidator::validatePredicate") {
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens5));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens6));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens7));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens8));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens9));
     }
 
     SECTION("Invalid predicates") {
@@ -126,7 +130,7 @@ TEST_CASE("Test QueryValidator::validateStatementStatementPredicate") {
     }
 }
 
-TEST_CASE("Test QueryValidator::validateStatementEntityPredicate") {
+TEST_CASE("Test QueryValidator::validateStmtEntEntityPredicate") {
     SECTION("Valid StatementEntityPredicates") {
         std::vector<std::string> tokens1 = {"Uses", "(", "a", ",", "b", ")"}; // Both synonyms
         std::vector<std::string> tokens2 = {"Uses", "(", "1", ",", "_", ")"}; // LHS statement number, RHS wildcard
@@ -161,6 +165,36 @@ TEST_CASE("Test QueryValidator::validateStatementEntityPredicate") {
         REQUIRE_THROWS_AS(QueryValidator::validateStmtEntEntityPredicate(tokens3), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validateStmtEntEntityPredicate(tokens4), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validateStmtEntEntityPredicate(tokens5), SyntaxErrorException);
+    }
+}
+
+TEST_CASE("Test QueryValidator::validateEntityEntityPredicate") {
+    SECTION("Valid EntityEntityPredicates") {
+        std::vector<std::string> tokens1 = { "Calls", "(", "a", ",", "b", ")" }; // Both synonyms
+        std::vector<std::string> tokens2 = { "Calls", "(", "_", ",", "_", ")" }; // Both wildcards
+        std::vector<std::string> tokens3 = { "CallsT", "(", "\"validProcName\"", ",", "\"validProcName\"", ")" }; // Both valid procedure names
+
+        std::vector<std::string> expectedResults1 = { "Calls", "a", "b"};
+        std::vector<std::string> expectedResults2 = { "Calls", "_", "_" };
+        std::vector<std::string> expectedResults3 = { "CallsT", "\"validProcName\"", "\"validProcName\"" };
+
+        std::vector<std::string> results1 = QueryValidator::validateEntityEntityPredicate(tokens1);
+        std::vector<std::string> results2 = QueryValidator::validateEntityEntityPredicate(tokens2);
+        std::vector<std::string> results3 = QueryValidator::validateEntityEntityPredicate(tokens3);
+
+        REQUIRE(results1 == expectedResults1);
+        REQUIRE(results2 == expectedResults2);
+        REQUIRE(results3 == expectedResults3);
+    }
+
+    SECTION("Invalid EntityEntityPredicate") {
+        std::vector<std::string> tokens1 = { "Calls", "(", "1", ",", "b", ")" }; // LHS number
+        std::vector<std::string> tokens2 = { "Calls", "(", "_", ",", "123invalidSynonym", ")" }; // RHS invalid synonym
+        std::vector<std::string> tokens3 = { "CallsT", "(", "\"123InvalidProcName\"", ",", "\"validProcName\"", ")" }; // LHS invalid procedure name
+
+        REQUIRE_THROWS_AS(QueryValidator::validateEntityEntityPredicate(tokens1), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateEntityEntityPredicate(tokens2), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateEntityEntityPredicate(tokens3), SyntaxErrorException);
     }
 }
 

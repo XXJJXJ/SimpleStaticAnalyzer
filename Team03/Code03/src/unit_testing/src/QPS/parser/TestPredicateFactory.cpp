@@ -8,6 +8,7 @@ TEST_CASE("PredicateFactory::createPredicate successfully creates predicate obje
     synonymMap["b"] = EntityType::Stmt;
     synonymMap["c"] = EntityType::Variable;
     synonymMap["d"] = EntityType::Assign;
+    synonymMap["e"] = EntityType::Procedure;
 
     std::vector<std::string> tokens1 = { "Follows", "a", "b" };
     std::vector<std::string> tokens2 = { "Follows*", "a", "b" };
@@ -15,7 +16,9 @@ TEST_CASE("PredicateFactory::createPredicate successfully creates predicate obje
     std::vector<std::string> tokens4 = { "Parent", "a", "b" };
     std::vector<std::string> tokens5 = { "Parent*", "a", "b" };
     std::vector<std::string> tokens6 = { "Uses", "a", "c" };
-    std::vector<std::string> tokens7 = { "pattern", "d", "c", "_" };
+    std::vector<std::string> tokens7 = { "Calls", "e", "e" };
+    std::vector<std::string> tokens8 = { "Calls*", "e", "e" };
+    std::vector<std::string> tokens9 = { "pattern", "d", "c", "_" };
 
     REQUIRE_NOTHROW(pf.createPredicate(tokens1, synonymMap));
     REQUIRE_NOTHROW(pf.createPredicate(tokens2, synonymMap));
@@ -24,4 +27,6 @@ TEST_CASE("PredicateFactory::createPredicate successfully creates predicate obje
     REQUIRE_NOTHROW(pf.createPredicate(tokens5, synonymMap));
     REQUIRE_NOTHROW(pf.createPredicate(tokens6, synonymMap));
     REQUIRE_NOTHROW(pf.createPredicate(tokens7, synonymMap));
+    REQUIRE_NOTHROW(pf.createPredicate(tokens8, synonymMap));
+    REQUIRE_NOTHROW(pf.createPredicate(tokens9, synonymMap));
 }
