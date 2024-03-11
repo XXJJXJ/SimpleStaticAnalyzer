@@ -44,10 +44,12 @@ TEST_CASE("ProjectionStrategy queries and sets new table when synonym not in any
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
 
+    auto resultStrings = resultTable->toStrings();
+
     REQUIRE(resultTable != nullptr);
     REQUIRE_FALSE(resultTable->isEmpty());
     REQUIRE(resultTable->getSize() == 1);
-    REQUIRE(resultTable->toStrings().front() == "mockName");
+    REQUIRE(resultStrings.count("mockName") == 1);
 }
 
 TEST_CASE("ProjectionStrategy projects column correctly when table with synonym exists", "[ProjectionStrategy]") {
@@ -65,11 +67,12 @@ TEST_CASE("ProjectionStrategy projects column correctly when table with synonym 
 
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
+    auto resultStrings = resultTable->toStrings();
 
     REQUIRE(resultTable != nullptr);
     REQUIRE_FALSE(resultTable->isEmpty());
     REQUIRE(resultTable->getSize() == 1);
-    REQUIRE(resultTable->toStrings().front() == "entityValue");
+    REQUIRE(resultStrings.count("entityValue") == 1);
 }
 
 TEST_CASE("ProjectionStrategy with multiple tables, some empty", "[ProjectionStrategy]") {
@@ -108,8 +111,10 @@ TEST_CASE("ProjectionStrategy with table having multiple columns", "[ProjectionS
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
     REQUIRE_FALSE(resultTable->isEmpty());
+    auto resultStrings = resultTable->toStrings();
+
     REQUIRE(resultTable->getSize() == 1);
-    REQUIRE(resultTable->toStrings().front() == "entity1");
+    REQUIRE(resultStrings.count("entity1") == 1);
 }
 
 TEST_CASE("ProjectionStrategy selects specific column when multiple synonyms exist", "[ProjectionStrategy]") {
@@ -129,9 +134,10 @@ TEST_CASE("ProjectionStrategy selects specific column when multiple synonyms exi
 
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
+    auto resultStrings = resultTable->toStrings();
     REQUIRE(resultTable->getSize() == 2);
-    REQUIRE(resultTable->toStrings()[0] == "var1");
-    REQUIRE(resultTable->toStrings()[1] == "var2");
+    REQUIRE(resultStrings.count("var1") == 1);
+    REQUIRE(resultStrings.count("var2") == 1);
 }
 
 TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrategy]") {
@@ -153,8 +159,10 @@ TEST_CASE("ProjectionStrategy with multiple non-empty tables", "[ProjectionStrat
 
     auto resultBaseTable = qec.getResultTable();
     auto resultTable = std::dynamic_pointer_cast<HeaderTable>(resultBaseTable);
+    auto resultStrings = resultTable->toStrings();
+
     REQUIRE(resultTable->getSize() == 1);
-    REQUIRE(resultTable->toStrings()[0] == "entity1");
+    REQUIRE(resultStrings.count("entity1") == 1);
 }
 
 // ai-gen end
@@ -179,7 +187,7 @@ TEST_CASE("ProjectionStrategy selects multiple synonyms from same group", "[Proj
     REQUIRE_FALSE(resultTable->isEmpty());
     REQUIRE(resultTable->getSize() == 1);
     auto resultRows = resultTable->toStrings();
-    REQUIRE(resultRows.front() == "entity1 var1");
+    REQUIRE(resultRows.find("entity1 var1") != resultRows.end());
 }
 
 TEST_CASE("ProjectionStrategy gives TRUE for queries with 0 predicates", "[ProjectionStrategy]") {
@@ -197,7 +205,27 @@ TEST_CASE("ProjectionStrategy gives TRUE for queries with 0 predicates", "[Proje
     auto result = queryResult->toStrings();
 
     REQUIRE(result.size() == 1);
-    REQUIRE(result.front() == "TRUE");  // No constraints in query
+    REQUIRE(result.find("TRUE") != result.end());  // No constraints in query
+
+}
+
+TEST_CASE("ProjectionStrategy gives FALSE for queries with empty result", "[ProjectionStrategy]") {
+    QueryEvaluationContext qec;
+    auto fakeManager = std::make_shared<FakeQueryManager>();
+    qec.setQueryManager(fakeManager);
+    qec.setResultToFalse();     // The API called when the result is empty
+
+    // Assuming you have a way to signify no predicates, possibly by not adding any synonyms or specific setup
+    ProjectionStrategy strategy({}); // Empty synonym list represents 0 predicates in this context
+
+    strategy.execute(qec);
+
+    // Assuming `getQueryResultBool` retrieves the boolean result of the query
+    auto queryResult = qec.getResultTable();
+    auto result = queryResult->toStrings();
+
+    REQUIRE(result.size() == 1);
+    REQUIRE(result.find("FALSE") != result.end());  // No constraints in query
 
 }
 
@@ -231,7 +259,13 @@ TEST_CASE("ProjectionStrategy selects synonyms from different groups", "[Project
     REQUIRE_FALSE(resultTable->isEmpty());
     REQUIRE(resultTable->getSize() == 6);
     auto resultRows = resultTable->toStrings();
-    // change to set
+    REQUIRE(resultRows.find("entity1 entity999") != resultRows.end());
+    REQUIRE(resultRows.find("entity2 entity999") != resultRows.end());
+    REQUIRE(resultRows.find("entity2 entity998") != resultRows.end());
+    REQUIRE(resultRows.find("entity3 entity999") != resultRows.end());
+    REQUIRE(resultRows.find("entity1 entity998") != resultRows.end());
+    REQUIRE(resultRows.find("entity2 entity998") != resultRows.end());
+
 }
 
 

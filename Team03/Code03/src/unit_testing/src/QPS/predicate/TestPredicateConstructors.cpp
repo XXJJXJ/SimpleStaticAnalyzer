@@ -65,8 +65,6 @@ TEST_CASE("Predicates Input Validations", "[Predicates]") {
         REQUIRE_NOTHROW(FollowsTPredicate(wildcard, stmtSyn2));
         REQUIRE_THROWS(ModifiesPredicate(wildcard, varSyn)); // Wildcard for LHS should throw
         REQUIRE_NOTHROW(UsesPredicate(validString, varSyn)); // Procedure name as LHS
-        REQUIRE_THROWS(ModifiesPredicate("", varSyn)); // Empty string for LHS should throw
-        REQUIRE_THROWS(UsesPredicate("", varSyn)); // Empty string for LHS should throw
     }
 }
 

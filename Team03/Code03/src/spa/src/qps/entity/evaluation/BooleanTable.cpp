@@ -56,6 +56,6 @@ BooleanTable::BooleanTable(bool value) {
     this->value = value;
 }
 
-vector<string> BooleanTable::toStrings() {
+unordered_set<string> BooleanTable::toStrings() {
     return {this->value ? "TRUE" : "FALSE"};
 }

@@ -14,6 +14,19 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 
 
+enum class PredicateType {
+    Follows,
+    FollowsT,
+    Modifies,
+    Parent,
+    ParentT,
+    Uses,
+    Pattern,
+    Invalid
+};
+
+PredicateType getPredicateType(const std::string& keyword);
+
 // We cannot do subtype check without initializing the Entity and call .isOfType(), let's get back to something simple.
 const unordered_set<EntityType> VALID_STATEMENT_TYPES = {EntityType::Stmt, EntityType::Assign, EntityType::Call,
                                                          EntityType::While, EntityType::If, EntityType::Read,

@@ -93,3 +93,23 @@ stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; const
 Select v such that Uses(a, v) pattern a1(v1, _"x"_)
 v, x, y, east, west
 5000
+20 - Question t - checking calls actually
+variable v; stmt s;
+Select s such that Uses(s, "west")
+9,14,15,16,4,6,5,13,7
+5000
+21 - test
+variable v;
+Select v such that Uses("Yishun", v)
+x, y, v, east, west
+5000
+21 - test more
+variable v;
+Select v such that Uses(5, v)
+x, y, v, east, west
+5000
+22 - test more2
+variable v;
+Select v such that Uses(4, v)
+west
+5000

@@ -7,7 +7,7 @@ Synonym::Synonym(EntityType type, const std::string& name) {
 }
 
 Synonym::Synonym(const std::string& synonymName, const std::unordered_map<std::string, EntityType>& synonymMap) {
-	try {
+    try {
 		EntityType synonymType = synonymMap.at(synonymName);
 		this->type = synonymType;
 		this->name = synonymName;

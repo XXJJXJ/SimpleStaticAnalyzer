@@ -20,26 +20,35 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::tokenize(cons
     std::vector<std::string> tokens;
     std::string token;
     bool trailingWhitespace = false;
+    bool isWithinQuotes = false;
 
     for (char c : query) {
         if (isspace(c)) {
-            if (!token.empty()) {
-                if (trailingWhitespace) {
-                    // Remove trailing whitespace from token
-                    while (!token.empty() && isspace(token.back())) {
-                        token.pop_back();
-                    }
-                    if (!token.empty()) {
+            if (!isWithinQuotes) {
+                if (!token.empty()) {
+                    if (trailingWhitespace) {
+                        // Remove trailing whitespace from token
+                        while (!token.empty() && isspace(token.back())) {
+                            token.pop_back();
+                        }
+                        if (!token.empty()) {
+                            tokens.push_back(token);
+                            token.clear();
+                        }
+                    } else {
                         tokens.push_back(token);
                         token.clear();
                     }
+                    trailingWhitespace = true;
                 }
-                else {
-                    tokens.push_back(token);
-                    token.clear();
-                }
-                trailingWhitespace = true;
+            } else {
+                token.push_back(c);
+                trailingWhitespace = false;
             }
+        } else if (c == '"') {
+            isWithinQuotes = !isWithinQuotes;
+            token.push_back(c);
+            trailingWhitespace = false;
         }
         else {
             token.push_back(c);
@@ -70,12 +79,12 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::tokenize(cons
 }
 
 bool QueryTokenizer::isPunctuation(char c) {
-    return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>' || c == '_';
+    return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>';
 }
 
+// TODO: move this part to QueryValidator as well
 std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(const std::vector<std::string>& tokens) {
     std::vector<std::string> currentList;
-    int openParenthesesCount = 0;
 
     std::vector<std::vector<std::vector<std::string>>> splitTokens = {};
     std::vector<std::vector<std::string>> declarations;
@@ -87,21 +96,12 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
     for (const auto& token : tokens) {
         currentList.push_back(token);
 
-        if (token == "(") {
-            openParenthesesCount++;
-        }
-        else if (token == ")") {
-            openParenthesesCount--;
-            if (openParenthesesCount < 0) {
-                throw SyntaxErrorException("Mismatched parentheses");
+        if (token == ")") {
+            if (!isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
             }
-            else if (openParenthesesCount == 0) {
-                if (!isClause) {
-                    throw SyntaxErrorException("Incorrect order in query");
-                }
-                clauses.push_back(currentList);
-                currentList.clear();
-            }
+            clauses.push_back(currentList);
+            currentList.clear();
         }
         else if (token == ";") {
             if (isClause) {
@@ -110,7 +110,7 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
             declarations.push_back(currentList);
             currentList.clear();
         }
-        else if (token == ">") {
+        else if (token == ">" && currentList[0] == "Select") {
             if (isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
             }
@@ -129,9 +129,8 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::splitTokens(c
         }
     }
 
-    // Query does not end properly
     if (!currentList.empty()) {
-        throw SyntaxErrorException("Invalid query syntax");
+        clauses.push_back(currentList);;
     }
 
     splitTokens.push_back(declarations);
