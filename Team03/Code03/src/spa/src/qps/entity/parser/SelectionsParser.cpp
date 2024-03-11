@@ -11,10 +11,17 @@ SelectionsParser::parse(const std::vector<std::string>& tokens,
     const std::unordered_map<std::string, EntityType>& synonymMap) {
     std::vector<std::shared_ptr<Synonym>> selections = {};
 
-    for (const auto& token : tokens) {
-        std::shared_ptr<Synonym> synonym = std::make_shared<Synonym>(token, synonymMap);
-        selections.push_back(synonym);
+    if (!isBoolean(tokens, synonymMap)) {
+        for (const auto& token : tokens) {
+            std::shared_ptr<Synonym> synonym = std::make_shared<Synonym>(token, synonymMap);
+            selections.push_back(synonym);
+        }
     }
-
+  
     return selections;
+}
+
+// Checks if BOOLEAN is a declared synonym
+bool SelectionsParser::isBoolean(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
+    return tokens.size() == 1 && tokens[0] == "BOOLEAN" && synonymMap.count(tokens[0]) == 0;
 }

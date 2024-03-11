@@ -9,4 +9,6 @@ public:
 	SelectionsParser();
 	~SelectionsParser();
 	std::vector<std::shared_ptr<Synonym>> parse(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap);
+private:
+	static bool isBoolean(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap);
 };

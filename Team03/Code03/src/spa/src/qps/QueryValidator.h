@@ -30,7 +30,6 @@ public:
     static bool isExpr(std::string token);
     static bool isTerm(const std::string& token);
     static bool isFactor(const std::string& token);
-    static bool isBoolean(const std::string& token);
     static std::vector<std::string> validateDeclaration(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateSelection(const std::vector<std::string>& tokens);
     static std::vector<std::string> validatePredicate(const std::vector<std::string>& tokens);

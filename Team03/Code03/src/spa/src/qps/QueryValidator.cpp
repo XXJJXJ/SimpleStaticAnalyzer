@@ -124,14 +124,10 @@ std::vector<std::string> QueryValidator::validateSelection(const std::vector<std
         }
     } else if (len == 2) {
         const std::string &token = tokens[1];
-        if (isName(token)) {
-            if (!isBoolean(token)) {
-                validatedTokens.push_back(token);
-            }
-        }
-        else {
+        if (!isName(token)) {
             throw SyntaxErrorException("Invalid synonym name " + token);
         }
+        validatedTokens.push_back(token);
     } else {
         throw SyntaxErrorException("Invalid selection syntax");
     }
@@ -377,11 +373,6 @@ bool QueryValidator::isFactor(const std::string& token) {
     } else {
         return isName(token) || isInteger(token);
     }
-}
-
-
-bool QueryValidator::isBoolean(const std::string& token) {
-    return token == "BOOLEAN";
 }
 
 // ai-gen end

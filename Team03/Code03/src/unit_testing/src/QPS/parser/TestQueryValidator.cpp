@@ -40,6 +40,7 @@ TEST_CASE("Test QueryValidator::validateSelection") {
 
         std::vector<std::string> expectedResults1 = {"a"};
         std::vector<std::string> expectedResults2 = {"a", "b", "c"};
+        std::vector<std::string> expectedResults3 = {"BOOLEAN"};
 
         std::vector<std::string> results1 = QueryValidator::validateSelection(tokens1);
         std::vector<std::string> results2 = QueryValidator::validateSelection(tokens2);
@@ -47,7 +48,7 @@ TEST_CASE("Test QueryValidator::validateSelection") {
 
         REQUIRE(results1 == expectedResults1);
         REQUIRE(results2 == expectedResults2);
-        REQUIRE(results3.empty());
+        REQUIRE(results3 == expectedResults3);
     }
 
     SECTION("Invalid selections") {
