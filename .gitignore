@@ -9,6 +9,9 @@
 # temp folder
 temp
 
+# generated out.xml
+Team03/Tests03/*_out.xml
+
 # Compiled Object files
 *.slo
 *.lo
