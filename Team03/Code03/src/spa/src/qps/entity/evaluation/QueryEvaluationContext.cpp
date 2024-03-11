@@ -9,7 +9,7 @@
 
 QueryEvaluationContext::QueryEvaluationContext() : queryManager(std::make_shared<QueryManager>()) {}
 
-void QueryEvaluationContext::addTableForSynonym(const Synonym& synonym, const std::shared_ptr<BaseTable>& table) {
+void QueryEvaluationContext::addTableForSynonym(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table) {
     synonymToTableMap[synonym] = table;
 }
 
@@ -17,16 +17,35 @@ void QueryEvaluationContext::clearTables() {
     synonymToTableMap.clear();
 }
 
-std::shared_ptr<BaseTable> QueryEvaluationContext::getTableForSynonym(const Synonym& synonym) const {
+std::shared_ptr<HeaderTable> QueryEvaluationContext::getTableForSynonym(const Synonym& synonym) {
+    // If synonym is not in the context, report error
+    if (!containsSynonym(synonym)) {
+        throw QPSEvaluationException("QEC: Trying to access table for a nonexistent synonym.");
+    }
     auto it = synonymToTableMap.find(synonym);
     if (it != synonymToTableMap.end()) {
         return it->second;
     }
-    return nullptr;
+    // If table not initialized, it means the synonym is not used in the query, return all entities of the type
+    auto entities = queryManager->getAllEntitiesByType(synonym.getType());
+    HeaderTable newTable;
+    newTable.setHeaders({std::make_shared<Synonym>(synonym)});
+    for (const auto& entity : entities) {
+        newTable.addRow(TableRow({entity}));
+    }
+    // Store the table in context
+    putTableForSynonymGroup(synonym, std::make_shared<HeaderTable>(newTable));
+    return std::make_shared<HeaderTable>(newTable);
 }
 
 bool QueryEvaluationContext::containsSynonym(const Synonym& synonym) const {
-    return synonymToTableMap.find(synonym) != synonymToTableMap.end();
+    // Loop through synonym ptr sets to check if the synonym is present
+    for (const auto& group : synonymGroups) {
+        if (group.find(std::make_shared<Synonym>(synonym)) != group.end()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 std::vector<Synonym> QueryEvaluationContext::getSynonyms() const {
@@ -94,7 +113,7 @@ bool QueryEvaluationContext::isTableInitialized(const Synonym& synonym) const {
     return synonymToTableMap.find(synonym) != synonymToTableMap.end();
 }
 
-void QueryEvaluationContext::putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<BaseTable>& table) {
+void QueryEvaluationContext::putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table) {
     // Find the synonym group for the given synonym
     for (const auto& group : synonymGroups) {
         if (group.find(std::make_shared<Synonym>(synonym)) != group.end()) {
@@ -109,5 +128,9 @@ void QueryEvaluationContext::putTableForSynonymGroup(const Synonym& synonym, con
 
 void QueryEvaluationContext::setResultToFalse() {
     resultMustBeEmpty = true;
+}
+
+std::vector<SynonymPtrSet> QueryEvaluationContext::getSynonymGroups() const {
+    return synonymGroups;
 }
 

@@ -30,7 +30,8 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
 
     if (!isTableInitialized) {
         // If no table is initialized, fetch the table for the predicate and initialize for the group
-        auto targetTable = predicate->getResultTable(*context.getQueryManager());
+        auto targetTable =
+                std::dynamic_pointer_cast<HeaderTable>(predicate->getResultTable(*context.getQueryManager()));
         if (targetTable) {
             if (targetTable->isEmpty()) {
                 context.setResultToFalse();
@@ -43,9 +44,11 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
         // If the table is already initialized, update the table for the corresponding group
         for (const auto& synonym : synonyms) {
             auto currentTable = context.getTableForSynonym(*synonym);
-            auto targetTable = predicate->getResultTable(*context.getQueryManager());
+            auto targetTable =
+                    std::dynamic_pointer_cast<HeaderTable>(predicate->getResultTable(*context.getQueryManager()));
             if (currentTable && targetTable) {
-                auto updatedTable = currentTable->join(*targetTable);
+                auto updatedTable =
+                        std::dynamic_pointer_cast<HeaderTable>(currentTable->join(*targetTable));
                 if (updatedTable->isEmpty()) {
                     context.setResultToFalse();
                 }

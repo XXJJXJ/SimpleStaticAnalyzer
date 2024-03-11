@@ -10,12 +10,14 @@ private:
 
 public:
     explicit BooleanTable(const BaseTable& table);
+    explicit BooleanTable(bool value);
     [[nodiscard]] bool getValue() const { return value; }
     std::shared_ptr<BaseTable> join(BaseTable& other) override;
     bool isEmpty() const override;
     bool isTrue() const;
     bool isBoolean() const override;
     bool operator==(const BaseTable& other) const override;
+    unordered_set<string> toStrings() override;
 };
 
 #endif // BOOLEAN_TABLE_H

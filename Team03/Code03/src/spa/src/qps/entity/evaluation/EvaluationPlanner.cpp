@@ -1,7 +1,3 @@
-//
-// Created by ZHENGTAO JIANG on 23/2/24.
-//
-
 #include "EvaluationPlanner.h"
 #include "SynonymGraph.h"
 #include "qps/entity/strategy/JoinWithPredicateStrategy.h"
@@ -28,21 +24,15 @@ void EvaluationPlanner::plan() {
         strategies.push_back(strategy);
     }
     // Projection strategy, only one selection is supported for now due to the implementation of the ProjectionStrategy.
-    // TODO: Implement multiple selections.
-    // strategies.push_back(make_shared<ProjectionStrategy>(query->getSelections()[0]));
-    // Temp fix to accept empty selections for select boolean
-    // TODO: support empty selections for select boolean
-    auto selections = query->getSelections();
-    if (!selections.empty()) {
-        strategies.push_back(make_shared<ProjectionStrategy>(selections[0]));
-    }
+
+    strategies.push_back(make_shared<ProjectionStrategy>(query->getSelections()));
 
     evaluator->setStrategies(strategies);
 
 }
 
 void EvaluationPlanner::setSynonymGroups() {
-    SynonymGraph graph = SynonymGraph(query->getPredicates());
+    SynonymGraph graph = SynonymGraph(query->getPredicates(), query->getDeclarations());
     auto synonymGroups = graph.groupSynonyms();
     evaluator->getContext()->setSynonymGroups(synonymGroups);
 }
