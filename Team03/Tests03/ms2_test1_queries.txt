@@ -6,7 +6,7 @@ Select c
 2 - Get all call
 stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
 Select cl
-5,9,21,36,37,38,39,40,58
+5,9,21,36,37,38,39,40,58,63,67
 5000
 3 - Get all var in Uses in call statement 9
 stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
@@ -17,4 +17,39 @@ something,is,shaking,questionMark,pok,chicks,prack
 stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
 Select v such that Modifies(9, v)
 is,it,hatching,pok
+5000
+5 - Get all procedures
+procedure p;
+Select p
+layEggs,hen,screamInPain,killChicks,breakEgg,makeNoise,hatch,wiggle,rearChickens
+5000
+6 - Get calls* for layEggs
+procedure c;
+Select c such that Calls*(c, "layEggs")
+hen
+5000
+7 - Get all Calls pairs
+procedure c, c1;
+Select <c, c1> such that Calls(c, c1)
+rearChickens wiggle,rearChickens hatch,rearChickens killChicks,hatch wiggle,hatch makeNoise,hatch breakEgg,killChicks screamInPain,hen makeNoise,hen layEggs
+5000
+8 - Get all Calls* pairs
+procedure c, c1;
+Select <c, c1> such that Calls*(c, c1)
+rearChickens wiggle,rearChickens hatch,rearChickens makeNoise,rearChickens breakEgg,rearChickens killChicks,rearChickens screamInPain,hatch wiggle,hatch makeNoise,hatch breakEgg,killChicks screamInPain,hen makeNoise,hen layEggs
+5000
+9 - Get caller* of breakEgg
+procedure c;
+Select c such that Calls*(c, "breakEgg")
+hatch,rearChickens
+5000
+10 - Get Uses by procedure
+procedure p; variable v;
+Select <p, v> such that Uses(p, v)
+rearChickens chicks,rearChickens eggs,rearChickens luck,rearChickens time,rearChickens pok,rearChickens prack,rearChickens than,rearChickens now,rearChickens have,rearChickens how,rearChickens many,rearChickens stop,rearChickens pls,rearChickens exclaimationMark,rearChickens something,rearChickens shaking,rearChickens is,rearChickens questionMark,wiggle something,wiggle shaking,wiggle is,wiggle questionMark,hatch something,hatch is,hatch shaking,hatch questionMark,hatch pok,hatch chicks,hatch prack,makeNoise pok,makeNoise chicks,breakEgg prack,killChicks how,killChicks many,killChicks stop,killChicks pls,killChicks exclaimationMark,screamInPain stop,screamInPain pls,screamInPain exclaimationMark,hen chicks,hen eggs,hen times,hen pok,hen alive,hen successfully,hen read,hen print,hen call,hen statement,hen procedure,hen if,hen while,hen randNum,layEggs randNum,layEggs read,layEggs print,layEggs call,layEggs statement,layEggs procedure,layEggs if,layEggs while,layEggs successfully,layEggs eggs
+5000
+10 - Get Modifies by procedure
+procedure p; variable v;
+Select <p, v> such that Modifies(p, v)
+rearChickens eggs,rearChickens chicks,rearChickens luck,rearChickens next,rearChickens i,rearChickens less,rearChickens is,rearChickens it,rearChickens hatching,rearChickens pok,rearChickens weapon,rearChickens times,rearChickens to,rearChickens smack,rearChickens stop,wiggle is,wiggle it,wiggle hatching,hatch is,hatch it,hatch hatching,hatch pok,makeNoise pok,killChicks weapon,killChicks times,killChicks to,killChicks smack,killChicks stop,screamInPain stop,hen chicks,hen noise,hen eggs,hen pok,hen randNum,hen laid,layEggs randNum,layEggs laid
 5000

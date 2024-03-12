@@ -80,3 +80,26 @@ procedure screamInPain {
     read stop;
     print exclaimationMark;
 }
+
+procedure hen {
+    call makeNoise;
+    chicks = eggs + chicks + grow * 2 / times;
+    noise = (chicks + eggs) * times * pok;
+    while (alive < 2) {
+        call layEggs;
+    }
+    chicks = chicks + pok;
+    eggs = pok / chicks;
+}
+
+procedure layEggs {
+    randNum = (read + print * call - statement / procedure + if) / while;
+    if (randNum > 100000) then {
+        print successfully;
+        read laid;
+        print eggs;
+    } else {
+        print randNum;
+        read randNum;
+    }
+}
