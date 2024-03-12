@@ -53,3 +53,38 @@ procedure p; variable v;
 Select <p, v> such that Modifies(p, v)
 rearChickens eggs,rearChickens chicks,rearChickens luck,rearChickens next,rearChickens i,rearChickens less,rearChickens is,rearChickens it,rearChickens hatching,rearChickens pok,rearChickens weapon,rearChickens times,rearChickens to,rearChickens smack,rearChickens stop,wiggle is,wiggle it,wiggle hatching,hatch is,hatch it,hatch hatching,hatch pok,makeNoise pok,killChicks weapon,killChicks times,killChicks to,killChicks smack,killChicks stop,screamInPain stop,hen chicks,hen noise,hen eggs,hen pok,hen randNum,hen laid,layEggs randNum,layEggs laid,rearChickens better
 5000
+11 - Get BOOLEAN by procedure
+procedure p; variable v;
+Select BOOLEAN such that Modifies(p, v)
+TRUE
+5000
+12 - Get BOOLEAN by procedure
+procedure c,c1,c2;
+Select <c,c1,c2>
+none
+5000
+13 - Get all var in Modifies in call statement 9
+stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
+Select v such that Modifies(8, v)
+is,it,hatching,pok,eggs,chicks,next,better
+5000
+14 - Get all var in Modifies in call statement 9
+stmt s, s1; assign a, a1; while w; if ifs; variable v, v1; procedure p, q; constant c; read re; print pn; call cl;
+Select v such that Modifies(8, v) such that Modifies(9, v) such that Parent(8,9)
+is,it,hatching,pok
+5000
+15 - Test pattern with brackets
+variable v; assign a; procedure p;
+Select <p, v> such that Uses(p, "grow") pattern a(v, _"((eggs) + (chicks))"_)
+hen chicks
+5000
+16 - Test pattern wildcard match
+variable v; assign a; procedure p;
+Select <p, v> such that Uses(p, "grow") pattern a(v, _"eggs + chicks + grow * 2 / times"_)
+hen chicks
+5000
+17 - Test pattern exact match
+variable v; assign a; procedure p;
+Select <p, v> such that Uses(p, "grow") pattern a(v, "eggs + chicks + grow * 2 / times")
+hen chicks
+5000
