@@ -26,6 +26,7 @@ private:
 
     vector<vector<shared_ptr<Entity>>> fakeAssignsWithPattern;
     vector<vector<shared_ptr<Entity>>> fakeIfPattern;
+    vector<vector<shared_ptr<Entity>>> fakeWhilePattern;
 
 public:
     FakeQueryManager() = default;
@@ -87,6 +88,10 @@ public:
         fakeIfPattern.push_back({stmt, var});
     }
 
+    void addFakeWhilePattern(shared_ptr<Entity> stmt, shared_ptr<Entity> var) {
+        fakeWhilePattern.push_back({stmt, var});
+    }
+
     // New method to get all entities by type
     std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType)
     override {
@@ -132,6 +137,10 @@ public:
 
     vector<vector<shared_ptr<Entity>>> getIfPattern() override {
         return fakeIfPattern;
+    }
+
+    vector<vector<shared_ptr<Entity>>> getWhilePattern() override {
+        return fakeWhilePattern;
     }
 
     // Implement other necessary virtual functions from QueryManager
