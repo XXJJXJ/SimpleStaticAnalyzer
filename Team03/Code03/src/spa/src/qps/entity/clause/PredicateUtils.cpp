@@ -75,6 +75,17 @@ bool isValidProcedure(const EntityRef& ref) {
     return true;
 }
 
+bool isValidEntityRefWithType(const EntityRef& ref, EntityType type) {
+    if (!isValidEntityRef(ref)) {
+        return false;
+    }
+    if (std::holds_alternative<Synonym>(ref)) {
+        auto synonym = std::get<Synonym>(ref);
+        return synonym.getType() == type;
+    }
+    return true;
+}
+
 bool isWildcard(StatementRef& ref) {
     return std::holds_alternative<std::string>(ref) && std::get<std::string>(ref) != WILDCARD;
 }
