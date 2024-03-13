@@ -51,13 +51,14 @@ vector<vector<shared_ptr<Entity>>> SPVStore::getStmtVarPairs(
 vector<vector<shared_ptr<Entity>>> SPVStore::getByType(EntityType entType) {
     switch (entType) 
     {
-    case EntityType::Assign: return getStmtVarPairs(assignStmts, entType); break;
-    case EntityType::Print: return getStmtVarPairs(printStmts, entType); break;
-    case EntityType::Read: return getStmtVarPairs(readStmts, entType); break;
-    case EntityType::Call: return getStmtVarPairs(callStmts, entType); break;
-    case EntityType::Stmt: return getStmtVarPairs(allStmts, entType); break;
+    case EntityType::Assign: return getStmtVarPairs(assignStmts, entType);
+    case EntityType::Print: return getStmtVarPairs(printStmts, entType);
+    case EntityType::Read: return getStmtVarPairs(readStmts, entType);
+    case EntityType::Call: return getStmtVarPairs(callStmts, entType);
+    case EntityType::Stmt: return getStmtVarPairs(allStmts, entType);
     case EntityType::While:
-    case EntityType::If: return getStmtVarPairs(ifWhileStmts, EntityType::If); break;
+    case EntityType::If: return getStmtVarPairs(ifWhileStmts, EntityType::If);
+    case EntityType::Procedure: return getProcVarPairs(procedureToVar);
     default:
         // should throw error
         return {};
@@ -76,6 +77,18 @@ unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> SPVSto
 }
 unordered_map<string, unordered_set<shared_ptr<Variable>>> SPVStore::getByProcedureMap() {
     return procedureToVar;
+}
+
+vector<vector<shared_ptr<Entity>>> SPVStore::getProcVarPairs(unordered_map<string, unordered_set<shared_ptr<Variable>>> map) {
+    vector<vector<shared_ptr<Entity>>> res;
+    for (auto &v : map) {
+        auto procName = v.first;
+        shared_ptr<Procedure> proc = make_shared<Procedure>(procName);
+        for (auto var : v.second) {
+            res.push_back({proc, var});
+        }
+    }
+    return res;
 }
 
 void SPVStore::clear() {

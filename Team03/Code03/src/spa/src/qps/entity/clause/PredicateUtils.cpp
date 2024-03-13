@@ -95,8 +95,11 @@ std::string stripWildcard(std::string& expr) {
     if (hasWildcard(expr)) {
         // Remove _" and "_
         return expr.substr(2, expr.size() - 4);
+    } else {
+        // Remove " and "
+        return expr.substr(1, expr.size() - 2);
     }
-    return expr;
+    
 }
 
 std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef) {

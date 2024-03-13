@@ -21,10 +21,45 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::tokenize(cons
     std::string token;
     bool trailingWhitespace = false;
     bool isWithinQuotes = false;
-
+    bool isWithinWildcard = false;
     for (char c : query) {
-        if (isspace(c)) {
-            if (!isWithinQuotes) {
+        if (isWithinQuotes) {
+            trailingWhitespace = false;
+            token.push_back(c);
+            if (c == '"') {
+                isWithinQuotes = !isWithinQuotes;
+                if (!isWithinWildcard) {
+                    tokens.push_back(token);
+                    token.clear();
+                }
+            }
+        }
+        else if (isWithinWildcard) {
+            trailingWhitespace = false;
+
+            if (c == '"') {
+                token.push_back(c);
+                isWithinQuotes = !isWithinQuotes;
+            }
+            else if (c == ',' || c == ')') {
+                tokens.push_back(token);
+                token.clear();
+                isWithinWildcard = !isWithinWildcard;
+                token.push_back(c);
+                tokens.push_back(token);
+                token.clear();
+            }
+            else {
+                token.push_back(c);
+                if (c == '_') {
+                    isWithinWildcard = !isWithinWildcard;
+                    tokens.push_back(token);
+                    token.clear();
+                }
+            }
+        }
+        else {
+            if (isspace(c)) {
                 if (!token.empty()) {
                     if (trailingWhitespace) {
                         // Remove trailing whitespace from token
@@ -35,38 +70,34 @@ std::vector<std::vector<std::vector<std::string>>> QueryTokenizer::tokenize(cons
                             tokens.push_back(token);
                             token.clear();
                         }
-                    } else {
+                    }
+                    else {
                         tokens.push_back(token);
                         token.clear();
                     }
                     trailingWhitespace = true;
                 }
-            } else {
-                token.push_back(c);
-                trailingWhitespace = false;
             }
-        } else if (c == '"') {
-            isWithinQuotes = !isWithinQuotes;
-            token.push_back(c);
-            trailingWhitespace = false;
-        }
-        else {
-            token.push_back(c);
-            trailingWhitespace = false;
-        }
+            else {
+                trailingWhitespace = false;
+                token.push_back(c);
+                isWithinQuotes = c == '"';
+                isWithinWildcard = c == '_';
+            }
 
-        if (token.size() > 1 && isPunctuation(token.front())) {
-            std::string punct(1, token.front());
-            token.erase(0, 1); // Remove the leading punctuation
-            tokens.push_back(punct);
-        }
+            if (token.size() > 1 && isPunctuation(token.front())) {
+                std::string punct(1, token.front());
+                token.erase(0, 1); // Remove the leading punctuation
+                tokens.push_back(punct);
+            }
 
-        if (token.size() > 1 && isPunctuation(token.back())) {
-            std::string punct(1, token.back());
-            token.pop_back();
-            tokens.push_back(token);
-            tokens.push_back(punct);
-            token.clear();
+            if (token.size() > 1 && isPunctuation(token.back())) {
+                std::string punct(1, token.back());
+                token.pop_back();
+                tokens.push_back(token);
+                tokens.push_back(punct);
+                token.clear();
+            }
         }
     }
 
