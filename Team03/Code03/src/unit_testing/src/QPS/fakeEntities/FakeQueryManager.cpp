@@ -25,6 +25,7 @@ private:
     vector<vector<shared_ptr<Entity>>> fakeCallsT;
 
     vector<vector<shared_ptr<Entity>>> fakeAssignsWithPattern;
+    vector<vector<shared_ptr<Entity>>> fakeIfPattern;
 
 public:
     FakeQueryManager() = default;
@@ -82,6 +83,10 @@ public:
         fakeCallsT.push_back({caller, callee});
     }
 
+    void addFakeIfPattern(shared_ptr<Entity> stmt, shared_ptr<Entity> var) {
+        fakeIfPattern.push_back({stmt, var});
+    }
+
     // New method to get all entities by type
     std::vector<std::shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType)
     override {
@@ -123,6 +128,10 @@ public:
 
     vector<vector<shared_ptr<Entity>>> getCallT() override {
         return fakeCallsT;
+    }
+
+    vector<vector<shared_ptr<Entity>>> getIfPattern() override {
+        return fakeIfPattern;
     }
 
     // Implement other necessary virtual functions from QueryManager
