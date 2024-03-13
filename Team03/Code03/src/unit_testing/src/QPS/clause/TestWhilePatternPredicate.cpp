@@ -85,11 +85,6 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
     }
 
     SECTION("Complex scenario with various entRef types") {
-        // This section would repeat similar tests but considering a mix of conditions
-        // to validate the behavior comprehensively across different setups.
-    }
-
-    SECTION("Complex scenario with various entRef types") {
         // Setup additional mock entities for a complex scenario
         shared_ptr<MockEntity> varZ = make_shared<MockEntity>("z", EntityType::Variable);
         shared_ptr<MockEntity> whileStmt4 = make_shared<MockEntity>("4", EntityType::While);
