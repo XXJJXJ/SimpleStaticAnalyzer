@@ -11,8 +11,8 @@ WhilePatternPredicate::WhilePatternPredicate(Synonym whileSyn, EntityRef entRef)
     if (!isValidWhileSyn || !isValidVarRef) {
         throw SemanticErrorException("Invalid argument for WhilePatternPredicate constructor");
     }
-    EntityRef WhileSynRef = this->whileSyn;
-    addEntityRef(WhileSynRef); // WhileSyn is an entityRef as well, as it is a synonym
+    EntityRef whileSynRef = this->whileSyn;
+    addEntityRef(whileSynRef); // WhileSyn is an entityRef as well, as it is a synonym
     addEntityRef(this->entRef);
 }
 
