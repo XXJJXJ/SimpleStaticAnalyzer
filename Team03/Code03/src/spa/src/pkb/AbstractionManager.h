@@ -6,6 +6,7 @@
 #include "abstraction_store/FollowStore.h"
 #include "abstraction_store/ParentStore.h"
 #include "abstraction_store/CallStore.h"
+#include "abstraction_store/NextStore.h"
 #include "common/CallStatement.h"
 
 using namespace std;
@@ -21,6 +22,7 @@ private:
     FollowStore followStore;
     ParentStore parentStore;
     CallStore callStore;
+    NextStore nextStore;
 
     // Helper
     void tabulateContainerStmtVarRelation(SPVStore& store);
@@ -33,6 +35,7 @@ public:
     bool addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     bool addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     bool addCalls(shared_ptr<Procedure> proc1, shared_ptr<Procedure> proc2);
+    bool addNext(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2);
 
     void tabulate(vector<shared_ptr<CallStatement>>& callStmts);
 
@@ -50,6 +53,9 @@ public:
 
     vector<vector<shared_ptr<Entity>>> getCallS();
     vector<vector<shared_ptr<Entity>>> getCallT();
+
+    vector<vector<shared_ptr<Entity>>> getNextS();
+    vector<vector<shared_ptr<Entity>>> getNextT();
 
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();

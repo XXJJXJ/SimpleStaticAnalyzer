@@ -37,6 +37,7 @@ public:
     bool addParent(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2);
     bool addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     bool addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
+    bool addNext(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2);
 
     void tabulate();
 
