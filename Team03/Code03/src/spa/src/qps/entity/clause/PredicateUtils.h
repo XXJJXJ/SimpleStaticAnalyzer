@@ -21,12 +21,15 @@ enum class PredicateType {
     Parent,
     ParentT,
     Uses,
-    Pattern,
     Calls,
     CallsT,
     Next,
     NextT,
     Affects,
+    Pattern,
+    AssignPattern,
+    IfPattern,
+    WhilePattern,
     Invalid
 };
 

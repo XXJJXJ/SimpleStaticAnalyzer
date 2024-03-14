@@ -52,8 +52,7 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
 
     }
     case PredicateType::Pattern: {
-        AssignPatternPredicate predicate(Synonym(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap), tokens[3]);
-        return std::make_shared<AssignPatternPredicate>(predicate);
+        return parsePatternPredicate(tokens, synonymMap);
     }
     }
 }
@@ -70,7 +69,7 @@ std::variant<int, Synonym, std::string> PredicateFactory::stringToStatementRef(c
 		return stoi(token);
 	}
 	else if (QueryValidator::isSynonym(token)) {
-		return stringToSynonym(token, synonymMap);
+		return Synonym(token, synonymMap);
 	}
 }
 
@@ -83,17 +82,27 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 		return token;
 	}
 	else if (QueryValidator::isSynonym(token)) {
-		return stringToSynonym(token, synonymMap);
+		return Synonym(token, synonymMap);
 	}
 }
 
-Synonym PredicateFactory::stringToSynonym(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
-	try {
-		EntityType synonymType = synonymMap.at(token);
-		Synonym synonym = Synonym(synonymType, token);
-		return synonym;
-	}
-	catch (const std::out_of_range& e) {
-		throw SemanticErrorException("Selected synonym '" + token + "' has not been declared");
-	}
+std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
+    Synonym syn = Synonym(tokens[1], synonymMap);
+    EntityType entityType = syn.getType();
+
+    switch (entityType) {
+    case EntityType::Assign: {
+        AssignPatternPredicate predicate(Synonym(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap), tokens[3]);
+        return std::make_shared<AssignPatternPredicate>(predicate);
+    }
+    case EntityType::If: {
+        break;
+    }
+    case EntityType::While: {
+        break;
+    }
+    default: {
+        throw SemanticErrorException("Invalid synonym type for pattern predicate");
+    }
+    }
 }
