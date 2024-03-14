@@ -9,6 +9,8 @@
 #include "qps/entity/clause/UsesPredicate.h"
 #include "qps/entity/clause/CallsPredicate.h"
 #include "qps/entity/clause/CallsTPredicate.h"
+#include "qps/entity/clause/IfPatternPredicate.h"
+#include "qps/entity/clause/WhilePatternPredicate.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
 std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {	
@@ -92,14 +94,16 @@ std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::ve
 
     switch (entityType) {
     case EntityType::Assign: {
-        AssignPatternPredicate predicate(Synonym(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap), tokens[3]);
+        AssignPatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap), tokens[3]);
         return std::make_shared<AssignPatternPredicate>(predicate);
     }
     case EntityType::If: {
-        break;
+        IfPatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap));
+        return std::make_shared<IfPatternPredicate>(predicate);
     }
     case EntityType::While: {
-        break;
+        WhilePatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap));
+        return std::make_shared<WhilePatternPredicate>(predicate);
     }
     default: {
         throw SemanticErrorException("Invalid synonym type for pattern predicate");
