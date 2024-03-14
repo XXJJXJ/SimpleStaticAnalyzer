@@ -48,13 +48,15 @@ TEST_CASE("Debugging whole strings") {
 	std::string string4 = "Select BOOLEAN";
 	std::string string5 = "assign a; Select a such that Calls(a, a)";
 	std::string string6 = "procedure a; Select a such that Calls(a, a)";
+	std::string string7 = "assign a; if i; while w; Select <a, i, w> pattern a(_, _) pattern i(_, _, _) pattern w(_, )";
 
     std::vector<std::string> result1 = qm.processQuery(string1);
     std::vector<std::string> result2 = qm.processQuery(string2);
 	std::vector<std::string> result3 = qm.processQuery(string3);
-	//std::vector<std::string> result4 = qm.processQuery(string4);
+	std::vector<std::string> result4 = qm.processQuery(string4);
 	std::vector<std::string> result5 = qm.processQuery(string5);
 	std::vector<std::string> result6 = qm.processQuery(string6);
+	std::vector<std::string> result7 = qm.processQuery(string6);
 
     std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
     std::vector<std::string> expectedSemanticError = { "SemanticError" };
@@ -63,11 +65,12 @@ TEST_CASE("Debugging whole strings") {
     REQUIRE(result2 != expectedSyntaxError);
     REQUIRE(result2 != expectedSemanticError);
 	REQUIRE(result3 == expectedSyntaxError);
-	// To be uncommented out when select boolean evaluation is implemented
-	//REQUIRE(result4 != expectedSyntaxError);
-	//REQUIRE(result4 != expectedSemanticError);
+	REQUIRE(result4 != expectedSyntaxError);
+	REQUIRE(result4 != expectedSemanticError);
 	REQUIRE(result5 == expectedSemanticError);
 	REQUIRE(result6 != expectedSyntaxError);
 	REQUIRE(result6 != expectedSemanticError);
+	REQUIRE(result7 != expectedSyntaxError);
+	REQUIRE(result7 != expectedSemanticError);
 }
 

@@ -92,18 +92,28 @@ std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::ve
     Synonym syn = Synonym(tokens[1], synonymMap);
     EntityType entityType = syn.getType();
 
+    // Impossible to know the type of pattern predicate (assign/if/while) before this step so the syntax validation can only be done here
     switch (entityType) {
     case EntityType::Assign: {
+        if (tokens.size() != 4 || !QueryValidator::isExpressionSpec(tokens[3])) {
+            throw SyntaxErrorException("Invalid Assign pattern syntax");
+        }
         AssignPatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap), tokens[3]);
         return std::make_shared<AssignPatternPredicate>(predicate);
     }
-    case EntityType::If: {
-        IfPatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap));
-        return std::make_shared<IfPatternPredicate>(predicate);
-    }
     case EntityType::While: {
+        if (tokens.size() != 4 || tokens[3] != "_") {
+            throw SyntaxErrorException("Invalid While pattern syntax");
+        }
         WhilePatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap));
         return std::make_shared<WhilePatternPredicate>(predicate);
+    }
+    case EntityType::If: {
+        if (tokens.size() != 5) {
+            throw SyntaxErrorException("Invalid If pattern syntax");
+        }
+        IfPatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap));
+        return std::make_shared<IfPatternPredicate>(predicate);
     }
     default: {
         throw SemanticErrorException("Invalid synonym type for pattern predicate");
