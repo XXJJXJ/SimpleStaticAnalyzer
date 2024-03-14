@@ -2,42 +2,36 @@
 
 bool NextStore::add(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
     directMap[stmt1].insert(stmt2);
+    // toposort similar to callStore, but for statements and save it for getTransitive
+    nonRoots.insert(stmt2);
+    if (roots.find(stmt2) != roots.end()) {
+        roots.erase(stmt2);
+    }
+    if (nonRoots.find(stmt1) == nonRoots.end()) {
+        roots.insert(stmt1);
+    }
     return true;
 }
 
 vector<vector<shared_ptr<Entity>>> NextStore::getTransitive() {
-    // toposort similar to callStore, but for statements
-    unordered_set<shared_ptr<Statement>> nonRoots;
-    unordered_set<shared_ptr<Statement>> roots;
-    for (auto & _pair : directMap) {
-        for (auto & next : _pair.second) {
-            nonRoots.insert(next);
-            if (roots.find(next) != roots.end()) {
-                roots.erase(next);
-            }
-        }
-        if (nonRoots.find(_pair.first) == nonRoots.end()) {
-            roots.insert(_pair.first);
-        }
-    }
-    // dfs add, with while statement tailoring
+    // dfs add, using preprocessed roots
+    // map resets every call, no caching allowed ¯\_(ツ)_/¯
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> nextStarMap;
     for (auto & first : roots) {
         dfsAdd(first, nextStarMap);
     }
     return getStmtPairs(nextStarMap);
-    // map resets every call, no caching allowed ¯\_(ツ)_/¯
 }
 
 
 /*
 Idea is to traverse the "main" branch, while statement requires special handling
 
-while statement, recurse on main branch first, then get the set of all statements within,
-the while statement and all stmt within is next* the statements
+while statement, recurse on main branch first, then get the set of all statements within the while statement
+and add all stmt within as next* of itself, those from the main branch as well
 
 if statement seems different, but actually can be treated just the same as other statements, optimization present to
-reduce calculation duplication
+reduce duplicate calculation
 */
 unordered_set<shared_ptr<Statement>> NextStore::dfsAdd(
     shared_ptr<Statement> stmt,
@@ -79,7 +73,7 @@ unordered_set<shared_ptr<Statement>> NextStore::dfsAdd(
         // calls, print, read, assign should only have 1 direction (unless inside a while loop, which we should have skipped in the while clause^ above)
         // ifs have 2 direction, but logic can be generalized as such
         auto nexts = directMap[stmt];
-        // if has 2, traverse both / it is fine even if it has internal while, should be appropriately taken care of
+        // if has 2, traverse both then & else block: it is fine even if it has internal while, should be appropriately taken care of
         // should only have 1 for non-if statement types
         for (auto & n : nexts) {
             auto futureNexts = dfsAdd(n, accumulatedResults);
