@@ -255,12 +255,11 @@ TEST_CASE("Test container stmt Uses and Modifies") {
             REQUIRE((modifiesAllStmt[stmt7].find(y) == modifiesAllStmt[stmt7].end()));
         }
     }
+    qm.clear();
 }
 
 TEST_CASE("Test Uses and Modifies with Call Statement") {
     /* ===== Context ======
-    4 procedures
-
     procedure first {
         call second;
     }
@@ -351,4 +350,149 @@ TEST_CASE("Test Uses and Modifies with Call Statement") {
         REQUIRE(resMap["4"].size() == 1);
         REQUIRE(resMap["4"].find("z") != resMap["4"].end());
     }
+    qm.clear();
+}
+
+TEST_CASE("Store and retrieve NextS and NextT") {
+    Populator pop;
+    pop.clear();
+    /* ======= Context ========
+    procedure main {
+    1    x = <something>
+    2    while (x < y) {
+    3        if (x < y) then {
+    4            print y;
+    5            read x;
+    6        } else { print x;
+    7            read y;}}
+    8    call test;}
+    9    if (x < y) then {
+   10       print y;
+   11    } else { read x;}
+   12    call test2;
+    */
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
+    shared_ptr<AssignStatement> stmt0 = make_shared<AssignStatement>(1, x, "main");
+    shared_ptr<WhileStatement> stmt1 = make_shared<WhileStatement>(2, cond, "main");
+    shared_ptr<IfStatement> stmt2 = make_shared<IfStatement>(3, cond,"main");
+    shared_ptr<PrintStatement> stmt3 = make_shared<PrintStatement>(4, y, "main");
+    shared_ptr<ReadStatement> stmt4 = make_shared<ReadStatement>(5, x, "main");
+    shared_ptr<PrintStatement> stmt5 = make_shared<PrintStatement>(6, x, "main");
+    shared_ptr<ReadStatement> stmt6 = make_shared<ReadStatement>(7, y, "main");
+    // Random while loop in outermost layer and has nothing inside (not allowed, but used for the sake of negative testcases)
+    shared_ptr<CallStatement> stmt7 = make_shared<CallStatement>(8, make_shared<Procedure>("test"), "main");
+    shared_ptr<IfStatement> stmt8 = make_shared<IfStatement>(9, cond, "main");
+    shared_ptr<PrintStatement> stmt9 = make_shared<PrintStatement>(10, y, "main");
+    shared_ptr<ReadStatement> stmt10 = make_shared<ReadStatement>(11, x, "main");
+    shared_ptr<CallStatement> stmt11 = make_shared<CallStatement>(12, make_shared<Procedure>("test2"), "main");
+    pop.addNext(stmt0, stmt1);
+    pop.addNext(stmt1, stmt2);
+    pop.addNext(stmt1, stmt7);
+    pop.addNext(stmt2, stmt3);
+    pop.addNext(stmt3, stmt4);
+    pop.addNext(stmt4, stmt1);
+    pop.addNext(stmt2, stmt5);
+    pop.addNext(stmt5, stmt6);
+    pop.addNext(stmt6, stmt1);
+    pop.addNext(stmt7, stmt8);
+    pop.addNext(stmt8, stmt9);
+    pop.addNext(stmt8, stmt10);
+    pop.addNext(stmt9, stmt11);
+    pop.addNext(stmt10, stmt11);
+    // put statements into while for nextT tabulation
+    stmt1->addStatement(stmt2);
+    stmt1->addStatement(stmt3);
+    stmt1->addStatement(stmt4);
+    stmt1->addStatement(stmt5);
+    stmt1->addStatement(stmt6);
+
+    QueryManager qm;
+    auto nextS = qm.getNextS();
+    auto nextT = qm.getNextT();
+    SECTION("Check NextS") {
+        REQUIRE(nextS.size() == 14);
+        unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> directMap;
+        for (auto & p : nextS) {
+            auto castedStmt1 = dynamic_pointer_cast<Statement>(p[0]);
+            auto castedStmt2 = dynamic_pointer_cast<Statement>(p[1]);
+            directMap[castedStmt1].insert(castedStmt2);
+        }
+        // check next(p, _) at most 2 for any p
+        for (auto & p : directMap) {
+            // size at most 2
+            REQUIRE(directMap[p.first].size() <= 2);
+        }
+
+        REQUIRE(directMap[stmt0].size() == 1);
+        REQUIRE(directMap[stmt0].find(stmt1) != directMap[stmt0].end());
+
+        REQUIRE(directMap[stmt1].size() == 2);
+        REQUIRE(directMap[stmt1].find(stmt2) != directMap[stmt1].end());
+        REQUIRE(directMap[stmt1].find(stmt7) != directMap[stmt1].end());
+
+        REQUIRE(directMap[stmt2].size() == 2);
+        REQUIRE(directMap[stmt2].find(stmt3) != directMap[stmt2].end());
+        REQUIRE(directMap[stmt2].find(stmt5) != directMap[stmt2].end());
+
+        REQUIRE(directMap[stmt3].size() == 1);
+        REQUIRE(directMap[stmt3].find(stmt4) != directMap[stmt3].end());
+
+        REQUIRE(directMap[stmt4].size() == 1);
+        REQUIRE(directMap[stmt4].find(stmt1) != directMap[stmt4].end());
+
+        REQUIRE(directMap[stmt5].size() == 1);
+        REQUIRE(directMap[stmt5].find(stmt6) != directMap[stmt5].end());
+
+        REQUIRE(directMap[stmt6].size() == 1);
+        REQUIRE(directMap[stmt6].find(stmt1) != directMap[stmt6].end());
+
+        REQUIRE(directMap[stmt7].size() == 1);
+        REQUIRE(directMap[stmt7].find(stmt8) != directMap[stmt7].end());
+        
+        REQUIRE(directMap[stmt8].size() == 2);
+        REQUIRE(directMap[stmt8].find(stmt9) != directMap[stmt8].end());
+        REQUIRE(directMap[stmt8].find(stmt10) != directMap[stmt8].end());
+
+        REQUIRE(directMap[stmt9].size() == 1);
+        REQUIRE(directMap[stmt9].find(stmt11) != directMap[stmt9].end());
+
+        REQUIRE(directMap[stmt10].size() == 1);
+        REQUIRE(directMap[stmt10].find(stmt11) != directMap[stmt10].end());
+
+        REQUIRE(directMap[stmt11].size() == 0);
+    }
+
+    SECTION("Check NextT") {
+        unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> transitiveMap;
+        for (auto & p : nextT) {
+            auto castedStmt1 = dynamic_pointer_cast<Statement>(p[0]);
+            auto castedStmt2 = dynamic_pointer_cast<Statement>(p[1]);
+            transitiveMap[castedStmt1].insert(castedStmt2);
+        }
+        // first statement ever, should be before all statements
+        REQUIRE(transitiveMap[stmt0].size() == 11);
+        // while statement after first, can reach itself, so still 7
+        REQUIRE(transitiveMap[stmt1].size() == 11);
+        // statements within while, should be able to reach itself as well as whatever the while loops can reach
+        REQUIRE(transitiveMap[stmt2].size() == 11);
+        REQUIRE(transitiveMap[stmt3].size() == 11);
+        REQUIRE(transitiveMap[stmt4].size() == 11);
+        REQUIRE(transitiveMap[stmt5].size() == 11);
+        REQUIRE(transitiveMap[stmt6].size() == 11);
+        // statement after while loop
+        REQUIRE(transitiveMap[stmt7].size() == 4);
+        REQUIRE(transitiveMap[stmt8].size() == 3);
+        REQUIRE(transitiveMap[stmt9].size() == 1);
+        REQUIRE(transitiveMap[stmt10].size() == 1);
+        REQUIRE(transitiveMap[stmt11].size() == 0);
+    }
+
+    SECTION("Check clear") {
+        qm.clear();
+        REQUIRE(qm.getNextS().size() == 0);
+        REQUIRE(qm.getNextT().size() == 0);
+    }
+    qm.clear();
 }
