@@ -65,6 +65,9 @@ public:
     virtual vector<vector<shared_ptr<Entity>>> getCallS();
     virtual vector<vector<shared_ptr<Entity>>> getCallT();
 
+    virtual vector<vector<shared_ptr<Entity>>> getNextS();
+    virtual vector<vector<shared_ptr<Entity>>> getNextT();
+
     // Pattern Related
     virtual vector<vector<shared_ptr<Entity>>> getAssignPattern(string expr, bool hasWildcard);
     // slightly different from assign pattern because if and while pattern may have multiple variables

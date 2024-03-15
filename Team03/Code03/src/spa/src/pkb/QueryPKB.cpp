@@ -118,6 +118,12 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getCallT() {
     return am->getCallT();
 }
 
+vector<vector<shared_ptr<Entity>>> QueryManager::getNextS() {
+    return am->getNextS();
+}
+vector<vector<shared_ptr<Entity>>> QueryManager::getNextT() {
+    return am->getNextT();
+}
 
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getFollowSMap() {
     return am->getFollowSMap();
