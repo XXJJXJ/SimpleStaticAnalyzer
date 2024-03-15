@@ -88,3 +88,23 @@ variable v; assign a; procedure p;
 Select <p, v> such that Uses(p, "grow") pattern a(v, "eggs + chicks + grow * 2 / times")
 hen chicks
 5000
+18 - Get Uses from calls
+call cl; variable v;
+Select v such that Uses(cl, v)
+call,chicks,eggs,exclaimationMark,how,if,is,many,pls,pok,prack,print,procedure,questionMark,randNum,read,shaking,something,statement,stop,successfully,while
+5000
+19 - Get Modifies from calls
+call cl; variable v;
+Select v such that Modifies(cl, v)
+hatching,is,it,laid,pok,randNum,smack,stop,times,to,weapon
+5000
+20 - Get Uses from read
+read re; variable v;
+Select v such that Uses(re, v)
+none
+5000
+21 - Get Modifies from print
+print pn; variable v;
+Select v such that Modifies(pn, v)
+none
+5000
