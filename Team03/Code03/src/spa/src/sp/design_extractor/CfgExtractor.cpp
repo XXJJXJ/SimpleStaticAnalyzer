@@ -7,6 +7,7 @@ void CfgExtractor::visitProcedure(shared_ptr<Procedure> procedure) {
     procedureName = procedureName_;
     cfgNode = make_shared<CfgNode>();
     cfg->addProcedureCfg(procedureName, cfgNode);
+    processStatements(procedure->getStatementList());
 }
 
 void CfgExtractor::visitAssignStatement(shared_ptr<AssignStatement> assignStatement) {
