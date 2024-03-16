@@ -1,6 +1,6 @@
 #include "Cfg.h"
 
-void Cfg::addProcedureCfg(const string& procedureName, shared_ptr<CfgNode>& node) {
+void Cfg::addProcedureCfg(const string& procedureName, shared_ptr<CfgNode> node) {
     if (procedureCfgToCfgRootNodes.find(procedureName) != procedureCfgToCfgRootNodes.end()) {
         throw SemanticErrorException(
             "CFG with procedure name " +
@@ -11,7 +11,7 @@ void Cfg::addProcedureCfg(const string& procedureName, shared_ptr<CfgNode>& node
     procedureCfgToCfgRootNodes[procedureName] = move(node);
 }
 
-void Cfg::addStatementCfg(int statementNumber, shared_ptr<CfgNode>& node) {
+void Cfg::addStatementCfg(int statementNumber, shared_ptr<CfgNode> node) {
     if (statementNumberToCfgNode.find(statementNumber) != statementNumberToCfgNode.end()) {
         throw SemanticErrorException(
             "Statement " +

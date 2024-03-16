@@ -1,6 +1,6 @@
 #include "CfgNode.h"
 
-void CfgNode::addNextNode(bool isTrue, shared_ptr<CfgNode>& node) {
+void CfgNode::addNextNode(bool isTrue, shared_ptr<CfgNode> node) {
     if (nextNodes.find(isTrue) != nextNodes.end()) {
         throw SemanticErrorException("CfgNode already has a node for condition " + to_string(isTrue));
     }

@@ -12,7 +12,7 @@ class CfgNode {
 public:
 	typedef unordered_map<bool, shared_ptr<CfgNode>> BooleanToCfgNodeMap;
 	typedef vector<shared_ptr<CfgNode>> CfgNodeContainer;
-	void addNextNode(bool isTrue, shared_ptr<CfgNode>& node);
+	void addNextNode(bool isTrue, shared_ptr<CfgNode> node);
 	void addStatement(int statementNumber);
 	void addParent(const shared_ptr<CfgNode>& node);
 	BooleanToCfgNodeMap getNextNodes();
