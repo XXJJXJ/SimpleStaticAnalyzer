@@ -98,16 +98,16 @@ TEST_CASE("NotPredicate with QueryManager Setup Extended", "[NotPredicate]") {
         // This will test with a non-empty HeaderTable for a more complex scenario
         auto headerTable = std::make_shared<HeaderTable>(std::vector<shared_ptr<Synonym>>{synonymA, synonymB},
                                                          std::vector<std::vector<shared_ptr<Entity>>>{
-                                                                    {allEntitiesA[0], allEntitiesB[0]},
-                                                                    {allEntitiesA[1], allEntitiesB[1]},
-                                                                    {allEntitiesA[2], allEntitiesB[2]}});
+                                                                    {allEntitiesA[0], allEntitiesB[0]}});
         auto tablePredicate = std::make_shared<MockTablePredicate>(headerTable);
         NotPredicate notOncePredicate(tablePredicate);
         NotPredicate notTwicePredicate(std::make_shared<NotPredicate>(tablePredicate));
+        NotPredicate notThricePredicate(std::make_shared<NotPredicate>(std::make_shared<NotPredicate>(tablePredicate)));
 
         auto originalResulTable = tablePredicate->getResultTable(qm);
         auto onceComplementTable = notOncePredicate.getResultTable(qm);
         auto twiceComplementTable = notTwicePredicate.getResultTable(qm);
+        auto thriceComplementTable = notThricePredicate.getResultTable(qm);
 
         // For the double negation, the resulting table should match the original table's rows
         REQUIRE(twiceComplementTable != nullptr);
@@ -116,5 +116,12 @@ TEST_CASE("NotPredicate with QueryManager Setup Extended", "[NotPredicate]") {
         auto originalRowSet = dynamic_cast<HeaderTable*>(originalResulTable.get())->getRowSet();
         auto twiceRowSet = dynamic_cast<HeaderTable*>(twiceComplementTable.get())->getRowSet();
         REQUIRE(originalRowSet == twiceRowSet); // This checks that the row sets are equivalent, thus confirming double negation logic
+
+        // For the triple negation, the resulting table should match the negated table's rows
+        REQUIRE(thriceComplementTable != nullptr);
+        REQUIRE(onceComplementTable->getSize() == thriceComplementTable->getSize());
+        auto onceRowSet = dynamic_cast<HeaderTable*>(onceComplementTable.get())->getRowSet();
+        auto thriceRowSet = dynamic_cast<HeaderTable*>(thriceComplementTable.get())->getRowSet();
+        REQUIRE(onceRowSet == thriceRowSet); // This checks that the row sets are equivalent, thus confirming triple negation logic
     }
 }
