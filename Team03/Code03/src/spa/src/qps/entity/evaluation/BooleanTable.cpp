@@ -59,3 +59,7 @@ BooleanTable::BooleanTable(bool value) {
 unordered_set<string> BooleanTable::toStrings() {
     return {this->value ? "TRUE" : "FALSE"};
 }
+
+std::shared_ptr<BaseTable> BooleanTable::negate() {
+    return std::make_shared<BooleanTable>(!this->value);
+}
