@@ -4,6 +4,7 @@
 
 #include "TableRow.h"
 
+
 // Implementation of TableRow
 TableRow::TableRow(const vector<shared_ptr<Entity>> &values) : values(values) {}
 
@@ -16,10 +17,8 @@ bool TableRow::operator==(const TableRow &other) const {
         return false;
     }
     for (size_t i = 0; i < values.size(); ++i) {
-        if (
-                values[i]->getName() != other.values[i]->getName() ||
-                values[i]->getType() != other.values[i]->getType()
-                ) {
+        if (values[i]->getName() != other.values[i]->getName() ||
+            values[i]->getType() != other.values[i]->getType()) {
             return false;
         }
     }

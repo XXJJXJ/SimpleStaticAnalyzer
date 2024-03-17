@@ -252,3 +252,62 @@ std::shared_ptr<HeaderTable> HeaderTable::fromBaseTable(const BaseTable& baseTab
     auto headerTable = std::make_shared<HeaderTable>(uniqueSynonyms, projectedTable);
     return headerTable;
 }
+
+shared_ptr<BaseTable> HeaderTable::getComplement(QueryManager& qm) {
+    // Get the full table of synonyms
+    auto fullTable = getFullTable(this->headers, qm);
+
+    // Get the complement of the current table
+    auto currentRowSet = this->getRowSet();
+    auto fullRowSet = fullTable->getRowSet();
+    std::unordered_set<TableRow> complementRowSet;
+
+    // Find the set difference
+    for (const auto& row : fullRowSet) {
+        if (currentRowSet.find(row) == currentRowSet.end()) {
+            complementRowSet.insert(row);
+        }
+    }
+
+    // Create a new HeaderTable from the complement row set
+    auto complementTable = std::make_shared<HeaderTable>();
+    complementTable->setHeaders(this->headers);
+    for (const auto& row : complementRowSet) {
+        complementTable->addRow(row);
+    }
+    return complementTable;
+
+}
+
+shared_ptr<HeaderTable> HeaderTable::getFullTable(const vector<shared_ptr<Synonym>>& synonyms, QueryManager &qm) {
+    if (synonyms.empty()) {
+        throw QPSEvaluationException("HeaderTable::getFullTable: Synonyms list is empty");
+    }
+    // Get the full table of synonyms
+    vector<shared_ptr<HeaderTable>> fullTables;
+    for (const auto &synonym: synonyms) {
+        auto table = make_shared<HeaderTable>(synonym, qm.getAllEntitiesByType(synonym->getType()));
+        fullTables.push_back(table);
+    }
+
+    // Join the full tables
+    auto resultTable = fullTables[0];
+    for (size_t i = 1; i < fullTables.size(); ++i) {
+        resultTable = dynamic_pointer_cast<HeaderTable>(resultTable->join(*fullTables[i]));
+    }
+
+    // Select columns, to ensure that only the required synonyms are present in order
+    resultTable = make_shared<HeaderTable>(resultTable->selectColumns(synonyms));
+
+    return resultTable;
+}
+
+// Constructor for HeaderTable with single column, where each entity is a row
+HeaderTable::HeaderTable(const shared_ptr<Synonym> &headers, const vector<shared_ptr<Entity>> &entities) {
+    this->headers = {headers};
+    setColumnCount(1);
+    for (const auto &entity: entities) {
+        this->addRow(TableRow({entity}));
+    }
+    updateHeaderIndexMap();
+}

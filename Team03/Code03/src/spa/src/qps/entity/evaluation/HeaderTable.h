@@ -10,8 +10,10 @@
 #include "common/Entity.h"
 #include "qps/entity/evaluation/TableRow.h"
 #include "BaseTable.h"
+#include "pkb/QueryPKB.h"
 
 using namespace std;
+
 
 // Class to represent the table itself.
 class HeaderTable : public BaseTable {
@@ -19,11 +21,13 @@ private:
     std::vector<shared_ptr<Synonym>> headers;
     std::unordered_map<Synonym, int> headerIndexMap; // Mapping from synonym to index
     bool isValidRow(const TableRow& row) const override;
+    static shared_ptr<HeaderTable> getFullTable(const vector<shared_ptr<Synonym>>& synonyms, QueryManager& qm);
 
 public:
     HeaderTable() = default;
     HeaderTable(const vector<shared_ptr<Synonym>>& headers, const vector<vector<shared_ptr<Entity>>>& entities);
     HeaderTable(const vector<shared_ptr<Synonym>>& headers, shared_ptr<BaseTable> baseTable);
+    HeaderTable(const shared_ptr<Synonym>& headers, const vector<shared_ptr<Entity>>& entities);
     void setHeaders(const vector<shared_ptr<Synonym>>& headers);
     [[nodiscard]] const vector<shared_ptr<Synonym>>& getHeaders() const;
     [[nodiscard]] HeaderTable selectColumns(const vector<shared_ptr<Synonym>>& synonyms) const; // Projection operation
@@ -34,6 +38,7 @@ public:
     bool hasHeader(const Synonym& synonym) const; // Check if a header exists
     static std::shared_ptr<HeaderTable> fromBaseTable(const BaseTable& baseTable, const vector<shared_ptr<Synonym>>& synonyms);
     bool operator==(const BaseTable& other) const override;
+    shared_ptr<BaseTable> getComplement(QueryManager& qm);
 };
 
 #endif // TABLE_H

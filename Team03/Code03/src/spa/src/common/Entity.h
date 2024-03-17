@@ -24,3 +24,18 @@ public:
         return getName() < other.getName();
     }
 };
+
+// ai-gen start(gpt, 0, e)
+// prompt: https://chat.openai.com/share/327ddcad-1334-492d-998a-c324af935205
+namespace std {
+    template<>
+    struct hash<Entity> {
+        std::size_t operator()(const Entity& entity) const {
+            // Combine hashes of the name and type
+            std::size_t h1 = std::hash<std::string>()(entity.getName());
+            std::size_t h2 = std::hash<int>()(static_cast<int>(entity.getType()));
+            return h1 ^ (h2 << 1);
+        }
+    };
+}
+// ai-gen end
