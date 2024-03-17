@@ -45,19 +45,17 @@ TEST_CASE("Invalid pattern predicates") {
     synonymMap["c"] = EntityType::If;
     synonymMap["d"] = EntityType::Call;
 
-    std::vector<std::string> tokens1 = { "pattern", "a", "c", "1()x" }; // Assign pattern invalid RHS
-    std::vector<std::string> tokens2 = { "pattern", "a", "_", "_", "_" }; // Assign pattern wrong number of arguments
-    std::vector<std::string> tokens3 = { "pattern", "b", "_", "b" }; // While pattern RHS not wildcard
-    std::vector<std::string> tokens4 = { "pattern", "b", "_", "_", "_" }; // While pattern wrong number of arguments 
-    std::vector<std::string> tokens5 = { "pattern", "c", "_", "_" }; // If pattern wrong number of arguments
-    std::vector<std::string> tokens6 = { "pattern", "d", "_", "_" }; // Invalid synonym type
-    std::vector<std::string> tokens7 = { "pattern", "d", "_", "_", "_" }; // Invalid synonym type
+    std::vector<std::string> tokens1 = { "pattern", "a", "_", "_", "_" }; // Assign pattern wrong number of arguments
+    std::vector<std::string> tokens2 = { "pattern", "b", "_", "b" }; // While pattern RHS not wildcard
+    std::vector<std::string> tokens3 = { "pattern", "b", "_", "_", "_" }; // While pattern wrong number of arguments 
+    std::vector<std::string> tokens4 = { "pattern", "c", "_", "_" }; // If pattern wrong number of arguments
+    std::vector<std::string> tokens5 = { "pattern", "d", "_", "_" }; // Invalid synonym type
+    std::vector<std::string> tokens6 = { "pattern", "d", "_", "_", "_" }; // Invalid synonym type
 
-    REQUIRE_THROWS_AS(pf.createPredicate(tokens1, synonymMap), SyntaxErrorException);
-    REQUIRE_THROWS_AS(pf.createPredicate(tokens2, synonymMap), SyntaxErrorException);
-    REQUIRE_THROWS_AS(pf.createPredicate(tokens3, synonymMap), SyntaxErrorException);
-    REQUIRE_THROWS_AS(pf.createPredicate(tokens4, synonymMap), SyntaxErrorException);
-    REQUIRE_THROWS_AS(pf.createPredicate(tokens5, synonymMap), SyntaxErrorException);
+    REQUIRE_THROWS_AS(pf.createPredicate(tokens1, synonymMap), SemanticErrorException);
+    REQUIRE_THROWS_AS(pf.createPredicate(tokens2, synonymMap), SemanticErrorException);
+    REQUIRE_THROWS_AS(pf.createPredicate(tokens3, synonymMap), SemanticErrorException);
+    REQUIRE_THROWS_AS(pf.createPredicate(tokens4, synonymMap), SemanticErrorException);
+    REQUIRE_THROWS_AS(pf.createPredicate(tokens5, synonymMap), SemanticErrorException);
     REQUIRE_THROWS_AS(pf.createPredicate(tokens6, synonymMap), SemanticErrorException);
-    REQUIRE_THROWS_AS(pf.createPredicate(tokens7, synonymMap), SemanticErrorException);
 }

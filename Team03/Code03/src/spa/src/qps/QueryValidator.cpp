@@ -233,17 +233,19 @@ std::vector<std::string> QueryValidator::validatePatternPredicate(const std::vec
     std::vector<std::string> validatedTokens;
     validatedTokens.push_back(tokens[0]);
 
+    // assign or while patterns
     if (tokens.size() == 7 && tokens[2] == "(" && tokens[4] == "," && tokens[6] == ")") {
         const std::string& syn = tokens[1];
         const std::string& lhs = tokens[3];
         const std::string& rhs = tokens[5];
 
-        if (!isSynonym(syn) || !isEntRef(lhs)) {
+        if (!isSynonym(syn) || !isEntRef(lhs) || !isExpressionSpec(rhs)) {
             throw SyntaxErrorException("Invalid pattern clause arguments");
         }
         validatedTokens.push_back(syn);
         validatedTokens.push_back(lhs);
         validatedTokens.push_back(rhs);
+    // if patterns
     } else if (tokens.size() == 9 && tokens[2] == "(" && tokens[4] == "," && tokens[6] == "," && tokens[8] == ")") {
         const std::string& syn = tokens[1];
         const std::string& arg1 = tokens[3];
