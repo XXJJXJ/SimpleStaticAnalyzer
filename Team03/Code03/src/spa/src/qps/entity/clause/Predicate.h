@@ -24,7 +24,7 @@ protected:
     vector<shared_ptr<Synonym>> synonyms; // Synonyms used in the predicate
     vector<shared_ptr<CellFilter>> rowFilter; // Cell filters that are used to filter the rows in result table
     vector<bool> projectionFilter; // Filter to determine which columns to keep in the result table
-    virtual std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) = 0; // Gets the full table for the predicate
+    virtual std::shared_ptr<BaseTable> getFullTable(QueryManager& qm); // Gets the full table for the predicate
     void addStmtRef(StatementRef &stmtRef);
     void addEntityRef(EntityRef& entityRef);
     void addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef);

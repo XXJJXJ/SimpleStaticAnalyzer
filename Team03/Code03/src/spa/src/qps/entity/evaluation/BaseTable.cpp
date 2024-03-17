@@ -140,4 +140,8 @@ void BaseTable::makeRowsUnique() {
     rows.erase(last, rows.end());
 }
 
+unordered_set<TableRow> BaseTable::getRowSet() {
+    return unordered_set<TableRow>(rows.begin(), rows.end());
+}
+
 

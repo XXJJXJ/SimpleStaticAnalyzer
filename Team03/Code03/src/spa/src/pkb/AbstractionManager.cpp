@@ -23,6 +23,7 @@ void AbstractionManager::clearStore() {
     followStore.clear();
     parentStore.clear();
     callStore.clear();
+    nextStore.clear();
 }
 
 bool AbstractionManager::addFollow(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
@@ -43,6 +44,10 @@ bool AbstractionManager::addModifies(shared_ptr<Statement> stmt, shared_ptr<Vari
 
 bool AbstractionManager::addCalls(shared_ptr<Procedure> proc1, shared_ptr<Procedure> proc2) {
     return callStore.add(proc1, proc2);
+}
+
+bool AbstractionManager::addNext(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
+    return nextStore.add(stmt1, stmt2);
 }
 
 // Private helper function
@@ -135,6 +140,13 @@ vector<vector<shared_ptr<Entity>>> AbstractionManager::getCallS() {
 }
 vector<vector<shared_ptr<Entity>>> AbstractionManager::getCallT() {
     return callStore.getTransitive();
+}
+
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getNextS() {
+    return nextStore.getDirect();
+}
+vector<vector<shared_ptr<Entity>>> AbstractionManager::getNextT() {
+    return nextStore.getTransitive();
 }
 
 // For testing

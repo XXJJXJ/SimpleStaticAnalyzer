@@ -56,6 +56,9 @@ bool Populator::addUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
 bool Populator::addModifies(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
     return am->addModifies(stmt, var);
 }
+bool Populator::addNext(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
+    return am->addNext(stmt1, stmt2);
+}
 
 void Populator::tabulate() {
     for (auto & _pair : callTempStore) {

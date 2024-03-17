@@ -11,6 +11,7 @@
 
 class BaseTable {
 private:
+    // TODO: change to unordered_set
     std::vector<TableRow> rows;
     int columnCount = 0; // Add columnCount field
     virtual bool isValidRow(const TableRow& row) const;
@@ -39,6 +40,7 @@ public:
     virtual ~BaseTable() = default;
 
     vector<TableRow> &getRows();
+    unordered_set<TableRow> getRowSet();
 
     virtual bool operator==(const BaseTable& other) const;
 
