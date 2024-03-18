@@ -13,4 +13,5 @@ public:
 
 private:
 	shared_ptr<Populator> pkbPopulator;
+	void extractNextRelation(shared_ptr<Cfg>);
 };

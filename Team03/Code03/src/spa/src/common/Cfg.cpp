@@ -11,21 +11,21 @@ void Cfg::addProcedureCfg(const string& procedureName, shared_ptr<CfgNode> node)
     procedureCfgToCfgRootNodes[procedureName] = move(node);
 }
 
-void Cfg::addStatementCfg(int statementNumber, shared_ptr<CfgNode> node) {
-    if (statementNumberToCfgNode.find(statementNumber) != statementNumberToCfgNode.end()) {
+void Cfg::addStatementCfg(shared_ptr<Statement> statement, shared_ptr<CfgNode> node) {
+    if (statementToCfgNode.find(statement) != statementToCfgNode.end()) {
         throw SemanticErrorException(
             "Statement " +
-            to_string(statementNumber) +
+            statement->getName() +
             " is already assigned a node");
     }
 
-    statementNumberToCfgNode[statementNumber] = move(node);
+    statementToCfgNode[statement] = move(node);
 }
 
 Cfg::ProcedureToCfgNodeMap Cfg::getCfgRootNodes() {
     return procedureCfgToCfgRootNodes;
 }
 
-Cfg::StatementNumberToNodeMap Cfg::getStatementToCfg() {
-    return statementNumberToCfgNode;
+Cfg::StatementToNodeMap Cfg::getStatementToCfg() {
+    return statementToCfgNode;
 }
