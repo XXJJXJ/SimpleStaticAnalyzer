@@ -1,0 +1,5 @@
+BasedOnStyle: Google
+ColumnLimit: 120  # Allow longer lines
+IndentWidth: 4    # Use 4 spaces for indentation
+AllowShortIfStatementsOnASingleLine: true  # Allow short if statements on a single line
+PointerAlignment: Left
