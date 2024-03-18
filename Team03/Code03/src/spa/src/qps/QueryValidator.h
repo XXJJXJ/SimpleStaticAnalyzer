@@ -9,6 +9,7 @@
 #define SPA_QUERYVALIDATOR_H
 #include <string>
 #include <vector>
+#include "qps/entity/clause/PredicateUtils.h"
 
 class QueryValidator {
 public:
@@ -32,7 +33,8 @@ public:
     static bool isFactor(const std::string& token);
     static std::vector<std::string> validateDeclaration(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateSelection(const std::vector<std::string>& tokens);
-    static std::vector<std::string> validatePredicate(const std::vector<std::string>& tokens);
+    static std::vector<std::string> validatePredicate(const std::vector<std::string>& tokens, PredicateType& prevPred);
+    static std::vector<std::string> validateSuchThatPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateStatementStatementPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateStmtEntEntityPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateEntityEntityPredicate(const std::vector<std::string>& tokens);
