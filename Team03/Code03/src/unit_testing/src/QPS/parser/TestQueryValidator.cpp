@@ -305,12 +305,17 @@ TEST_CASE("Test QueryValidator::validate") {
                                                                       {{"Select", "a"}},
                                                                       {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"and", "a", "(", "_", ",", "_", ")"}, {"and", "Uses", "(", "a", ",", "b", ")"},
                                                                        {"pattern", "a", "(", "_", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ",", "_", ")"}}}; // Such that and pattern
+        std::vector<std::vector<std::vector<std::string>>> tokens6 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
+                                                                      {{"Select", "a"}},
+                                                                      {{"and", "Follows", "(", "a", ",", "b", ")"}, {"and", "Modifies", "(", "a", ",", "b", ")"}, {"and", "Uses", "(", "a", ",", "b", ")"},
+                                                                       {"pattern", "a", "(", "_", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ",", "_", ")"}}}; // Starts with and clause
 
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens1), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens2), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens3), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens4), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens5), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validate(tokens6), SyntaxErrorException);
     }
 }
 
