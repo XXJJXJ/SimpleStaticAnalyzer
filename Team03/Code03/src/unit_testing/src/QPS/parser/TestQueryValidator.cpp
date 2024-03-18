@@ -199,37 +199,41 @@ TEST_CASE("Test QueryValidator::validateEntityEntityPredicate") {
     }
 }
 
-TEST_CASE("Test QueryValidator::validateAssignPatternPredicate") {
-    SECTION("Valid AssignPatternPredicates") {
+TEST_CASE("Test QueryValidator::validatePatternPredicate") {
+    SECTION("Valid PatternPredicates") {
         std::vector<std::string> tokens1 = {"pattern", "a", "(", "_", ",", "_", ")"}; // Both wildcard
         std::vector<std::string> tokens2 = {"pattern", "a", "(", "\"validString\"", ",", "_\"x+y\"_", ")"}; // LHS valid string, RHS partial match
         std::vector<std::string> tokens3 = {"pattern", "a", "(", "validName", ",", "\"x+y\"", ")"}; // LHS valid synonym, RHS complete match
+        std::vector<std::string> tokens4 = {"pattern", "a", "(", "validName", ",", "_", ",", "_", ")"}; // Valid If pattern
 
         std::vector<std::string> expectedResults1 = {"pattern", "a", "_", "_"};
         std::vector<std::string> expectedResults2 = {"pattern", "a", "\"validString\"", "_\"x+y\"_"};
         std::vector<std::string> expectedResults3 = {"pattern", "a", "validName", "\"x+y\""};
+        std::vector<std::string> expectedResults4 = {"pattern", "a", "validName", "_", "_"};
 
-        std::vector<std::string> results1 = QueryValidator::validateAssignPatternPredicate(tokens1);
-        std::vector<std::string> results2 = QueryValidator::validateAssignPatternPredicate(tokens2);
-        std::vector<std::string> results3 = QueryValidator::validateAssignPatternPredicate(tokens3);
+        std::vector<std::string> results1 = QueryValidator::validatePatternPredicate(tokens1);
+        std::vector<std::string> results2 = QueryValidator::validatePatternPredicate(tokens2);
+        std::vector<std::string> results3 = QueryValidator::validatePatternPredicate(tokens3);
+        std::vector<std::string> results4 = QueryValidator::validatePatternPredicate(tokens4);
 
         REQUIRE(results1 == expectedResults1);
         REQUIRE(results2 == expectedResults2);
         REQUIRE(results3 == expectedResults3);
+        REQUIRE(results4 == expectedResults4);
     }
 
-    SECTION("Invalid AssignPatternPredicates") {
-        std::vector<std::string> tokens1 = {"pattern", "123invalidName", "(", "_", ",", "_", ")"}; // Invalid assign synonym
+    SECTION("Invalid PatternPredicates") {
+        std::vector<std::string> tokens1 = {"pattern", "123invalidName", "(", "_", ",", "_", ")"}; // Invalid synonym
         std::vector<std::string> tokens2 = {"pattern", "a", "(", "123invalidName", ",", "_", ")"}; // LHS invalid name
         std::vector<std::string> tokens3 = {"pattern", "a", "(", "\"123invalidString\"", ",", "_", ")"}; // LHS invalid string
         std::vector<std::string> tokens4 = {"pattern", "a", "(", "1", ",", "_", ")"}; // LHS number
-        std::vector<std::string> tokens5 = {"pattern", "a", "(", "_", ",", "1()x", ")"}; // RHS invalid expression spec
+        std::vector<std::string> tokens5 = { "pattern", "a", "(", "_", ",", "validName", ",", "\"validString\"", ")" }; // Invalid If pattern
 
-        REQUIRE_THROWS_AS(QueryValidator::validateAssignPatternPredicate(tokens1), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validateAssignPatternPredicate(tokens2), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validateAssignPatternPredicate(tokens3), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validateAssignPatternPredicate(tokens4), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validateAssignPatternPredicate(tokens5), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validatePatternPredicate(tokens1), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validatePatternPredicate(tokens2), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validatePatternPredicate(tokens3), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validatePatternPredicate(tokens4), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validatePatternPredicate(tokens5), SyntaxErrorException);
     }
 }
 
