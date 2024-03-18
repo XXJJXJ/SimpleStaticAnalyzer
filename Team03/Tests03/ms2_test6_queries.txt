@@ -1,0 +1,55 @@
+1 - Selecting variables
+variable v;
+Select v
+a, b, c, d, e, f, g, v, w, x, y, z, if, while
+5000
+2 - Selecting constants
+constant c;
+Select c
+1, 2, 10, 3, 100, 12345
+5000
+3 - Selecting if statements
+if ifs;
+Select ifs
+2, 8, 15, 32
+5000
+4 - Selecting while statements
+while w;
+Select w
+6, 11, 13, 18, 20, 22, 24, 26, 28, 30
+5000
+5 - Selecting assign statements
+assign a;
+Select a
+1, 5
+5000
+6 - Selecting read statements in if/while blocks
+read re;
+Select re
+3, 4, 7, 9, 10, 12, 14, 16, 17, 19, 21, 23, 25, 27, 29, 31, 33, 34
+5000
+7 - Uses relationship on conditional statements, select variables
+stmt s; variable v;
+Select v such that Uses(s, v)
+a, b, c, x, e, y, z, w, v
+5000
+8 - Uses relationship on conditional statements, select statements
+stmt s; variable v;
+Select s such that Uses(s, v)
+2, 6, 8, 11, 13, 15, 18, 20, 22, 24, 26, 28, 30
+5000
+9 - Uses relationship on complex conditional statements 1
+procedure p;
+Select p such that Uses(28, "z")
+proc
+5000
+10 - Uses relationship on complex conditional statements 2
+procedure p;
+Select p such that Uses(26, "v")
+proc
+5000
+11 - Select all statements
+stmt s;
+Select s
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34
+5000

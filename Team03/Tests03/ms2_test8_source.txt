@@ -1,0 +1,24 @@
+procedure p {
+    read a;
+    b = x + 1;
+    if (b == 100) then {
+        read b;
+        c = 2 + y;
+    } else {
+        b = 2 + 3 + y;
+        c = x * 10;
+        while (z != x) {
+            d = z + 1;
+           print x;
+            if (x == a) then {
+                x = 1 + 2 + c + b;
+            } else {
+                read b;
+                b = b + 3;
+                print b;
+                c = x + 2;
+            }
+        }
+    }
+    a = b + z + 2 + x;
+}

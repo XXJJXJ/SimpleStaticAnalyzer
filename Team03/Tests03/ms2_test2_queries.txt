@@ -1,0 +1,45 @@
+1 - Selecting procedure
+procedure p;
+Select p
+pr1oc2
+5000
+2 - Selecting print statements, synonym same name as design entity
+print print;
+Select print
+1, 4, 6, 9, 11, 13
+5000
+3 - Selecting read statements, synonym named 'Select'
+read Select;
+Select Select
+2, 3, 5, 7, 8, 10, 12
+5000
+4 - Selecting variables, irregular whitespacing
+variable                    v111v2v3;
+              Select v111v2v3          
+x, alpha, b3ta, gamm4, pr1oc2, de1t4, ep5551l0n, print, read, prInT
+5000
+5 - Selecting all statements, separate declaration of the same design entity
+stmt s; assign a; stmt s1;
+Select s1
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+5000
+6 - Selecting non read and print statements, tab characters
+assign                 a;
+    Select      a
+none
+5000
+7 - Selecting non read and print statements, line break
+while w, w1,
+w2, w3; Select w2
+none
+5000
+8 - Modifies relationship on read statements, two explicit args
+procedure p;
+Select p such that Modifies(2, "x")
+pr1oc2
+5000
+9 - Selecting used variables, synonyms of the same character sequence but different casing
+print synonym; variable SyNoNym, synONYM;
+Select SyNoNym such that Uses(synonym, synONYM)
+x, alpha, b3ta, gamm4, pr1oc2, de1t4, ep5551l0n, print, read, prInT
+5000

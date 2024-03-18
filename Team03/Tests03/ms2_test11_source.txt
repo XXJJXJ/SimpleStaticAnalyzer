@@ -1,0 +1,15 @@
+procedure proc {
+  print x;
+  read x;
+  read alpha;
+  print alpha;
+  read b3ta;
+  print b3ta;
+  read gamm4;
+  read de1t4;
+  print de1t4;
+  read ep5551l0n;
+  print y;
+  read x;
+  print x;
+}

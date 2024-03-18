@@ -1,0 +1,65 @@
+1 - a
+constant c;
+Select c
+0, 1, 2, 4, 9
+5000
+2 - b
+stmt s;
+Select s such that Follows(9, s)
+none
+5000
+3 - c
+stmt s;
+Select s such that Follows*(s, 13)
+12
+5000
+4 - d
+stmt s;
+Select s such that Parent(s, 12)
+9
+5000
+5 - e
+assign a;
+Select a such that Parent*(_, a)
+8, 10, 11, 12
+5000
+6 - f
+variable v;
+Select v such that Modifies(8, v)
+x
+5000
+7 - g
+variable v;
+Select v such that Uses(3, v)
+east
+5000
+8 - j
+variable v; assign a;
+Select v pattern a(v, _"y"_)
+east, west, y
+5000
+9 - k
+read re;
+Select re such that Modifies(12, "x")
+none
+5000
+10 - l
+assign a; variable v;
+Select a such that Uses(a, v) pattern a(v, _"x"_)
+6, 10, 14
+5000
+11 - m
+assign a; variable v, v1;
+Select a such that Uses(a, v) pattern a(v1, _"x"_)
+6, 10, 11, 14
+5000
+12 - n
+assign a, a1; variable v;
+Select v such that Uses(a, v) pattern a1(v, _"x"_)
+west, east, x
+5000
+13 - o
+assign a, a1; variable v, v1;
+Select v such that Uses(a, v) pattern a1(v1, _"x"_)
+east, west, x, y, z
+5000

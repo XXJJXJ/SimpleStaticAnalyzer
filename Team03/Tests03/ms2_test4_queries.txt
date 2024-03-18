@@ -1,0 +1,72 @@
+1 - Wildcard as first arg of Modifies
+variable v;
+Select v such that Modifies(_, v)
+SemanticError
+5000
+2 - Wildcard as first arg of Uses
+variable v;
+Select v such that Uses(_, v)
+SemanticError
+5000
+3 - Synonym not declared
+variable v; stmt s1, s2;
+Select s
+SemanticError
+5000
+4 - Repeated synonym declaration
+variable v; read r, v;
+Select v
+SemanticError
+5000
+5 - Synonym of pattern clause is not an assign synonym
+variable v; read a;
+Select v pattern a(v, "x")
+SemanticError
+5000
+6 - Synonym of pattern clause (arg1) is not an entRef
+variable v; read r; assign a;
+Select v pattern a(r, "x")
+SemanticError
+5000
+7 - Synonym of arg1 in such-that clause is not a stmt synonym (follows)
+variable v; while w;
+Select w such that Follows(v, w)
+SemanticError
+5000
+8 - Synonym of arg1 in such-that clause is not a stmt synonym (follows*)
+variable v; while w;
+Select w such that Follows*(v, w)
+SemanticError
+5000
+9 - Synonym of arg1 in such-that clause is not a stmt synonym (parent)
+variable v; assign a;
+Select a such that Parent(v, a)
+SemanticError
+5000
+10 - Synonym of arg1 in such-that clause is not a stmt synonym (parent*)
+variable v; assign a;
+Select a such that Parent*(v, a)
+SemanticError
+5000
+11 - Synonym of arg1 in such-that clause is not a stmt synonym (modifies)
+variable v, v1; procedure p;
+Select p such that Modifies(v, v1)
+SemanticError
+5000
+12 - Synonym of arg1 in such-that clause is not a stmt synonym (uses)
+variable v, v1; while w;
+Select w such that Follows(v, v1)
+SemanticError
+5000
+13 - Synonym of arg2 in Modifies is not variable synonym
+stmt s; while w;
+Select s such that Modifies(s, w)
+SemanticError
+5000
+14 - Synonym of arg2 in Uses is not a variable synonym
+stmt s; assign a;
+Select s such that Uses(s, a)
+SemanticError
+5000
+
+

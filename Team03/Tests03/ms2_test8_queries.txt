@@ -1,0 +1,60 @@
+1 - Follows and pattern
+assign a; stmt s;
+Select s such that Follows(a, s) pattern a(_, _"3"_)
+7, 15
+5000
+2 - Follows and pattern, pattern does not exist
+assign a; stmt s1, s2;
+Select s1 such that Follows(s1, s2) pattern a("j", _"3"_)
+none
+5000
+3 - Follows* and pattern case 1
+assign a; read re;
+Select a such that Follows*(re, a) pattern a(_, _"x"_)
+2, 16, 17
+5000
+4 - Follows* and pattern case 2
+assign a; stmt s;
+Select s such that Follows*(s, a) pattern a("c", _)
+4, 6, 13, 14, 15
+5000
+5 - Follows* and pattern case 3
+assign a; stmt s;
+Select a such that Follows*(s, a) pattern a("b", _"3"_)
+14
+5000
+6 - Parent and pattern case 1
+assign a; stmt s;
+Select s such that Parent(s, a) pattern a(_, _"1"_)
+8, 11
+5000
+7 - Parent and pattern case 2
+assign a;
+Select a such that Parent(11, a) pattern a(_, _"b"_)
+12, 14
+5000
+8 - Parent* and pattern case 1
+assign a; while w;
+Select w such that Parent*(w, a) pattern a("x", _)
+8
+5000
+9 - Parent* and pattern case 2
+assign a; if ifs;
+Select ifs such that Parent*(ifs, a) pattern a("c", _"x"_)
+3, 11
+5000
+10 - Modifies and pattern case 1
+assign a; variable v;
+Select v such that Modifies(8, v) pattern a(_, _"2"_)
+d, x, b, c
+5000
+11 - Modifies and pattern case 2
+assign a, a1; variable v;
+Select v such that Modifies(a1, v) pattern a(_, _"x"_)
+a, b, c, d, x
+5000
+12 - Uses and pattern
+assign a; variable v; stmt s;
+Select s such that Uses(s, v) pattern a(v, _)
+2, 3, 7, 8, 10, 11, 12, 14, 15, 16, 17
+5000
