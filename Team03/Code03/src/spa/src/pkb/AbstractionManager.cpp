@@ -148,6 +148,12 @@ vector<vector<shared_ptr<Entity>>> AbstractionManager::getNextS() {
 vector<vector<shared_ptr<Entity>>> AbstractionManager::getNextT() {
     return nextStore.getTransitive();
 }
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> AbstractionManager::getNextSMap() {
+    return nextStore.getDirectMap();
+}
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> AbstractionManager::getNextTMap() {
+    return nextStore.getTransitiveMap();
+}
 
 // For testing
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> AbstractionManager::getFollowSMap() {

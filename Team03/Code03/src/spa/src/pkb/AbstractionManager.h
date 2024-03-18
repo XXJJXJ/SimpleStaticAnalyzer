@@ -56,6 +56,9 @@ public:
 
     vector<vector<shared_ptr<Entity>>> getNextS();
     vector<vector<shared_ptr<Entity>>> getNextT();
+    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getNextSMap();
+    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getNextTMap();
+
 
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();

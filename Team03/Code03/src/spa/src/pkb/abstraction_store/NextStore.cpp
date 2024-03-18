@@ -13,14 +13,18 @@ bool NextStore::add(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
     return true;
 }
 
-vector<vector<shared_ptr<Entity>>> NextStore::getTransitive() {
-    // dfs add, using preprocessed roots
-    // map resets every call, no caching allowed ¯\_(ツ)_/¯
+unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> NextStore::getTransitiveMap() {
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> nextStarMap;
     for (auto & first : roots) {
         dfsAdd(first, nextStarMap);
     }
-    return getStmtPairs(nextStarMap);
+    return nextStarMap;
+}
+
+vector<vector<shared_ptr<Entity>>> NextStore::getTransitive() {
+    // dfs add, using preprocessed roots
+    // map resets every call, no caching allowed ¯\_(ツ)_/¯
+    return getStmtPairs(getTransitiveMap());
 }
 
 
