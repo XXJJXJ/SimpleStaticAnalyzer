@@ -12,8 +12,7 @@
 
 TEST_CASE("Check if ExtractCondition works") {
     Tokens if_line_valid
-    { make_shared<NameToken>("if"), make_shared<PunctuationToken>("("),
-     make_shared<NameToken>("x"), make_shared<PunctuationToken>(">"),
+    { make_shared<NameToken>("x"), make_shared<RelationalToken>(">"),
      make_shared<IntegerToken>("5"), make_shared<PunctuationToken>(")"),
      make_shared<NameToken>("then"),
      make_shared<PunctuationToken>("{") };
@@ -30,8 +29,9 @@ TEST_CASE("Check if ExtractCondition works") {
             make_shared<ConditionalOperation>("relationalExpression", cond_args);
         REQUIRE(condition->operator==(*expected_condition_expr));
     }
-    catch (std::exception& e) {
+    catch (SpaException& e) {
         cout << e.what() << endl;
+        REQUIRE(0);
     }
 }
 
