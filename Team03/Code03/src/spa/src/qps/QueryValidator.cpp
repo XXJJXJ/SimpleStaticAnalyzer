@@ -159,7 +159,7 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
                 throw SyntaxErrorException("Invalid such that clause keyword " + tokens[2]);
         }
     } else if (tokens.size() > 2 && getPredicateType(tokens[0]) == PredicateType::Pattern) {
-        return validateAssignPatternPredicate(tokens);
+        return validatePatternPredicate(tokens);
     } else {
         throw SyntaxErrorException("Invalid clause keyword");
     }
@@ -229,21 +229,36 @@ std::vector<std::string> QueryValidator::validateEntityEntityPredicate(const std
     return validatedTokens;
 }
 
-std::vector<std::string> QueryValidator::validateAssignPatternPredicate(const std::vector<std::string>& tokens) {
+std::vector<std::string> QueryValidator::validatePatternPredicate(const std::vector<std::string>& tokens) {
     std::vector<std::string> validatedTokens;
     validatedTokens.push_back(tokens[0]);
 
+    // assign or while patterns
     if (tokens.size() == 7 && tokens[2] == "(" && tokens[4] == "," && tokens[6] == ")") {
-        const std::string& assignSyn = tokens[1];
+        const std::string& syn = tokens[1];
         const std::string& lhs = tokens[3];
         const std::string& rhs = tokens[5];
 
-        if (!isSynonym(assignSyn) || !isEntRef(lhs) || !isExpressionSpec(rhs)) {
+        if (!isSynonym(syn) || !isEntRef(lhs) || !isExpressionSpec(rhs)) {
             throw SyntaxErrorException("Invalid pattern clause arguments");
         }
-        validatedTokens.push_back(assignSyn);
+        validatedTokens.push_back(syn);
         validatedTokens.push_back(lhs);
         validatedTokens.push_back(rhs);
+    // if patterns
+    } else if (tokens.size() == 9 && tokens[2] == "(" && tokens[4] == "," && tokens[6] == "," && tokens[8] == ")") {
+        const std::string& syn = tokens[1];
+        const std::string& arg1 = tokens[3];
+        const std::string& arg2 = tokens[5];
+        const std::string& arg3 = tokens[7];
+
+        if (!isSynonym(syn) || !isWildcard(arg2) || !isWildcard(arg3)) {
+            throw SyntaxErrorException("Invalid pattern clause arguments");
+        }
+        validatedTokens.push_back(syn);
+        validatedTokens.push_back(arg1);
+        validatedTokens.push_back(arg2);
+        validatedTokens.push_back(arg3);
     } else {
         throw SyntaxErrorException("Invalid pattern clause syntax");
     }

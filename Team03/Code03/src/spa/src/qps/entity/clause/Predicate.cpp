@@ -70,3 +70,7 @@ void Predicate::addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef) {
         this->projectionFilter.push_back(false);
     }
 }
+
+std::shared_ptr<BaseTable> Predicate::getFullTable(QueryManager &qm) {
+    return {};
+}

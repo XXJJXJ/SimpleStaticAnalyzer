@@ -9,6 +9,8 @@
 #include "qps/entity/clause/UsesPredicate.h"
 #include "qps/entity/clause/CallsPredicate.h"
 #include "qps/entity/clause/CallsTPredicate.h"
+#include "qps/entity/clause/IfPatternPredicate.h"
+#include "qps/entity/clause/WhilePatternPredicate.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
 std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {	
@@ -52,8 +54,7 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
 
     }
     case PredicateType::Pattern: {
-        AssignPatternPredicate predicate(Synonym(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap), tokens[3]);
-        return std::make_shared<AssignPatternPredicate>(predicate);
+        return parsePatternPredicate(tokens, synonymMap);
     }
     }
 }
@@ -70,7 +71,7 @@ std::variant<int, Synonym, std::string> PredicateFactory::stringToStatementRef(c
 		return stoi(token);
 	}
 	else if (QueryValidator::isSynonym(token)) {
-		return stringToSynonym(token, synonymMap);
+		return Synonym(token, synonymMap);
 	}
 }
 
@@ -83,17 +84,38 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 		return token;
 	}
 	else if (QueryValidator::isSynonym(token)) {
-		return stringToSynonym(token, synonymMap);
+		return Synonym(token, synonymMap);
 	}
 }
 
-Synonym PredicateFactory::stringToSynonym(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
-	try {
-		EntityType synonymType = synonymMap.at(token);
-		Synonym synonym = Synonym(synonymType, token);
-		return synonym;
-	}
-	catch (const std::out_of_range& e) {
-		throw SemanticErrorException("Selected synonym '" + token + "' has not been declared");
-	}
+std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
+    Synonym syn = Synonym(tokens[1], synonymMap);
+    EntityType entityType = syn.getType();
+
+    switch (entityType) {
+    case EntityType::Assign: {
+        if (tokens.size() != 4) {
+            throw SemanticErrorException("Invalid Assign pattern arguments");
+        }
+        AssignPatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap), tokens[3]);
+        return std::make_shared<AssignPatternPredicate>(predicate);
+    }
+    case EntityType::While: {
+        if (tokens.size() != 4 || tokens[3] != "_") {
+            throw SemanticErrorException("Invalid While pattern arguments");
+        }
+        WhilePatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap));
+        return std::make_shared<WhilePatternPredicate>(predicate);
+    }
+    case EntityType::If: {
+        if (tokens.size() != 5) {
+            throw SemanticErrorException("Invalid If pattern arguments");
+        }
+        IfPatternPredicate predicate(syn, stringToEntityRef(tokens[2], synonymMap));
+        return std::make_shared<IfPatternPredicate>(predicate);
+    }
+    default: {
+        throw SemanticErrorException("Invalid synonym type for pattern predicate");
+    }
+    }
 }

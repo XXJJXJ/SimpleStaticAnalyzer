@@ -36,7 +36,7 @@ public:
     static std::vector<std::string> validateStatementStatementPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateStmtEntEntityPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateEntityEntityPredicate(const std::vector<std::string>& tokens);
-    static std::vector<std::string> validateAssignPatternPredicate(const std::vector<std::string>& tokens);
+    static std::vector<std::string> validatePatternPredicate(const std::vector<std::string>& tokens);
 };
 
 #endif // SPA_QUERYVALIDATOR_H
