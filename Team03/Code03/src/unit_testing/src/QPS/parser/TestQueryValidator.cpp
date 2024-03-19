@@ -66,19 +66,19 @@ TEST_CASE("Test QueryValidator::validateSelection") {
 
 TEST_CASE("Test QueryValidator::validatePredicate") {
     // Testing switch case, actual correctness of results tested in the various specific validate___Predicate tests below
-    PredicateType noPrevPred = PredicateType::Invalid;
-    PredicateType suchThatPred = PredicateType::SuchThat;
-    PredicateType patternPred = PredicateType::Pattern;
+    ClauseType noPrevClause = ClauseType::Invalid;
+    ClauseType suchThatClause = ClauseType::SuchThat;
+    ClauseType patternClause = ClauseType::Pattern;
     SECTION("Valid predicates") {
         std::vector<std::string> tokens1 = {"such", "that", "Follows", "(", "a", ",", "b", ")"};
         std::vector<std::string> tokens2 = {"pattern", "a", "(", "_", ",", "_", ")"};
         std::vector<std::string> tokens3 = {"and", "Follows", "(", "a", ",", "b", ")"};
         std::vector<std::string> tokens4 = {"and", "a", "(", "_", ",", "_", ")"};
 
-        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens1, noPrevPred));
-        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens2, noPrevPred));
-        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens3, suchThatPred));
-        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens4, patternPred));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens1, noPrevClause));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens2, noPrevClause));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens3, suchThatClause));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens4, patternClause));
     }
 
     SECTION("Invalid predicates") {
@@ -87,10 +87,10 @@ TEST_CASE("Test QueryValidator::validatePredicate") {
         std::vector<std::string> tokens3 = { "and", "Follows", "(", "a", ",", "b", ")" };
         std::vector<std::string> tokens4 = { "and", "a", "(", "_", ",", "_", ")" };
 
-        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens1, noPrevPred), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens2, noPrevPred), SyntaxErrorException);
-        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens3, patternPred), SyntaxErrorException); // Pattern pred and such that pred
-        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens4, suchThatPred), SyntaxErrorException); // Such that pred and pattern pred
+        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens1, noPrevClause), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens2, noPrevClause), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens3, patternClause), SyntaxErrorException); // Pattern pred and such that pred
+        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens4, suchThatClause), SyntaxErrorException); // Such that pred and pattern pred
     }
 }
 
