@@ -145,6 +145,8 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
         switch (predicateType) {
             case PredicateType::Follows:
             case PredicateType::FollowsT:
+            case PredicateType::Next:
+            case PredicateType::NextT:
             case PredicateType::Parent:
             case PredicateType::ParentT:
                 return validateStatementStatementPredicate(predicateTokens);
