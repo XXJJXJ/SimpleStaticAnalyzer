@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "DesignExtractor.h"
 #include "common/Procedure.h"
 
@@ -25,30 +27,53 @@ void DesignExtractor::extractNextRelation(shared_ptr<Cfg> cfg) {
 	auto procToCfgNodeMap = cfg->getCfgRootNodes();
 	for (auto iter = procToCfgNodeMap.begin(); iter != procToCfgNodeMap.end(); ++iter) {
 		auto currNode = iter->second;
-		auto nextNodes = currNode->getNextNodes();
+		vector <shared_ptr<CfgNode>> visited;
 		shared_ptr<Statement> prevNodeStatement = NULL;
+		nodeTraversalHelper(currNode, visited, prevNodeStatement);
+	}
+}
 
-		while (nextNodes.find(true) != nextNodes.end()) {
-			auto nextNode = nextNodes[true];
-			auto statementList = currNode->getStatements();
+void DesignExtractor::nodeTraversalHelper(shared_ptr<CfgNode> currNode, vector<shared_ptr<CfgNode>> visited, shared_ptr<Statement> prevNodeStatement) {
+	auto statementList = currNode->getStatements();
+	shared_ptr<Statement> currNodeLastStatement = NULL;
+	if (count(visited.begin(), visited.end(), currNode) <= 0) {
+		if (statementList.size() != 0) {
+			if (prevNodeStatement != NULL) {
+				pkbPopulator->addNext(prevNodeStatement, statementList[0]);
+			}
 
-			if (statementList.size() != 0) {
-				if (prevNodeStatement != NULL) {
-					pkbPopulator->addNext(prevNodeStatement, statementList[0]);
-				}
-
-				if (statementList.size() > 1) {
-					for (size_t i = 0; i < statementList.size() - 1; ++i) {
-						pkbPopulator->addNext(statementList[i], statementList[i + 1]);
-						if ((i + 1) == (statementList.size() - 1)) prevNodeStatement = statementList[i + 1];
+			if (statementList.size() > 1) {
+				for (size_t i = 0; i < statementList.size() - 1; ++i) {
+					pkbPopulator->addNext(statementList[i], statementList[i + 1]);
+					if ((i + 1) == (statementList.size() - 1)) {
+						prevNodeStatement = statementList[i + 1];
+						currNodeLastStatement = statementList[i + 1];
 					}
 				}
-				else {
-					prevNodeStatement = statementList[0];
-				}
 			}
-			currNode = nextNode;
-			nextNodes = currNode->getNextNodes();
+			else {
+				prevNodeStatement = statementList[0];
+				currNodeLastStatement = statementList[0];
+			}
+		}
+
+		visited.push_back(currNode);
+		auto nextNodes = currNode->getNextNodes();
+		if (nextNodes.find(true) != nextNodes.end()) {
+			nodeTraversalHelper(nextNodes[true], visited, prevNodeStatement);
+		}
+
+		prevNodeStatement = currNodeLastStatement;
+		if (nextNodes.find(false) != nextNodes.end()) {
+			nodeTraversalHelper(nextNodes[false], visited, prevNodeStatement);
+		}
+	}
+	else {
+		if (statementList.size() != 0) {
+			if (prevNodeStatement != NULL) {
+				pkbPopulator->addNext(prevNodeStatement, statementList[0]);
+			}
+			prevNodeStatement = statementList[0];
 		}
 	}
 }
