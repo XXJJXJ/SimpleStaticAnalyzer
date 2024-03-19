@@ -170,7 +170,7 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
 ClauseType QueryValidator::getClauseType(const std::vector<std::string>& tokens) {
     if (tokens.size() > 3 && tokens[0] == "such" && tokens[1] == "that") {
         return ClauseType::SuchThat;
-    } else if (tokens.size() > 2 && getPredicateType(tokens[0]) == PredicateType::Pattern) {
+    } else if (tokens.size() > 2 && tokens[0] == "pattern") {
         return ClauseType::Pattern;
     } else if (tokens.size() > 2 && tokens[0] == "and") {
         return ClauseType::And;
@@ -224,8 +224,7 @@ std::vector<std::string> QueryValidator::validateStmtEntEntityPredicate(const st
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
         return validatedTokens;
-    }
-    else {
+    } else {
         throw SyntaxErrorException("Invalid " + predicateType + " clause syntax");
     }
 }
@@ -240,8 +239,7 @@ std::vector<std::string> QueryValidator::validateEntityEntityPredicate(const std
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
         return validatedTokens;
-    }
-    else {
+    } else {
         throw SyntaxErrorException("Invalid " + predicateType + " clause syntax");
     }
 }
@@ -266,6 +264,7 @@ std::vector<std::string> QueryValidator::validatePatternPredicate(const std::vec
     }
 }
 
+// Validate that the predicate has the correct number of arguments
 bool QueryValidator::isValidPredicateArgsNum(const std::vector<std::string>& tokens, int numOfArgs) {
     int expectedSize = numOfArgs * 2 + 2;
     int tokensLen = tokens.size();
@@ -282,6 +281,7 @@ bool QueryValidator::isValidPredicateArgsNum(const std::vector<std::string>& tok
     return false;
 }
 
+// Extract the arguments from a predicate
 std::vector<std::string> QueryValidator::getPredicateArgs(const std::vector<std::string>& tokens, int numOfArgs) {
     std::vector<std::string> results = { tokens[0] };
 

@@ -264,6 +264,46 @@ TEST_CASE("Test QueryValidator::validatePatternPredicate") {
     }
 }
 
+TEST_CASE("Test QueryValidator::isValidPredicateArgsNum") {
+    SECTION("Valid number of arguments") {
+        std::vector<std::string> tokens1 = { "Follows", "(", "a", ",", "b", ")" };
+        std::vector<std::string> tokens2 = { "a", "(", "a", ",", "_", ",", "_", ")" };
+
+        REQUIRE(QueryValidator::isValidPredicateArgsNum(tokens1, 2));
+        REQUIRE(QueryValidator::isValidPredicateArgsNum(tokens2, 3));
+    }
+
+    SECTION("Invalid number of arguments") {
+        std::vector<std::string> tokens1 = { "Follows", "(", "a", ",", "b", ")" };
+        std::vector<std::string> tokens2 = { "a", "(", "a", ",", "_", ",", "_", ")" };
+
+        REQUIRE(!QueryValidator::isValidPredicateArgsNum(tokens1, 3));
+        REQUIRE(!QueryValidator::isValidPredicateArgsNum(tokens2, 2));
+    }
+
+    SECTION("Wrong syntax") {
+        std::vector<std::string> tokens1 = { "Follows", "(", "a", "notAComma", "b", ")" };
+        std::vector<std::string> tokens2 = { "a", "notABracket", "a", ",", "_", ",", "_", ")" };
+
+        REQUIRE(!QueryValidator::isValidPredicateArgsNum(tokens1, 2));
+        REQUIRE(!QueryValidator::isValidPredicateArgsNum(tokens2, 3));
+    }
+}
+
+TEST_CASE("Test QueryValidator::getPredicateArgs") {
+    std::vector<std::string> tokens1 = { "Follows", "(", "a", ",", "b", ")" };
+    std::vector<std::string> tokens2 = { "a", "(", "a", ",", "_", ",", "_", ")" };
+
+    std::vector<std::string> expectedResults1 = { "Follows", "a", "b" };
+    std::vector<std::string> expectedResults2 = { "a", "a", "_", "_" };
+
+    std::vector<std::string> results1 = QueryValidator::getPredicateArgs(tokens1, 2);
+    std::vector<std::string> results2 = QueryValidator::getPredicateArgs(tokens2, 3);
+
+    REQUIRE(results1 == expectedResults1);
+    REQUIRE(results2 == expectedResults2);
+}
+
 // Actual validity of each component already tested above, only testing that all 3 components work together correctly here 
 TEST_CASE("Test QueryValidator::validate") {
     SECTION("Valid query") {
