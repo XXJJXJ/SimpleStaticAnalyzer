@@ -39,9 +39,9 @@ public:
     static std::vector<std::string> validateStmtEntEntityPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateEntityEntityPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validatePatternPredicate(const std::vector<std::string>& tokens);
-    static ClauseType QueryValidator::getClauseType(const std::vector<std::string>& tokens);
-    static bool QueryValidator::isValidPredicateArgsNum(const std::vector<std::string>& tokens, int numOfArgs);
-    static std::vector<std::string> QueryValidator::getPredicateArgs(const std::vector<std::string>& tokens, int numOfArgs);
+    static ClauseType getClauseType(const std::vector<std::string>& tokens);
+    static bool isValidPredicateArgsNum(const std::vector<std::string>& tokens, int numOfArgs);
+    static std::vector<std::string> getPredicateArgs(const std::vector<std::string>& tokens, int numOfArgs);
 };
 
 #endif // SPA_QUERYVALIDATOR_H
