@@ -1,0 +1,42 @@
+BasedOnStyle: Google
+ColumnLimit: 120
+IndentWidth: 4
+AllowShortIfStatementsOnASingleLine: true
+PointerAlignment: Left
+
+# Additional options for a slightly stricter format:
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: false
+  AlignCompound: true
+  PadOperators: true
+
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: false
+AlignTrailingComments: true         # Aligns trailing comments
+BreakBeforeBraces: Attach           # Braces are attached to the surrounding context
+IncludeBlocks: Regroup              # Regroups include blocks so that they are logically grouped
+MaxEmptyLinesToKeep: 1              # Reduces the number of consecutive empty lines kept
+NamespaceIndentation: All           # Indents code within namespaces
+SpaceBeforeParens: ControlStatements # Enforces space before parentheses in control statements
+SpacesInAngles: false               # Avoids spaces inside template angle brackets
+SpacesInContainerLiterals: true     # Ensures spaces in container literals, e.g., { 1, 2, 3 }
+SpaceAfterCStyleCast: true          # Inserts a space after C-style cast
+
+# Enforce sorting of #include directives
+IncludeCategories:
+  - Regex:           '^<ext/.*\.h>'
+    Priority:        2
+  - Regex:           '^<.*\.h>'
+    Priority:        3
+  - Regex:           '^<.*'
+    Priority:        4
+  - Regex:           '".*'
+    Priority:        1
+SortIncludes:    true
+
+# Control the use of spaces around operators
+SpaceAfterTemplateKeyword: true  # Ensures space after 'template' keyword
