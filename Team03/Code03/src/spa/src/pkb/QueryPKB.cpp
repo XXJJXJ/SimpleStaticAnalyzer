@@ -169,21 +169,20 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getAffects() {
     /* 
         filter nextT for assign - assign statement pairs (a1, a2)
         that exists a variable such that a1 modifies v [from assignstatement itself]
-        and a2 uses v []
+        and a2 uses v
     */
     vector<vector<shared_ptr<AssignStatement>>> filteredForRelatedAssigns;
     for (auto & _p : nextT) {
         if (_p[0]->isOfType(EntityType::Assign) && _p[1]->isOfType(EntityType::Assign)) {
             auto a1 = dynamic_pointer_cast<AssignStatement>(_p[0]);
             auto a2 = dynamic_pointer_cast<AssignStatement>(_p[1]);
-            // cout << "Pre-Debugging: " << a1->getName() << " " << a2->getName() << endl;
             if (useStore[a2].find(a1->getVariable()) != useStore[a2].end()) {
                 filteredForRelatedAssigns.push_back({a1, a2});
             }
             
         }
     }
-    // find if there exist a path from a1 to a2 such that v is not modified, if have, insert into results
+    // if there exist a path from a1 to a2 such that v is not modified, insert into results
     vector<vector<shared_ptr<Entity>>> results;
     auto nextSMap = am->getNextSMap();
     auto modStore = am->getModifyAllMap();
