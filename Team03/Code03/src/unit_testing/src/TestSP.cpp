@@ -31,6 +31,7 @@ TEST_CASE("Check if ExtractCondition works") {
     }
     catch (SpaException& e) {
         cout << e.what() << endl;
+        REQUIRE(0);
     }
 }
 
