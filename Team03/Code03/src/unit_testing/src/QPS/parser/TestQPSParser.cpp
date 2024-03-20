@@ -52,6 +52,8 @@ TEST_CASE("Debugging whole strings") {
 	std::string string8 = "assign a; Select a pattern a(1, _)";
 	std::string string9 = "while w; variable v; Select w pattern w(v, \"x\")";
 	std::string string10 = "if i; variable v; Select i pattern i(v, v, v)";
+	std::string string11 = "assign a; Select a such that Modifies(a, _) and a(_,_)";
+	std::string string12 = "assign a; Select a pattern a(_,_) and Modifies(a, _)";
 
     std::vector<std::string> result1 = qm.processQuery(string1);
     std::vector<std::string> result2 = qm.processQuery(string2);
@@ -63,6 +65,8 @@ TEST_CASE("Debugging whole strings") {
 	std::vector<std::string> result8 = qm.processQuery(string8);
 	std::vector<std::string> result9 = qm.processQuery(string9);
 	std::vector<std::string> result10 = qm.processQuery(string10);
+	std::vector<std::string> result11 = qm.processQuery(string11);
+	std::vector<std::string> result12 = qm.processQuery(string12);
 
     std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
     std::vector<std::string> expectedSemanticError = { "SemanticError" };
@@ -81,5 +85,7 @@ TEST_CASE("Debugging whole strings") {
 	REQUIRE(result8 == expectedSyntaxError);
 	REQUIRE(result9 == expectedSemanticError);
 	REQUIRE(result10 == expectedSyntaxError);
+	REQUIRE(result11 == expectedSyntaxError);
+	REQUIRE(result12 == expectedSemanticError);
 }
 
