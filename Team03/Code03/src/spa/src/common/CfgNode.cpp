@@ -7,8 +7,8 @@ void CfgNode::addNextNode(bool isTrue, shared_ptr<CfgNode> node) {
     nextNodes[isTrue] = move(node);
 }
 
-void CfgNode::addStatement(int statementNumber) {
-    statementNumbers.push_back(statementNumber);
+void CfgNode::addStatement(shared_ptr<Statement> statement) {
+    statements.push_back(statement);
 }
 
 void CfgNode::addParent(const shared_ptr<CfgNode>& node) {
@@ -19,8 +19,8 @@ CfgNode::BooleanToCfgNodeMap CfgNode::getNextNodes() {
     return nextNodes;
 }
 
-vector<int> CfgNode::getStatementNumbers() {
-    return statementNumbers;
+vector<shared_ptr<Statement>> CfgNode::getStatements() {
+    return statements;
 }
 
 CfgNode::CfgNodeContainer CfgNode::getParentNodes() {

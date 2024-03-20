@@ -32,6 +32,14 @@ enum class PredicateType {
 
 PredicateType getPredicateType(const std::string& keyword);
 
+enum class ClauseType {
+    SuchThat,
+    Pattern,
+    With,
+    And,
+    Invalid
+};
+
 // We cannot do subtype check without initializing the Entity and call .isOfType(), let's get back to something simple.
 const unordered_set<EntityType> VALID_STATEMENT_TYPES = {EntityType::Stmt, EntityType::Assign, EntityType::Call,
                                                          EntityType::While, EntityType::If, EntityType::Read,
