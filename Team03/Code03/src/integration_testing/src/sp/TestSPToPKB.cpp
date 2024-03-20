@@ -402,3 +402,18 @@ TEST_CASE("20th SP-PKB integration Test: if statement next relation test") {
     REQUIRE(nextStore.size() == 9);
     pkbPopulator->clear();
 }
+
+TEST_CASE("21th SP-PKB Integration Test: next relation test") {
+    string str = "procedure First { read x; read z; call Second; } procedure Second { x = 0;i = 5;while (i!=0) {x = x + 2*y;call Third;i = i - 1; }if (x==1) then {x = x+1; }else {z = 1; }z = z + x + i;y = z + 2;x = x * y + z; } procedure Third {z = 5;v = z;print v; }";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> nextStore = qm.getNextS();
+    REQUIRE(nextStore.size() == 17);
+    pkbPopulator->clear();
+}
