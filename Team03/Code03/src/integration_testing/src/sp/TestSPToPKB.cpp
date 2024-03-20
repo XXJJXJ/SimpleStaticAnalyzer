@@ -372,3 +372,33 @@ TEST_CASE("18th SP-PKB integration Test: container nested if condition uses rela
     REQUIRE(ProcedureUsesStore.size() == 8);
     pkbPopulator->clear();
 }
+
+TEST_CASE("19th SP-PKB integration Test: simple next relation test") {
+    std::string simple_string = "procedure test {read x; print x; while (x < 4) {y = x + 7; x = x - 1;} print y;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> nextStore = qm.getNextS();
+    REQUIRE(nextStore.size() == 6);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("20th SP-PKB integration Test: if statement next relation test") {
+    std::string simple_string = "procedure test {read x; print x; if (x < 1) then {x = 560; y = x + 10;} else {y = x - 10; z = x + y; print z;} print y;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> nextStore = qm.getNextS();
+    REQUIRE(nextStore.size() == 9);
+    pkbPopulator->clear();
+}
