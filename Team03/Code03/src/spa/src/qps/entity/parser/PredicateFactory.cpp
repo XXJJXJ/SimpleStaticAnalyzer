@@ -9,6 +9,8 @@
 #include "qps/entity/clause/UsesPredicate.h"
 #include "qps/entity/clause/CallsPredicate.h"
 #include "qps/entity/clause/CallsTPredicate.h"
+#include "qps/entity/clause/NextPredicate.h"
+#include "qps/entity/clause/NextTPredicate.h"
 #include "qps/entity/clause/IfPatternPredicate.h"
 #include "qps/entity/clause/WhilePatternPredicate.h"
 #include "common/spa_exception/SemanticErrorException.h"
@@ -47,9 +49,11 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
         CallsTPredicate predicate(stringToEntityRef(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap));
         return std::make_shared<CallsTPredicate>(predicate);
     } case PredicateType::Next: {
-
+        NextPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
+        return std::make_shared<NextPredicate>(predicate);
     } case PredicateType::NextT: {
-
+        NextTPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
+        return std::make_shared<NextTPredicate>(predicate);
     } case PredicateType::Affects: {
 
     }

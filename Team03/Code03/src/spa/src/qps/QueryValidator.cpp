@@ -186,6 +186,8 @@ std::vector<std::string> QueryValidator::validateSuchThatPredicate(const std::ve
     case PredicateType::FollowsT:
     case PredicateType::Parent:
     case PredicateType::ParentT:
+    case PredicateType::Next:
+    case PredicateType::NextT:
         return validateStatementStatementPredicate(tokens);
     case PredicateType::Modifies:
     case PredicateType::Uses:
