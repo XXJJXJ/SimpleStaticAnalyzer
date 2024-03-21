@@ -37,7 +37,7 @@ public:
 private:
 	void processStatements(StatementListContainer statementList);
 	void addStatementNode(shared_ptr<Statement> statement);
-	void addNextNode(shared_ptr<CfgNode> node, bool condition);
+	void addNextNode(bool condition, shared_ptr<CfgNode> node);
 	string procedureName;
 	shared_ptr<Cfg> cfg;
 	shared_ptr<CfgNode> cfgNode;
