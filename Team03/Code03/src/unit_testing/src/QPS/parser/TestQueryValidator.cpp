@@ -120,11 +120,13 @@ TEST_CASE("Test QueryValidator::validatePredicate") {
         std::vector<std::string> tokens2 = {"pattern", "a", "(", "_", ",", "_", ")"};
         std::vector<std::string> tokens3 = {"and", "Follows", "(", "a", ",", "b", ")"};
         std::vector<std::string> tokens4 = {"and", "a", "(", "_", ",", "_", ")"};
+        std::vector<std::string> tokens5 = {"such", "that", "not", "Follows", "(", "a", ",", "b", ")"};
 
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens1, noPrevClause));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens2, noPrevClause));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens3, suchThatClause));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens4, patternClause));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens5, noPrevClause));
     }
 
     SECTION("Invalid predicates") {
@@ -132,11 +134,13 @@ TEST_CASE("Test QueryValidator::validatePredicate") {
         std::vector<std::string> tokens2 = {"such", "thatIsWrong", "(", "a", ",", "b", ")"}; // Invalid keyword
         std::vector<std::string> tokens3 = { "and", "Follows", "(", "a", ",", "b", ")" };
         std::vector<std::string> tokens4 = { "and", "a", "(", "_", ",", "_", ")" };
+        std::vector<std::string> tokens5 = { "not", "a", "(", "_", ",", "_", ")" };
 
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens1, noPrevClause), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens2, noPrevClause), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens3, patternClause), SyntaxErrorException); // Pattern pred and such that pred
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens4, suchThatClause), SyntaxErrorException); // Such that pred and pattern pred
+        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens5, noPrevClause), SyntaxErrorException);
     }
 }
 
@@ -150,6 +154,7 @@ TEST_CASE("Test QueryValidator::validateSuchThatPredicate") {
         std::vector<std::string> tokens6 = { "Uses", "(", "a", ",", "b", ")" };
         std::vector<std::string> tokens7 = { "Calls", "(", "a", ",", "b", ")" };
         std::vector<std::string> tokens8 = { "Calls*", "(", "a", ",", "b", ")" };
+        std::vector<std::string> tokens9 = { "not", "Follows", "(", "a", ",", "b", ")"};
 
         REQUIRE_NOTHROW(QueryValidator::validateSuchThatPredicate(tokens1));
         REQUIRE_NOTHROW(QueryValidator::validateSuchThatPredicate(tokens2));
@@ -159,6 +164,7 @@ TEST_CASE("Test QueryValidator::validateSuchThatPredicate") {
         REQUIRE_NOTHROW(QueryValidator::validateSuchThatPredicate(tokens6));
         REQUIRE_NOTHROW(QueryValidator::validateSuchThatPredicate(tokens7));
         REQUIRE_NOTHROW(QueryValidator::validateSuchThatPredicate(tokens8));
+        REQUIRE_NOTHROW(QueryValidator::validateSuchThatPredicate(tokens9));
     }
 
     SECTION("Invalid predicates") {
@@ -278,21 +284,25 @@ TEST_CASE("Test QueryValidator::validatePatternPredicate") {
         std::vector<std::string> tokens2 = {"a", "(", "\"validString\"", ",", "_\"x+y\"_", ")"}; // LHS valid string, RHS partial match
         std::vector<std::string> tokens3 = {"a", "(", "validName", ",", "\"x+y\"", ")"}; // LHS valid synonym, RHS complete match
         std::vector<std::string> tokens4 = {"a", "(", "validName", ",", "_", ",", "_", ")"}; // Valid If pattern
+        std::vector<std::string> tokens5 = {"not", "a", "(", "validName", ",", "_", ",", "_", ")"};  // Valid If pattern
 
         std::vector<std::string> expectedResults1 = {"pattern", "a", "_", "_"};
         std::vector<std::string> expectedResults2 = {"pattern", "a", "\"validString\"", "_\"x+y\"_"};
         std::vector<std::string> expectedResults3 = {"pattern", "a", "validName", "\"x+y\""};
         std::vector<std::string> expectedResults4 = {"pattern", "a", "validName", "_", "_"};
+        std::vector<std::string> expectedResults5 = {"not", "pattern", "a", "validName", "_", "_"};
 
         std::vector<std::string> results1 = QueryValidator::validatePatternPredicate(tokens1);
         std::vector<std::string> results2 = QueryValidator::validatePatternPredicate(tokens2);
         std::vector<std::string> results3 = QueryValidator::validatePatternPredicate(tokens3);
         std::vector<std::string> results4 = QueryValidator::validatePatternPredicate(tokens4);
+        std::vector<std::string> results5 = QueryValidator::validatePatternPredicate(tokens5);
 
         REQUIRE(results1 == expectedResults1);
         REQUIRE(results2 == expectedResults2);
         REQUIRE(results3 == expectedResults3);
         REQUIRE(results4 == expectedResults4);
+        REQUIRE(results5 == expectedResults5);
     }
 
     SECTION("Invalid PatternPredicates") {
