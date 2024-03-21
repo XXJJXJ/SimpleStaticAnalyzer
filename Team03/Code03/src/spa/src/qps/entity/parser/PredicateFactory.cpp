@@ -11,6 +11,7 @@
 #include "qps/entity/clause/CallsTPredicate.h"
 #include "qps/entity/clause/IfPatternPredicate.h"
 #include "qps/entity/clause/WhilePatternPredicate.h"
+#include "qps/entity/clause/NotPredicate.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
 std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {	
@@ -55,6 +56,9 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
     }
     case PredicateType::Pattern: {
         return parsePatternPredicate(tokens, synonymMap);
+    }
+    case PredicateType::Not: {
+        return parseNotPredicate(tokens, synonymMap);
     }
     }
 }
@@ -118,4 +122,10 @@ std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::ve
         throw SemanticErrorException("Invalid synonym type for pattern predicate");
     }
     }
+}
+
+std::shared_ptr<Predicate> PredicateFactory::parseNotPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
+    std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+    std::shared_ptr<Predicate> predicate = createPredicate(predicateTokens, synonymMap);
+    return std::make_shared<NotPredicate>(predicate);
 }

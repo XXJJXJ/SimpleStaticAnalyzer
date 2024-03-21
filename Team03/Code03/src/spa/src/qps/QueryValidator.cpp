@@ -180,6 +180,13 @@ ClauseType QueryValidator::getClauseType(const std::vector<std::string>& tokens)
 }
 
 std::vector<std::string> QueryValidator::validateSuchThatPredicate(const std::vector<std::string>& tokens) {
+    if (isNotPredicate(tokens)) {
+        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        std::vector<std::string> validatedTokens = validateSuchThatPredicate(predicateTokens);
+        validatedTokens.insert(validatedTokens.begin(), "not");
+        return validatedTokens;
+    }
+
     PredicateType predicateType = getPredicateType(tokens[0]);
     switch (predicateType) {
     case PredicateType::Follows:
@@ -193,8 +200,7 @@ std::vector<std::string> QueryValidator::validateSuchThatPredicate(const std::ve
     case PredicateType::Calls:
     case PredicateType::CallsT:
         return validateEntityEntityPredicate(tokens);
-    case PredicateType::Pattern:
-    case PredicateType::Invalid:
+    default:
         throw SyntaxErrorException("Invalid such that clause keyword " + tokens[0]);
     }
 }
@@ -245,6 +251,13 @@ std::vector<std::string> QueryValidator::validateEntityEntityPredicate(const std
 }
 
 std::vector<std::string> QueryValidator::validatePatternPredicate(const std::vector<std::string>& tokens) {
+    if (isNotPredicate(tokens)) {
+        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        std::vector<std::string> validatedTokens = validatePatternPredicate(predicateTokens);
+        validatedTokens.insert(validatedTokens.begin(), "not");
+        return validatedTokens;
+    }
+
     if (isValidPredicateArgsNum(tokens, 2)) {
         std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
         if (!isSynonym(validatedTokens[0]) || !isEntRef(validatedTokens[1]) || !isExpressionSpec(validatedTokens[2])) {
@@ -262,6 +275,10 @@ std::vector<std::string> QueryValidator::validatePatternPredicate(const std::vec
     } else {
         throw SyntaxErrorException("Invalid pattern clause syntax");
     }
+}
+
+bool QueryValidator::isNotPredicate(const std::vector<std::string>& tokens) { 
+    return tokens.size() >2 && tokens[0] == "not" && tokens[1] != "(" && tokens[2] == "(";
 }
 
 // Validate that the predicate has the correct number of arguments
