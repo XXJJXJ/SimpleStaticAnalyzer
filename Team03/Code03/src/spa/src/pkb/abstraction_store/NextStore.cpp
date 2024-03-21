@@ -23,6 +23,34 @@ vector<vector<shared_ptr<Entity>>> NextStore::getTransitive() {
     return getStmtPairs(nextStarMap);
 }
 
+vector<shared_ptr<Statement>> flattenStmtList(StatementListContainer stmtList) {
+    vector<shared_ptr<Statement>> res;
+    for (auto & stmt : stmtList) {
+        res.push_back(stmt);
+        switch (stmt->getStatementType())
+        {
+        case EntityType::While:
+        {
+            auto whileStmt = dynamic_pointer_cast<WhileStatement>(stmt);
+            auto flattenContainer = flattenStmtList(whileStmt->getStatementList());
+            res.insert(res.end(), flattenContainer.begin(), flattenContainer.end());
+            break;
+        }
+        case EntityType::If:
+        {
+            auto ifStmt = dynamic_pointer_cast<IfStatement>(stmt);
+            auto flattenThenContainer = flattenStmtList(ifStmt->getThenStatementList());
+            res.insert(res.end(), flattenThenContainer.begin(), flattenThenContainer.end());
+            auto flattenElseContainer = flattenStmtList(ifStmt->getElseStatementList());
+            res.insert(res.end(), flattenElseContainer.begin(), flattenElseContainer.end());
+            break;
+        }
+        default:
+            break;
+        }
+    }
+    return res;
+}
 
 /*
 Idea is to traverse the "main" branch, while statement requires special handling
@@ -60,10 +88,12 @@ unordered_set<shared_ptr<Statement>> NextStore::dfsAdd(
         // cast it to while
         shared_ptr<WhileStatement> whileStmt = dynamic_pointer_cast<WhileStatement>(stmt);
         auto stmtList = whileStmt->getStatementList();
+        // Need to flatten this stmtList for nested if whiles
+        auto flattenedStmtList = flattenStmtList(stmtList);
         // add all statement within while to this set
-        res.insert(stmtList.begin(), stmtList.end()); 
+        res.insert(flattenedStmtList.begin(), flattenedStmtList.end()); 
         // since its a while statement, it can reach itself and the same "future"
-        for (auto &internalStmt : stmtList) {
+        for (auto &internalStmt : flattenedStmtList) {
             accumulatedResults[internalStmt] = res;
         }
         break;
