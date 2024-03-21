@@ -67,7 +67,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
 
     getNextToken();
     string operation = getTokenValue();
-    if (!(getTokenType() == TokenType::AND || getTokenType() == TokenType::OR)) {
+    if (!(getTokenType() == TokenType::OR || getTokenType() == TokenType::AND)) {
         throw SyntaxErrorException("Missing && or || in Conditional expression");
     }
     getNextToken();
@@ -82,10 +82,10 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
         if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
             throw SyntaxErrorException("Missing ) in Conditional expression");
         }
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
-        arguments.first = leftConditionalExpression;
-        arguments.second = rightConditionalExpression;
-        return make_shared<ConditionalOperation>(operation, arguments);
+        pair<shared_ptr<Expression>, shared_ptr<Expression>> pairOfArguments;
+        pairOfArguments.first = leftConditionalExpression;
+        pairOfArguments.second = rightConditionalExpression;
+        return make_shared<ConditionalOperation>(operation, pairOfArguments);
     }
     else {
         throw SyntaxErrorException("Missing ( in Conditional Expression");
