@@ -14,12 +14,14 @@ QueryValidator::QueryValidator() = default;
 QueryValidator::~QueryValidator() = default;
 
 // Takes in tokens, validates them for syntax errors, then returns a simplified list of tokens (without unnecessary punctuation marks etc.) to be parsed by QueryParser
-std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(const std::vector<std::vector<std::vector<std::string>>>& tokens) {
+std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(const std::vector<std::string>& tokens) {
     std::vector<std::vector<std::vector<std::string>>> validatedQuery;
 
-    std::vector<std::vector<std::string>> declarationsTokens = tokens[0];
-    std::vector<std::vector<std::string>> selectionsTokens = tokens[1];
-    std::vector<std::vector<std::string>> predicateTokens = tokens[2];
+    std::vector<std::vector<std::vector<std::string>>> splitTokensList = splitTokens(tokens);
+
+    std::vector<std::vector<std::string>> declarationsTokens = splitTokensList[0];
+    std::vector<std::vector<std::string>> selectionsTokens = splitTokensList[1];
+    std::vector<std::vector<std::string>> predicateTokens = splitTokensList[2];
 
     if (selectionsTokens.empty()) {
         throw SyntaxErrorException("No selections made");
@@ -52,6 +54,64 @@ std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(cons
 
     return validatedQuery;
 }
+
+std::vector<std::vector<std::vector<std::string>>> QueryValidator::splitTokens(const std::vector<std::string>& tokens) {
+    std::vector<std::string> currentList;
+
+    std::vector<std::vector<std::vector<std::string>>> splitTokens = {};
+    std::vector<std::vector<std::string>> declarations;
+    std::vector<std::vector<std::string>> selections;
+    std::vector<std::vector<std::string>> clauses;
+
+    bool isClause = false;
+
+    for (const auto& token : tokens) {
+        currentList.push_back(token);
+
+        if (token == ")") {
+            if (!isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
+            clauses.push_back(currentList);
+            currentList.clear();
+        }
+        else if (token == ";") {
+            if (isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
+            declarations.push_back(currentList);
+            currentList.clear();
+        }
+        else if (token == ">" && currentList[0] == "Select") {
+            if (isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
+            selections.push_back(currentList);
+            currentList.clear();
+            isClause = true;
+        }
+        else if (currentList.size() == 2 && currentList[0] == "Select" && token != "<") {
+            // If the list starts with "Select", and the next token is not "<", end the list
+            if (isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
+            selections.push_back(currentList);
+            currentList.clear();
+            isClause = true;
+        }
+    }
+
+    if (!currentList.empty()) {
+        clauses.push_back(currentList);;
+    }
+
+    splitTokens.push_back(declarations);
+    splitTokens.push_back(selections);
+    splitTokens.push_back(clauses);
+
+    return splitTokens;
+}
+
 
 // Validates declaration, and returns a vector of strings with the first element as entity type and subsequent elements as names
 // e.g. {"variable", "a", ",", "b", ",", "c", ";"} returns {"variable", "a", "b", "c"}
