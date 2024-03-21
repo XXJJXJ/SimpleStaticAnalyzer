@@ -35,8 +35,8 @@ private:
 	shared_ptr<bool> isSubExpressionPointer = make_shared<bool>(isSubExpression);
 	stack<TokenType> parenthesesStorage;
 	unordered_map<int, TokenType> parenthesesToIndexMap; 
-	shared_ptr<int> indexPointer = make_shared<int>(index);
 	int index = 0;
+	shared_ptr<int> indexPointer = make_shared<int>(index);
 	bool isSetArguments = false;
 	bool isProcessedToken = false;
 	bool isSubExpression = false;
