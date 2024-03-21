@@ -24,7 +24,7 @@ void DesignExtractor::extractDesign(shared_ptr<Program> program) {
 }
 
 void DesignExtractor::extractNextRelation(shared_ptr<Cfg> cfg) {
-	auto procToCfgNodeMap = cfg->getCfgRootNodes();
+	auto procToCfgNodeMap = cfg->getProcedureCfgRootNodes();
 	for (auto iter = procToCfgNodeMap.begin(); iter != procToCfgNodeMap.end(); ++iter) {
 		auto currNode = iter->second;
 		vector <shared_ptr<CfgNode>> visited;

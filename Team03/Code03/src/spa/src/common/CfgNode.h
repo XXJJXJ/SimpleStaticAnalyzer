@@ -11,17 +11,18 @@ using namespace std;
 
 class CfgNode {
 public:
-	typedef unordered_map<bool, shared_ptr<CfgNode>> BooleanToCfgNodeMap;
-	typedef vector<shared_ptr<CfgNode>> CfgNodeContainer;
-	void addNextNode(bool isTrue, shared_ptr<CfgNode> node);
-	void addStatement(shared_ptr<Statement> statement);
-	void addParent(const shared_ptr<CfgNode>& node);
-	BooleanToCfgNodeMap getNextNodes();
+	typedef vector<shared_ptr<CfgNode>> ParentNodes;
+	typedef vector<shared_ptr<Statement>> StatementList;
+	typedef unordered_map<bool, shared_ptr<CfgNode>> NextNodes;
+	void addParent(shared_ptr<CfgNode> node);
+	void addStatementNode(shared_ptr<Statement> statement);
+	void addNextNode(bool condition, shared_ptr<CfgNode> node);
+	ParentNodes getParentNodes();
 	vector<shared_ptr<Statement>> getStatements();
-	CfgNodeContainer getParentNodes();
+	NextNodes getNextNodes();
 
 private:
-	BooleanToCfgNodeMap nextNodes;
-	vector<shared_ptr<Statement>> statements;
-	CfgNodeContainer parentNodes;
+	ParentNodes parentNodes;
+	StatementList statements;
+	NextNodes nextNodes;
 };

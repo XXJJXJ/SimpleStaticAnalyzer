@@ -2,29 +2,50 @@
 
 CfgExtractor::CfgExtractor(shared_ptr<Cfg> cfg_) : cfg(cfg_) {}
 
+void CfgExtractor::processStatements(StatementListContainer statementList) {
+    for (shared_ptr<Statement> statement : statementList) {
+        shared_ptr<CfgExtractor> cfgExtractor = make_shared<CfgExtractor>(*this);
+        statement->accept(cfgExtractor);
+        procedureName = cfgExtractor->procedureName;
+        cfg = cfgExtractor->cfg;
+        cfgNode = cfgExtractor->cfgNode;
+    }
+}
+
+void CfgExtractor::addStatementNode(shared_ptr<Statement> statement) {
+    cfgNode->addStatement(statement);
+    cfg->addStatementNode(statement, cfgNode);
+}
+
+void CfgExtractor::addNextNode(shared_ptr<CfgNode> node, bool condition) {
+    cfgNode->addNextNode(condition, node);
+    node->addParent(cfgNode);
+    cfgNode = node;
+}
+
 void CfgExtractor::visitProcedure(shared_ptr<Procedure> procedure) {
     string procedureName_ = procedure->getName();
     procedureName = procedureName_;
     cfgNode = make_shared<CfgNode>();
-    cfg->addProcedureCfg(procedureName, cfgNode);
+    cfg->addProcedureNode(procedureName, cfgNode);
     auto statements = procedure->getStatementList();
     processStatements(statements);
 }
 
 void CfgExtractor::visitAssignStatement(shared_ptr<AssignStatement> assignStatement) {
-    addStatementCfgNode(assignStatement);
+    addStatementNode(assignStatement);
 }
 
 void CfgExtractor::visitCallStatement(shared_ptr<CallStatement> callStatement) {
-    addStatementCfgNode(callStatement);
+    addStatementNode(callStatement);
 }
 
 void CfgExtractor::visitPrintStatement(shared_ptr<PrintStatement> printStatement) {
-    addStatementCfgNode(printStatement);
+    addStatementNode(printStatement);
 }
 
 void CfgExtractor::visitReadStatement(shared_ptr<ReadStatement> readStatement) {
-    addStatementCfgNode(readStatement);
+    addStatementNode(readStatement);
 }
 
 void CfgExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement) {
@@ -34,31 +55,31 @@ void CfgExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement) {
     auto dummyCfgNode = make_shared<CfgNode>();
 
     if (cfgNode->getStatements().size() > 0) {
-        addNextCfgNodeAndUpdate(ifCfgNode, true);
+        addNextNode(ifCfgNode, true);
     }
     else {
         ifCfgNode = cfgNode;
     }
 
-    addStatementCfgNode(ifStatement);
+    addStatementNode(ifStatement);
 
-    auto thenStatementList = ifStatement->getThenStatementList();
-    auto elseStatementList = ifStatement->getElseStatementList();
+    StatementListContainer thenStatementList = ifStatement->getThenStatementList();
+    StatementListContainer elseStatementList = ifStatement->getElseStatementList();
 
     //Construct CFG for then block (If statement's condition evaluates to true)
-    addNextCfgNodeAndUpdate(thenCfgNode, true);
+    addNextNode(thenCfgNode, true);
     processStatements(thenStatementList);
 
     //Connect CFG at the end of then block to dummy node
-    addNextCfgNodeAndUpdate(dummyCfgNode, true);
+    addNextNode(dummyCfgNode, true);
 
     //Construct CFG for else block (If statement's condition evaluates to false)
     cfgNode = ifCfgNode;
-    addNextCfgNodeAndUpdate(elseCfgNode, false);
+    addNextNode(elseCfgNode, false);
     processStatements(elseStatementList);
 
     //Connect CFG at the end of else block to dummy node
-    addNextCfgNodeAndUpdate(dummyCfgNode, true);
+    addNextNode(dummyCfgNode, true);
 }
 
 void CfgExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatement) {
@@ -67,53 +88,30 @@ void CfgExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatement
     auto dummyCfgNode = make_shared<CfgNode>();
 
     if (cfgNode->getStatements().size() > 0) {
-        addNextCfgNodeAndUpdate(whileCfgNode, true);
+        addNextNode(whileCfgNode, true);
     }
     else {
         whileCfgNode = cfgNode;
     }
 
-    addStatementCfgNode(whileStatement);
+    addStatementNode(whileStatement);
     auto statementList = whileStatement->getStatementList();
 
     //Construct CFG for while block (While statement's condition evaluates to true)
-    addNextCfgNodeAndUpdate(loopCfgNode, true);
+    addNextNode(loopCfgNode, true);
     processStatements(statementList);
 
     //Connect CFG at the end of while block to start of while block (While statement's condition still evaluates to true)
-    addNextCfgNodeAndUpdate(whileCfgNode, true);
+    addNextNode(whileCfgNode, true);
 
     //Connect CFG at the end of while block to dummy node (While statement's condition evaluates to false)
-    addNextCfgNodeAndUpdate(dummyCfgNode, false);
+    addNextNode(dummyCfgNode, false);
 }
 
-void CfgExtractor::processStatements(StatementListContainer& statementList) {
-    for (auto const& statement : statementList) {
-        auto cfgExtractor = make_shared<CfgExtractor>(*this);
-        statement->accept(cfgExtractor);
-        cfgNode = cfgExtractor->cfgNode;
-        cfg = cfgExtractor->cfg;
-        procedureName = cfgExtractor->procedureName;
-    }
-}
 
-void CfgExtractor::addStatementCfgNode(shared_ptr<Statement> statement) {
-    cfgNode->addStatement(statement);
-    cfg->addStatementCfg(statement, cfgNode);
-}
 
-void CfgExtractor::addNextCfgNodeAndUpdate(shared_ptr<CfgNode> node, bool value) {
-    cfgNode->addNextNode(value, node);
-    node->addParent(cfgNode);
-    cfgNode = node;
-}
-
-void CfgExtractor::visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOeration) {}
-
+void CfgExtractor::visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) {}
 void CfgExtractor::visitConditionalOperation(shared_ptr<ConditionalOperation> conditionalOperation) {}
-
-void CfgExtractor::visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) {}
-
-void CfgExtractor::visitVariable(shared_ptr<Variable> variable) {}
-
 void CfgExtractor::visitConstant(shared_ptr<Constant> constant) {}
+void CfgExtractor::visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) {}
+void CfgExtractor::visitVariable(shared_ptr<Variable> variable) {}

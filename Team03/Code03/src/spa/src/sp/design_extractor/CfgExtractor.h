@@ -20,24 +20,25 @@
 class CfgExtractor : public Visitor {
 public:
 	CfgExtractor(shared_ptr<Cfg> cfg);
-	void visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) override;
-	void visitConditionalOperation(shared_ptr<ConditionalOperation> conditionalOperation) override;
-	void visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) override;
+	void visitProcedure(shared_ptr<Procedure> procedure) override;
 	void visitAssignStatement(shared_ptr<AssignStatement> assignStatement) override;
 	void visitCallStatement(shared_ptr<CallStatement> callStatement) override;
 	void visitPrintStatement(shared_ptr<PrintStatement> printStatement) override;
 	void visitReadStatement(shared_ptr<ReadStatement> readStatement) override;
 	void visitIfStatement(shared_ptr<IfStatement> ifStatement) override;
 	void visitWhileStatement(shared_ptr<WhileStatement> whileStatement) override;
-	void visitProcedure(shared_ptr<Procedure> procedure) override;
-	void visitVariable(shared_ptr<Variable> variable) override;
+	
+	void visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) override;
+	void visitConditionalOperation(shared_ptr<ConditionalOperation> conditionalOperation) override;
 	void visitConstant(shared_ptr<Constant> constant) override;
+	void visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) override;
+	void visitVariable(shared_ptr<Variable> variable) override;
 
 private:
-	void processStatements(StatementListContainer& statementList);
-	void addNextCfgNodeAndUpdate(shared_ptr<CfgNode> node, bool value);
-	void addStatementCfgNode(shared_ptr<Statement> statement);
-	shared_ptr<Cfg> cfg;
+	void processStatements(StatementListContainer statementList);
+	void addStatementNode(shared_ptr<Statement> statement);
+	void addNextNode(shared_ptr<CfgNode> node, bool condition);
 	string procedureName;
+	shared_ptr<Cfg> cfg;
 	shared_ptr<CfgNode> cfgNode;
 };
