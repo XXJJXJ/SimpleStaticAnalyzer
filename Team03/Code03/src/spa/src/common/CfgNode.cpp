@@ -5,7 +5,7 @@ void CfgNode::addParent(shared_ptr<CfgNode> node) {
 }
 
 void CfgNode::addStatementNode(shared_ptr<Statement> statement) {
-    statements.push_back(statement);
+    statementList.push_back(statement);
 }
 
 void CfgNode::addNextNode(bool condition, shared_ptr<CfgNode> node) {
@@ -24,8 +24,8 @@ CfgNode::ParentNodes CfgNode::getParentNodes() {
     return parentNodes;
 }
 
-CfgNode::StatementList CfgNode::getStatements() {
-    return statements;
+CfgNode::StatementList CfgNode::getStatementList() {
+    return statementList;
 }
 
 CfgNode::NextNodes CfgNode::getNextNodes() {

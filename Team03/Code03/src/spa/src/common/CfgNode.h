@@ -18,11 +18,11 @@ public:
 	void addStatementNode(shared_ptr<Statement> statement);
 	void addNextNode(bool condition, shared_ptr<CfgNode> node);
 	ParentNodes getParentNodes();
-	vector<shared_ptr<Statement>> getStatements();
+	vector<shared_ptr<Statement>> getStatementList();
 	NextNodes getNextNodes();
 
 private:
 	ParentNodes parentNodes;
-	StatementList statements;
+	StatementList statementList;
 	NextNodes nextNodes;
 };

@@ -24,10 +24,10 @@ void Cfg::addStatementNode(shared_ptr<Statement> statement, shared_ptr<CfgNode> 
     }
 }
 
-Cfg::ProcedureNodes Cfg::getProcedureCfgRootNodes() {
+Cfg::ProcedureNodes Cfg::getProcedureNodes() {
     return procedureNodes;
 }
 
-Cfg::StatementNodes Cfg::getStatementToCfg() {
+Cfg::StatementNodes Cfg::getStatementNodes() {
     return statementNodes;
 }
