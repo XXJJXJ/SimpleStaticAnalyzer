@@ -4,6 +4,52 @@
 
 QueryValidator validator;
 
+TEST_CASE("QueryValidator::splitTokens should correctly split query into lists of tokens, where each list is a part of the query") {
+	std::vector<std::string> testQuery = { "variable", "a", ";", 
+                                           "Select", "a", 
+                                           "such", "that", "Follows", "(", "a", ",", "_", ")", 
+                                           "pattern", "a", "(", "_", ",", "_", ")" };
+
+	std::vector<std::vector<std::vector<std::string>>> result = QueryValidator::splitTokens(testQuery);
+
+	std::vector<std::vector<std::vector<std::string>>> expectedResult = { {{"variable", "a", ";"}}, {{"Select", "a"}}, {{"such", "that", "Follows", "(", "a", ",", "_", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}} };
+
+	REQUIRE(result == expectedResult);
+}
+
+TEST_CASE("QueryValidator::splitTokens should support synonyms with names that are same as keywords") {
+	std::vector<std::string> testQuery = { "variable", "Select", ",", "assign", ";", "assign", "variable", ";", "Select", "Select" };
+
+	std::vector<std::vector<std::vector<std::string>>> result = QueryValidator::splitTokens(testQuery);
+
+	std::vector<std::vector<std::vector<std::string>>> expectedResult = { {{"variable", "Select", ",", "assign", ";"}, {"assign", "variable", ";"}}, {{"Select", "Select"}}, {} };
+
+	REQUIRE(result == expectedResult);
+}
+
+TEST_CASE("QueryValidator::splitTokens should throw error if clauses are in the wrong order") {
+    std::vector<std::string> testQuery1 = { "variable", "a", ",", "b", ";", "assign", "c", ";", 
+                                            "Select", "a", 
+                                            "such", "that", "Follows", "(", "a", ",", "_", "_", ")", "pattern", "a", "(", "_", "_", ",", "_", "_", ")" };
+    std::vector<std::string> testQuery2 = { "variable", "a", ",", "b", ";", 
+                                            "Select", "a", 
+                                            "assign", "c", ";", 
+                                            "such", "that", "Follows", "(", "a", ",", "_", "_", ")", "pattern", "a", "(", "_", "_", ",", "_", "_", ")" };  // Declaration after Select
+    std::vector<std::string> testQuery3 = { "variable", "a", ",", "b", ";", 
+                                            "such", "that", "Follows", "(", "a", ",", "_", "_", ")", 
+                                            "assign", "c", ";",
+                                            "Select", "a", 
+                                            "pattern", "a", "(", "_", "_", ",", "_", "_", ")" };  // Clause before Declaration
+    std::vector<std::string> testQuery4 = { "variable", "a", ",", "b", ";", "assign", "c", ";", 
+                                            "such", "that", "Follows", "(", "a", ",", "_", "_", ")", "pattern", "a", "(", "_", "_", ",", "_", "_", ")", 
+                                            "Select", "a" };  // Select after clause
+
+    REQUIRE_NOTHROW(QueryValidator::splitTokens(testQuery1));
+    REQUIRE_THROWS(QueryValidator::splitTokens(testQuery2));
+    REQUIRE_THROWS(QueryValidator::splitTokens(testQuery3));
+    REQUIRE_THROWS(QueryValidator::splitTokens(testQuery4));
+}
+
 TEST_CASE("Test QueryValidator::validateDeclaration") {
     SECTION("Valid declarations") {
         std::vector<std::string> tokens1 = {"variable", "a", ",", "b", ",", "c", ";"};
@@ -307,20 +353,19 @@ TEST_CASE("Test QueryValidator::getPredicateArgs") {
 // Actual validity of each component already tested above, only testing that all 3 components work together correctly here 
 TEST_CASE("Test QueryValidator::validate") {
     SECTION("Valid query") {
-        std::vector<std::vector<std::vector<std::string>>> tokens1 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                      {{"Select", "a"}},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}};
-        std::vector<std::vector<std::vector<std::string>>> tokens2 = {{},
-                                                                      {{"Select", "<", "a", ",", "b", ",", "c",">"}},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}}; // No declaration, syntactically valid but semantically invalid
-        std::vector<std::vector<std::vector<std::string>>> tokens3 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                      {{"Select", "a"}},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"and", "Modifies", "(", "a", ",", "b", ")"}, {"and", "Uses", "(", "a", ",", "b", ")"},
-                                                                       {"pattern", "a", "(", "_", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ",", "_", ")"}}};
-        std::vector<std::vector<std::vector<std::string>>> tokens4 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                       {{"Select", "a"}},
-                                                                       {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"and", "Modifies", "(", "a", ",", "b", ")"}, {"and", "Uses", "(", "a", ",", "b", ")"},
-                                                                        {"pattern", "a", "(", "_", ",", "_", ")"}, {"and", "Modifies", "(", "a", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ",", "_", ")"}}}; // Pattern and such that, syntactically valid but semantically invalid
+        std::vector<std::string> tokens1 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "Select", "a",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "a", "(", "_", ",", "_", ")"};
+        std::vector<std::string> tokens2 = {"Select", "<", "a", ",", "b", ",", "c",">",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "a", "(", "_", ",", "_", ")"}; // No declaration, syntactically valid but semantically invalid
+        std::vector<std::string> tokens3 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "Select", "a",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "and", "Modifies", "(", "a", ",", "b", ")", "and", "Uses", "(", "a", ",", "b", ")",
+                                            "pattern", "a", "(", "_", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ",", "_", ")"};
+        std::vector<std::string> tokens4 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "Select", "a",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "and", "Modifies", "(", "a", ",", "b", ")", "and", "Uses", "(", "a", ",", "b", ")",
+                                            "pattern", "a", "(", "_", ",", "_", ")", "and", "Modifies", "(", "a", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ",", "_", ")"}; // Pattern and such that, syntactically valid but semantically invalid
         
         REQUIRE_NOTHROW(QueryValidator::validate(tokens1));
         REQUIRE_NOTHROW(QueryValidator::validate(tokens2));
@@ -329,26 +374,25 @@ TEST_CASE("Test QueryValidator::validate") {
     }
 
     SECTION("Invalid query") {
-        std::vector<std::vector<std::vector<std::string>>> tokens1 = {{{"invalidKeyword", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                      {{"Select", "a"}},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}}; // Invalid declaration
-        std::vector<std::vector<std::vector<std::string>>> tokens2 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                      {{"Select", "123invalidName"}},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}}; // Invalid selection
-        std::vector<std::vector<std::vector<std::string>>> tokens3 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                      {{"Select", "<", "a", ",", "b", ",", "c",">"}},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "123invalidName", "(", "_", ",", "_", ")"}}}; // Invalid predicate
-        std::vector<std::vector<std::vector<std::string>>> tokens4 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                      {},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}}}; // No selection
-        std::vector<std::vector<std::vector<std::string>>> tokens5 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                      {{"Select", "a"}},
-                                                                      {{"such", "that", "Follows", "(", "a", ",", "b", ")"}, {"and", "a", "(", "_", ",", "_", ")"}, {"and", "Uses", "(", "a", ",", "b", ")"},
-                                                                       {"pattern", "a", "(", "_", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ",", "_", ")"}}}; // Such that and pattern
-        std::vector<std::vector<std::vector<std::string>>> tokens6 = {{{"variable", "a", ",", "b", ",", "c", ";"}, {"assign", "a", ";"}},
-                                                                      {{"Select", "a"}},
-                                                                      {{"and", "Follows", "(", "a", ",", "b", ")"}, {"and", "Modifies", "(", "a", ",", "b", ")"}, {"and", "Uses", "(", "a", ",", "b", ")"},
-                                                                       {"pattern", "a", "(", "_", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ")"}, {"and", "b", "(", "validName", ",", "_", ",", "_", ")"}}}; // Starts with and clause
+        std::vector<std::string> tokens1 = {"invalidKeyword", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "Select", "a",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "a", "(", "_", ",", "_", ")"}; // Invalid declaration
+        std::vector<std::string> tokens2 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "Select", "123invalidName",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "a", "(", "_", ",", "_", ")"}; // Invalid selection
+        std::vector<std::string> tokens3 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "Select", "<", "a", ",", "b", ",", "c",">",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "123invalidName", "(", "_", ",", "_", ")"}; // Invalid predicate
+        std::vector<std::string> tokens4 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "a", "(", "_", ",", "_", ")"}; // No selection
+        std::vector<std::string> tokens5 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "Select", "a",
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "and", "a", "(", "_", ",", "_", ")", "and", "Uses", "(", "a", ",", "b", ")",
+                                            "pattern", "a", "(", "_", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ",", "_", ")"}; // Such that and pattern
+        std::vector<std::string> tokens6 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
+                                            "Select", "a",
+                                            "and", "Follows", "(", "a", ",", "b", ")", "and", "Modifies", "(", "a", ",", "b", ")", "and", "Uses", "(", "a", ",", "b", ")",
+                                            "pattern", "a", "(", "_", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ",", "_", ")"}; // Starts with and clause
 
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens1), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validate(tokens2), SyntaxErrorException);
