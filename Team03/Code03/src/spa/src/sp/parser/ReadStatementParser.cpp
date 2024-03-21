@@ -2,8 +2,8 @@
 
 shared_ptr<Statement> ReadStatementParser::parseEntity(Tokens& tokens) {
     string variableName = extractVariableName(tokens);
-    auto variable = make_shared<Variable>(variableName);
-    auto readStatement =
+    shared_ptr<Variable> variable = make_shared<Variable>(variableName);
+    shared_ptr<ReadStatement> readStatement =
         make_shared<ReadStatement>(
             Program::getAndIncrementStatementNumber(), 
             variable,
@@ -26,6 +26,7 @@ string ReadStatementParser::extractVariableName(Tokens& tokens) const {
         throw SyntaxErrorException("Read statement should end with a ;");
     }
 
+    // Erase 'read variable;' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     return token1->getValue();
 }

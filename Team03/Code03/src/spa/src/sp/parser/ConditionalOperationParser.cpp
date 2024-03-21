@@ -6,7 +6,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
     isProcessedToken = *getIsProcessedTokenPointer();
 
     try {
-        auto relationalExpression = parseRelationalOperation();
+        shared_ptr<Expression> relationalExpression = parseRelationalOperation();
         if (relationalExpression) {
             return relationalExpression;
         }
@@ -24,9 +24,9 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
 }
 
 shared_ptr<Expression> ConditionalOperationParser::parseRelationalOperation() {
-    auto relationalOperationParser = make_shared<RelationalOperationParser>();
+    shared_ptr<RelationalOperationParser> relationalOperationParser = make_shared<RelationalOperationParser>();
     relationalOperationParser->setArguments(getIndexPointer(), getIsSubExpression(), getIsProcessedTokenPointer());
-    auto relationalExpression = relationalOperationParser->parseEntity(*getTokens());
+    shared_ptr<Expression> relationalExpression = relationalOperationParser->parseEntity(*getTokens());
     setIsSubExpression(false);
 
     if (relationalExpression) {
@@ -44,7 +44,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
     if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
         getNextToken();
         setIsSubExpression(true);
-        auto conditionalExpression = parse();
+        shared_ptr<Expression> conditionalExpression = parse();
         if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
             throw SyntaxErrorException("Missing ) in Conditional expression");
         }
@@ -59,8 +59,8 @@ shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
 shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
     getNextToken();
     validateTokens();
-    this->setIsSubExpression(true);
-    auto leftConditionalExpression = parse();
+    setIsSubExpression(true);
+    shared_ptr<Expression> leftConditionalExpression = parse();
     if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
         throw SyntaxErrorException("Missing ) in Conditional expression");
     }
@@ -74,8 +74,8 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
 
     if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
         getNextToken();
-        this->setIsSubExpression(true);
-        auto rightConditionalExpression = parse();
+        setIsSubExpression(true);
+        shared_ptr<Expression> rightConditionalExpression = parse();
         if (*(getIndexPointer().get()) < getTokens()->size()) {
             getNextToken();
         }
@@ -88,7 +88,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
         return make_shared<ConditionalOperation>(operation, arguments);
     }
     else {
-        throw SyntaxErrorException("Missing ( in conditional expression");
+        throw SyntaxErrorException("Missing ( in Conditional Expression");
     }
 }
 

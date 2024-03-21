@@ -2,8 +2,8 @@
 
 shared_ptr<Statement> PrintStatementParser::parseEntity(Tokens& tokens) {
     string variableName = extractVariableName(tokens);
-    auto variable = make_shared<Variable>(variableName);
-    auto printStatement =
+    shared_ptr<Variable> variable = make_shared<Variable>(variableName);
+    shared_ptr<PrintStatement> printStatement =
         make_shared<PrintStatement>(
             Program::getAndIncrementStatementNumber(),
             variable,
@@ -26,6 +26,7 @@ string PrintStatementParser::extractVariableName(Tokens& tokens) const {
         throw SyntaxErrorException("Print statement should end with a ;");
     }
     
+    // Erase 'print variable;' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     return token1->getValue();
 }

@@ -4,12 +4,12 @@ void OperationParser::getNextToken() {
     if (*indexPointer < tokens.size()) {
         token = tokens[*indexPointer];
         tokenValue = token->getValue();
-        (*isProcessedTokenPointer) = false;
         (*indexPointer)++;
+        (*isProcessedTokenPointer) = false;
     }
 }
 
-bool OperationParser::isEndOfStatement() {
+bool OperationParser::isEndOfTokens() {
     return *indexPointer == tokens.size();
 }
 
@@ -77,31 +77,34 @@ void OperationParser::setup(Tokens& tokens_) {
 }
 
 void OperationParser::setArguments(shared_ptr<int> index, bool isSubExpression_, shared_ptr<bool> isProcessedToken) {
-    isSetArguments = true;
     indexPointer = index;
+    isSetArguments = true;
     isSubExpression = isSubExpression_;
     isProcessedTokenPointer = isProcessedToken;
 }
 
-void OperationParser::addParenthesis(string value, int index_) {
-    if (parenthesesIndexMappings.find(index_) != parenthesesIndexMappings.end()) {
+void OperationParser::addParenthesis(TokenType tokenType, int index_) {
+    if (parenthesesToIndexMap.find(index_) != parenthesesToIndexMap.end()) {
         return;
     }
-
-    parenthesesIndexMappings[index_] = value;
-    if (value == "(") {
-        parenthesesContainer.push(value);
-    }
-    else if (value == ")") {
-        parenthesesContainer.pop();
+    else {
+        parenthesesToIndexMap[index_] = tokenType;
+        if (tokenType == TokenType::LEFT_PARANTHESIS) {
+            parenthesesStorage.push(tokenType);
+        }
+        else if (tokenType == TokenType::RIGHT_PARANTHESIS) {
+            parenthesesStorage.pop();
+        }
     }
 }
 
 void OperationParser::validateParenthesis() {
-    if (isSubExpression || (isEndOfStatement() && *isProcessedTokenPointer && parenthesesContainer.empty())) {
+    if (isSubExpression || (parenthesesStorage.empty() && isEndOfTokens() && *isProcessedTokenPointer)) {
         return;
+    } 
+    else {
+        throw SyntaxErrorException("Procedure contains unbalanced parenthesis");
     }
-    throw SyntaxErrorException("Procedure contains unbalanced parenthesis");
 }
 
 void OperationParser::validateTokens() {

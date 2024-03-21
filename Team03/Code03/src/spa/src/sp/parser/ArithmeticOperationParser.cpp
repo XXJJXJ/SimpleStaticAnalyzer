@@ -3,57 +3,67 @@
 // solution inspired from https://dev.to/j0nimost/making-a-math-interpreter-parser-52j8
 
 shared_ptr<Expression> ArithmeticOperationParser::parse() {
-    shared_ptr<Expression> leftNode = term();
-    while (!isEndOfStatement() && 
-        leftNode != nullptr && 
-        count(termTokens.begin(), termTokens.end(), getTokenType())) {
+    shared_ptr<Expression> leftNode = parseTerm();
+    while (leftNode != nullptr && 
+        !isEndOfTokens() && 
+        termTokens.find(getTokenType()) != termTokens.end()) {
         string tokenValue = getTokenValue();
         getNextToken();
-        shared_ptr<Expression> rightNode = term();
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
-        arguments.first = leftNode;
-        arguments.second = rightNode;
-        leftNode = make_shared<ArithmeticOperation>(tokenValue, arguments);
+        shared_ptr<Expression> rightNode = parseTerm();
+        pair<shared_ptr<Expression>, shared_ptr<Expression>> pairOfArguments;
+        pairOfArguments.first = leftNode;
+        pairOfArguments.second = rightNode;
+        leftNode = make_shared<ArithmeticOperation>(tokenValue, pairOfArguments);
     }
 
     return leftNode;
 }
 
-shared_ptr<Expression> ArithmeticOperationParser::term() {
-    shared_ptr<Expression> leftNode = factor();
-    while (!isEndOfStatement() && 
-        leftNode != nullptr && 
-        count(factorTokens.begin(), factorTokens.end(), getTokenType())) {
+shared_ptr<Expression> ArithmeticOperationParser::parseTerm() {
+    shared_ptr<Expression> leftNode = parseFactor();
+    while (leftNode != nullptr && 
+        !isEndOfTokens() && 
+        factorTokens.find(getTokenType()) != factorTokens.end()) {
         string tokenValue = getTokenValue();
         getNextToken();
-        shared_ptr<Expression> rightNode = factor();
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
-        arguments.first = leftNode;
-        arguments.second = rightNode;
-        leftNode = make_shared<ArithmeticOperation>(tokenValue, arguments);
+        shared_ptr<Expression> rightNode = parseFactor();
+        pair<shared_ptr<Expression>, shared_ptr<Expression>> pairOfArguments;
+        pairOfArguments.first = leftNode;
+        pairOfArguments.second = rightNode;
+        leftNode = make_shared<ArithmeticOperation>(tokenValue, pairOfArguments);
     }
 
     return leftNode;
 }
 
-shared_ptr<Expression> ArithmeticOperationParser::factor() {
+shared_ptr<Expression> ArithmeticOperationParser::parseFactor() {
     shared_ptr<Expression> leafNode = nullptr;
     if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
-        addParenthesis(getTokenValue(), getIndex());
+        addParenthesis(getTokenType(), getIndex());
         getNextToken();
         leafNode = parse();
         if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
             throw SyntaxErrorException("Missing ) in Arithmetic operation");
         }
-        addParenthesis(getTokenValue(), getIndex());
+        else {
+            addParenthesis(getTokenType(), getIndex());
+        }
     }
-    else if (getTokenType() == TokenType::INTEGER) {
-        leafNode = make_shared<Constant>(getTokenValue());
-    }
-    else if (getTokenType() == TokenType::NAME) {
-        leafNode = make_shared<Variable>(getTokenValue());
+    else {
+        leafNode = parseLeafNode();
     }
 
     getNextToken();
     return leafNode;
+}
+
+shared_ptr<Expression> ArithmeticOperationParser::parseLeafNode() {
+    if (getTokenType() == TokenType::INTEGER) {
+        return make_shared<Constant>(getTokenValue());
+    }
+    else if (getTokenType() == TokenType::NAME) {
+        return make_shared<Variable>(getTokenValue());
+    }
+    
+    return nullptr;
 }

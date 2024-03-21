@@ -3,12 +3,12 @@
 shared_ptr<Statement> CallStatementParser::parseEntity(Tokens& tokens) {
     string procedureName = extractProcedureName(tokens);
     shared_ptr<Procedure> procedure = make_shared<Procedure>(procedureName);
-    auto printStatement =
+    shared_ptr<CallStatement> callStatement =
         make_shared<CallStatement>(
             Program::getAndIncrementStatementNumber(),
             procedure,
             getProcedureName());
-    return printStatement;
+    return callStatement;
 }
 
 string CallStatementParser::extractProcedureName(Tokens& tokens) const {
@@ -26,6 +26,7 @@ string CallStatementParser::extractProcedureName(Tokens& tokens) const {
         throw SyntaxErrorException("Call statement should end with a ;");
     }
 
+    // Erase 'call Procedure;' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     return token1->getValue();
 }
