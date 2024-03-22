@@ -1,33 +1,33 @@
 #include "ArithmeticOperationParser.h"
 
-// solution inspired from https://dev.to/j0nimost/making-a-math-interpreter-parser-52j8
-
 shared_ptr<Expression> ArithmeticOperationParser::parse() {
-    shared_ptr<Expression> leftNode = parseTerm();
-    while (leftNode != nullptr && 
-        !isEndOfTokens() && 
-        termTokens.find(getTokenType()) != termTokens.end()) {
-        string tokenValue = getTokenValue();
-        getNextToken();
-        shared_ptr<Expression> rightNode = parseTerm();
-        PairOfArguments pairOfArguments;
-        pairOfArguments.first = leftNode;
-        pairOfArguments.second = rightNode;
-        leftNode = make_shared<ArithmeticOperation>(tokenValue, pairOfArguments);
-    }
-
-    return leftNode;
+    return parseExpression(true);
 }
 
 shared_ptr<Expression> ArithmeticOperationParser::parseTerm() {
-    shared_ptr<Expression> leftNode = parseFactor();
-    while (leftNode != nullptr && 
-        !isEndOfTokens() && 
-        factorTokens.find(getTokenType()) != factorTokens.end()) {
-        string tokenValue = getTokenValue();
+    return parseExpression(false);
+}
+
+shared_ptr<Expression> ArithmeticOperationParser::parseExpression(bool isTerm) {
+    string tokenValue;
+    shared_ptr<Expression> leftNode;
+    shared_ptr<Expression> rightNode;
+    PairOfArguments pairOfArguments;
+    if (isTerm) {
+        leftNode = parseTerm();
+    } 
+    else {
+        leftNode = parseFactor();
+    }
+    while (checkCondition(isTerm, leftNode)) {
+        tokenValue = getTokenValue();
         getNextToken();
-        shared_ptr<Expression> rightNode = parseFactor();
-        PairOfArguments pairOfArguments;
+        if (isTerm) {
+            rightNode = parseTerm();
+        } 
+        else {
+            rightNode = parseFactor();
+        }
         pairOfArguments.first = leftNode;
         pairOfArguments.second = rightNode;
         leftNode = make_shared<ArithmeticOperation>(tokenValue, pairOfArguments);
@@ -64,6 +64,22 @@ shared_ptr<Expression> ArithmeticOperationParser::parseLeafNode() {
     else if (getTokenType() == TokenType::NAME) {
         return make_shared<Variable>(getTokenValue());
     }
-    
-    return nullptr;
+    else {
+        return nullptr;
+    }
+}
+
+bool ArithmeticOperationParser::checkCondition(bool isTerm, shared_ptr<Expression> leftNode) {
+    if (isTerm) {
+        return 
+            leftNode != nullptr &&
+            !isEndOfTokens() &&
+            termTokens.find(getTokenType()) != termTokens.end();
+    }
+    else {
+        return 
+            leftNode != nullptr && 
+            !isEndOfTokens() &&
+            factorTokens.find(getTokenType()) != factorTokens.end();
+    }
 }

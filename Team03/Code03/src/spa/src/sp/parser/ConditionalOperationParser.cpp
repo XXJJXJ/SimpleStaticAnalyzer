@@ -30,7 +30,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseRelationalOperation() {
     setIsSubExpression(false);
 
     if (relationalExpression) {
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
+        PairOfArguments arguments;
         arguments.first = relationalExpression; 
         updateNextToken();
         return make_shared<ConditionalOperation>("relationalExpression", arguments);
@@ -51,7 +51,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
         }
         else {
             getNextToken();
-            pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
+            PairOfArguments arguments;
             arguments.first = conditionalExpression;
             return make_shared<ConditionalOperation>("!", arguments);
         }
@@ -85,7 +85,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
             if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
                 throw SyntaxErrorException("Missing ) in Conditional operation");
             } else {
-                pair<shared_ptr<Expression>, shared_ptr<Expression>> pairOfArguments;
+                PairOfArguments pairOfArguments;
                 pairOfArguments.first = leftConditionalExpression;
                 pairOfArguments.second = rightConditionalExpression;
                 return make_shared<ConditionalOperation>(operation, pairOfArguments);
