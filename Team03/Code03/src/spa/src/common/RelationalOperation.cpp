@@ -14,7 +14,7 @@ bool RelationalOperation::operator==(const Expression& other) const {
         return false;
     }
     else {
-        auto& casted = dynamic_cast<const RelationalOperation&>(other);
+        auto casted = dynamic_cast<const RelationalOperation&>(other);
         auto& thisPairOfArguments = this->getArguments();
         auto& castedPairOfArguments = casted.getArguments();
         return
