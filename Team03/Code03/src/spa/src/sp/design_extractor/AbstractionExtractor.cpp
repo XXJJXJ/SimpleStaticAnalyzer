@@ -23,7 +23,7 @@ void AbstractionExtractor::extractParent(StatementListContainer statementList, s
 }
 
 void AbstractionExtractor::extractArgumentsForUses(shared_ptr<Expression> expression, shared_ptr<Statement> statement) {
-	if (expression->isLeafNodeExpression()) {
+	if (expression->isLeafNode()) {
 		if (expression->getExpressionType() == EntityType::Variable) {
 			pkbPopulator->addUses(statement, dynamic_pointer_cast<Variable>(expression));
 		}

@@ -3,8 +3,9 @@
 IfStatement::IfStatement(
     int statementNumber,
     shared_ptr<ConditionalOperation> condition,
-    string procedureName) : Statement(
-        statementNumber,
+    string procedureName) 
+    : Statement(
+        std::move(statementNumber),
         EntityType::If,
         std::move(procedureName)), condition(std::move(condition)) {}
 

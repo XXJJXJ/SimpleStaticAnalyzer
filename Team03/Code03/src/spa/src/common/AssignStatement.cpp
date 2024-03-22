@@ -8,12 +8,12 @@ AssignStatement::AssignStatement(
     Statement(statementNumber, EntityType::Assign, std::move(procedureName)) {}
 
 void AssignStatement::accept(shared_ptr<Visitor> visitor) {
-    visitor->visitAssignStatement(make_shared<AssignStatement>(*this));
     expression->accept(visitor);
+    visitor->visitAssignStatement(make_shared<AssignStatement>(*this));
 }
 
-void AssignStatement::addExpression(shared_ptr<Expression> expr) {
-    expression = expr;
+void AssignStatement::addExpression(shared_ptr<Expression> expression_) {
+    expression = expression_;
 }
 
 shared_ptr<Variable> AssignStatement::getVariable() const {

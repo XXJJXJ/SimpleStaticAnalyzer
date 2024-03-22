@@ -1,7 +1,7 @@
 #include "Procedure.h"
 
-Procedure::Procedure(string procedureName_) : procedureName(
-    procedureName_), statementList({}) {}
+Procedure::Procedure(string procedureName_) 
+    : procedureName(std::move(procedureName_)), statementList({}) {}
 
 void Procedure::addToStatementList(shared_ptr<Statement> statement) {
     statementList.push_back(statement);

@@ -12,7 +12,7 @@ string Expression::getName() const {
 }
 
 bool Expression::operator==(const Expression& other) const {
-    return expressionType == other.expressionType && name == other.name;
+    return name == other.name && expressionType == other.expressionType;
 }
 
 optional<PairOfArguments> Expression::getArguments() const {
