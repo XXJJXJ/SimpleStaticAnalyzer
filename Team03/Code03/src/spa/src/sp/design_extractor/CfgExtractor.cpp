@@ -19,7 +19,7 @@ void CfgExtractor::addStatement(shared_ptr<Statement> statement) {
 
 void CfgExtractor::addNextNode(bool condition, shared_ptr<CfgNode> nextNode) {
     nextNode->addParentNode(node);
-    node->addNextNode(nextNode, condition);
+    node->addNextNode(condition, nextNode);
     node = nextNode;
 }
 

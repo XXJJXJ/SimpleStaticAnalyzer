@@ -16,7 +16,7 @@ public:
 	typedef unordered_map<bool, shared_ptr<CfgNode>> NextNodes;
 	void addParentNode(shared_ptr<CfgNode> node);
 	void addStatement(shared_ptr<Statement> statement);
-	void addNextNode(shared_ptr<CfgNode> node, bool condition);
+	void addNextNode(bool condition, shared_ptr<CfgNode> node);
 	ParentNodes getParentNodes();
 	StatementList getStatementList();
 	NextNodes getNextNodes();

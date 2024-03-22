@@ -8,7 +8,7 @@ void CfgNode::addStatement(shared_ptr<Statement> statement) {
     statementList.push_back(statement);
 }
 
-void CfgNode::addNextNode(shared_ptr<CfgNode> node, bool condition) {
+void CfgNode::addNextNode(bool condition, shared_ptr<CfgNode> node) {
     if (nextNodes.find(condition) != nextNodes.end()) {
         throw SemanticErrorException(
             "Node for condition " + 
