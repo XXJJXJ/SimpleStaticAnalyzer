@@ -16,7 +16,7 @@ public:
     QueryValidator();
     ~QueryValidator();
 
-    static std::vector<std::vector<std::vector<std::string>>> validate(const std::vector<std::vector<std::vector<std::string>>>& tokens);
+    static std::vector<std::vector<std::vector<std::string>>> validate(const std::vector<std::string>& tokens);
     static bool isLetter(const std::string& token);
     static bool isDigit(const std::string& token);
     static bool isNzDigit(const std::string& token);
@@ -31,6 +31,7 @@ public:
     static bool isExpr(std::string token);
     static bool isTerm(const std::string& token);
     static bool isFactor(const std::string& token);
+    static std::vector<std::vector<std::vector<std::string>>> splitTokens(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateDeclaration(const std::vector<std::string>& tokens);
     static std::vector<std::string> validateSelection(const std::vector<std::string>& tokens);
     static std::vector<std::string> validatePredicate(const std::vector<std::string>& tokens, ClauseType& prevClause);
@@ -40,6 +41,7 @@ public:
     static std::vector<std::string> validateEntityEntityPredicate(const std::vector<std::string>& tokens);
     static std::vector<std::string> validatePatternPredicate(const std::vector<std::string>& tokens);
     static ClauseType getClauseType(const std::vector<std::string>& tokens);
+    static bool isNotPredicate(const std::vector<std::string>& tokens);
     static bool isValidPredicateArgsNum(const std::vector<std::string>& tokens, int numOfArgs);
     static std::vector<std::string> getPredicateArgs(const std::vector<std::string>& tokens, int numOfArgs);
 };
