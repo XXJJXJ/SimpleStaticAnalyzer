@@ -12,7 +12,6 @@ shared_ptr<Expression> ArithmeticOperationParser::parseExpression(bool isTerm) {
     string tokenValue;
     shared_ptr<Expression> leftNode;
     shared_ptr<Expression> rightNode;
-    PairOfArguments pairOfArguments;
     if (isTerm) {
         leftNode = parseTerm();
     } 
@@ -28,8 +27,7 @@ shared_ptr<Expression> ArithmeticOperationParser::parseExpression(bool isTerm) {
         else {
             rightNode = parseFactor();
         }
-        pairOfArguments.first = leftNode;
-        pairOfArguments.second = rightNode;
+        PairOfArguments pairOfArguments{leftNode, rightNode};
         leftNode = make_shared<ArithmeticOperation>(tokenValue, pairOfArguments);
     }
 
