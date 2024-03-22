@@ -12,7 +12,7 @@ void Cfg::addProcedureNode(string procedureName, shared_ptr<CfgNode> node) {
     }
 }
 
-void Cfg::addStatement(shared_ptr<Statement> statement, shared_ptr<CfgNode> node) {
+void Cfg::addStatementNode(shared_ptr<Statement> statement, shared_ptr<CfgNode> node) {
     if (statementNodes.find(statement) != statementNodes.end()) {
         throw SemanticErrorException(
             "Node for Statement " + 

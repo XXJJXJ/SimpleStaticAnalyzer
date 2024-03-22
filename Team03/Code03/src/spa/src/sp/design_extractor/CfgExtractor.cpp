@@ -14,7 +14,7 @@ void CfgExtractor::processStatements(StatementList statementList) {
 
 void CfgExtractor::addStatement(shared_ptr<Statement> statement) {
     node->addStatement(statement);
-    cfg->addStatement(statement, node);
+    cfg->addStatementNode(statement, node);
 }
 
 void CfgExtractor::addNextNode(bool condition, shared_ptr<CfgNode> nextNode) {
