@@ -45,7 +45,7 @@ void IfStatementParser::parseBlock(string value, shared_ptr<IfStatement> ifState
         tokens.erase(tokens.begin());
     }
     else {
-        throw SyntaxErrorException("If statement's " + value + " block is missing a }");
+        throw SyntaxErrorException("Missing } token in If statement's " + value + " block");
     }
 }
 
@@ -70,11 +70,11 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tok
 
 void IfStatementParser::checkStartOfIfStatement(Tokens& tokens) const {
     if (tokens[0]->getValue() != "if") {
-        throw SyntaxErrorException("Missing if statement");
+        throw SyntaxErrorException("Missing if name token");
     }
 
     if (tokens[1]->getType() != TokenType::LEFT_PARANTHESIS) {
-        throw SyntaxErrorException("Missing ( at the start of if block");
+        throw SyntaxErrorException("Missing ( token in if statement");
     }
 }
 
@@ -84,7 +84,7 @@ Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens& tokens) 
         });
 
     if (end == tokens.end()) {
-        throw SyntaxErrorException("If statement is missing a {");
+        throw SyntaxErrorException("Missing { token in If statement");
     }
 
     // 'then' token 
@@ -92,7 +92,7 @@ Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens& tokens) 
     // ')' token
     token = prev(token);
     if (token->get()->getType() != TokenType::RIGHT_PARANTHESIS) {
-        throw SyntaxErrorException("If statement condition is not bounded by )");
+        throw SyntaxErrorException("Missing ) token in If statement");
     }
 
     return end;
@@ -100,11 +100,11 @@ Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens& tokens) 
 
 void IfStatementParser::checkStartOfBlock(string value, Tokens& tokens) const {
     if (tokens[0]->getValue() != value) {
-        throw SyntaxErrorException("Missing " + value + " block");
+        throw SyntaxErrorException("Missing " + value + " name token in " + value + " block");
     }
 
     if (tokens[1]->getType() != TokenType::LEFT_BRACE) {
-        throw SyntaxErrorException("Missing { at the start of " + value + " block");
+        throw SyntaxErrorException("Missing { token in " + value + " block");
     }
 }
 

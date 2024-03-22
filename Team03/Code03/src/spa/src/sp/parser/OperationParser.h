@@ -22,7 +22,7 @@ public:
 	bool isEndOfTokens();
 	void nextToken();
 	void manageParentheses(TokenType tokenType, int index);
-	void setArguments(shared_ptr<int> index, bool isSubExpression, shared_ptr<bool> isProcessedToken);
+	void setArguments(bool isSubExpression, shared_ptr<int> index, shared_ptr<bool> isProcessedToken);
 	void setIsSubExpression(bool isSubExpression);
 	void updateNextToken();
 	void checkTokens();

@@ -22,11 +22,11 @@ shared_ptr<Statement> AssignStatementParser::parseEntity(Tokens& tokens) {
 
 string AssignStatementParser::extractVariableName(Tokens& tokens) const {
     if (tokens[0]->getType() != TokenType::NAME) {
-        throw SyntaxErrorException("Missing variable in Assign statement");
+        throw SyntaxErrorException("Missing name token");
     }
 
     if (tokens[1]->getType() != TokenType::SINGLE_EQUAL) {
-        throw SyntaxErrorException("Missing = in Assign statement");
+        throw SyntaxErrorException("Missing = token");
     }
 
     return tokens[0]->getValue();
@@ -50,6 +50,6 @@ Tokens AssignStatementParser::extractExpression(Tokens& tokens) const {
 
 void AssignStatementParser::checkEndOfStatement(Tokens& tokens) const {
     if (tokens[0]->getType() != TokenType::SEMICOLON) {
-        throw SyntaxErrorException("Assign statement does not end with ;");
+        throw SyntaxErrorException("Missing ; token");
     }
 }

@@ -87,9 +87,9 @@ void OperationParser::setup(Tokens& tokens_) {
     }
 }
 
-void OperationParser::setArguments(shared_ptr<int> indexPointer_, bool isSubExpression_, shared_ptr<bool> isProcessedTokenPointer_) {
-    indexPointer = indexPointer_;
+void OperationParser::setArguments(bool isSubExpression_, shared_ptr<int> indexPointer_,  shared_ptr<bool> isProcessedTokenPointer_) {
     isSubExpression = isSubExpression_;
+    indexPointer = indexPointer_;
     isProcessedTokenPointer = isProcessedTokenPointer_;
     isSetArguments = true;
 }
@@ -109,7 +109,7 @@ void OperationParser::modifyParentheses(TokenType tokenType) {
     }
 }
 
-void OperationParser::checkParentheses() {\
+void OperationParser::checkParentheses() {
     if (!isSubExpression && !(parentheses.empty() && isEndOfTokens() && *isProcessedTokenPointer)) {
         throw SyntaxErrorException("Procedure contains unbalanced parenthesis");
     }
