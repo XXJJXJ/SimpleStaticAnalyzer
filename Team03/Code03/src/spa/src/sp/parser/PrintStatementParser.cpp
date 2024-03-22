@@ -17,13 +17,13 @@ string PrintStatementParser::extractVariableName(Tokens& tokens) const {
     shared_ptr<Token> token2 = tokens[2];
 
     if (token0->getValue() != "print") {
-        throw SyntaxErrorException("Print statement should start with print");
+        throw SyntaxErrorException("Missing print name token in Print statement");
     }
     else if (token1->getType() != TokenType::NAME) {
-        throw SyntaxErrorException("Print statement does not have a variable");
+        throw SyntaxErrorException("Missing variable name token in Print statement");
     }
     else if (token2->getType() != TokenType::SEMICOLON) {
-        throw SyntaxErrorException("Print statement should end with a ;");
+        throw SyntaxErrorException("Missing ; token in Print statement");
     }
     
     // Erase 'print variable;' from tokens
