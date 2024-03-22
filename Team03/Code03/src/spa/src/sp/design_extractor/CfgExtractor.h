@@ -36,11 +36,11 @@ public:
 private:
 	shared_ptr<CfgNode> addNewNode();
 	void processStatements(StatementList statementList);
-	void addStatementNode(shared_ptr<Statement> statement);
+	void addStatement(shared_ptr<Statement> statement);
 	void addNextNode(bool condition, shared_ptr<CfgNode> node);
 	void processIfBlocks(bool isThenBlock, shared_ptr<IfStatement> ifStatement, shared_ptr<CfgNode> ifNode, shared_ptr<CfgNode> dummyNode);
 	void processWhileBlock(shared_ptr<WhileStatement> whileStatement, shared_ptr<CfgNode> whileNode);
 	string procedureName;
 	shared_ptr<Cfg> cfg;
-	shared_ptr<CfgNode> cfgNode;
+	shared_ptr<CfgNode> node;
 };

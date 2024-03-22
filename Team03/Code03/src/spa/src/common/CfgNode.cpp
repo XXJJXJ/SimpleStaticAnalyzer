@@ -1,14 +1,14 @@
 #include "CfgNode.h"
 
-void CfgNode::addParent(shared_ptr<CfgNode> node) {
+void CfgNode::addParentNode(shared_ptr<CfgNode> node) {
     parentNodes.push_back(node);
 }
 
-void CfgNode::addStatementNode(shared_ptr<Statement> statement) {
+void CfgNode::addStatement(shared_ptr<Statement> statement) {
     statementList.push_back(statement);
 }
 
-void CfgNode::addNextNode(bool condition, shared_ptr<CfgNode> node) {
+void CfgNode::addNextNode(shared_ptr<CfgNode> node, bool condition) {
     if (nextNodes.find(condition) != nextNodes.end()) {
         throw SemanticErrorException(
             "Node for condition " + 

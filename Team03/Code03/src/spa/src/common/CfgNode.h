@@ -14,11 +14,11 @@ class CfgNode {
 public:
 	typedef vector<shared_ptr<CfgNode>> ParentNodes;
 	typedef unordered_map<bool, shared_ptr<CfgNode>> NextNodes;
-	void addParent(shared_ptr<CfgNode> node);
-	void addStatementNode(shared_ptr<Statement> statement);
-	void addNextNode(bool condition, shared_ptr<CfgNode> node);
+	void addParentNode(shared_ptr<CfgNode> node);
+	void addStatement(shared_ptr<Statement> statement);
+	void addNextNode(shared_ptr<CfgNode> node, bool condition);
 	ParentNodes getParentNodes();
-	vector<shared_ptr<Statement>> getStatementList();
+	StatementList getStatementList();
 	NextNodes getNextNodes();
 
 private:
