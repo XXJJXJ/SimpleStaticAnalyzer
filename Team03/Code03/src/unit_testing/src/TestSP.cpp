@@ -1,4 +1,3 @@
-#include "catch.hpp"
 #include <stdlib.h> 
 #include <unordered_map>
 #include "catch.hpp"
@@ -8,9 +7,9 @@
 #include "sp/parser/AssignStatementParser.h"
 #include "sp/parser/WhileStatementParser.h"
 #include "sp/parser/VariableParser.h"
-#include <sp/tokenizer/NameToken.h>
-#include <sp/tokenizer/PunctuationToken.h>
-#include <sp/tokenizer/IntegerToken.h>
+#include "sp/tokenizer/NameToken.h"
+#include "sp/tokenizer/PunctuationToken.h"
+#include "sp/tokenizer/IntegerToken.h"
 
 TEST_CASE("1st SP Unit Test: Parser no procedure") {
     try {
