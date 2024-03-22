@@ -14,19 +14,21 @@ bool ConditionalOperation::operator==(const Expression& other) const {
         return false;
     }
     else {
-        auto casted = dynamic_cast<const ConditionalOperation&>(other);
-        auto& thisPairOfArguments = this->getArguments();
-        auto& castedPairOfArguments = casted.getArguments();
-        if (!(thisPairOfArguments->first->operator==(*castedPairOfArguments->first))) {
+        auto& casted = static_cast<const ConditionalOperation&>(other);
+        auto& thisFirstArgument = this->getArguments()->first;
+        auto& thisSecondArgument = this->getArguments()->second;
+        auto& castedFirstArgument = casted.getArguments()->first;
+        auto& castedSecondArgument = casted.getArguments()->second;
+        if (!(thisFirstArgument->operator==(*castedFirstArgument))) {
             return false;
         }
         else {
-            if (thisPairOfArguments->second == NULL && 
-                castedPairOfArguments->second == NULL) {
+            if (thisSecondArgument == NULL && 
+                castedSecondArgument == NULL) {
                 return true;
             }
             else {
-                return thisPairOfArguments->second->operator==(*castedPairOfArguments->second);
+                return thisSecondArgument->operator==(*castedSecondArgument);
             }
         }
     }

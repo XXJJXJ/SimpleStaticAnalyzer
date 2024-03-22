@@ -14,12 +14,14 @@ bool RelationalOperation::operator==(const Expression& other) const {
         return false;
     }
     else {
-        auto casted = dynamic_cast<const RelationalOperation&>(other);
-        auto& thisPairOfArguments = this->getArguments();
-        auto& castedPairOfArguments = casted.getArguments();
+        auto& casted = static_cast<const RelationalOperation&>(other);
+        auto& thisFirstArgument = this->getArguments()->first;
+        auto& thisSecondArgument = this->getArguments()->second;
+        auto& castedFirstArgument = *casted.getArguments()->first;
+        auto& castedSecondArgument = *casted.getArguments()->second;
         return
-            thisPairOfArguments->first->operator==(*castedPairOfArguments->first) && 
-            thisPairOfArguments->second->operator==(*castedPairOfArguments->second);
+            thisFirstArgument->operator==(castedFirstArgument) && 
+            thisSecondArgument->operator==(castedSecondArgument);
     }
 }
 
