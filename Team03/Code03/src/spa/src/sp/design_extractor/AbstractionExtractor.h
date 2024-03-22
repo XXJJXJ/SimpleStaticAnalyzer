@@ -22,7 +22,7 @@ public:
 	void visitReadStatement(shared_ptr<ReadStatement> readStatement) override;
 	void visitPrintStatement(shared_ptr<PrintStatement> printStatement) override;
 	void visitConstant(shared_ptr<Constant> constant) override {};
-	void visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) override {};
+	void visitArithmeticOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) override {};
 	void visitAssignStatement(shared_ptr<AssignStatement> assignStatement) override;
 	void visitConditionalOperation(shared_ptr<ConditionalOperation> conditionalOperation) override {};
 	void visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) override {};

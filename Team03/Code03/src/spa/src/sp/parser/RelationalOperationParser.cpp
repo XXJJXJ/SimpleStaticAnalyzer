@@ -4,11 +4,11 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
     shared_ptr<Expression> leftRelationalFactor = parseFactor();
     updateNextToken();
     if (relationalOperators.find(getTokenType()) == relationalOperators.end()) {
-        throw SyntaxErrorException("Missing Relational operator");
+        throw SyntaxErrorException("Missing Relational token");
     }
     else {
         string operation = getTokenValue();
-        getNextToken();
+        nextToken();
         shared_ptr<Expression> rightRelationalFactor = parseFactor();
         if (!rightRelationalFactor) {
             throw SyntaxErrorException("Missing right Relational factor");

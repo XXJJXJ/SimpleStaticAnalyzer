@@ -1,30 +1,42 @@
 #include "OperationParser.h"
 
-void OperationParser::getNextToken() {
-    if (*indexPointer < tokens.size()) {
+void OperationParser::nextToken() {
+    if (hasMoreTokens()) {
         token = tokens[*indexPointer];
         tokenValue = token->getValue();
-        (*indexPointer)++;
         (*isProcessedTokenPointer) = false;
+        incrementIndex();
     }
+}
+
+bool OperationParser::hasMoreTokens() {
+    return *indexPointer < tokens.size();
+}
+
+void OperationParser::incrementIndex() {
+    (*indexPointer)++;
 }
 
 bool OperationParser::isEndOfTokens() {
     return *indexPointer == tokens.size();
 }
 
-TokenType OperationParser::getTokenType() {
+void OperationParser::markTokenAsProcessed() {
     (*isProcessedTokenPointer) = true;
+}
+
+TokenType OperationParser::getTokenType() {
+    markTokenAsProcessed();
     return token->getType();
 }
 
 string OperationParser::getTokenValue() {
-    (*isProcessedTokenPointer) = true;
+    markTokenAsProcessed();
     return tokenValue;
 }
 
-shared_ptr<ExpressionParser::Tokens> OperationParser::getTokens() {
-    return make_shared<ExpressionParser::Tokens>(tokens);
+shared_ptr<Tokens> OperationParser::getTokens() {
+    return make_shared<Tokens>(tokens);
 }
 
 void OperationParser::updateNextToken() {
@@ -42,9 +54,9 @@ shared_ptr<int> OperationParser::getIndexPointer() {
 
 shared_ptr<Expression> OperationParser::parseEntity(Tokens& tokens) {
     setup(tokens);
-    shared_ptr<Expression> result = parse();
-    validateParenthesis();
-    return result;
+    shared_ptr<Expression> expression = parse();
+    checkParentheses();
+    return expression;
 }
 
 bool OperationParser::getIsProcessedToken() {
@@ -66,49 +78,45 @@ void OperationParser::setIsSubExpression(bool isSubExpression_) {
 void OperationParser::setup(Tokens& tokens_) {
     if (*indexPointer == 0) {
         tokens = tokens_;
-        getNextToken();
+        nextToken();
     }
 
     if (isSetArguments) {
         tokens = tokens_;
-        token = tokens[static_cast<size_t>(*indexPointer) - 1];
-        tokenValue = token->getValue();
+        updateNextToken();
     }
 }
 
-void OperationParser::setArguments(shared_ptr<int> index, bool isSubExpression_, shared_ptr<bool> isProcessedToken) {
-    indexPointer = index;
-    isSetArguments = true;
+void OperationParser::setArguments(shared_ptr<int> indexPointer_, bool isSubExpression_, shared_ptr<bool> isProcessedTokenPointer_) {
+    indexPointer = indexPointer_;
     isSubExpression = isSubExpression_;
-    isProcessedTokenPointer = isProcessedToken;
+    isProcessedTokenPointer = isProcessedTokenPointer_;
+    isSetArguments = true;
 }
 
-void OperationParser::addParenthesis(TokenType tokenType, int index_) {
-    if (parenthesesToIndexMap.find(index_) != parenthesesToIndexMap.end()) {
-        return;
-    }
-    else {
-        parenthesesToIndexMap[index_] = tokenType;
-        if (tokenType == TokenType::LEFT_PARANTHESIS) {
-            parenthesesStorage.push(tokenType);
-        }
-        else if (tokenType == TokenType::RIGHT_PARANTHESIS) {
-            parenthesesStorage.pop();
-        }
+void OperationParser::manageParentheses(TokenType tokenType, int index_) {
+    if (parenthesesIndexMap.find(index_) == parenthesesIndexMap.end()) {
+        parenthesesIndexMap[index_] = tokenType;
+        modifyParentheses(tokenType);
     }
 }
 
-void OperationParser::validateParenthesis() {
-    if (isSubExpression || (parenthesesStorage.empty() && isEndOfTokens() && *isProcessedTokenPointer)) {
-        return;
-    } 
-    else {
+void OperationParser::modifyParentheses(TokenType tokenType) {
+    if (tokenType == TokenType::LEFT_PARANTHESIS) {
+        parentheses.push(tokenType);
+    } else if (!parentheses.empty() && tokenType == TokenType::RIGHT_PARANTHESIS) {
+        parentheses.pop();
+    }
+}
+
+void OperationParser::checkParentheses() {\
+    if (!isSubExpression && !(parentheses.empty() && isEndOfTokens() && *isProcessedTokenPointer)) {
         throw SyntaxErrorException("Procedure contains unbalanced parenthesis");
     }
 }
 
-void OperationParser::validateTokens() {
+void OperationParser::checkTokens() {
     if (*isProcessedTokenPointer) {
-        throw SyntaxErrorException("Insufficient tokens for processing");
+        throw SyntaxErrorException("Insufficient tokens");
     }
 }

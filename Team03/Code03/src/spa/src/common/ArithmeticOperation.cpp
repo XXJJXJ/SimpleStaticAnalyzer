@@ -6,7 +6,7 @@ ArithmeticOperation::ArithmeticOperation(
     : Operation(std::move(name), EntityType::Arithmetic, std::move(arguments)) {}
 
 void ArithmeticOperation::accept(shared_ptr<Visitor> visitor) {
-    visitor->visitArithmeticalOperation(make_shared<ArithmeticOperation>(*this));
+    visitor->visitArithmeticOperation(make_shared<ArithmeticOperation>(*this));
 }
 
 bool ArithmeticOperation::operator==(const Expression& other) const {

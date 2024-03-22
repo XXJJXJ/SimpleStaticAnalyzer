@@ -21,7 +21,7 @@ shared_ptr<Expression> ArithmeticOperationParser::parseExpression(bool isTerm) {
     }
     while (checkCondition(isTerm, leftNode)) {
         tokenValue = getTokenValue();
-        getNextToken();
+        nextToken();
         if (isTerm) {
             rightNode = parseTerm();
         } 
@@ -39,21 +39,21 @@ shared_ptr<Expression> ArithmeticOperationParser::parseExpression(bool isTerm) {
 shared_ptr<Expression> ArithmeticOperationParser::parseFactor() {
     shared_ptr<Expression> leafNode = nullptr;
     if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
-        addParenthesis(getTokenType(), getIndex());
-        getNextToken();
+        manageParentheses(getTokenType(), getIndex());
+        nextToken();
         leafNode = parse();
         if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
             throw SyntaxErrorException("Missing ) in Arithmetic operation");
         }
         else {
-            addParenthesis(getTokenType(), getIndex());
+            manageParentheses(getTokenType(), getIndex());
         }
     }
     else {
         leafNode = parseLeafNode();
     }
 
-    getNextToken();
+    nextToken();
     return leafNode;
 }
 

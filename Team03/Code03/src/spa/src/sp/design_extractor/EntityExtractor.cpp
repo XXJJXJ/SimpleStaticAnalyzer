@@ -43,7 +43,7 @@ void EntityExtractor::visitConstant(shared_ptr<Constant> constant) {
 	pkbPopulator->addConstant(constant);
 };
 
-void EntityExtractor::visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) {
+void EntityExtractor::visitArithmeticOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) {
 	extractArgs(arithmeticOperation->getArguments());
 };
 

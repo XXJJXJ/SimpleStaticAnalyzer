@@ -12,8 +12,7 @@
 
 TEST_CASE("Check if ExtractCondition works") {
     Tokens if_line_valid
-    { make_shared<NameToken>("if"), make_shared<PunctuationToken>("("),
-     make_shared<NameToken>("x"), make_shared<PunctuationToken>(">"),
+    { make_shared<NameToken>("x"), make_shared<RelationalToken>(">"),
      make_shared<IntegerToken>("5"), make_shared<PunctuationToken>(")"),
      make_shared<NameToken>("then"),
      make_shared<PunctuationToken>("{") };
@@ -30,7 +29,7 @@ TEST_CASE("Check if ExtractCondition works") {
             make_shared<ConditionalOperation>("relationalExpression", cond_args);
         REQUIRE(condition->operator==(*expected_condition_expr));
     }
-    catch (std::exception& e) {
+    catch (SpaException& e) {
         cout << e.what() << endl;
     }
 }
@@ -448,14 +447,14 @@ TEST_CASE("Check if ArithmeticOperationParser works") {
                                make_shared<NameToken>("x"), make_shared<ArithmeticToken>("+"),
                                make_shared<IntegerToken>("1") };
         auto expr_parser = ExpressionParserFactory::getExpressionParser(expr_line, EntityType::Assign);
-        //REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
+        REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
     }SECTION("Check if arithmetic expression with unbalanced () [e.g. 2 * x) + 1 ] throws Syntax error") {
         Tokens expr_line{ make_shared<IntegerToken>("2"), make_shared<ArithmeticToken>("*"),
                                make_shared<NameToken>("x"),
                                make_shared<PunctuationToken>(")"),
                                make_shared<ArithmeticToken>("+"), make_shared<IntegerToken>("1") };
         auto expr_parser = ExpressionParserFactory::getExpressionParser(expr_line, EntityType::Assign);
-        //REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
+        REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
     }SECTION("Check if arithmetic expression with unbalanced () [e.g. (2 * x) + 1) ] throws Syntax error") {
         Tokens expr_line{ make_shared<PunctuationToken>("("), make_shared<IntegerToken>("2"),
                                make_shared<ArithmeticToken>("*"),
@@ -463,7 +462,7 @@ TEST_CASE("Check if ArithmeticOperationParser works") {
                                make_shared<ArithmeticToken>("+"),
                                make_shared<IntegerToken>("1"), make_shared<PunctuationToken>(")") };
         auto expr_parser = ExpressionParserFactory::getExpressionParser(expr_line, EntityType::Assign);
-        //REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
+        REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
     }SECTION("Check if arithmetic expression with unbalanced () [e.g. ((2+x) ] throws Syntax error") {
         Tokens expr_line
         { make_shared<PunctuationToken>("("), make_shared<PunctuationToken>("("),
@@ -471,7 +470,7 @@ TEST_CASE("Check if ArithmeticOperationParser works") {
          make_shared<ArithmeticToken>("+"), make_shared<NameToken>("x"),
          make_shared<PunctuationToken>(")") };
         auto expr_parser = ExpressionParserFactory::getExpressionParser(expr_line, EntityType::Assign);
-        //REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
+        REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
     }
 }
 
@@ -493,11 +492,11 @@ TEST_CASE("Check if ConditionalOperationParser & RelationalOperationParser works
     }SECTION("Check if relationalExpression with missing rel_op (e.g. x y) throws syntax error") {
         Tokens expr_line{ make_shared<NameToken>("x"), make_shared<NameToken>("y") };
         auto expr_parser = ExpressionParserFactory::getExpressionParser(expr_line, EntityType::If);
-        //REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
+        REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
     }SECTION("Check if relationalExpression with missing RHS rel_factor (e.g. x != ) throws syntax error") {
         Tokens expr_line{ make_shared<NameToken>("x"), make_shared<RelationalToken>("!=") };
         auto expr_parser = ExpressionParserFactory::getExpressionParser(expr_line, EntityType::If);
-        //REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
+        REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
     }SECTION("Check if ! '(' cond_expr ')' (e.g. ! (x > y) ) parses correctly") {
         Tokens expr_line
         { make_shared<ConditionalToken>("!"), make_shared<PunctuationToken>("("),
@@ -693,7 +692,7 @@ TEST_CASE("Check if ConditionalOperationParser & RelationalOperationParser works
                                make_shared<NameToken>("y"), make_shared<PunctuationToken>(")"),
                                make_shared<ConditionalToken>("&&") };
         auto expr_parser = ExpressionParserFactory::getExpressionParser(expr_line, EntityType::If);
-        //REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
+        REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
     }SECTION("Check if cond_expr with unbalanced () [e.g. (x < y) && (z <= 100))] throws syntax error") {
         Tokens expr_line{ make_shared<PunctuationToken>("("), make_shared<NameToken>("x"),
                                make_shared<RelationalToken>("<"),
@@ -705,7 +704,7 @@ TEST_CASE("Check if ConditionalOperationParser & RelationalOperationParser works
                                make_shared<PunctuationToken>(")") };
         auto expr_parser = ExpressionParserFactory::getExpressionParser(expr_line, EntityType::If);
         auto expr = expr_parser->parseEntity(expr_line);
-        //REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
+        REQUIRE_THROWS_AS(expr_parser->parseEntity(expr_line), SyntaxErrorException);
     }
     SECTION("Check if cond_expr [  ( ! (a != 0) ) && (0 > 1) ] parses without syntax error") {
         Tokens expr_line{

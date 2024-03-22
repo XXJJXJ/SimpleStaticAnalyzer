@@ -27,17 +27,19 @@ public:
 	void visitReadStatement(shared_ptr<ReadStatement> readStatement) override;
 	void visitIfStatement(shared_ptr<IfStatement> ifStatement) override;
 	void visitWhileStatement(shared_ptr<WhileStatement> whileStatement) override;
-	
-	void visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) override;
-	void visitConditionalOperation(shared_ptr<ConditionalOperation> conditionalOperation) override;
-	void visitConstant(shared_ptr<Constant> constant) override;
-	void visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) override;
-	void visitVariable(shared_ptr<Variable> variable) override;
+	void visitArithmeticOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) override {};
+	void visitConditionalOperation(shared_ptr<ConditionalOperation> conditionalOperation) override {};
+	void visitConstant(shared_ptr<Constant> constant) override {};
+	void visitRelationalOperation(shared_ptr<RelationalOperation> relationalOperation) override {};
+	void visitVariable(shared_ptr<Variable> variable) override {};
 
 private:
+	shared_ptr<CfgNode> addNewNode();
 	void processStatements(StatementList statementList);
 	void addStatementNode(shared_ptr<Statement> statement);
 	void addNextNode(bool condition, shared_ptr<CfgNode> node);
+	void processIfBlocks(bool isThenBlock, shared_ptr<IfStatement> ifStatement, shared_ptr<CfgNode> ifNode, shared_ptr<CfgNode> dummyNode);
+	void processWhileBlock(shared_ptr<WhileStatement> whileStatement, shared_ptr<CfgNode> whileNode);
 	string procedureName;
 	shared_ptr<Cfg> cfg;
 	shared_ptr<CfgNode> cfgNode;
