@@ -14,7 +14,7 @@ bool ConditionalOperation::operator==(const Expression& other) const {
         return false;
     }
     else {
-        auto& casted = static_cast<const ConditionalOperation&>(other);
+        auto& casted = dynamic_cast<const ConditionalOperation&>(other);
         auto& thisPairOfArguments = this->getArguments();
         auto& castedPairOfArguments = casted.getArguments();
         if (!(thisPairOfArguments->first->operator==(*castedPairOfArguments->first))) {

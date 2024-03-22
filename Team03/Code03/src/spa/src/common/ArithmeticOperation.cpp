@@ -14,7 +14,7 @@ bool ArithmeticOperation::operator==(const Expression& other) const {
         return false;
     }
     else {
-        auto& casted = static_cast<const ArithmeticOperation&>(other);
+        auto& casted = dynamic_cast<const ArithmeticOperation&>(other);
         auto& thisPairOfArguments = this->getArguments();
         auto& castedPairOfArguments = casted.getArguments();
         return
