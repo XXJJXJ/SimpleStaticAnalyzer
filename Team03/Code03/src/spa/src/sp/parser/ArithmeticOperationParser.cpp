@@ -41,7 +41,7 @@ shared_ptr<Expression> ArithmeticOperationParser::parseFactor() {
         nextToken();
         leafNode = parse();
         if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
-            throw SyntaxErrorException("Missing ) token");
+            throw SyntaxErrorException("Missing ) token in Arithmetic operation");
         }
         else {
             manageParentheses(getTokenType(), getIndex());

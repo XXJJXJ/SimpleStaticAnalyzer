@@ -11,7 +11,7 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
         nextToken();
         shared_ptr<Expression> rightRelationalFactor = parseFactor();
         if (!rightRelationalFactor) {
-            throw SyntaxErrorException("Missing relational factor");
+            throw SyntaxErrorException("Missing relational factor in Arithmetic expression");
         }
 
         updateNextToken();

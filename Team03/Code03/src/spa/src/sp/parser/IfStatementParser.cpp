@@ -13,11 +13,11 @@ shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
 
     parseBlock("then", ifStatement, tokens);
     if (ifStatement->getThenStatementList().size() == 0) {
-        throw SyntaxErrorException("If statement's then block cannot be empty");
+        throw SyntaxErrorException("Empty If statement's then block");
     }
     parseBlock("else", ifStatement, tokens);
     if (ifStatement->getElseStatementList().size() == 0) {
-        throw SyntaxErrorException("If statement's else block cannot be empty");
+        throw SyntaxErrorException("Empty If statement's else block");
     }
 
     return ifStatement;
@@ -62,7 +62,7 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tok
     auto expressionParser = ExpressionParserFactory::getExpressionParser(conditionTokens, EntityType::If);
     auto condition = (expressionParser->parseEntity(conditionTokens));
     if (!condition) {
-        throw SyntaxErrorException("Invalid condition for if statement");
+        throw SyntaxErrorException("Invalid condition in If statement");
     }
 
     return dynamic_pointer_cast<ConditionalOperation>(condition);
@@ -70,11 +70,11 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tok
 
 void IfStatementParser::checkStartOfIfStatement(Tokens& tokens) const {
     if (tokens[0]->getValue() != "if") {
-        throw SyntaxErrorException("Missing if name token");
+        throw SyntaxErrorException("Missing if name token in If statement");
     }
 
     if (tokens[1]->getType() != TokenType::LEFT_PARANTHESIS) {
-        throw SyntaxErrorException("Missing ( token in if statement");
+        throw SyntaxErrorException("Missing ( token in If statement");
     }
 }
 
@@ -100,11 +100,11 @@ Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens& tokens) 
 
 void IfStatementParser::checkStartOfBlock(string value, Tokens& tokens) const {
     if (tokens[0]->getValue() != value) {
-        throw SyntaxErrorException("Missing " + value + " name token in " + value + " block");
+        throw SyntaxErrorException("Missing " + value + " name token in If statement's " + value + " block");
     }
 
     if (tokens[1]->getType() != TokenType::LEFT_BRACE) {
-        throw SyntaxErrorException("Missing { token in " + value + " block");
+        throw SyntaxErrorException("Missing { token in If statement's " + value + " block");
     }
 }
 

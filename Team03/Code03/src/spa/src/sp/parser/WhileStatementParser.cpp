@@ -61,7 +61,7 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens& 
     shared_ptr<Expression> condition = 
         (expressionParser->parseEntity(conditionTokens));
     if (!condition) {
-        throw SyntaxErrorException("Invalid condition for While statement");
+        throw SyntaxErrorException("Invalid condition in While statement");
     }
 
     return dynamic_pointer_cast<ConditionalOperation>(condition);
@@ -69,7 +69,7 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens& 
 
 void WhileStatementParser::checkStartOfWhileStatement(Tokens& tokens) const {
     if (tokens[0]->getValue() != "while") {
-        throw SyntaxErrorException("Missing while name token");
+        throw SyntaxErrorException("Missing while name token in While statement");
     }
 
     if (tokens[1]->getType() != TokenType::LEFT_PARANTHESIS) {

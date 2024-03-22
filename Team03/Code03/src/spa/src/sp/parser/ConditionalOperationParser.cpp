@@ -47,7 +47,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
         setIsSubExpression(true);
         shared_ptr<Expression> conditionalExpression = parse();
         if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
-            throw SyntaxErrorException("Missing ) token");
+            throw SyntaxErrorException("Missing ) token in Conditional expression");
         }
         else {
             nextToken();
@@ -63,13 +63,13 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
     setIsSubExpression(true);
     shared_ptr<Expression> leftConditionalExpression = parse();
     if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
-        throw SyntaxErrorException("Missing ) token");
+        throw SyntaxErrorException("Missing ) token in Conditional expression");
     }
 
     nextToken();
     string operation = getTokenValue();
     if (!(getTokenType() == TokenType::OR || getTokenType() == TokenType::AND)) {
-        throw SyntaxErrorException("Missing || or && token");
+        throw SyntaxErrorException("Missing || or && token in Conditional expression");
     }
     else {
         nextToken();
@@ -82,14 +82,14 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
                 nextToken();
             }
             if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
-                throw SyntaxErrorException("Missing ) token");
+                throw SyntaxErrorException("Missing ) token in Conditional expression");
             } else {
                 PairOfArguments pairOfArguments{leftConditionalExpression, rightConditionalExpression};
                 return make_shared<ConditionalOperation>(operation, pairOfArguments);
             }
         }
         else {
-            throw SyntaxErrorException("Missing ( token");
+            throw SyntaxErrorException("Missing ( token in Conditional expression");
         }
     }
 }
@@ -102,5 +102,5 @@ shared_ptr<Expression> ConditionalOperationParser::parseSubExpression() {
         return parseAndOrOperation();
     }
 
-    throw SyntaxErrorException("Invalid Conditional operation");
+    throw SyntaxErrorException("Invalid Conditional expression");
 }
