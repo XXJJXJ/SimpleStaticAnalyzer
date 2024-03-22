@@ -35,7 +35,7 @@ public:
 	void visitVariable(shared_ptr<Variable> variable) override;
 
 private:
-	void processStatements(StatementListContainer statementList);
+	void processStatements(StatementList statementList);
 	void addStatementNode(shared_ptr<Statement> statement);
 	void addNextNode(bool condition, shared_ptr<CfgNode> node);
 	string procedureName;

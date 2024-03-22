@@ -31,9 +31,9 @@ public:
 	void visitCallStatement(shared_ptr<CallStatement> callStatement) override {};
 
 private:
-	void processStatements(StatementListContainer statementList);
-	void extractFollows(StatementListContainer statementList);
-	void extractParent(StatementListContainer statementList, shared_ptr<Statement> statement);
+	void processStatements(StatementList statementList);
+	void extractFollows(StatementList statementList);
+	void extractParent(StatementList statementList, shared_ptr<Statement> statement);
 	void extractArgumentsForUses(shared_ptr<Expression> expression, shared_ptr<Statement> statement);
 	shared_ptr<Populator> pkbPopulator;
 };

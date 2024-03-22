@@ -24,7 +24,7 @@ CfgNode::ParentNodes CfgNode::getParentNodes() {
     return parentNodes;
 }
 
-CfgNode::StatementList CfgNode::getStatementList() {
+StatementList CfgNode::getStatementList() {
     return statementList;
 }
 

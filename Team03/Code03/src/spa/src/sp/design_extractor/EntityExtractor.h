@@ -30,7 +30,7 @@ public:
 	void visitCallStatement(shared_ptr<CallStatement> callStatement) override;
 
 private:
-	void processStatements(StatementListContainer statementList);
+	void processStatements(StatementList statementList);
 	void extractArgs(optional<PairOfArguments> arguments);
 	shared_ptr<Populator> pkbPopulator;
 };

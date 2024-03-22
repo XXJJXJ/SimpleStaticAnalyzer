@@ -10,7 +10,7 @@ shared_ptr<Expression> ArithmeticOperationParser::parse() {
         string tokenValue = getTokenValue();
         getNextToken();
         shared_ptr<Expression> rightNode = parseTerm();
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> pairOfArguments;
+        PairOfArguments pairOfArguments;
         pairOfArguments.first = leftNode;
         pairOfArguments.second = rightNode;
         leftNode = make_shared<ArithmeticOperation>(tokenValue, pairOfArguments);
@@ -27,7 +27,7 @@ shared_ptr<Expression> ArithmeticOperationParser::parseTerm() {
         string tokenValue = getTokenValue();
         getNextToken();
         shared_ptr<Expression> rightNode = parseFactor();
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> pairOfArguments;
+        PairOfArguments pairOfArguments;
         pairOfArguments.first = leftNode;
         pairOfArguments.second = rightNode;
         leftNode = make_shared<ArithmeticOperation>(tokenValue, pairOfArguments);

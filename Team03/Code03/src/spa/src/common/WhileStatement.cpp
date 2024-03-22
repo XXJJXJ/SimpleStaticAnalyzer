@@ -21,7 +21,7 @@ shared_ptr<ConditionalOperation> WhileStatement::getCondition() const {
     return condition;
 }
 
-StatementListContainer WhileStatement::getStatementList() const {
+StatementList WhileStatement::getStatementList() const {
     return statementList;
 }
 

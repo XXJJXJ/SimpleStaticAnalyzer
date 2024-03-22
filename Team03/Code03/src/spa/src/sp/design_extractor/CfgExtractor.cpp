@@ -2,7 +2,7 @@
 
 CfgExtractor::CfgExtractor(shared_ptr<Cfg> cfg_) : cfg(cfg_) {}
 
-void CfgExtractor::processStatements(StatementListContainer statementList) {
+void CfgExtractor::processStatements(StatementList statementList) {
     for (shared_ptr<Statement> statement : statementList) {
         shared_ptr<CfgExtractor> cfgExtractor = make_shared<CfgExtractor>(*this);
         statement->accept(cfgExtractor);
@@ -27,7 +27,7 @@ void CfgExtractor::visitProcedure(shared_ptr<Procedure> procedure) {
     procedureName = procedure->getName();
     cfgNode = make_shared<CfgNode>();
     cfg->addProcedureNode(procedureName, cfgNode);
-    StatementListContainer statements = procedure->getStatementList();
+    StatementList statements = procedure->getStatementList();
     processStatements(statements);
 }
 
@@ -62,8 +62,8 @@ void CfgExtractor::visitIfStatement(shared_ptr<IfStatement> ifStatement) {
 
     addStatementNode(ifStatement);
 
-    StatementListContainer thenStatementList = ifStatement->getThenStatementList();
-    StatementListContainer elseStatementList = ifStatement->getElseStatementList();
+    StatementList thenStatementList = ifStatement->getThenStatementList();
+    StatementList elseStatementList = ifStatement->getElseStatementList();
 
     //Construct CFG for then block (If statement's condition evaluates to true)
     addNextNode(true, thenNode);
@@ -94,7 +94,7 @@ void CfgExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatement
     }
 
     addStatementNode(whileStatement);
-    StatementListContainer statementList = whileStatement->getStatementList();
+    StatementList statementList = whileStatement->getStatementList();
 
     //Construct CFG for while block (While statement's condition evaluates to true)
     addNextNode(true, loopNode);

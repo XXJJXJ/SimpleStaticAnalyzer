@@ -12,7 +12,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         }
     }
     catch (SpaException& e) {
-        string check = "Initial parsing of Relational Operation failed";
+        string check = "Initial parsing of Relational operation failed";
     }
 
     setArguments(
@@ -35,8 +35,9 @@ shared_ptr<Expression> ConditionalOperationParser::parseRelationalOperation() {
         updateNextToken();
         return make_shared<ConditionalOperation>("relationalExpression", arguments);
     }
-
-    return nullptr;
+    else {
+        return nullptr;
+    }
 }
 
 shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
@@ -46,13 +47,14 @@ shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
         setIsSubExpression(true);
         shared_ptr<Expression> conditionalExpression = parse();
         if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
-            throw SyntaxErrorException("Missing ) in Conditional expression");
+            throw SyntaxErrorException("Missing ) in Conditional operation");
         }
-
-        getNextToken();
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
-        arguments.first = conditionalExpression;
-        return make_shared<ConditionalOperation>("!", arguments);
+        else {
+            getNextToken();
+            pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
+            arguments.first = conditionalExpression;
+            return make_shared<ConditionalOperation>("!", arguments);
+        }
     }
 }
 
@@ -62,33 +64,36 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
     setIsSubExpression(true);
     shared_ptr<Expression> leftConditionalExpression = parse();
     if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
-        throw SyntaxErrorException("Missing ) in Conditional expression");
+        throw SyntaxErrorException("Missing ) in Conditional operation");
     }
 
     getNextToken();
     string operation = getTokenValue();
     if (!(getTokenType() == TokenType::OR || getTokenType() == TokenType::AND)) {
-        throw SyntaxErrorException("Missing && or || in Conditional expression");
-    }
-    getNextToken();
-
-    if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
-        getNextToken();
-        setIsSubExpression(true);
-        shared_ptr<Expression> rightConditionalExpression = parse();
-        if (*(getIndexPointer().get()) < getTokens()->size()) {
-            getNextToken();
-        }
-        if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
-            throw SyntaxErrorException("Missing ) in Conditional expression");
-        }
-        pair<shared_ptr<Expression>, shared_ptr<Expression>> pairOfArguments;
-        pairOfArguments.first = leftConditionalExpression;
-        pairOfArguments.second = rightConditionalExpression;
-        return make_shared<ConditionalOperation>(operation, pairOfArguments);
+        throw SyntaxErrorException("Missing || or && in Conditional operation");
     }
     else {
-        throw SyntaxErrorException("Missing ( in Conditional Expression");
+        getNextToken();
+
+        if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
+            getNextToken();
+            setIsSubExpression(true);
+            shared_ptr<Expression> rightConditionalExpression = parse();
+            if (*(getIndexPointer().get()) < getTokens()->size()) {
+                getNextToken();
+            }
+            if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
+                throw SyntaxErrorException("Missing ) in Conditional operation");
+            } else {
+                pair<shared_ptr<Expression>, shared_ptr<Expression>> pairOfArguments;
+                pairOfArguments.first = leftConditionalExpression;
+                pairOfArguments.second = rightConditionalExpression;
+                return make_shared<ConditionalOperation>(operation, pairOfArguments);
+            }
+        }
+        else {
+            throw SyntaxErrorException("Missing ( in Conditional operation");
+        }
     }
 }
 
@@ -100,5 +105,5 @@ shared_ptr<Expression> ConditionalOperationParser::parseSubExpression() {
         return parseAndOrOperation();
     }
 
-    throw SyntaxErrorException("Invalid Conditional Operation");
+    throw SyntaxErrorException("Invalid Conditional operation");
 }

@@ -15,7 +15,7 @@ public:
 	shared_ptr<Expression> parse() override;
 
 private:
-	shared_ptr<Expression> factor();
+	shared_ptr<Expression> parseFactor();
 	unordered_set<TokenType> relationalOperators = {
         TokenType::GREATER_THAN,
         TokenType::GREATER_THAN_EQUAL,
