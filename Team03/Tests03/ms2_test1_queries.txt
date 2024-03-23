@@ -288,3 +288,68 @@ stmt s; variable v; if i;
 Select v such that Next*(s, 76) and Uses(s, v) and Parent(i, s) pattern i ("randNum", _, _)
 randNum
 5000
+58 - Get while pattern that uses eggs - only 3
+while w;
+Select w pattern w("eggs", _) such that Modifies(w, "eggs") and Modifies(w, "is")
+3
+5000
+59 - Get while pattern that uses eggs - only 20
+while w;
+Select w pattern w("eggs", _) such that Modifies(w, "chicks") and not Modifies(w, "eggs")
+20
+5000
+60 - Get while pattern that does not modify eggs - only 20
+while w;
+Select w pattern w("eggs", _) such that not Modifies(w, "eggs")
+20
+5000
+61 - Get while that does not modifies eggs - only 20 and 66
+while w;
+Select w such that not Modifies(w, "eggs")
+20,66
+5000
+62 - Get while that modifies eggs - only 3
+while w;
+Select w such that Modifies(w, "eggs")
+3
+5000
+63 - Get all while - 3,20,66
+while w;
+Select w
+3,20,66
+5000
+64 - Get nested whiles - while inside if and while - only 20
+while w, w1; if ifs, ifs2;
+Select w1 such that Parent*(w, w1) and Parent(ifs, w1)
+20
+5000
+65 - Get nested ifs - if inside if and while - only 8
+while w, w1; if ifs, ifs2;
+Select ifs2 such that Parent*(w, ifs2) and Parent(ifs, ifs2)
+8 
+5000
+66 - Get call statements inbetween call statements - only 37, 38, 39
+call c,c1,c2;
+Select c1 such that Next(c, c1) and Next(c1, c2) and Follows(c,c1) and Follows(c1, c2)
+37,38,39
+5000
+67 - Get variables used and modified by the same procedure
+procedure p; variable v;
+Select <p, v> such that Uses(p, v) and Modifies(p, v)
+hatch is,hatch pok,hen chicks,hen eggs,hen pok,hen randNum,killChicks stop,layEggs randNum,makeNoise pok,rearChickens chicks,rearChickens eggs,rearChickens is,rearChickens luck,rearChickens pok,rearChickens stop,screamInPain stop,wiggle is
+5000
+68 - Get variables used and modified by the same assign statement
+assign a; variable v;
+Select <a, v> such that Uses(a, v) and Modifies(a, v)
+10 eggs,11 chicks,22 chicks,47 pok,64 chicks,68 chicks
+5000
+69 - Get variables used and not modified by the same assign statement - debatable
+assign a; variable v;
+Select <a, v> such that Uses(a, v) and not Modifies(a, v)
+50 chicks,64 eggs,64 grow,64 times,65 chicks,65 eggs,65 pok,65 times,68 pok,69 chicks,69 pok,70 call,70 if,70 print,70 procedure,70 read,70 statement,70 while
+5000
+70 - Get variables not used and but modified by the same assign statement
+assign a; variable v;
+Select <a, v> such that not Uses(a, v) and Modifies(a, v)
+1 eggs,2 chicks,41 pok,44 pok,50 pok,65 noise,69 eggs,70 randNum
+5000

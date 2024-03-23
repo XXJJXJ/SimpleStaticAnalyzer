@@ -4,4 +4,4 @@
 ./autotester ../../../tests/milestone1_nestedWhile_source.txt ../../../tests/milestone1_nestedWhile_queries.txt ../../../tests/out.xml
 ./autotester ../../../tests/milestone1_stress_source.txt ../../../tests/milestone1_stress_queries.txt ../../../tests/out.xml
 ./autotester ../../../tests/milestone1_super_source.txt ../../../tests/milestone1_super_queries.txt ../../../tests/out.xml
-
+./autotester ../../../tests/ms2_test1_source.txt ../../../tests/ms2_test1_queries.txt ../../../tests/out.xml
