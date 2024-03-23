@@ -3,7 +3,7 @@
 
 shared_ptr<Program> Parser::parseSource(Tokens& tokens) {
     shared_ptr<Program> program = make_shared<Program>();
-    auto procedureParser = make_shared<ProcedureParser>();
+    shared_ptr<ProcedureParser> procedureParser = make_shared<ProcedureParser>();
     while (!tokens.empty()) {
         try {
             shared_ptr<Procedure> procedure = procedureParser->parseEntity(tokens);

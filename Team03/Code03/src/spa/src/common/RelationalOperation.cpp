@@ -3,7 +3,7 @@
 RelationalOperation::RelationalOperation(
     string name,
     PairOfArguments arguments)
-    : Operation(std::move(name), EntityType::Relational, arguments) {}
+    : Operation(std::move(name), EntityType::Relational, std::move(arguments)) {}
 
 void RelationalOperation::accept(shared_ptr<Visitor> visitor) {
     visitor->visitRelationalOperation(make_shared<RelationalOperation>(*this));
@@ -13,11 +13,16 @@ bool RelationalOperation::operator==(const Expression& other) const {
     if (!Expression::operator==(other)) {
         return false;
     }
-
-    auto casted = dynamic_cast<const RelationalOperation&>(other);
-    return
-        this->getArguments()->first->operator==(*casted.getArguments()->first) && 
-        this->getArguments()->second->operator==(*casted.getArguments()->second);
+    else {
+        auto& casted = static_cast<const RelationalOperation&>(other);
+        auto& thisFirstArgument = this->getArguments()->first;
+        auto& thisSecondArgument = this->getArguments()->second;
+        auto& castedFirstArgument = *casted.getArguments()->first;
+        auto& castedSecondArgument = *casted.getArguments()->second;
+        return
+            thisFirstArgument->operator==(castedFirstArgument) && 
+            thisSecondArgument->operator==(castedSecondArgument);
+    }
 }
 
 EntityType RelationalOperation::getType() const {

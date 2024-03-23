@@ -3,12 +3,12 @@
 shared_ptr<Statement> CallStatementParser::parseEntity(Tokens& tokens) {
     string procedureName = extractProcedureName(tokens);
     shared_ptr<Procedure> procedure = make_shared<Procedure>(procedureName);
-    auto printStatement =
+    shared_ptr<CallStatement> callStatement =
         make_shared<CallStatement>(
             Program::getAndIncrementStatementNumber(),
             procedure,
             getProcedureName());
-    return printStatement;
+    return callStatement;
 }
 
 string CallStatementParser::extractProcedureName(Tokens& tokens) const {
@@ -17,15 +17,16 @@ string CallStatementParser::extractProcedureName(Tokens& tokens) const {
     shared_ptr<Token> token2 = tokens[2];
 
     if (token0->getValue() != "call") {
-        throw SyntaxErrorException("Call statement should start with call");
+        throw SyntaxErrorException("Missing call name token in Call statement");
     }
     else if (token1->getType() != TokenType::NAME) {
-        throw SyntaxErrorException("Call statement does not have a procedure");
+        throw SyntaxErrorException("Missing name token in Call statement");
     }
     else if (token2->getType() != TokenType::SEMICOLON) {
-        throw SyntaxErrorException("Call statement should end with a ;");
+        throw SyntaxErrorException("Missing ; token in Call statement");
     }
 
+    // Erase 'call Procedure;' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     return token1->getValue();
 }

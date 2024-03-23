@@ -109,7 +109,7 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::matchExact(vector<shared
 
 bool AssignPatternStore::partialMatch(shared_ptr<Expression> exprS, string& curr, string& rpn) {
     string val = exprS->getName();
-    if (exprS->isLeafNodeExpression()) {
+    if (exprS->isLeafNode()) {
         curr.append(val).append(" ");
         return curr == rpn;
     } else {
@@ -131,7 +131,7 @@ bool AssignPatternStore::partialMatch(shared_ptr<Expression> exprS, string& curr
 
 bool AssignPatternStore::fullMatch(shared_ptr<Expression> exprS, string& curr, string& rpn) {
     string val = exprS->getName();
-    if (exprS->isLeafNodeExpression()) {
+    if (exprS->isLeafNode()) {
         curr.append(val).append(" ");
         return curr == rpn;
     } else {

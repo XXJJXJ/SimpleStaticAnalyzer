@@ -2,8 +2,8 @@
 
 shared_ptr<Statement> ReadStatementParser::parseEntity(Tokens& tokens) {
     string variableName = extractVariableName(tokens);
-    auto variable = make_shared<Variable>(variableName);
-    auto readStatement =
+    shared_ptr<Variable> variable = make_shared<Variable>(variableName);
+    shared_ptr<ReadStatement> readStatement =
         make_shared<ReadStatement>(
             Program::getAndIncrementStatementNumber(), 
             variable,
@@ -17,15 +17,16 @@ string ReadStatementParser::extractVariableName(Tokens& tokens) const {
     shared_ptr<Token> token2 = tokens[2];
 
     if (token0->getValue() != "read") {
-        throw SyntaxErrorException("Read statement should start with read keyword");
+        throw SyntaxErrorException("Missing read name token in Read statement");
     }
     else if (token1->getType() != TokenType::NAME) {
-        throw SyntaxErrorException("Read statement does not have a variable");
+        throw SyntaxErrorException("Missing variable name token in Read statement");
     }
     else if (token2->getType() != TokenType::SEMICOLON) {
-        throw SyntaxErrorException("Read statement should end with a ;");
+        throw SyntaxErrorException("Missing ; token in Read statement");
     }
 
+    // Erase 'read variable;' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     return token1->getValue();
 }

@@ -3,11 +3,12 @@
 ReadStatement::ReadStatement(
     int statementNumber, 
     shared_ptr<Variable> variable_, 
-    string procedureName) : variable(variable_), 
+    string procedureName) 
+    : variable(std::move(variable_)),
     Statement(
-        statementNumber,
+        std::move(statementNumber),
         EntityType::Read,
-        procedureName) {}
+        std::move(procedureName)) {}
 
 shared_ptr<Variable> ReadStatement::getVariable() const {
     return variable;

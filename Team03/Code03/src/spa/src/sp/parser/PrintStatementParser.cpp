@@ -2,8 +2,8 @@
 
 shared_ptr<Statement> PrintStatementParser::parseEntity(Tokens& tokens) {
     string variableName = extractVariableName(tokens);
-    auto variable = make_shared<Variable>(variableName);
-    auto printStatement =
+    shared_ptr<Variable> variable = make_shared<Variable>(variableName);
+    shared_ptr<PrintStatement> printStatement =
         make_shared<PrintStatement>(
             Program::getAndIncrementStatementNumber(),
             variable,
@@ -17,15 +17,16 @@ string PrintStatementParser::extractVariableName(Tokens& tokens) const {
     shared_ptr<Token> token2 = tokens[2];
 
     if (token0->getValue() != "print") {
-        throw SyntaxErrorException("Print statement should start with print");
+        throw SyntaxErrorException("Missing print name token in Print statement");
     }
     else if (token1->getType() != TokenType::NAME) {
-        throw SyntaxErrorException("Print statement does not have a variable");
+        throw SyntaxErrorException("Missing variable name token in Print statement");
     }
     else if (token2->getType() != TokenType::SEMICOLON) {
-        throw SyntaxErrorException("Print statement should end with a ;");
+        throw SyntaxErrorException("Missing ; token in Print statement");
     }
     
+    // Erase 'print variable;' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     return token1->getValue();
 }

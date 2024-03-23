@@ -3,22 +3,26 @@
 ArithmeticOperation::ArithmeticOperation(
     string name,
     PairOfArguments arguments)
-    : Operation(std::move(name), EntityType::Arithmetic, arguments) {}
+    : Operation(std::move(name), EntityType::Arithmetic, std::move(arguments)) {}
 
 void ArithmeticOperation::accept(shared_ptr<Visitor> visitor) {
-    visitor->visitArithmeticalOperation(make_shared<ArithmeticOperation>(*this));
+    visitor->visitArithmeticOperation(make_shared<ArithmeticOperation>(*this));
 }
 
 bool ArithmeticOperation::operator==(const Expression& other) const {
-    if (!Expression::operator==(other)) {
+    if (!(Expression::operator==(other))) {
         return false;
     }
-
-    auto casted = dynamic_cast<const ArithmeticOperation&>(other);
-
-    return
-        this->getArguments()->first->operator==(*casted.getArguments()->first) && 
-        this->getArguments()->second->operator==(*casted.getArguments()->second);
+    else {
+        auto& casted = static_cast<const ArithmeticOperation&>(other);
+        auto& thisFirstArgument = this->getArguments()->first;
+        auto& thisSecondArgument = this->getArguments()->second;
+        auto& castedFirstArgument = *casted.getArguments()->first;
+        auto& castedSecondArgument = *casted.getArguments()->second;
+        return
+            thisFirstArgument->operator==(castedFirstArgument) && 
+            thisSecondArgument->operator==(castedSecondArgument);
+    }
 }
 
 EntityType ArithmeticOperation::getType() const {

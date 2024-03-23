@@ -14,15 +14,15 @@ public:
     void addThenStatement(shared_ptr<Statement> statement);
     void addElseStatement(shared_ptr<Statement> statement);
     shared_ptr<ConditionalOperation> getCondition() const;
-    StatementListContainer getThenStatementList() const;
-    StatementListContainer getElseStatementList() const;
+    StatementList getThenStatementList() const;
+    StatementList getElseStatementList() const;
     [[nodiscard]] EntityType getType() const override;
     [[nodiscard]] bool isOfType(EntityType type) const override;
 
 private:
     shared_ptr<ConditionalOperation> condition;
-    StatementListContainer thenStatementList;
-    StatementListContainer elseStatementList;
+    StatementList thenStatementList;
+    StatementList elseStatementList;
 };
 
 namespace std {
