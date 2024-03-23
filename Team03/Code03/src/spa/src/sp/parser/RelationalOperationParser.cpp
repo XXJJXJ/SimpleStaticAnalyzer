@@ -22,7 +22,10 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
 
 shared_ptr<Expression> RelationalOperationParser::parseFactor() {
     shared_ptr<ArithmeticOperationParser> arithmeticOperationParser = make_shared<ArithmeticOperationParser>();
-    arithmeticOperationParser->setArguments(getIsSubExpression(), getIndexPointer(), getIsProcessedTokenPointer());
+    arithmeticOperationParser->setPairOfArguments(
+        getIsSubExpression(), 
+        getIndexPointer(), 
+        getIsProcessedTokenPointer());
     arithmeticOperationParser->setIsSubExpression(true);
     return arithmeticOperationParser->parseEntity(*getTokens());
 }

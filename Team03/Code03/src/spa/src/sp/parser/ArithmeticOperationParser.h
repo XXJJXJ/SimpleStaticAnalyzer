@@ -17,7 +17,7 @@ public:
 private:
 	unordered_set<TokenType> termTokens = { TokenType::PLUS, TokenType::MINUS };
 	unordered_set<TokenType> factorTokens = { TokenType::TIMES, TokenType::DIVIDE, TokenType::MODULUS };
-	bool checkCondition(bool isTerm, shared_ptr<Expression> leftNode);
+	bool checkTermFactor(bool isTerm);
 	shared_ptr<Expression> parseTerm();
 	shared_ptr<Expression> parseExpression(bool isTerm);
 	shared_ptr<Expression> parseFactor();
