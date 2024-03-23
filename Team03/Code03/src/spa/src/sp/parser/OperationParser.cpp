@@ -77,14 +77,14 @@ void OperationParser::setup(Tokens& tokens_) {
         nextToken();
     }
 
-    if (*isSetArgumentPointer) {
+    if (*isSetPairOfArgumentsPointer) {
         tokens = tokens_;
         updateNextToken();
     }
 }
 
 void OperationParser::setPairOfArguments(bool isSubExpression, shared_ptr<int> indexPointer_,  shared_ptr<bool> isProcessedTokenPointer_) {
-    *isSetArgumentPointer = true;
+    *isSetPairOfArgumentsPointer = true;
     *isSubExpressionPointer = isSubExpression;
     indexPointer = indexPointer_;
     isProcessedTokenPointer = isProcessedTokenPointer_;

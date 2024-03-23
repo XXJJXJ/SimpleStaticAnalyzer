@@ -20,19 +20,19 @@ public:
 	bool getIsSubExpression();
 	bool isEndOfTokens();
 	void nextToken();
-	void manageParentheses(TokenType tokenType, int index);
-	void setPairOfArguments(bool isSubExpression, shared_ptr<int> index, shared_ptr<bool> isProcessedToken);
-	void setIsSubExpression(bool isSubExpression);
 	void updateNextToken();
+	void manageParentheses(TokenType tokenType, int index);
+	void setIsSubExpression(bool isSubExpression);
+	void setPairOfArguments(bool isSubExpression, shared_ptr<int> index, shared_ptr<bool> isProcessedToken);
 
 private:
 	Tokens tokens;
 	string tokenValue;
 	shared_ptr<Token> token = nullptr;
+	shared_ptr<int> indexPointer = make_shared<int>(0);
 	shared_ptr<bool> isProcessedTokenPointer = make_shared<bool>(false);
 	shared_ptr<bool> isSubExpressionPointer = make_shared<bool>(false);
-	shared_ptr<bool> isSetArgumentPointer = make_shared<bool>(false);
-	shared_ptr<int> indexPointer = make_shared<int>(0);
+	shared_ptr<bool> isSetPairOfArgumentsPointer = make_shared<bool>(false);
 	stack<TokenType> parentheses;
 	unordered_map<int, TokenType> indexParenthesesMap; 
 	bool hasMoreTokens();
