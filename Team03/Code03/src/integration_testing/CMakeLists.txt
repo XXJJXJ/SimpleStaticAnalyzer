@@ -11,6 +11,5 @@ file(GLOB headers
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.h"
 )
-add_executable(integration_testing ${srcs} ${headers}
-        src/TestSpa.cpp)
+add_executable(integration_testing ${srcs} ${headers})
 target_link_libraries(integration_testing spa)
