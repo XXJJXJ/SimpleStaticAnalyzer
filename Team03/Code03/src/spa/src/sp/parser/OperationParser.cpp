@@ -14,12 +14,24 @@ void OperationParser::setNextToken() {
     tokenValue = token->getValue();
 }
 
-void OperationParser::incrementIndex() {
-    (*indexPointer)++;
+void OperationParser::setTokens(Tokens& tokens_) {
+    if (*indexPointer == 0) {
+        tokens = tokens_;
+        nextToken();
+    }
+
+    if (*isSetPairOfArgumentsPointer) {
+        tokens = tokens_;
+        setNextToken();
+    }
 }
 
 bool OperationParser::hasMoreTokens() {
     return *indexPointer < tokens.size();
+}
+
+void OperationParser::incrementIndex() {
+    (*indexPointer)++;
 }
 
 bool OperationParser::isEndOfTokens() {
@@ -71,18 +83,6 @@ void OperationParser::setIsSubExpression(bool isSubExpression) {
     *isSubExpressionPointer = isSubExpression;
 }
 
-void OperationParser::setTokens(Tokens& tokens_) {
-    if (*indexPointer == 0) {
-        tokens = tokens_;
-        nextToken();
-    }
-
-    if (*isSetPairOfArgumentsPointer) {
-        tokens = tokens_;
-        setNextToken();
-    }
-}
-
 void OperationParser::setPairOfArguments(bool isSubExpression, shared_ptr<int> indexPointer_,  shared_ptr<bool> isProcessedTokenPointer_) {
     *isSetPairOfArgumentsPointer = true;
     *isSubExpressionPointer = isSubExpression;
@@ -107,6 +107,6 @@ void OperationParser::modifyParentheses(TokenType tokenType) {
 
 void OperationParser::checkParentheses() {
     if (!*isSubExpressionPointer && !(parentheses.empty() && isEndOfTokens() && *isProcessedTokenPointer)) {
-        throw SyntaxErrorException("Uunbalanced parenthesis in procedure");
+        throw SyntaxErrorException("Unbalanced parenthesis in procedure");
     }
 }
