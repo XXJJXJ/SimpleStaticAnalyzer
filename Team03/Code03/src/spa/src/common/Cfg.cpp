@@ -1,31 +1,33 @@
 #include "Cfg.h"
 
-void Cfg::addProcedureCfg(const string& procedureName, shared_ptr<CfgNode> node) {
-    if (procedureCfgToCfgRootNodes.find(procedureName) != procedureCfgToCfgRootNodes.end()) {
+void Cfg::addProcedureNode(string procedureName, shared_ptr<CfgNode> node) {
+    if (procedureNodes.find(procedureName) != procedureNodes.end()) {
         throw SemanticErrorException(
-            "CFG with procedure name " +
+            "CFG for procedure name " + 
             procedureName +
             " already exists");
     }
-
-    procedureCfgToCfgRootNodes[procedureName] = move(node);
-}
-
-void Cfg::addStatementCfg(shared_ptr<Statement> statement, shared_ptr<CfgNode> node) {
-    if (statementToCfgNode.find(statement) != statementToCfgNode.end()) {
-        throw SemanticErrorException(
-            "Statement " +
-            statement->getName() +
-            " is already assigned a node");
+    else {
+        procedureNodes[procedureName] = move(node);
     }
-
-    statementToCfgNode[statement] = move(node);
 }
 
-Cfg::ProcedureToCfgNodeMap Cfg::getCfgRootNodes() {
-    return procedureCfgToCfgRootNodes;
+void Cfg::addStatementNode(shared_ptr<Statement> statement, shared_ptr<CfgNode> node) {
+    if (statementNodes.find(statement) != statementNodes.end()) {
+        throw SemanticErrorException(
+            "Node for Statement " + 
+            statement->getName() +
+            " already exists");
+    }
+    else {
+        statementNodes[statement] = move(node);
+    }
 }
 
-Cfg::StatementToNodeMap Cfg::getStatementToCfg() {
-    return statementToCfgNode;
+Cfg::ProcedureNodes Cfg::getProcedureNodes() {
+    return procedureNodes;
+}
+
+Cfg::StatementNodes Cfg::getStatementNodes() {
+    return statementNodes;
 }

@@ -8,7 +8,7 @@ void Constant::accept(shared_ptr<Visitor> visitor) {
     visitor->visitConstant(make_shared<Constant>(*this));
 }
 
-bool Constant::isLeafNodeExpression() {
+bool Constant::isLeafNode() {
     return true;
 }
 

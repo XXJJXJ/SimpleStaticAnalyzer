@@ -24,7 +24,7 @@ void DesignExtractor::extractDesign(shared_ptr<Program> program) {
 }
 
 void DesignExtractor::extractNextRelation(shared_ptr<Cfg> cfg) {
-	auto procToCfgNodeMap = cfg->getCfgRootNodes();
+	auto procToCfgNodeMap = cfg->getProcedureNodes();
 	for (auto iter = procToCfgNodeMap.begin(); iter != procToCfgNodeMap.end(); ++iter) {
 		auto currNode = iter->second;
 		vector <shared_ptr<CfgNode>> visited;
@@ -34,7 +34,7 @@ void DesignExtractor::extractNextRelation(shared_ptr<Cfg> cfg) {
 }
 
 void DesignExtractor::nodeTraversalHelper(shared_ptr<CfgNode> currNode, vector<shared_ptr<CfgNode>> visited, shared_ptr<Statement> prevNodeStatement) {
-	auto statementList = currNode->getStatements();
+	auto statementList = currNode->getStatementList();
 	shared_ptr<Statement> currNodeLastStatement = NULL;
 	if (count(visited.begin(), visited.end(), currNode) <= 0) {
 		if (statementList.size() != 0) {

@@ -13,13 +13,13 @@ public:
     void accept(shared_ptr<Visitor> visitor) override;
     void addStatement(shared_ptr<Statement> statement);
     shared_ptr<ConditionalOperation> getCondition() const;
-    StatementListContainer getStatementList() const;
+    StatementList getStatementList() const;
     [[nodiscard]] EntityType getType() const override;
     [[nodiscard]] bool isOfType(EntityType type) const override;
 
 private:
     shared_ptr<ConditionalOperation> condition;
-    StatementListContainer statementList;
+    StatementList statementList;
 };
 
 namespace std {

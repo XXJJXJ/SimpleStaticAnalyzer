@@ -6,7 +6,7 @@ class Constant : public Expression {
 public:
 	explicit Constant(string value);
 	void accept(shared_ptr<Visitor> visitor) override;
-	bool isLeafNodeExpression() override;
+	bool isLeafNode() override;
     std::size_t hash() const;
 	bool operator==(const Constant& other) const;
     [[nodiscard]] EntityType getType() const override;

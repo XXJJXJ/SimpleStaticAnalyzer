@@ -23,7 +23,7 @@ vector<vector<shared_ptr<Entity>>> NextStore::getTransitive() {
     return getStmtPairs(nextStarMap);
 }
 
-vector<shared_ptr<Statement>> flattenStmtList(StatementListContainer stmtList) {
+vector<shared_ptr<Statement>> flattenStmtList(StatementList stmtList) {
     vector<shared_ptr<Statement>> res;
     for (auto & stmt : stmtList) {
         res.push_back(stmt);

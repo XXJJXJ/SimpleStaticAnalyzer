@@ -5,6 +5,7 @@ shared_ptr<Expression> VariableParser::parseEntity(Tokens& tokens) {
     if (token->getType() == TokenType::NAME) {
         return make_shared<Variable>(token->getValue());
     }
-
-    throw SemanticErrorException("Invalid Variable");
+    else {
+        throw SemanticErrorException("Invalid Variable");
+    }
 }

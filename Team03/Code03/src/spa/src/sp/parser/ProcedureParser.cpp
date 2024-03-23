@@ -14,14 +14,14 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens& tokens) {
     }
 
     if (procedure->getStatementList().size() == 0) {
-        throw SyntaxErrorException("Procedure block cannot be empty");
+        throw SyntaxErrorException("Empty Procedure");
     }
 
     if (isEndOfProcedure(tokens)) {
         tokens.erase(tokens.begin());
     }
     else {
-        throw SyntaxErrorException("Procedure is missing a }");
+        throw SyntaxErrorException("Missing } token in Procedure");
     }
 
     return procedure;
@@ -33,13 +33,13 @@ string ProcedureParser::extractProcedureName(Tokens& tokens) {
     shared_ptr<Token> token2 = tokens[2];
 
     if (token0->getValue() != "procedure") {
-        throw SyntaxErrorException("A procedure should start with procedure");
+        throw SyntaxErrorException("Missing procedure name token");
     }
     else if (token1->getType() != TokenType::NAME) {
-        throw SyntaxErrorException("A procedure should have a NAME");
+        throw SyntaxErrorException("Missing name token");
     }
     else if (token2->getType() != TokenType::LEFT_BRACE) {
-        throw SyntaxErrorException("A procedure should begin with a {");
+        throw SyntaxErrorException("Missing { token in Procedure");
     }
     else {
         return token1->getValue();

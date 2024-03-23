@@ -4,7 +4,7 @@ Statement::Statement(
     int statementNumber_,
     EntityType statementType,
     string procedureName_)
-    : statementNumber(statementNumber_),
+    : statementNumber(std::move(statementNumber_)),
       statementType(std::move(statementType)),
       procedureName(std::move(procedureName_)) {
 }
