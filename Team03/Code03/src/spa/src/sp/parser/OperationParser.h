@@ -24,7 +24,6 @@ public:
 	void setPairOfArguments(bool isSubExpression, shared_ptr<int> index, shared_ptr<bool> isProcessedToken);
 	void setIsSubExpression(bool isSubExpression);
 	void updateNextToken();
-	void checkTokens();
 
 private:
 	Tokens tokens;

@@ -110,9 +110,3 @@ void OperationParser::checkParentheses() {
         throw SyntaxErrorException("Procedure contains unbalanced parenthesis");
     }
 }
-
-void OperationParser::checkTokens() {
-    if (*isProcessedTokenPointer) {
-        throw SyntaxErrorException("Insufficient tokens");
-    }
-}
