@@ -9,7 +9,7 @@
 
 Sp::Sp() {}
 
-void Sp::ProcessSIMPLE(string fileName) {
+bool Sp::ProcessSIMPLE(string fileName) {
     try {
         std::ifstream inputfile(fileName);
         if (!inputfile.is_open()) {
@@ -23,10 +23,12 @@ void Sp::ProcessSIMPLE(string fileName) {
             shared_ptr<Program> program = parser->parseSource(tokens);
             shared_ptr<DesignExtractor> designExtractor = make_shared<DesignExtractor>(pkbPopulator);
             designExtractor->extractDesign(program);
+            return true;
         }
     }
     catch (SpaException& e) {
         std::cout << e.what() << std::endl;
+        return false;
     }
 }
 

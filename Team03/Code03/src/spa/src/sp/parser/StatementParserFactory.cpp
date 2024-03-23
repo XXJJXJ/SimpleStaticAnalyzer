@@ -5,26 +5,28 @@ shared_ptr<StatementParser> StatementParserFactory::getStatementParser(Tokens& t
     if (tokens.size() < 2) {
         throw SyntaxErrorException("Insufficient number of tokens");
     }
-    if (checkAssignment(tokens)) {
-        return make_shared<AssignStatementParser>();
-    }
-    else if (checkKeywordType(tokens, "if", true)) {
-        return make_shared<IfStatementParser>();
-    }
-    else if (checkKeywordType(tokens, "while", true)) {
-        return make_shared<WhileStatementParser>();
-    }
-    else if (checkKeywordType(tokens, "print", false)) {
-        return make_shared<PrintStatementParser>();
-    }
-    else if (checkKeywordType(tokens, "read", false)) {
-        return make_shared<ReadStatementParser>();
-    }
-    else if (checkKeywordType(tokens, "call", false)) {
-        return make_shared<CallStatementParser>();
-    }
     else {
-        throw SemanticErrorException("Unknown Statement Type");
+        if (checkAssignment(tokens)) {
+            return make_shared<AssignStatementParser>();
+        }
+        else if (checkKeywordType(tokens, "if", true)) {
+            return make_shared<IfStatementParser>();
+        }
+        else if (checkKeywordType(tokens, "while", true)) {
+            return make_shared<WhileStatementParser>();
+        }
+        else if (checkKeywordType(tokens, "print", false)) {
+            return make_shared<PrintStatementParser>();
+        }
+        else if (checkKeywordType(tokens, "read", false)) {
+            return make_shared<ReadStatementParser>();
+        }
+        else if (checkKeywordType(tokens, "call", false)) {
+            return make_shared<CallStatementParser>();
+        }
+        else {
+            throw SemanticErrorException("Unknown Statement Type");
+        }
     }
 }
 

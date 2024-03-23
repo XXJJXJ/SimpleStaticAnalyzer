@@ -21,7 +21,11 @@ TestWrapper::TestWrapper() {
 void TestWrapper::parse(std::string filename) {
 	// call your parser to do the parsing
   // ...rest of your code...
-  sp.ProcessSIMPLE(filename);
+  bool isParsed = sp.ProcessSIMPLE(filename);
+  if (!isParsed) {
+      cout << "Invalid SIMPLE Program" << endl;
+      exit(0);
+  }
 }
 
 // method to evaluating a query
