@@ -53,7 +53,7 @@ shared_ptr<int> OperationParser::getIndexPointer() {
 }
 
 shared_ptr<Expression> OperationParser::parseEntity(Tokens& tokens) {
-    setup(tokens);
+    setTokens(tokens);
     shared_ptr<Expression> expression = parse();
     checkParentheses();
     return expression;
@@ -71,7 +71,7 @@ void OperationParser::setIsSubExpression(bool isSubExpression) {
     *isSubExpressionPointer = isSubExpression;
 }
 
-void OperationParser::setup(Tokens& tokens_) {
+void OperationParser::setTokens(Tokens& tokens_) {
     if (*indexPointer == 0) {
         tokens = tokens_;
         nextToken();
@@ -107,6 +107,6 @@ void OperationParser::modifyParentheses(TokenType tokenType) {
 
 void OperationParser::checkParentheses() {
     if (!*isSubExpressionPointer && !(parentheses.empty() && isEndOfTokens() && *isProcessedTokenPointer)) {
-        throw SyntaxErrorException("Procedure contains unbalanced parenthesis");
+        throw SyntaxErrorException("Uunbalanced parenthesis in procedure");
     }
 }
