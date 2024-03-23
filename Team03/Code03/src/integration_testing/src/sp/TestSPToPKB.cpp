@@ -462,3 +462,48 @@ TEST_CASE("24th SP-PKB Integration Test: nested whiles and ifs next relation tes
     REQUIRE(nextStore.size() == 37);
     pkbPopulator->clear();
 }
+
+TEST_CASE("25th SP-PKB Integration Test: next* relation test") {
+    string str = "procedure test {read x; print x; read y; print y; call hello; call goodbye;} procedure hello {z = 11 + x * (x + y);} procedure goodbye {print z;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> nextStore = qm.getNextT();
+    REQUIRE(nextStore.size() == 15);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("26th SP-PKB Integration Test: while next* relation test") {
+    string str = "procedure test {read x; print x; read y; while (z < 11) {print name; z = x + 1; print z;} read monkey; print monkey;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> nextStore = qm.getNextT();
+    REQUIRE(nextStore.size() == 46);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("27th SP-PKB Integration Test: nested while next* relation test") {
+    string str = "procedure test {read x; print x; read y; while (z < 11) {print name; z = x + 1; while (x < 12) {read x; print x; while (y > 13) {read y; print y;} x = y + z; print x;} z = 11; print z;} read monkey; print monkey;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> nextStore = qm.getNextT();
+    REQUIRE(nextStore.size() == 244);
+    pkbPopulator->clear();
+}
