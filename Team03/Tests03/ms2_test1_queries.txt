@@ -213,3 +213,78 @@ while w;
 Select w pattern w("alive", _)
 66
 5000
+43 - Get assgn stmt that modifies chicks and is enclosed within while - gets 11, 22
+assign a; while w;
+Select a such that Modifies(a, "chicks") and Parent*(w, a)
+11, 22
+5000
+44 - Get assgn stmt pattern that uses chicks, is after statement 21, and is enclosed within while - gets 22
+assign a; while w;
+Select a pattern a ("chicks", _) such that Parent*(w, a) and Next(21, a)
+22
+5000
+45 - Get variables that are modified in if and assgn stmts - gets chicks, eggs, pok, randNum
+variable v; assign a; if i;
+Select v such that Modifies(i, v) and Modifies(a, v)
+chicks, eggs, pok, randNum
+5000
+46 - Get stmts that are directly enclosed within if stmt and directly after an assgn stmt in control flow with pattern eggs - 11
+stmt s; assign a; if i;
+Select s such that Next(a, s) pattern a ("eggs", _) such that Parent(i, s)
+11
+5000
+47 - Get stmts that are directly enclosed within if stmt, directly after an assgn stmt in control flow with pattern eggs, and directly after stmt 11 in control flow- NIL
+stmt s; assign a; if i;
+Select s such that Next(a, s) pattern a ("eggs", _) such that Parent(i, s) and Next(11, s)
+
+5000
+48 - Get stmts that are directly enclosed within if stmt, directly after an assgn stmt in control flow with pattern eggs, and after stmt 11 in control flow - 11
+stmt s; assign a; if i;
+Select s such that Next(a, s) pattern a ("eggs", _) such that Parent(i, s) and Next*(11, s)
+11
+5000
+49 - Get variables modified by a called procedure - gets chicks, eggs, is, pok, stop, randNum
+variable v; stmt s; procedure p1, p2;
+Select v such that Modifies(s, v) and Uses(p2, v) and Calls(p1, p2)
+chicks, eggs, is, pok, stop, randNum
+5000
+50 - Get if stmts with variable eggs in condition and while stmt parent - gets 4
+stmt s; if i; while w;
+Select i pattern i ("eggs", _, _) such that Parent(w, i)
+4
+5000
+51 - Get if stmts with variable eggs in condition and while stmt parent* - gets 4, 8
+stmt s; if i; while w;
+Select i pattern i ("eggs", _, _) such that Parent*(w, i)
+4, 8
+5000
+52 - Get if stmts with variable eggs in condition and while stmt parent* and is indirectly after stmt 6 in control flow- gets 4, 8
+stmt s; if i; while w;
+Select i pattern i ("eggs", _, _) such that Parent*(w, i) and Next*(6, i)
+4, 8
+5000
+53 - Get if stmts with variable eggs in condition and while stmt parent* and is after stmt 6 in control flow- gets 8
+stmt s; if i; while w;
+Select i pattern i ("eggs", _, _) such that Parent*(w, i) and Next(7, i)
+8
+5000
+54 - Get variables used by if stmt with pattern randNum - gets eggs, successfully, randNum
+stmt s; variable v; if i;
+Select v such that Uses(s, v) and Uses(i, v) pattern i ("randNum", _, _)
+eggs, successfully, randNum
+5000
+55 - Get variables modified by stmt with if stmt parent with pattern randNum - gets laid, randNum
+stmt s; variable v; if i;
+Select v such that Modifies(s, v) and Parent(i, s) pattern i ("randNum", _, _)
+laid, randNum
+5000
+56 - Get variables used by stmt with if stmt parent with pattern randNum and if stmt is directly after stmt 71 in control flow - gets successfully, randNum
+stmt s; variable v; if i;
+Select v such that Next(71, s) and Uses(s, v) and Parent(i, s) pattern i ("randNum", _, _)
+successfully, randNum
+5000
+57 - Get variables used by stmt with if stmt parent with pattern randNum and if stmt is before stmt 76 in control flow - gets randNum
+stmt s; variable v; if i;
+Select v such that Next*(s, 76) and Uses(s, v) and Parent(i, s) pattern i ("randNum", _, _)
+randNum
+5000
