@@ -4,6 +4,7 @@
 
 NotPredicate::NotPredicate(shared_ptr<Predicate> predicate) {
     this->predicate = std::move(predicate);
+    this->synonyms = this->predicate->getSynonyms();
 }
 
 /**
