@@ -20,7 +20,7 @@ public:
 	bool getIsSubExpression();
 	bool isEndOfTokens();
 	void nextToken();
-	void updateNextToken();
+	void setNextToken();
 	void manageParentheses(TokenType tokenType, int index);
 	void setIsSubExpression(bool isSubExpression);
 	void setPairOfArguments(bool isSubExpression, shared_ptr<int> index, shared_ptr<bool> isProcessedToken);

@@ -2,14 +2,14 @@
 
 void OperationParser::nextToken() {
     if (hasMoreTokens()) {
+        *isProcessedTokenPointer = false;
         token = tokens[*indexPointer];
         tokenValue = token->getValue();
-        *isProcessedTokenPointer = false;
         incrementIndex();
     }
 }
 
-void OperationParser::updateNextToken() {
+void OperationParser::setNextToken() {
     token = tokens[static_cast<size_t>(*indexPointer) - 1];
     tokenValue = token->getValue();
 }
@@ -79,7 +79,7 @@ void OperationParser::setup(Tokens& tokens_) {
 
     if (*isSetPairOfArgumentsPointer) {
         tokens = tokens_;
-        updateNextToken();
+        setNextToken();
     }
 }
 
