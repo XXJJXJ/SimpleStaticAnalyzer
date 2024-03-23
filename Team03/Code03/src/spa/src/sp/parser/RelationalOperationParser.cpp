@@ -13,10 +13,11 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
         if (!rightRelationalFactor) {
             throw SyntaxErrorException("Missing relational factor in Arithmetic expression");
         }
-
-        setNextToken();
-        PairOfArguments pairOfArguments{leftRelationalFactor, rightRelationalFactor};
-        return make_shared<RelationalOperation>(operation, pairOfArguments);
+        else {
+            setNextToken();
+            PairOfArguments pairOfArguments{ leftRelationalFactor, rightRelationalFactor };
+            return make_shared<RelationalOperation>(operation, pairOfArguments);
+        }
     }
 }
 
