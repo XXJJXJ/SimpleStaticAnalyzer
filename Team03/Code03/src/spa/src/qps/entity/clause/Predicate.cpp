@@ -1,5 +1,20 @@
 #include "Predicate.h"
 
+void Predicate::addEntityRef(EntityRef &entityRef) {
+    this->rowFilter.push_back(getFilterForEntityRef(entityRef));
+    if (std::holds_alternative<Synonym>(entityRef)) {
+        auto synonym = std::get<Synonym>(entityRef);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+        this->projectionFilter.push_back(true);
+    } else {
+        this->projectionFilter.push_back(false);
+    }
+}
+
+std::shared_ptr<BaseTable> Predicate::getFullTable(QueryManager &qm) {
+    return {};
+}
+
 bool Predicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
     if (row.size() != rowFilter.size()) {
         throw QPSEvaluationException("Predicate: mismatch between row size and row filter size, row size: "
@@ -13,9 +28,17 @@ bool Predicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
     return true;
 }
 
-std::string Predicate::toString() const {
-    return "Predicate";
+void Predicate::addStmtRef(StatementRef &stmtRef) {
+    this->rowFilter.push_back(getFilterForStatementRef(stmtRef));
+    if (std::holds_alternative<Synonym>(stmtRef)) {
+        auto synonym = std::get<Synonym>(stmtRef);
+        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
+        this->projectionFilter.push_back(true);
+    } else {
+        this->projectionFilter.push_back(false);
+    }
 }
+
 
 std::shared_ptr<BaseTable> Predicate::getResultTable(QueryManager& qm) {
 
@@ -35,31 +58,6 @@ std::shared_ptr<BaseTable> Predicate::getResultTable(QueryManager& qm) {
     return resultTable;
 }
 
-// TODO: further refactor to remove duplication. One possible solution is to create wrapper classes for each of the
-//  refs, and use template function. Currently we can't use template function because the refs are variants and C++
-//  doesn't know how to handle them.
-void Predicate::addStmtRef(StatementRef &stmtRef) {
-    this->rowFilter.push_back(getFilterForStatementRef(stmtRef));
-    if (std::holds_alternative<Synonym>(stmtRef)) {
-        auto synonym = std::get<Synonym>(stmtRef);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-        this->projectionFilter.push_back(true);
-    } else {
-        this->projectionFilter.push_back(false);
-    }
-}
-
-void Predicate::addEntityRef(EntityRef &entityRef) {
-    this->rowFilter.push_back(getFilterForEntityRef(entityRef));
-    if (std::holds_alternative<Synonym>(entityRef)) {
-        auto synonym = std::get<Synonym>(entityRef);
-        this->synonyms.push_back(std::make_shared<Synonym>(synonym));
-        this->projectionFilter.push_back(true);
-    } else {
-        this->projectionFilter.push_back(false);
-    }
-}
-
 void Predicate::addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef) {
     this->rowFilter.push_back(getFilterForProcAndStmtRef(procAndStmtRef));
     if (std::holds_alternative<Synonym>(procAndStmtRef)) {
@@ -71,6 +69,3 @@ void Predicate::addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef) {
     }
 }
 
-std::shared_ptr<BaseTable> Predicate::getFullTable(QueryManager &qm) {
-    return {};
-}

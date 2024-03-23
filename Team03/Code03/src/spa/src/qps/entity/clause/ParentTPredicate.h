@@ -22,8 +22,6 @@ protected:
 public:
     ParentTPredicate(StatementRef lhs, StatementRef rhs);
     ~ParentTPredicate() override = default;
-    std::string toString() const override;
-
 };
 
 #endif // PARENTTPREDICATE_H

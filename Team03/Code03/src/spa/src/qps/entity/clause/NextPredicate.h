@@ -12,7 +12,6 @@ protected:
 
 public:
     NextPredicate(StatementRef lhs, StatementRef rhs);
-    std::string toString() const override;
 };
 
 

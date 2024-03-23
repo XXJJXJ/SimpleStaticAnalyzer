@@ -2,8 +2,6 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
-// TODO: implement
-
 CallsPredicate::CallsPredicate(EntityRef lhs, EntityRef rhs) : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidProcedure(this->lhs) || !isValidProcedure(this->rhs)) {
         throw SemanticErrorException("Invalid argument for CallsPredicate constructor");

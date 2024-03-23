@@ -14,7 +14,3 @@ NextPredicate::NextPredicate(StatementRef lhs, StatementRef rhs) {
     addStmtRef(this->lhs);
     addStmtRef(this->rhs);
 }
-
-std::string NextPredicate::toString() const {
-    return "Next predicate";
-}
