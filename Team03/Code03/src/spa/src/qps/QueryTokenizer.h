@@ -9,11 +9,12 @@ public:
     QueryTokenizer();
     ~QueryTokenizer();
 
-    std::vector<std::vector<std::vector<std::string>>> tokenize(const std::string& query);
+    static std::vector<std::string> tokenize(const std::string& query);
 
 private:
-    bool isPunctuation(char c);
-    std::vector<std::vector<std::vector<std::string>>> splitTokens(const std::vector<std::string>& tokens);
+    static std::vector<std::string> getTokens(const std::string& query);
+    static std::vector<std::string> collapseTokens(const std::vector<std::string>& query);
+    static bool isPunctuation(char c);
 };
 
 
