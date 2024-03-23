@@ -29,7 +29,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseRelationalOperation() {
     setIsSubExpression(false);
     shared_ptr<Expression> relationalExpression = relationalOperationParser->parseEntity(*getTokens());
     if (relationalExpression) {
-        updateNextToken();
+        setNextToken();
         PairOfArguments pairOfArguments{relationalExpression, nullptr}; 
         return make_shared<ConditionalOperation>("relationalExpression", pairOfArguments);
     }

@@ -2,7 +2,7 @@
 
 shared_ptr<Expression> RelationalOperationParser::parse() {
     shared_ptr<Expression> leftRelationalFactor = parseFactor();
-    updateNextToken();
+    setNextToken();
     if (relationalOperators.find(getTokenType()) == relationalOperators.end()) {
         throw SyntaxErrorException("Missing > or >= or < or <= or == or != token");
     }
@@ -14,7 +14,7 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
             throw SyntaxErrorException("Missing relational factor in Arithmetic expression");
         }
 
-        updateNextToken();
+        setNextToken();
         PairOfArguments pairOfArguments{leftRelationalFactor, rightRelationalFactor};
         return make_shared<RelationalOperation>(operation, pairOfArguments);
     }
