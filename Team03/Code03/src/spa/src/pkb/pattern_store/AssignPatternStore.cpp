@@ -6,6 +6,8 @@ bool isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/' || c == '%');
 }
 
+// Function is long, but there is no good way to shorten 
+// (Don't comment for the sake of commenting, unless you have a good concrete suggestion)
 string infixToPostfix(std::string expression) {
     string result = "";
     stack<char> operators;
