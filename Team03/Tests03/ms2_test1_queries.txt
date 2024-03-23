@@ -213,3 +213,33 @@ while w;
 Select w pattern w("alive", _)
 66
 5000
+43 - Get while pattern that uses eggs - only 3
+while w;
+Select w pattern w("eggs", _) such that Modifies(w, "eggs") and Modifies(w, "is")
+3
+5000
+44 - Get while pattern that uses eggs - only 20
+while w;
+Select w pattern w("eggs", _) such that Modifies(w, "chicks") and not Modifies(w, "eggs")
+20
+5000
+45 - Get while pattern that does not modify eggs - only 20
+while w;
+Select w pattern w("eggs", _) such that not Modifies(w, "eggs")
+20
+5000
+46 - Get while that does not modifies eggs - only 20 and 66
+while w;
+Select w such that not Modifies(w, "eggs")
+20,66
+5000
+47 - Get while that modifies eggs - only 3
+while w;
+Select w such that Modifies(w, "eggs")
+3
+5000
+48 - Get all while - 3,20,66
+while w;
+Select w
+3,20,66
+5000
