@@ -22,9 +22,6 @@ public:
         return std::make_shared<BooleanTable>(returnValue);
     }
 
-    [[nodiscard]] std::string toString() const override {
-        return "MockBooleanPredicate";
-    }
 };
 
 class MockTablePredicate : public Predicate {
@@ -43,9 +40,5 @@ public:
     [[nodiscard]] shared_ptr<BaseTable> getResultTable(QueryManager& qm) override {
         // Directly return the predefined HeaderTable
         return tableToReturn;
-    }
-
-    [[nodiscard]] std::string toString() const override {
-        return "MockTablePredicate";
     }
 };
