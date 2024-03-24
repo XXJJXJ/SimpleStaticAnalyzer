@@ -1,4 +1,5 @@
 #include "QueryTokenizer.h"
+#include "QueryValidator.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 
 QueryTokenizer::QueryTokenizer() {}
@@ -67,13 +68,13 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
                 currToken.clear();
                 isWithinWildcard = false;
             } else {
-                if (isPunctuation(t)) {
-                    isPrevSyn = false;
-                } else {
+                if (QueryValidator::isIdent(t)) {
                     if (isPrevSyn){
                         currToken.append(" ");
                     }
                     isPrevSyn = true;
+                } else {
+                    isPrevSyn = false;
                 }
                 currToken.append(t);
             }
@@ -99,8 +100,4 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
 
 bool QueryTokenizer::isPunctuation(char c) {
     return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>' || c == '_' || c == '"';
-}
-
-bool QueryTokenizer::isPunctuation(std::string s) {
-    return s == "," || s == ";" || s == "(" || s == ")" || s == "<" || s == ">" || s == "_" || s == "\"" || s == "+" || s == "-" || s == "*" || s == "/" || s == "%";
 }
