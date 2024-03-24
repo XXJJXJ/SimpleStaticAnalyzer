@@ -26,15 +26,17 @@ shared_ptr<Expression> ArithmeticOperationParser::parseExpression(bool isTerm) {
 
 shared_ptr<Expression> ArithmeticOperationParser::parseFactor() {
     shared_ptr<Expression> leafNode = nullptr;
-    if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
-        manageParentheses(getTokenType(), getIndex());
+    TokenType tokenType = getTokenType();
+    if (tokenType == TokenType::LEFT_PARANTHESIS) {
+        manageParentheses(tokenType);
         nextToken();
         leafNode = parse();
-        if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
+        tokenType = getTokenType();
+        if (tokenType != TokenType::RIGHT_PARANTHESIS) {
             throw SyntaxErrorException("Missing ) token in Arithmetic operation");
         }
         else {
-            manageParentheses(getTokenType(), getIndex());
+            manageParentheses(tokenType);
         }
     }
     else {

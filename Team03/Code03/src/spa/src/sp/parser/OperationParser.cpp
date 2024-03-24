@@ -90,18 +90,15 @@ void OperationParser::setPairOfArguments(bool isSubExpression, shared_ptr<int> i
     isProcessedTokenPointer = isProcessedTokenPointer_;
 }
 
-void OperationParser::manageParentheses(TokenType tokenType, int index) {
-    if (indexParenthesesMap.find(index) == indexParenthesesMap.end()) {
-        indexParenthesesMap[index] = tokenType;
-        modifyParentheses(tokenType);
-    }
-}
-
-void OperationParser::modifyParentheses(TokenType tokenType) {
+void OperationParser::manageParentheses(TokenType tokenType) {
     if (tokenType == TokenType::LEFT_PARANTHESIS) {
         parentheses.push(tokenType);
-    } else if (!parentheses.empty() && tokenType == TokenType::RIGHT_PARANTHESIS) {
+    } 
+    else if (!parentheses.empty() && tokenType == TokenType::RIGHT_PARANTHESIS) {
         parentheses.pop();
+    }
+    else {
+        throw SyntaxErrorException("Unbalanced parenthesis in procedure");
     }
 }
 

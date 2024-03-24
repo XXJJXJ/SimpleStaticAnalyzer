@@ -21,7 +21,7 @@ public:
 	bool isEndOfTokens();
 	void nextToken();
 	void setNextToken();
-	void manageParentheses(TokenType tokenType, int index);
+	void manageParentheses(TokenType tokenType);
 	void setIsSubExpression(bool isSubExpression);
 	void setPairOfArguments(bool isSubExpression, shared_ptr<int> index, shared_ptr<bool> isProcessedToken);
 
@@ -34,12 +34,10 @@ private:
 	shared_ptr<bool> isSubExpressionPointer = make_shared<bool>(false);
 	shared_ptr<bool> isSetPairOfArgumentsPointer = make_shared<bool>(false);
 	stack<TokenType> parentheses;
-	unordered_map<int, TokenType> indexParenthesesMap; 
 	bool hasMoreTokens();
 	void incrementIndex();
 	void markTokenAsProcessed();
 	void setTokens(Tokens& tokens);
-	void modifyParentheses(TokenType tokenType);
 	void checkParentheses();
 	virtual shared_ptr<Expression> parse() = 0;
 };
