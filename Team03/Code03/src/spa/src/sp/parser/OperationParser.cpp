@@ -4,14 +4,12 @@ void OperationParser::nextToken() {
     if (hasMoreTokens()) {
         *isProcessedTokenPointer = false;
         token = tokens[*indexPointer];
-        tokenValue = token->getValue();
         incrementIndex();
     }
 }
 
 void OperationParser::setNextToken() {
     token = tokens[static_cast<size_t>(*indexPointer) - 1];
-    tokenValue = token->getValue();
 }
 
 void OperationParser::setTokens(Tokens& tokens_) {
@@ -42,6 +40,10 @@ void OperationParser::markTokenAsProcessed() {
     *isProcessedTokenPointer = true;
 }
 
+shared_ptr<Tokens> OperationParser::getTokens() {
+    return make_shared<Tokens>(tokens);
+}
+
 TokenType OperationParser::getTokenType() {
     markTokenAsProcessed();
     return token->getType();
@@ -49,15 +51,7 @@ TokenType OperationParser::getTokenType() {
 
 string OperationParser::getTokenValue() {
     markTokenAsProcessed();
-    return tokenValue;
-}
-
-shared_ptr<Tokens> OperationParser::getTokens() {
-    return make_shared<Tokens>(tokens);
-}
-
-int OperationParser::getIndex() {
-    return *indexPointer - 1;
+    return token->getValue();
 }
 
 shared_ptr<int> OperationParser::getIndexPointer() {
@@ -75,17 +69,17 @@ shared_ptr<bool> OperationParser::getIsProcessedTokenPointer() {
     return isProcessedTokenPointer;
 }
 
-bool OperationParser::getIsSubExpression() {
-    return *isSubExpressionPointer;
+shared_ptr<bool> OperationParser::getIsSubExpressionPointer() {
+    return isSubExpressionPointer;
 }
 
 void OperationParser::setIsSubExpression(bool isSubExpression) {
     *isSubExpressionPointer = isSubExpression;
 }
 
-void OperationParser::setPairOfArguments(bool isSubExpression, shared_ptr<int> indexPointer_,  shared_ptr<bool> isProcessedTokenPointer_) {
+void OperationParser::setPairOfArguments(shared_ptr<bool> isSubExpressionPointer_, shared_ptr<int> indexPointer_,  shared_ptr<bool> isProcessedTokenPointer_) {
     *isSetPairOfArgumentsPointer = true;
-    *isSubExpressionPointer = isSubExpression;
+    isSubExpressionPointer = isSubExpressionPointer_;
     indexPointer = indexPointer_;
     isProcessedTokenPointer = isProcessedTokenPointer_;
 }

@@ -20,8 +20,9 @@ shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(
     else if (statementType == EntityType::If || statementType == EntityType::While) {
         return make_shared<ConditionalOperationParser>();
     }
-    
-    return nullptr;
+    else {
+        return nullptr;
+    }
 }
 
 bool ExpressionParserFactory::checkExpressionType(

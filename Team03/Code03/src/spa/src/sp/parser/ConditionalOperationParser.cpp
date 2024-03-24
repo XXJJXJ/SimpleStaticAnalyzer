@@ -3,33 +3,28 @@
 shared_ptr<Expression> ConditionalOperationParser::parse() {
     try {
         index = *getIndexPointer();
-        shared_ptr<Expression> relationalExpression = parseRelationalOperation();
+        shared_ptr<Expression> relationalExpression = parseRelationalExpression();
         if (relationalExpression) {
+            setNextToken();
             return relationalExpression;
         }
     }
     catch (SpaException& e) {
-        string check = "Initial parsing of Relational operation failed. Presence of subexpressions.";
+        string check = "Initial parsing of Relational expression failed. Presence of sub expressions.";
     }
 
-    setPairOfArguments(
-        getIsSubExpression(),
-        make_shared<int>(index),
-        getIsProcessedTokenPointer());
-
-    return parseSubExpression();
+    return parseSubExpression(getTokenType());
 }
 
-shared_ptr<Expression> ConditionalOperationParser::parseRelationalOperation() {
+shared_ptr<Expression> ConditionalOperationParser::parseRelationalExpression() {
     shared_ptr<RelationalOperationParser> relationalOperationParser = make_shared<RelationalOperationParser>();
     relationalOperationParser->setPairOfArguments(
-        getIsSubExpression(),
+        getIsSubExpressionPointer(),
         getIndexPointer(),  
         getIsProcessedTokenPointer());
     setIsSubExpression(false);
     shared_ptr<Expression> relationalExpression = relationalOperationParser->parseEntity(*getTokens());
     if (relationalExpression) {
-        setNextToken();
         PairOfArguments pairOfArguments{relationalExpression, nullptr}; 
         return make_shared<ConditionalOperation>("relationalExpression", pairOfArguments);
     }
@@ -55,7 +50,6 @@ shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
 }
 
 shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
-    setIsSubExpression(true);
     shared_ptr<Expression> leftSubExpression = parse();
     if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
         throw SyntaxErrorException("Missing ) token in Conditional expression");
@@ -72,9 +66,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
                 setIsSubExpression(true);
                 nextToken();
                 shared_ptr<Expression> rightSubExpression = parse();
-                if (*getIndexPointer() < getTokens()->size()) {
-                    nextToken();
-                }
+                nextToken();
                 if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
                     throw SyntaxErrorException("Missing ) token in Conditional expression");
                 }
@@ -90,15 +82,21 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
     }
 }
 
-shared_ptr<Expression> ConditionalOperationParser::parseSubExpression() {
-    if (getTokenType() == TokenType::NOT) {
+shared_ptr<Expression> ConditionalOperationParser::parseSubExpression(TokenType tokenType) {
+    setPairOfArguments(
+        getIsSubExpressionPointer(),
+        make_shared<int>(index),
+        getIsProcessedTokenPointer());
+    if (tokenType == TokenType::NOT) {
         nextToken();
         return parseNotOperation();
     }
-    else if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
+    else if (tokenType == TokenType::LEFT_PARANTHESIS) {
         nextToken();
+        setIsSubExpression(true);
         return parseAndOrOperation();
     }
-
-    throw SyntaxErrorException("Invalid Conditional expression");
+    else {
+        throw SyntaxErrorException("Invalid Conditional expression");
+    }
 }

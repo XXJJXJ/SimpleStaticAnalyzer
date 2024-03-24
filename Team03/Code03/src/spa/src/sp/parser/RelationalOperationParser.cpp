@@ -14,8 +14,7 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
             throw SyntaxErrorException("Missing relational factor in Arithmetic expression");
         }
         else {
-            setNextToken();
-            PairOfArguments pairOfArguments{ leftRelationalFactor, rightRelationalFactor };
+            PairOfArguments pairOfArguments{leftRelationalFactor, rightRelationalFactor};
             return make_shared<RelationalOperation>(operation, pairOfArguments);
         }
     }
@@ -24,7 +23,7 @@ shared_ptr<Expression> RelationalOperationParser::parse() {
 shared_ptr<Expression> RelationalOperationParser::parseFactor() {
     shared_ptr<ArithmeticOperationParser> arithmeticOperationParser = make_shared<ArithmeticOperationParser>();
     arithmeticOperationParser->setPairOfArguments(
-        getIsSubExpression(), 
+        getIsSubExpressionPointer(), 
         getIndexPointer(), 
         getIsProcessedTokenPointer());
     arithmeticOperationParser->setIsSubExpression(true);
