@@ -31,10 +31,12 @@ bool ExpressionParserFactory::checkExpressionType(
     if (token->getType() == TokenType::NAME) {
         return statementType == EntityType::Variable;
     }
-
-    if (token->getType() == TokenType::INTEGER) {
-        return statementType == EntityType::Constant;
+    else {
+        if (token->getType() == TokenType::INTEGER) {
+            return statementType == EntityType::Constant;
+        }
+        else {
+            return statementType == EntityType::Operation;
+        }
     }
-
-    return statementType == EntityType::Operation;
 }
