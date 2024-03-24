@@ -17,6 +17,6 @@ private:
 	bool isProcessedToken; 
 	shared_ptr<Expression> parseRelationalExpression();
 	shared_ptr<Expression> parseSubExpression(int index, TokenType tokenType);
-	shared_ptr<Expression> parseNotOperation();
-	shared_ptr<Expression> parseAndOrOperation();
+	shared_ptr<Expression> parseNotSubExpression();
+	shared_ptr<Expression> parseAndOrSubExpression();
 };

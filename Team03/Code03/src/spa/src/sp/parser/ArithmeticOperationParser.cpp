@@ -9,12 +9,11 @@ shared_ptr<Expression> ArithmeticOperationParser::parseTerm() {
 }
 
 shared_ptr<Expression> ArithmeticOperationParser::parseExpression(bool isTerm) {
-    string tokenValue;
     shared_ptr<Expression> leftNode;
     shared_ptr<Expression> rightNode;
     leftNode = isTerm ? parseTerm() : parseFactor();
     while (leftNode != nullptr && !isEndOfTokens() && checkTermFactor(isTerm, getTokenType())) {
-        tokenValue = getTokenValue();
+        string tokenValue = getTokenValue();
         nextToken();
         rightNode = isTerm ? parseTerm() : parseFactor();
         PairOfArguments pairOfArguments{leftNode, rightNode};
@@ -61,6 +60,6 @@ shared_ptr<Expression> ArithmeticOperationParser::parseLeafNode(TokenType tokenT
 
 bool ArithmeticOperationParser::checkTermFactor(bool isTerm, TokenType tokenType) {
     return isTerm ?
-            termTokens.find(tokenType) != termTokens.end() :
-            factorTokens.find(tokenType) != factorTokens.end();
+            termOperators.find(tokenType) != termOperators.end() :
+            factorOperators.find(tokenType) != factorOperators.end();
 }

@@ -15,8 +15,8 @@ public:
 	shared_ptr<Expression> parse() override;
 
 private:
-	unordered_set<TokenType> termTokens = { TokenType::PLUS, TokenType::MINUS };
-	unordered_set<TokenType> factorTokens = { TokenType::TIMES, TokenType::DIVIDE, TokenType::MODULUS };
+	unordered_set<TokenType> termOperators = { TokenType::PLUS, TokenType::MINUS };
+	unordered_set<TokenType> factorOperators = { TokenType::TIMES, TokenType::DIVIDE, TokenType::MODULUS };
 	bool checkTermFactor(bool isTerm, TokenType tokenType);
 	shared_ptr<Expression> parseTerm();
 	shared_ptr<Expression> parseExpression(bool isTerm);

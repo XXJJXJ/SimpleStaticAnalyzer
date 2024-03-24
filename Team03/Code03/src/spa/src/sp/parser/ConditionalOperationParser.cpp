@@ -33,7 +33,26 @@ shared_ptr<Expression> ConditionalOperationParser::parseRelationalExpression() {
     }
 }
 
-shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
+shared_ptr<Expression> ConditionalOperationParser::parseSubExpression(int index, TokenType tokenType) {
+    setPairOfArguments(
+        getIsSubExpressionPointer(),
+        make_shared<int>(index),
+        getIsProcessedTokenPointer());
+    if (tokenType == TokenType::NOT) {
+        nextToken();
+        return parseNotSubExpression();
+    }
+    else if (tokenType == TokenType::LEFT_PARANTHESIS) {
+        nextToken();
+        setIsSubExpression(true);
+        return parseAndOrSubExpression();
+    }
+    else {
+        throw SyntaxErrorException("Invalid Conditional expression");
+    }
+}
+
+shared_ptr<Expression> ConditionalOperationParser::parseNotSubExpression() {
     if (getTokenType() == TokenType::LEFT_PARANTHESIS) {
         setIsSubExpression(true);
         nextToken();
@@ -49,7 +68,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseNotOperation() {
     }
 }
 
-shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
+shared_ptr<Expression> ConditionalOperationParser::parseAndOrSubExpression() {
     shared_ptr<Expression> leftSubExpression = parse();
     if (getTokenType() != TokenType::RIGHT_PARANTHESIS) {
         throw SyntaxErrorException("Missing ) token in Conditional expression");
@@ -79,24 +98,5 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
                 throw SyntaxErrorException("Missing ( token in Conditional expression");
             }
         }
-    }
-}
-
-shared_ptr<Expression> ConditionalOperationParser::parseSubExpression(int index, TokenType tokenType) {
-    setPairOfArguments(
-        getIsSubExpressionPointer(),
-        make_shared<int>(index),
-        getIsProcessedTokenPointer());
-    if (tokenType == TokenType::NOT) {
-        nextToken();
-        return parseNotOperation();
-    }
-    else if (tokenType == TokenType::LEFT_PARANTHESIS) {
-        nextToken();
-        setIsSubExpression(true);
-        return parseAndOrOperation();
-    }
-    else {
-        throw SyntaxErrorException("Invalid Conditional expression");
     }
 }
