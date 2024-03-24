@@ -13,7 +13,7 @@ shared_ptr<Expression> ArithmeticOperationParser::parseExpression(bool isTerm) {
     shared_ptr<Expression> leftNode;
     shared_ptr<Expression> rightNode;
     leftNode = isTerm ? parseTerm() : parseFactor();
-    while (leftNode != nullptr && !isEndOfTokens() && checkTermFactor(isTerm)) {
+    while (leftNode != nullptr && !isEndOfTokens() && checkTermFactor(isTerm, getTokenType())) {
         tokenValue = getTokenValue();
         nextToken();
         rightNode = isTerm ? parseTerm() : parseFactor();
@@ -40,18 +40,18 @@ shared_ptr<Expression> ArithmeticOperationParser::parseFactor() {
         }
     }
     else {
-        leafNode = parseLeafNode();
+        leafNode = parseLeafNode(tokenType);
     }
 
     nextToken();
     return leafNode;
 }
 
-shared_ptr<Expression> ArithmeticOperationParser::parseLeafNode() {
-    if (getTokenType() == TokenType::INTEGER) {
+shared_ptr<Expression> ArithmeticOperationParser::parseLeafNode(TokenType tokenType) {
+    if (tokenType == TokenType::INTEGER) {
         return make_shared<Constant>(getTokenValue());
     }
-    else if (getTokenType() == TokenType::NAME) {
+    else if (tokenType == TokenType::NAME) {
         return make_shared<Variable>(getTokenValue());
     }
     else {
@@ -59,8 +59,8 @@ shared_ptr<Expression> ArithmeticOperationParser::parseLeafNode() {
     }
 }
 
-bool ArithmeticOperationParser::checkTermFactor(bool isTerm) {
+bool ArithmeticOperationParser::checkTermFactor(bool isTerm, TokenType tokenType) {
     return isTerm ?
-            termTokens.find(getTokenType()) != termTokens.end() :
-            factorTokens.find(getTokenType()) != factorTokens.end();
+            termTokens.find(tokenType) != termTokens.end() :
+            factorTokens.find(tokenType) != factorTokens.end();
 }

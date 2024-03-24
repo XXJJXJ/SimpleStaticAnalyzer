@@ -1,8 +1,8 @@
 #include "ConditionalOperationParser.h"
 
 shared_ptr<Expression> ConditionalOperationParser::parse() {
+    int index = *getIndexPointer();
     try {
-        index = *getIndexPointer();
         shared_ptr<Expression> relationalExpression = parseRelationalExpression();
         if (relationalExpression) {
             setNextToken();
@@ -13,7 +13,7 @@ shared_ptr<Expression> ConditionalOperationParser::parse() {
         string check = "Initial parsing of Relational expression failed. Presence of sub expressions.";
     }
 
-    return parseSubExpression(getTokenType());
+    return parseSubExpression(index, getTokenType());
 }
 
 shared_ptr<Expression> ConditionalOperationParser::parseRelationalExpression() {
@@ -82,7 +82,7 @@ shared_ptr<Expression> ConditionalOperationParser::parseAndOrOperation() {
     }
 }
 
-shared_ptr<Expression> ConditionalOperationParser::parseSubExpression(TokenType tokenType) {
+shared_ptr<Expression> ConditionalOperationParser::parseSubExpression(int index, TokenType tokenType) {
     setPairOfArguments(
         getIsSubExpressionPointer(),
         make_shared<int>(index),
