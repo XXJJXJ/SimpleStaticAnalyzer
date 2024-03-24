@@ -14,25 +14,6 @@ ParentPredicate::ParentPredicate(StatementRef lhs, StatementRef rhs) {
     addStmtRef(this->rhs);
 }
 
-
-std::string ParentPredicate::toString() const {
-    std::string lhsStr = std::visit(overloaded {
-            [](const int val) { return std::to_string(val); },
-            [](const Synonym& syn) { return syn.getName(); },
-            [](const std::string& str) { return str; },
-            [](const auto&) { return std::string("Unsupported Type"); }
-    }, lhs);
-
-    std::string rhsStr = std::visit(overloaded {
-            [](const int val) { return std::to_string(val); },
-            [](const Synonym& syn) { return syn.getName(); },
-            [](const std::string& str) { return str; },
-            [](const auto&) { return std::string("Unsupported Type"); }
-    }, rhs);
-
-    return "ParentPredicate " + lhsStr + " " + rhsStr;
-}
-
 std::shared_ptr<BaseTable> ParentPredicate::getFullTable(QueryManager &qm) {
     return std::make_shared<BaseTable>(qm.getParentS(), 2);
 }

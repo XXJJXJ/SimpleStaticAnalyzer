@@ -22,7 +22,6 @@ protected:
 public:
     FollowsPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsPredicate() override = default;
-    std::string toString() const override;
 };
 
 #endif // FOLLOWSPREDICATE_H

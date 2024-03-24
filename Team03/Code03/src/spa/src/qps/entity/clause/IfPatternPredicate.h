@@ -13,7 +13,6 @@ protected:
 public:
     IfPatternPredicate(Synonym ifSyn, EntityRef entRef);
     ~IfPatternPredicate() override = default;
-    std::string toString() const override;
 };
 
 

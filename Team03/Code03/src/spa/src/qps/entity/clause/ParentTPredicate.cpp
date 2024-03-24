@@ -11,23 +11,7 @@ ParentTPredicate::ParentTPredicate(StatementRef lhs, StatementRef rhs)
     addStmtRef(this->rhs);
 }
 
-std::string ParentTPredicate::toString() const {
-    std::string lhsStr = std::visit(overloaded {
-            [](const int val) { return std::to_string(val); },
-            [](const Synonym& syn) { return syn.getName(); },
-            [](const std::string& str) { return str; },
-            [](const auto&) { return std::string("Unsupported Type"); }
-    }, lhs);
 
-    std::string rhsStr = std::visit(overloaded {
-            [](const int val) { return std::to_string(val); },
-            [](const Synonym& syn) { return syn.getName(); },
-            [](const std::string& str) { return str; },
-            [](const auto&) { return std::string("Unsupported Type"); }
-    }, rhs);
-
-    return "ParentTPredicate " + lhsStr + " " + rhsStr;
-}
 
 std::shared_ptr<BaseTable> ParentTPredicate::getFullTable(QueryManager &qm) {
     return std::make_shared<BaseTable>(qm.getParentT(), 2);

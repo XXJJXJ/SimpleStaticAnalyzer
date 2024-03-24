@@ -60,8 +60,4 @@ void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
     }
 }
 
-std::string JoinWithPredicateStrategy::toString() const {
-    return "JoinWithPredicateStrategy" + predicate->toString();
-}
-
 // ai-gen end

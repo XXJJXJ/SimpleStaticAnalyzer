@@ -16,6 +16,3 @@ IfPatternPredicate::IfPatternPredicate(Synonym ifSyn, EntityRef entRef)
     addEntityRef(this->entRef);
 }
 
-std::string IfPatternPredicate::toString() const {
-    return "If Pattern Predicate";
-}
