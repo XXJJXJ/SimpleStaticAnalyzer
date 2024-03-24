@@ -515,12 +515,12 @@ TEST_CASE("Test isExpr", "[isExpr]") {
     REQUIRE(QueryValidator::isExpr("a"));
     REQUIRE(QueryValidator::isExpr("(a)"));
     REQUIRE(QueryValidator::isExpr("2"));
-    REQUIRE(QueryValidator::isExpr("x+y*v "));
-    REQUIRE(QueryValidator::isExpr("a * b + c"));
+    REQUIRE(QueryValidator::isExpr("x+y*v"));
 
     REQUIRE_FALSE(QueryValidator::isExpr(""));
     REQUIRE_FALSE(QueryValidator::isExpr("a+b+c+"));
     REQUIRE_FALSE(QueryValidator::isExpr("*a+b"));
+    REQUIRE_FALSE(QueryValidator::isExpr("a b c"));
 }
 
 TEST_CASE("Test isTerm", "[isTerm]") {

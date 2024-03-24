@@ -43,6 +43,7 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
 
     bool isWithinWildcard = false;
     bool isWithinQuotes = false;
+    bool isPrevSyn = false;
 
     for (std::string t : tokens) {
         if (isWithinQuotes) {
@@ -66,6 +67,14 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
                 currToken.clear();
                 isWithinWildcard = false;
             } else {
+                if (isPunctuation(t)) {
+                    isPrevSyn = false;
+                } else {
+                    if (isPrevSyn){
+                        currToken.append(" ");
+                    }
+                    isPrevSyn = true;
+                }
                 currToken.append(t);
             }
         } else {
@@ -89,5 +98,10 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
 
 
 bool QueryTokenizer::isPunctuation(char c) {
-    return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>' || c == '_' || c == '"';
+    std::string str(1, c);
+    return isPunctuation(str);
+}
+
+bool QueryTokenizer::isPunctuation(std::string s) {
+    return s == "," || s == ";" || s == "(" || s == ")" || s == "<" || s == ">" || s == "_" || s == "\"" || s == "+" || s == "-" || s == "*" || s == "/" || s == "%";
 }
