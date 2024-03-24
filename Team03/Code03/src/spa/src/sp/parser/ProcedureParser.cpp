@@ -23,11 +23,13 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens& tokens) {
     else {
         throw SyntaxErrorException("Missing } token in Procedure");
     }
-
     return procedure;
 }
 
 string ProcedureParser::extractProcedureName(Tokens& tokens) {
+    if (tokens.size() < 3) {
+        throw SyntaxErrorException("Insufficient number of tokens");
+    }
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
     shared_ptr<Token> token2 = tokens[2];

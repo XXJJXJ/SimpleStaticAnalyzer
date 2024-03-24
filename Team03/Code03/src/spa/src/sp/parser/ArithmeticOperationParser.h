@@ -15,11 +15,11 @@ public:
 	shared_ptr<Expression> parse() override;
 
 private:
-	unordered_set<TokenType> termTokens = { TokenType::PLUS, TokenType::MINUS };
-	unordered_set<TokenType> factorTokens = { TokenType::TIMES, TokenType::DIVIDE, TokenType::MODULUS };
-	bool checkTermFactor(bool isTerm);
-	shared_ptr<Expression> parseTerm();
+	unordered_set<TokenType> termOperators = { TokenType::PLUS, TokenType::MINUS };
+	unordered_set<TokenType> factorOperators = { TokenType::TIMES, TokenType::DIVIDE, TokenType::MODULUS };
+	bool checkTermFactorOperators(bool isTerm, TokenType tokenType);
+	shared_ptr<Expression> parseTermExpression();
 	shared_ptr<Expression> parseExpression(bool isTerm);
-	shared_ptr<Expression> parseFactor();
-	shared_ptr<Expression> parseLeafNode();
+	shared_ptr<Expression> parseFactorExpression();
+	shared_ptr<Expression> parseLeafExpression(TokenType tokenType);
 };
