@@ -27,7 +27,8 @@ shared_ptr<Tokens> OperationParser::getTokens() {
 }
 
 shared_ptr<Expression> OperationParser::parseEntity(Tokens& tokens) {
-    setTokens(tokens);
+    *indexPointer == 0 ? initialiseTokens(tokens) : (void)0;
+    *isSetPairOfArgumentsPointer ? setTokens(tokens) : (void)0;
     shared_ptr<Expression> expression = parse();
     checkParentheses();
     return expression;
@@ -84,16 +85,14 @@ void OperationParser::markTokenAsProcessed() {
     *isProcessedTokenPointer = true;
 }
 
-void OperationParser::setTokens(Tokens& tokens_) {
-    if (*indexPointer == 0) {
-        tokens = tokens_;
-        nextToken();
-    }
+void OperationParser::initialiseTokens(Tokens& tokens_) {
+    tokens = tokens_;
+    nextToken();
+}
 
-    if (*isSetPairOfArgumentsPointer) {
-        tokens = tokens_;
-        setNextToken();
-    }
+void OperationParser::setTokens(Tokens& tokens_) {
+    tokens = tokens_;
+    setNextToken();
 }
 
 void OperationParser::checkParentheses() {
