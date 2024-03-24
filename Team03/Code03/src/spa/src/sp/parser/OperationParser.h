@@ -35,7 +35,7 @@ private:
 	bool hasMoreTokens();
 	void incrementIndex();
 	void markTokenAsProcessed();
-	void initialiseTokens(bool isInitialise, Tokens& tokens);
+	void setTokens(bool isInitialise, Tokens& tokens);
 	void checkParentheses();
 	virtual shared_ptr<Expression> parse() = 0;
 };
