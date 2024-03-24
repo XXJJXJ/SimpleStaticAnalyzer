@@ -98,8 +98,7 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
 
 
 bool QueryTokenizer::isPunctuation(char c) {
-    std::string str(1, c);
-    return isPunctuation(str);
+    return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>' || c == '_' || c == '"';
 }
 
 bool QueryTokenizer::isPunctuation(std::string s) {
