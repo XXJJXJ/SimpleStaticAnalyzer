@@ -1,15 +1,15 @@
 #include "common/Constant.h"
 #include "common/Variable.h"
-#include "NormalStore.h"
+#include "ConstVarStore.h"
 
-NormalStore::NormalStore() : items() {};
+ConstVarStore::ConstVarStore() : items() {};
 
-bool NormalStore::add(shared_ptr<Entity> item) {
+bool ConstVarStore::add(shared_ptr<Entity> item) {
     items[item->getName()] = item;
     return true;
 }
 
-vector<shared_ptr<Entity>> NormalStore::getAll() const {
+vector<shared_ptr<Entity>> ConstVarStore::getAll() const {
     vector<shared_ptr<Entity>> allItems;
     for (const auto& item : items) {
         allItems.push_back(item.second);
@@ -17,18 +17,18 @@ vector<shared_ptr<Entity>> NormalStore::getAll() const {
     return allItems;
 }
 
-shared_ptr<Entity> NormalStore::get(const string& name) {
+shared_ptr<Entity> ConstVarStore::get(const string& name) {
     if (items.find(name) != items.end()) {
         return items[name];
     }
     return nullptr;
 }
 
-void NormalStore::clear() {
+void ConstVarStore::clear() {
     items.clear();
 }
 
 
-NormalStore::~NormalStore() {
+ConstVarStore::~ConstVarStore() {
     clear();
 }
