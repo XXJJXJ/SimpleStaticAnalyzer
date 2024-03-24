@@ -14,9 +14,6 @@ string infixToPostfix(std::string expression) {
     map<char, int> precedence;
     precedence['+'] = precedence['-'] = 1;
     precedence['*'] = precedence['/'] = precedence['%'] = 2;
-    if (isOperator(expression[0])) {
-        throw SyntaxErrorException();
-    }
 
     for (size_t i = 0; i < expression.length(); ++i) {
         if (isdigit(expression[i])) {
@@ -47,16 +44,11 @@ string infixToPostfix(std::string expression) {
                 }
                 i++;
             }
-            if (count > 0) {
-                // throw error
-                throw SyntaxErrorException("[QPS] Assign pattern mismatched parentheses, too many (");
-            }
+            // QPS checked the pattern, should have matching ")"
             i--;
             // recurse sub-expression
             string res = infixToPostfix(temp);
             result += res;
-        } else if (expression[i] == ')') {
-            throw SyntaxErrorException("[QPS] Assign pattern mismatched parentheses, too many )");
         } else if (!isOperator(expression[i])) {
             // is a synonym: assumes no spaces and no random '(' or ')' characters
             // reads in until the next operator
