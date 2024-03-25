@@ -1,4 +1,5 @@
 #include "QueryTokenizer.h"
+#include "QueryValidator.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 
 QueryTokenizer::QueryTokenizer() {}
@@ -43,6 +44,7 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
 
     bool isWithinWildcard = false;
     bool isWithinQuotes = false;
+    bool isPrevSyn = false;
 
     for (std::string t : tokens) {
         if (isWithinQuotes) {
@@ -66,6 +68,14 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
                 currToken.clear();
                 isWithinWildcard = false;
             } else {
+                if (QueryValidator::isIdent(t)) {
+                    if (isPrevSyn){
+                        currToken.append(" ");
+                    }
+                    isPrevSyn = true;
+                } else {
+                    isPrevSyn = false;
+                }
                 currToken.append(t);
             }
         } else {

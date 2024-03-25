@@ -57,3 +57,17 @@ TEST_CASE("QueryTokenizer::tokenize should correctly tokenize patterns") {
 	REQUIRE(result3 == expectedResult3);
 	REQUIRE(result4 == expectedResult4);
 }
+
+TEST_CASE("Test QueryTokenizer::collapseTokens") {
+    std::vector<std::string> tokens1 = {"_", "\"", "a", "b", "c", "\"", "_"};
+    std::vector<std::string> tokens2 = {"_", "\"", "a", "+", "b", "*", "c", "d", "\"", "_"};
+
+    std::vector<std::string> results1 = QueryTokenizer::collapseTokens(tokens1);
+    std::vector<std::string> results2 = QueryTokenizer::collapseTokens(tokens2);
+
+    std::vector<std::string> expectedResults1 = {"_\"a b c\"_"};
+    std::vector<std::string> expectedResults2 = {"_\"a+b*c d\"_"};
+
+    REQUIRE(results1 == expectedResults1);
+    REQUIRE(results2 == expectedResults2);
+}

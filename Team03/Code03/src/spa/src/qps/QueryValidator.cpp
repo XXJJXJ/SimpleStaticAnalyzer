@@ -463,7 +463,6 @@ bool QueryValidator::isExpressionSpec(const std::string& token) {
 }
 
 bool QueryValidator::isExpr(std::string token) {
-    token.erase(std::remove_if(token.begin(), token.end(), ::isspace), token.end());
     for (size_t i = 0; i < token.size(); ++i) {
         if (token[i] == '+' || token[i] == '-') {
             if (isExpr(token.substr(0, i)) && isTerm(token.substr(i + 1))) {
