@@ -3,22 +3,22 @@
 shared_ptr<Statement> WhileStatementParser::parseEntity(Tokens& tokens) {
     checkStartOfWhileStatement(tokens);
 
-    auto condition = extractCondition(tokens);
-    auto whileStatement = make_shared<WhileStatement>(Program::getAndIncrementStatementNumber(),
+    shared_ptr<ConditionalOperation> condition = extractCondition(tokens);
+    shared_ptr<WhileStatement> whileStatement = make_shared<WhileStatement>(Program::getAndIncrementStatementNumber(),
         condition, getProcedureName());
 
     // Erase '{' from tokens
     tokens.erase(tokens.begin());
 
     while (!tokens.empty() && !isEndOfWhileStatement(tokens)) {
-        auto statementParser = StatementParserFactory::getStatementParser(tokens);
+        shared_ptr<StatementParser> statementParser = StatementParserFactory::getStatementParser(tokens);
         statementParser->setProcedureName(getProcedureName());
-        auto loopStatement = statementParser->parseEntity(tokens);
+        shared_ptr<Statement> loopStatement = statementParser->parseEntity(tokens);
         whileStatement->addStatement(loopStatement);
     }
 
     if (whileStatement->getStatementList().size() == 0) {
-        throw SyntaxErrorException("While statement's block cannot be empty");
+        throw SyntaxErrorException("Empty While statement");
     }
 
     if (isEndOfWhileStatement(tokens)) {
@@ -26,7 +26,7 @@ shared_ptr<Statement> WhileStatementParser::parseEntity(Tokens& tokens) {
         tokens.erase(tokens.begin());
     }
     else {
-        throw SyntaxErrorException("While statement is missing a }");
+        throw SyntaxErrorException("Missing } token in While statement");
     }
 
     return whileStatement;
@@ -41,12 +41,12 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens& 
         return token->getType() == TokenType::LEFT_BRACE;
         });
     if (end == tokens.end()) {
-        throw SyntaxErrorException("While statement is missing a {");
+        throw SyntaxErrorException("Missing { token in While statement");
     }
 
     auto token = prev(end);
     if (token->get()->getType() != TokenType::RIGHT_PARANTHESIS) {
-        throw SyntaxErrorException("While statement condition should be bounded by ( and )");
+        throw SyntaxErrorException("Missing ) token in While statement");
     }
 
     for (auto i = tokens.begin(); i != end - 1; ++i) {
@@ -56,13 +56,12 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens& 
     // Erasing all condition tokens and ) from tokens
     tokens.erase(tokens.begin(), end);
 
-    auto expressionParser =
+    shared_ptr<ExpressionParser> expressionParser =
         ExpressionParserFactory::getExpressionParser(conditionTokens, EntityType::While);
-    auto
-        condition = (expressionParser->parseEntity(
-            conditionTokens));
+    shared_ptr<Expression> condition = 
+        (expressionParser->parseEntity(conditionTokens));
     if (!condition) {
-        throw SyntaxErrorException("Invalid condition for While statement");
+        throw SyntaxErrorException("Invalid condition in While statement");
     }
 
     return dynamic_pointer_cast<ConditionalOperation>(condition);
@@ -70,11 +69,11 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens& 
 
 void WhileStatementParser::checkStartOfWhileStatement(Tokens& tokens) const {
     if (tokens[0]->getValue() != "while") {
-        throw SyntaxErrorException("Missing While statement");
+        throw SyntaxErrorException("Missing while name token in While statement");
     }
 
     if (tokens[1]->getType() != TokenType::LEFT_PARANTHESIS) {
-        throw SyntaxErrorException("Missing ( at the start of While statement");
+        throw SyntaxErrorException("Missing ( token in While statement");
     }
 }
 

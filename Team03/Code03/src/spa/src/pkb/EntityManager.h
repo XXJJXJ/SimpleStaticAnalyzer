@@ -4,7 +4,7 @@
 
 #include "common/Constant.h"
 #include "common/Variable.h"
-#include "entity_store/NormalStore.h"
+#include "entity_store/ConstVarStore.h"
 #include "entity_store/ProcedureStore.h"
 #include "entity_store/StatementStore.h"
 
@@ -17,8 +17,8 @@ private:
     EntityManager() {}
     static shared_ptr<EntityManager> instance;
 
-    NormalStore constantStore;
-    NormalStore variableStore;
+    ConstVarStore constantStore;
+    ConstVarStore variableStore;
     ProcedureStore procStore;
     StatementStore stmtStore;
 

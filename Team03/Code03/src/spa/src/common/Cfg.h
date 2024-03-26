@@ -5,14 +5,14 @@
 
 class Cfg {
 public:
-    typedef unordered_map<string, shared_ptr<CfgNode>> ProcedureToCfgNodeMap;
-    typedef unordered_map<int, shared_ptr<CfgNode>> StatementNumberToNodeMap; 
-    void addProcedureCfg(const string& procedureName, shared_ptr<CfgNode> node);
-    void addStatementCfg(int statementNumber, shared_ptr<CfgNode> node);
-    ProcedureToCfgNodeMap getCfgRootNodes();
-    StatementNumberToNodeMap getStatementToCfg();
+    typedef unordered_map<string, shared_ptr<CfgNode>> ProcedureNodes;
+    typedef unordered_map<shared_ptr<Statement>, shared_ptr<CfgNode>> StatementNodes; 
+    void addProcedureNode(string procedureName, shared_ptr<CfgNode> node);
+    void addStatementNode(shared_ptr<Statement> statement, shared_ptr<CfgNode> node);
+    ProcedureNodes getProcedureNodes();
+    StatementNodes getStatementNodes();
 
 private:
-    ProcedureToCfgNodeMap procedureCfgToCfgRootNodes;
-    StatementNumberToNodeMap statementNumberToCfgNode;
+    ProcedureNodes procedureNodes;
+    StatementNodes statementNodes;
 };

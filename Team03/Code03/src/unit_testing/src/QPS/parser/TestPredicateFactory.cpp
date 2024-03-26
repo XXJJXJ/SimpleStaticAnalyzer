@@ -23,6 +23,8 @@ TEST_CASE("PredicateFactory::createPredicate successfully creates predicate obje
     std::vector<std::string> tokens9 = { "pattern", "d", "c", "_" };
     std::vector<std::string> tokens10 = { "pattern", "f", "_", "_" };
     std::vector<std::string> tokens11 = { "pattern", "g", "_", "_", "_" };
+    std::vector<std::string> tokens12 = { "Next", "a", "b" };
+    std::vector<std::string> tokens13 = { "Next*", "a", "b" };
 
     REQUIRE_NOTHROW(pf.createPredicate(tokens1, synonymMap));
     REQUIRE_NOTHROW(pf.createPredicate(tokens2, synonymMap));
@@ -35,6 +37,8 @@ TEST_CASE("PredicateFactory::createPredicate successfully creates predicate obje
     REQUIRE_NOTHROW(pf.createPredicate(tokens9, synonymMap));
     REQUIRE_NOTHROW(pf.createPredicate(tokens10, synonymMap));
     REQUIRE_NOTHROW(pf.createPredicate(tokens11, synonymMap));
+    REQUIRE_NOTHROW(pf.createPredicate(tokens12, synonymMap));
+    REQUIRE_NOTHROW(pf.createPredicate(tokens13, synonymMap));
 }
 
 TEST_CASE("Invalid pattern predicates") {

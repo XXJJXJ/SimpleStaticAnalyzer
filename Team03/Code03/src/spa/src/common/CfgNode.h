@@ -4,23 +4,25 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Util.h"
+#include "common/Statement.h"
 #include "spa_exception/SemanticErrorException.h"
 
 using namespace std;
 
 class CfgNode {
 public:
-	typedef unordered_map<bool, shared_ptr<CfgNode>> BooleanToCfgNodeMap;
-	typedef vector<shared_ptr<CfgNode>> CfgNodeContainer;
-	void addNextNode(bool isTrue, shared_ptr<CfgNode> node);
-	void addStatement(int statementNumber);
-	void addParent(const shared_ptr<CfgNode>& node);
-	BooleanToCfgNodeMap getNextNodes();
-	vector<int> getStatementNumbers();
-	CfgNodeContainer getParentNodes();
+	typedef vector<shared_ptr<CfgNode>> ParentNodes;
+	typedef unordered_map<bool, shared_ptr<CfgNode>> NextNodes;
+	void addParentNode(shared_ptr<CfgNode> node);
+	void addStatement(shared_ptr<Statement> statement);
+	void addNextNode(bool condition, shared_ptr<CfgNode> node);
+	ParentNodes getParentNodes();
+	StatementList getStatementList();
+	NextNodes getNextNodes();
 
 private:
-	BooleanToCfgNodeMap nextNodes;
-	vector<int> statementNumbers;
-	CfgNodeContainer parentNodes;
+	ParentNodes parentNodes;
+	StatementList statementList;
+	NextNodes nextNodes;
 };

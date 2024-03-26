@@ -14,12 +14,14 @@ QueryValidator::QueryValidator() = default;
 QueryValidator::~QueryValidator() = default;
 
 // Takes in tokens, validates them for syntax errors, then returns a simplified list of tokens (without unnecessary punctuation marks etc.) to be parsed by QueryParser
-std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(const std::vector<std::vector<std::vector<std::string>>>& tokens) {
+std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(const std::vector<std::string>& tokens) {
     std::vector<std::vector<std::vector<std::string>>> validatedQuery;
 
-    std::vector<std::vector<std::string>> declarationsTokens = tokens[0];
-    std::vector<std::vector<std::string>> selectionsTokens = tokens[1];
-    std::vector<std::vector<std::string>> predicateTokens = tokens[2];
+    std::vector<std::vector<std::vector<std::string>>> splitTokensList = splitTokens(tokens);
+
+    std::vector<std::vector<std::string>> declarationsTokens = splitTokensList[0];
+    std::vector<std::vector<std::string>> selectionsTokens = splitTokensList[1];
+    std::vector<std::vector<std::string>> predicateTokens = splitTokensList[2];
 
     if (selectionsTokens.empty()) {
         throw SyntaxErrorException("No selections made");
@@ -41,8 +43,9 @@ std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(cons
         validatedSelectionsTokens.push_back(validateSelection(selection));
     }
 
+    ClauseType prevClause = ClauseType::Invalid;
     for (std::vector<std::string>& predicate : predicateTokens) {
-        validatedPredicateTokens.push_back(validatePredicate(predicate));
+        validatedPredicateTokens.push_back(validatePredicate(predicate, prevClause));
     }
 
     validatedQuery.push_back(validatedDeclarationsTokens);
@@ -51,6 +54,64 @@ std::vector<std::vector<std::vector<std::string>>> QueryValidator::validate(cons
 
     return validatedQuery;
 }
+
+std::vector<std::vector<std::vector<std::string>>> QueryValidator::splitTokens(const std::vector<std::string>& tokens) {
+    std::vector<std::string> currentList;
+
+    std::vector<std::vector<std::vector<std::string>>> splitTokens = {};
+    std::vector<std::vector<std::string>> declarations;
+    std::vector<std::vector<std::string>> selections;
+    std::vector<std::vector<std::string>> clauses;
+
+    bool isClause = false;
+
+    for (const auto& token : tokens) {
+        currentList.push_back(token);
+
+        if (token == ")") {
+            if (!isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
+            clauses.push_back(currentList);
+            currentList.clear();
+        }
+        else if (token == ";") {
+            if (isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
+            declarations.push_back(currentList);
+            currentList.clear();
+        }
+        else if (token == ">" && currentList[0] == "Select") {
+            if (isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
+            selections.push_back(currentList);
+            currentList.clear();
+            isClause = true;
+        }
+        else if (currentList.size() == 2 && currentList[0] == "Select" && token != "<") {
+            // If the list starts with "Select", and the next token is not "<", end the list
+            if (isClause) {
+                throw SyntaxErrorException("Incorrect order in query");
+            }
+            selections.push_back(currentList);
+            currentList.clear();
+            isClause = true;
+        }
+    }
+
+    if (!currentList.empty()) {
+        clauses.push_back(currentList);;
+    }
+
+    splitTokens.push_back(declarations);
+    splitTokens.push_back(selections);
+    splitTokens.push_back(clauses);
+
+    return splitTokens;
+}
+
 
 // Validates declaration, and returns a vector of strings with the first element as entity type and subsequent elements as names
 // e.g. {"variable", "a", ",", "b", ",", "c", ";"} returns {"variable", "a", "b", "c"}
@@ -138,134 +199,177 @@ std::vector<std::string> QueryValidator::validateSelection(const std::vector<std
 // Validates predicate, and returns a vector of strings with the first element as predicate type, and subsequent elements as arguments
 // e.g. {"such", "that", "Follows", "(", "a", ",", "b", ")"} returns {"Follows", "a", "b"}
 // e.g. {"pattern", "a", "(", "_", ",", "_", ")"} returns {"pattern", "a", "_", "_"}
-std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std::string>& tokens) {
-    if (tokens.size() > 3 && tokens[0] == "such" && tokens[1] == "that") {
-        PredicateType predicateType = getPredicateType(tokens[2]);
+std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std::string>& tokens, ClauseType& prevClause) {
+    ClauseType predType = getClauseType(tokens);
+
+    switch (predType) {
+    case ClauseType::SuchThat: {
+        prevClause = ClauseType::SuchThat;
         std::vector<std::string> predicateTokens(tokens.begin() + 2, tokens.end());
-        switch (predicateType) {
-            case PredicateType::Follows:
-            case PredicateType::FollowsT:
-            case PredicateType::Parent:
-            case PredicateType::ParentT:
-                return validateStatementStatementPredicate(predicateTokens);
-            case PredicateType::Modifies:
-            case PredicateType::Uses:
-                return validateStmtEntEntityPredicate(predicateTokens);
-            case PredicateType::Calls:
-            case PredicateType::CallsT:
-                return validateEntityEntityPredicate(predicateTokens);
-            case PredicateType::Pattern:
-            case PredicateType::Invalid:
-                throw SyntaxErrorException("Invalid such that clause keyword " + tokens[2]);
+        return validateSuchThatPredicate(predicateTokens);
+    } case ClauseType::Pattern: {
+        prevClause = ClauseType::Pattern;
+        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        return validatePatternPredicate(predicateTokens);
+    } case ClauseType::And: {
+        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        switch (prevClause) {
+        case ClauseType::SuchThat:
+            return validateSuchThatPredicate(predicateTokens);
+        case ClauseType::Pattern:
+            return validatePatternPredicate(predicateTokens);
+        default:
+            throw SyntaxErrorException("Invalid use of and keyword");
         }
-    } else if (tokens.size() > 2 && getPredicateType(tokens[0]) == PredicateType::Pattern) {
-        return validatePatternPredicate(tokens);
-    } else {
+    } default: {
         throw SyntaxErrorException("Invalid clause keyword");
+    }
     }
 }
 
-// TODO: add another layer of abstraction for the 4 functions below
-// TODO: get rid of magic numbers
+ClauseType QueryValidator::getClauseType(const std::vector<std::string>& tokens) {
+    if (tokens.size() > 3 && tokens[0] == "such" && tokens[1] == "that") {
+        return ClauseType::SuchThat;
+    } else if (tokens.size() > 2 && tokens[0] == "pattern") {
+        return ClauseType::Pattern;
+    } else if (tokens.size() > 2 && tokens[0] == "and") {
+        return ClauseType::And;
+    } else {
+        return ClauseType::Invalid;
+    }
+}
+
+std::vector<std::string> QueryValidator::validateSuchThatPredicate(const std::vector<std::string>& tokens) {
+    if (isNotPredicate(tokens)) {
+        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        std::vector<std::string> validatedTokens = validateSuchThatPredicate(predicateTokens);
+        validatedTokens.insert(validatedTokens.begin(), "not");
+        return validatedTokens;
+    }
+
+    PredicateType predicateType = getPredicateType(tokens[0]);
+    switch (predicateType) {
+    case PredicateType::Follows:
+    case PredicateType::FollowsT:
+    case PredicateType::Parent:
+    case PredicateType::ParentT:
+    case PredicateType::Next:
+    case PredicateType::NextT:
+        return validateStatementStatementPredicate(tokens);
+    case PredicateType::Modifies:
+    case PredicateType::Uses:
+        return validateStmtEntEntityPredicate(tokens);
+    case PredicateType::Calls:
+    case PredicateType::CallsT:
+        return validateEntityEntityPredicate(tokens);
+    default:
+        throw SyntaxErrorException("Invalid such that clause keyword " + tokens[0]);
+    }
+}
 
 // For relationships between statements, i.e. Follows, FollowsT, Parent, ParentT
 std::vector<std::string> QueryValidator::validateStatementStatementPredicate(const std::vector<std::string>& tokens) {
-    std::vector<std::string> validatedTokens;
     const std::string& predicateType = tokens[0];
-    validatedTokens.push_back(predicateType);
-    if (tokens.size() == 6 && tokens[1] == "(" && tokens[3] == "," && tokens[5] == ")") {
-        const std::string& lhs = tokens[2];
-        const std::string& rhs = tokens[4];
-        if (!isStmtRef(lhs) || !isStmtRef(rhs)) {
+
+    if (isValidPredicateArgsNum(tokens, 2)) {
+        std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
+        if (!isStmtRef(validatedTokens[1]) || !isStmtRef(validatedTokens[2])) {
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
-        validatedTokens.push_back(lhs);
-        validatedTokens.push_back(rhs);
+        return validatedTokens;
     } else {
         throw SyntaxErrorException("Invalid " + predicateType + " clause syntax");
     }
-
-    return validatedTokens;
 }
 
 // For relationships between statements/entities and entities, i.e. Modifies, Uses
 std::vector<std::string> QueryValidator::validateStmtEntEntityPredicate(const std::vector<std::string>& tokens) {
-    std::vector<std::string> validatedTokens;
     const std::string& predicateType = tokens[0];
-    validatedTokens.push_back(predicateType);
-    if (tokens.size() == 6 && tokens[1] == "(" && tokens[3] == "," && tokens[5] == ")") {
-        const std::string& lhs = tokens[2];
-        const std::string& rhs = tokens[4];
-        if (!isStmtRef(lhs) && !isEntRef(lhs) || !isEntRef(rhs)) {
+
+    if (isValidPredicateArgsNum(tokens, 2)) {
+        std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
+        if (!isStmtRef(validatedTokens[1]) && !isEntRef(validatedTokens[1]) || !isEntRef(validatedTokens[2])) {
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
-        validatedTokens.push_back(lhs);
-        validatedTokens.push_back(rhs);
+        return validatedTokens;
     } else {
         throw SyntaxErrorException("Invalid " + predicateType + " clause syntax");
     }
-
-    return validatedTokens;
 }
 
 // For relationships between entities and entities, i.e. Calls, CallsT
 std::vector<std::string> QueryValidator::validateEntityEntityPredicate(const std::vector<std::string>& tokens) {
-    std::vector<std::string> validatedTokens;
     const std::string& predicateType = tokens[0];
-    validatedTokens.push_back(predicateType);
-    if (tokens.size() == 6 && tokens[1] == "(" && tokens[3] == "," && tokens[5] == ")") {
-        const std::string& lhs = tokens[2];
-        const std::string& rhs = tokens[4];
-        if (!isEntRef(lhs) || !isEntRef(rhs)) {
+
+    if (isValidPredicateArgsNum(tokens, 2)) {
+        std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
+        if (!isEntRef(validatedTokens[1]) || !isEntRef(validatedTokens[2])) {
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
-        validatedTokens.push_back(lhs);
-        validatedTokens.push_back(rhs);
-    }
-    else {
+        return validatedTokens;
+    } else {
         throw SyntaxErrorException("Invalid " + predicateType + " clause syntax");
     }
-
-    return validatedTokens;
 }
 
 std::vector<std::string> QueryValidator::validatePatternPredicate(const std::vector<std::string>& tokens) {
-    std::vector<std::string> validatedTokens;
-    validatedTokens.push_back(tokens[0]);
+    if (isNotPredicate(tokens)) {
+        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        std::vector<std::string> validatedTokens = validatePatternPredicate(predicateTokens);
+        validatedTokens.insert(validatedTokens.begin(), "not");
+        return validatedTokens;
+    }
 
-    // assign or while patterns
-    if (tokens.size() == 7 && tokens[2] == "(" && tokens[4] == "," && tokens[6] == ")") {
-        const std::string& syn = tokens[1];
-        const std::string& lhs = tokens[3];
-        const std::string& rhs = tokens[5];
-
-        if (!isSynonym(syn) || !isEntRef(lhs) || !isExpressionSpec(rhs)) {
+    if (isValidPredicateArgsNum(tokens, 2)) {
+        std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
+        if (!isSynonym(validatedTokens[0]) || !isEntRef(validatedTokens[1]) || !isExpressionSpec(validatedTokens[2])) {
             throw SyntaxErrorException("Invalid pattern clause arguments");
         }
-        validatedTokens.push_back(syn);
-        validatedTokens.push_back(lhs);
-        validatedTokens.push_back(rhs);
-    // if patterns
-    } else if (tokens.size() == 9 && tokens[2] == "(" && tokens[4] == "," && tokens[6] == "," && tokens[8] == ")") {
-        const std::string& syn = tokens[1];
-        const std::string& arg1 = tokens[3];
-        const std::string& arg2 = tokens[5];
-        const std::string& arg3 = tokens[7];
-
-        if (!isSynonym(syn) || !isWildcard(arg2) || !isWildcard(arg3)) {
+        validatedTokens.insert(validatedTokens.begin(), "pattern");
+        return validatedTokens;
+    } else if (isValidPredicateArgsNum(tokens, 3)) {
+        std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 3);
+        if (!isSynonym(validatedTokens[0]) || !isEntRef(validatedTokens[1]) || !isWildcard(validatedTokens[2]) || !isWildcard(validatedTokens[3])) {
             throw SyntaxErrorException("Invalid pattern clause arguments");
         }
-        validatedTokens.push_back(syn);
-        validatedTokens.push_back(arg1);
-        validatedTokens.push_back(arg2);
-        validatedTokens.push_back(arg3);
+        validatedTokens.insert(validatedTokens.begin(), "pattern");
+        return validatedTokens;
     } else {
         throw SyntaxErrorException("Invalid pattern clause syntax");
     }
-
-    return validatedTokens;
 }
 
+bool QueryValidator::isNotPredicate(const std::vector<std::string>& tokens) { 
+    return tokens.size() >2 && tokens[0] == "not" && tokens[1] != "(" && tokens[2] == "(";
+}
+
+// Validate that the predicate has the correct number of arguments
+bool QueryValidator::isValidPredicateArgsNum(const std::vector<std::string>& tokens, int numOfArgs) {
+    int expectedSize = numOfArgs * 2 + 2;
+    int tokensLen = tokens.size();
+    
+    if (tokensLen == expectedSize && tokens[1] == "(" && tokens[tokensLen - 1] == ")") {
+        for (int i = 0; i < numOfArgs - 1; i++) {
+            if (tokens[2*i+3] != ",") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    return false;
+}
+
+// Extract the arguments from a predicate
+std::vector<std::string> QueryValidator::getPredicateArgs(const std::vector<std::string>& tokens, int numOfArgs) {
+    std::vector<std::string> results = { tokens[0] };
+
+    for (int i = 0; i < numOfArgs; i++) {
+        results.push_back(tokens[2*i+2]);
+    }
+
+    return results;
+}
 
 // ai-gen start(copilot, 2, e)
 
@@ -359,7 +463,6 @@ bool QueryValidator::isExpressionSpec(const std::string& token) {
 }
 
 bool QueryValidator::isExpr(std::string token) {
-    token.erase(std::remove_if(token.begin(), token.end(), ::isspace), token.end());
     for (size_t i = 0; i < token.size(); ++i) {
         if (token[i] == '+' || token[i] == '-') {
             if (isExpr(token.substr(0, i)) && isTerm(token.substr(i + 1))) {

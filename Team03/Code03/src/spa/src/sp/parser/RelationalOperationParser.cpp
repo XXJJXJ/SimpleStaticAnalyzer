@@ -1,39 +1,31 @@
 #include "RelationalOperationParser.h"
 
 shared_ptr<Expression> RelationalOperationParser::parse() {
-    auto leftRelationalFactor = factor();
-
-    updateNextToken();
-    unordered_set<TokenType> relationalOperators = {
-        TokenType::GREATER_THAN,
-        TokenType::GREATER_THAN_EQUAL,
-        TokenType::LESS_THAN,
-        TokenType::LESS_THAN_EQUAL,
-        TokenType::DOUBLE_EQUALS,
-        TokenType::NOT_EQUAL
-    };
-
+    shared_ptr<Expression> leftRelationalFactor = parseRelationalFactor();
+    setNextToken();
     if (relationalOperators.find(getTokenType()) == relationalOperators.end()) {
-        throw SyntaxErrorException("Missing Relational operator");
+        throw SyntaxErrorException("Missing > or >= or < or <= or == or != token");
     }
-
-    string operation = getTokenValue();
-    getNextToken();
-    auto rightRelationalFactor = factor();
-    if (!rightRelationalFactor) {
-        throw SyntaxErrorException("Missing right Relational factor");
+    else {
+        string operation = getTokenValue();
+        nextToken();
+        shared_ptr<Expression> rightRelationalFactor = parseRelationalFactor();
+        if (!rightRelationalFactor) {
+            throw SyntaxErrorException("Missing relational factor in Arithmetic expression");
+        }
+        else {
+            PairOfArguments pairOfArguments{leftRelationalFactor, rightRelationalFactor};
+            return make_shared<RelationalOperation>(operation, pairOfArguments);
+        }
     }
-
-    updateNextToken();
-    pair<shared_ptr<Expression>, shared_ptr<Expression>> arguments;
-    arguments.first = leftRelationalFactor;
-    arguments.second = rightRelationalFactor;
-    return make_shared<RelationalOperation>(operation, arguments);
 }
 
-shared_ptr<Expression> RelationalOperationParser::factor() {
+shared_ptr<Expression> RelationalOperationParser::parseRelationalFactor() {
     shared_ptr<ArithmeticOperationParser> arithmeticOperationParser = make_shared<ArithmeticOperationParser>();
-    arithmeticOperationParser->setArguments(getIndexPointer(), getIsSubExpression(), getIsProcessedTokenPointer());
+    arithmeticOperationParser->setPairOfArguments(
+        getIsSubExpressionPointer(), 
+        getIndexPointer(), 
+        getIsProcessedTokenPointer());
     arithmeticOperationParser->setIsSubExpression(true);
     return arithmeticOperationParser->parseEntity(*getTokens());
 }

@@ -15,7 +15,3 @@ WhilePatternPredicate::WhilePatternPredicate(Synonym whileSyn, EntityRef entRef)
     addEntityRef(whileSynRef); // WhileSyn is an entityRef as well, as it is a synonym
     addEntityRef(this->entRef);
 }
-
-std::string WhilePatternPredicate::toString() const {
-    return "While Pattern Predicate";
-}

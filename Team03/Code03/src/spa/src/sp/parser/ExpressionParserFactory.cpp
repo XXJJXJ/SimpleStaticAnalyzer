@@ -20,8 +20,9 @@ shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(
     else if (statementType == EntityType::If || statementType == EntityType::While) {
         return make_shared<ConditionalOperationParser>();
     }
-    
-    return nullptr;
+    else {
+        return nullptr;
+    }
 }
 
 bool ExpressionParserFactory::checkExpressionType(
@@ -30,10 +31,12 @@ bool ExpressionParserFactory::checkExpressionType(
     if (token->getType() == TokenType::NAME) {
         return statementType == EntityType::Variable;
     }
-
-    if (token->getType() == TokenType::INTEGER) {
-        return statementType == EntityType::Constant;
+    else {
+        if (token->getType() == TokenType::INTEGER) {
+            return statementType == EntityType::Constant;
+        }
+        else {
+            return statementType == EntityType::Operation;
+        }
     }
-
-    return statementType == EntityType::Operation;
 }

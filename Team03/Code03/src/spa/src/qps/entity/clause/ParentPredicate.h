@@ -18,7 +18,6 @@ protected:
 
 public:
     ParentPredicate(StatementRef lhs, StatementRef rhs);
-    std::string toString() const override;
 };
 
 #endif // PARENTPREDICATE_H

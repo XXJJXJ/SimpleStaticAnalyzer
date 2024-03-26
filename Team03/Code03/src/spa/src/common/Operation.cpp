@@ -5,7 +5,7 @@ Operation::Operation(
     EntityType operationType, 
     PairOfArguments arguments_)
     : Expression(std::move(name), std::move(operationType)) {
-        arguments = arguments_;
+        arguments = std::move(arguments_);
 }
 
 string Operation::getName() const {

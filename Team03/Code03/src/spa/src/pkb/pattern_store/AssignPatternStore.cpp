@@ -6,15 +6,14 @@ bool isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/' || c == '%');
 }
 
+// Function is long, but there is no good way to shorten 
+// (Don't comment for the sake of commenting, unless you have a good concrete suggestion)
 string infixToPostfix(std::string expression) {
     string result = "";
     stack<char> operators;
     map<char, int> precedence;
     precedence['+'] = precedence['-'] = 1;
     precedence['*'] = precedence['/'] = precedence['%'] = 2;
-    if (isOperator(expression[0])) {
-        throw SyntaxErrorException();
-    }
 
     for (size_t i = 0; i < expression.length(); ++i) {
         if (isdigit(expression[i])) {
@@ -45,16 +44,11 @@ string infixToPostfix(std::string expression) {
                 }
                 i++;
             }
-            if (count > 0) {
-                // throw error
-                throw SyntaxErrorException("[QPS] Assign pattern mismatched parentheses, too many (");
-            }
+            // QPS checked the pattern, should have matching ")"
             i--;
             // recurse sub-expression
             string res = infixToPostfix(temp);
             result += res;
-        } else if (expression[i] == ')') {
-            throw SyntaxErrorException("[QPS] Assign pattern mismatched parentheses, too many )");
         } else if (!isOperator(expression[i])) {
             // is a synonym: assumes no spaces and no random '(' or ')' characters
             // reads in until the next operator
@@ -109,7 +103,7 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::matchExact(vector<shared
 
 bool AssignPatternStore::partialMatch(shared_ptr<Expression> exprS, string& curr, string& rpn) {
     string val = exprS->getName();
-    if (exprS->isLeafNodeExpression()) {
+    if (exprS->isLeafNode()) {
         curr.append(val).append(" ");
         return curr == rpn;
     } else {
@@ -131,7 +125,7 @@ bool AssignPatternStore::partialMatch(shared_ptr<Expression> exprS, string& curr
 
 bool AssignPatternStore::fullMatch(shared_ptr<Expression> exprS, string& curr, string& rpn) {
     string val = exprS->getName();
-    if (exprS->isLeafNodeExpression()) {
+    if (exprS->isLeafNode()) {
         curr.append(val).append(" ");
         return curr == rpn;
     } else {

@@ -1,28 +1,33 @@
 #include "CfgNode.h"
 
-void CfgNode::addNextNode(bool isTrue, shared_ptr<CfgNode> node) {
-    if (nextNodes.find(isTrue) != nextNodes.end()) {
-        throw SemanticErrorException("CfgNode already has a node for condition " + to_string(isTrue));
+void CfgNode::addParentNode(shared_ptr<CfgNode> node) {
+    parentNodes.push_back(node);
+}
+
+void CfgNode::addStatement(shared_ptr<Statement> statement) {
+    statementList.push_back(statement);
+}
+
+void CfgNode::addNextNode(bool condition, shared_ptr<CfgNode> node) {
+    if (nextNodes.find(condition) != nextNodes.end()) {
+        throw SemanticErrorException(
+            "Node for condition " + 
+            to_string(condition) + 
+            "already exists");
     }
-    nextNodes[isTrue] = move(node);
+    else {
+        nextNodes[condition] = move(node);
+    }
 }
 
-void CfgNode::addStatement(int statementNumber) {
-    statementNumbers.push_back(statementNumber);
-}
-
-void CfgNode::addParent(const shared_ptr<CfgNode>& node) {
-    parentNodes.emplace_back(node);
-}
-
-CfgNode::BooleanToCfgNodeMap CfgNode::getNextNodes() {
-    return nextNodes;
-}
-
-vector<int> CfgNode::getStatementNumbers() {
-    return statementNumbers;
-}
-
-CfgNode::CfgNodeContainer CfgNode::getParentNodes() {
+CfgNode::ParentNodes CfgNode::getParentNodes() {
     return parentNodes;
+}
+
+StatementList CfgNode::getStatementList() {
+    return statementList;
+}
+
+CfgNode::NextNodes CfgNode::getNextNodes() {
+    return nextNodes;
 }

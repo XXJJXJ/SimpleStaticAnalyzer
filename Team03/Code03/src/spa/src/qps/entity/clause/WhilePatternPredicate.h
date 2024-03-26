@@ -12,7 +12,6 @@ protected:
 public:
     WhilePatternPredicate(Synonym whileSyn, EntityRef entRef);
     ~WhilePatternPredicate() override = default;
-    std::string toString() const override;
 };
 
 

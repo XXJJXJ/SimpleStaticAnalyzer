@@ -1,12 +1,13 @@
 #include "Variable.h"
 
-Variable::Variable(string name) : Expression(std::move(name), EntityType::Variable) {}
+Variable::Variable(string name) 
+    : Expression(std::move(name), EntityType::Variable) {}
 
 void Variable::accept(shared_ptr<Visitor> visitor) {
     visitor->visitVariable(make_shared<Variable>(*this));
 }
 
-bool Variable::isLeafNodeExpression() {
+bool Variable::isLeafNode() {
     return true;
 }
 

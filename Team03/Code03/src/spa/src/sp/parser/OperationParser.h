@@ -10,36 +10,33 @@
 
 class OperationParser : public ExpressionParser {
 public:
-	shared_ptr<Expression> parseEntity(Tokens& tokens) override;
-	TokenType getTokenType();
 	string getTokenValue();
+	TokenType getTokenType();
 	shared_ptr<int> getIndexPointer();
+	shared_ptr<bool> getIsSubExpressionPointer();
 	shared_ptr<bool> getIsProcessedTokenPointer();
 	shared_ptr<Tokens> getTokens();
-	int getIndex();
-	bool getIsProcessedToken();
-	bool getIsSubExpression();
-	void getNextToken();
-	bool isEndOfStatement();
-	void addParenthesis(string value, int index);
-	void setArguments(shared_ptr<int> index, bool isSubExpression, shared_ptr<bool> isProcessedToken);
+	shared_ptr<Expression> parseEntity(Tokens& tokens) override;
+	bool isEndOfTokens();
+	void nextToken();
+	void setNextToken();
+	void manageParentheses(TokenType tokenType);
 	void setIsSubExpression(bool isSubExpression);
-	void updateNextToken();
-	void validateTokens();
+	void setPairOfArguments(shared_ptr<bool> isSubExpression, shared_ptr<int> index, shared_ptr<bool> isProcessedToken);
 
 private:
 	Tokens tokens;
 	shared_ptr<Token> token = nullptr;
-	string tokenValue;
-	shared_ptr<bool> isProcessedTokenPointer = make_shared<bool>(isProcessedToken);
-	shared_ptr<bool> isSubExpressionPointer = make_shared<bool>(isSubExpression);
-	stack<string> parenthesesContainer;
-	unordered_map<int, string> parenthesesIndexMappings; int index = 0;
-	shared_ptr<int> indexPointer = make_shared<int>(index);
-	bool isSetArguments = false;
-	bool isProcessedToken = false;
-	bool isSubExpression = false;
-	void setup(Tokens& tokens);
-	void validateParenthesis();
+	shared_ptr<int> indexPointer = make_shared<int>(0);
+	shared_ptr<bool> isProcessedTokenPointer = make_shared<bool>(false);
+	shared_ptr<bool> isSubExpressionPointer = make_shared<bool>(false);
+	shared_ptr<bool> isSetPairOfArgumentsPointer = make_shared<bool>(false);
+	stack<TokenType> parentheses;
+	bool hasMoreTokens();
+	void incrementIndex();
+	void markTokenAsProcessed();
+	void initialiseTokens(Tokens& tokens);
+	void setTokens(Tokens& tokens);
+	void checkParentheses();
 	virtual shared_ptr<Expression> parse() = 0;
 };

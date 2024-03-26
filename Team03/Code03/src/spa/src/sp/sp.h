@@ -13,7 +13,7 @@ using namespace std;
 class Sp {
   public:
     Sp();
-    void ProcessSIMPLE(string fileName);
+    bool ProcessSIMPLE(string fileName);
 
     // FOR TESTING PURPOSES
     shared_ptr<Program> triggerTokenizerAndParser(std::string simple_string);

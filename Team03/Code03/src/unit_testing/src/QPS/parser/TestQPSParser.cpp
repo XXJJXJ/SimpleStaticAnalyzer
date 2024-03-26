@@ -52,6 +52,11 @@ TEST_CASE("Debugging whole strings") {
 	std::string string8 = "assign a; Select a pattern a(1, _)";
 	std::string string9 = "while w; variable v; Select w pattern w(v, \"x\")";
 	std::string string10 = "if i; variable v; Select i pattern i(v, v, v)";
+	std::string string11 = "assign a; Select a such that Modifies(a, _) and a(_,_)";
+	std::string string12 = "assign a; Select a pattern a(_,_) and Modifies(a, _)";
+    std::string string13 = "assign a, b; Select <a, b> such that Follows(a, b) and not Modifies(a, _) pattern a(_ , _) and not b(_, _)";
+    std::string string14 = "assign a, b; Select a pattern a(_, _\"a  +b  *   c\"_)";
+    std::string string15 = "assign a, b; Select a pattern a(_, _\"aaa bbb ccc\"_)";
 
     std::vector<std::string> result1 = qm.processQuery(string1);
     std::vector<std::string> result2 = qm.processQuery(string2);
@@ -63,6 +68,11 @@ TEST_CASE("Debugging whole strings") {
 	std::vector<std::string> result8 = qm.processQuery(string8);
 	std::vector<std::string> result9 = qm.processQuery(string9);
 	std::vector<std::string> result10 = qm.processQuery(string10);
+	std::vector<std::string> result11 = qm.processQuery(string11);
+	std::vector<std::string> result12 = qm.processQuery(string12);
+	std::vector<std::string> result13 = qm.processQuery(string13);
+    std::vector<std::string> result14 = qm.processQuery(string14);
+    std::vector<std::string> result15 = qm.processQuery(string15);
 
     std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
     std::vector<std::string> expectedSemanticError = { "SemanticError" };
@@ -81,5 +91,12 @@ TEST_CASE("Debugging whole strings") {
 	REQUIRE(result8 == expectedSyntaxError);
 	REQUIRE(result9 == expectedSemanticError);
 	REQUIRE(result10 == expectedSyntaxError);
+	REQUIRE(result11 == expectedSyntaxError);
+	REQUIRE(result12 == expectedSemanticError);
+	REQUIRE(result13 != expectedSyntaxError);
+	REQUIRE(result13 != expectedSemanticError);
+    REQUIRE(result14 != expectedSyntaxError);
+    REQUIRE(result14 != expectedSemanticError);
+    REQUIRE(result15 == expectedSyntaxError);
 }
 

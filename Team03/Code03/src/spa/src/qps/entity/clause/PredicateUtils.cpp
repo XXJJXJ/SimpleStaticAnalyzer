@@ -13,7 +13,8 @@ PredicateType getPredicateType(const std::string& keyword) {
             {"Calls*", PredicateType::CallsT},
             {"Next", PredicateType::Next},
             {"Next*", PredicateType::NextT},
-            {"Affects", PredicateType::Affects}
+            {"Affects", PredicateType::Affects},
+            {"not", PredicateType::Not}
     };
 
     auto it = keywordMap.find(keyword);

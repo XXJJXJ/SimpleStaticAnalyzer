@@ -4,7 +4,7 @@ EntityExtractor::EntityExtractor(shared_ptr<Populator> pkb) {
 	pkbPopulator = pkb;
 }
 
-void EntityExtractor::processStatements(StatementListContainer statementList) {
+void EntityExtractor::processStatements(StatementList statementList) {
 	for (auto s : statementList) {
 		s->accept(make_shared<EntityExtractor>(*this));
 	}
@@ -43,7 +43,7 @@ void EntityExtractor::visitConstant(shared_ptr<Constant> constant) {
 	pkbPopulator->addConstant(constant);
 };
 
-void EntityExtractor::visitArithmeticalOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) {
+void EntityExtractor::visitArithmeticOperation(shared_ptr<ArithmeticOperation> arithmeticOperation) {
 	extractArgs(arithmeticOperation->getArguments());
 };
 

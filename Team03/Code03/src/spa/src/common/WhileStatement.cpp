@@ -3,24 +3,25 @@
 WhileStatement::WhileStatement(
     int statementNumber,
     shared_ptr<ConditionalOperation> condition_,
-    string procedureName) : Statement(
+    string procedureName) 
+    : Statement(
         statementNumber,
         EntityType::While,
         std::move(procedureName)), condition(std::move(condition_)) {}
 
-void WhileStatement::addStatement(shared_ptr<Statement> statement) {
-    statementList.push_back(statement);
-}
-
 void WhileStatement::accept(shared_ptr<Visitor> visitor) {
     visitor->visitWhileStatement(make_shared<WhileStatement>(*this));
+}
+
+void WhileStatement::addStatement(shared_ptr<Statement> statement) {
+    statementList.push_back(statement);
 }
 
 shared_ptr<ConditionalOperation> WhileStatement::getCondition() const {
     return condition;
 }
 
-StatementListContainer WhileStatement::getStatementList() const {
+StatementList WhileStatement::getStatementList() const {
     return statementList;
 }
 
