@@ -353,3 +353,33 @@ assign a; variable v;
 Select <a, v> such that not Uses(a, v) and Modifies(a, v)
 1 eggs,2 chicks,41 pok,44 pok,50 pok,65 noise,69 eggs,70 randNum
 5000
+71 - Get same const const tuple
+constant a; variable v;
+Select <a, a>
+0 0,1 1,100000 100000,2 2
+5000
+72 - Get const const tuple
+assign a; variable v; procedure p;
+Select <p, v> such that Uses(p, "grow") pattern a(v, _"((eggs) + (chicks))"_) and a(v, _)
+hen chicks
+5000
+73 - Get calls with wild
+call a;
+Select BOOLEAN such that Calls(_, _)
+TRUE
+5000
+74 - Get calls with wild
+call a; procedure p;
+Select p such that Calls(_, p)
+breakEgg,hatch,killChicks,layEggs,makeNoise,screamInPain,wiggle
+5000
+75 - Get not calls with pure wildcard -- gives empty boolean table, NOT makes it false
+call a;
+Select BOOLEAN such that not Calls(_, _)
+FALSE
+5000
+76 - Get not calls with wildcard as first param - get 2 root procedures
+call a; procedure p;
+Select p such that not Calls(_, p)
+hen,rearChickens
+5000
