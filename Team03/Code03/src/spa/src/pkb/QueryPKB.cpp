@@ -136,14 +136,18 @@ bool hasNotModifiedPath(
     // do a bfs traverse, initialize starting layer
     vector<shared_ptr<Statement>> nextLayer = {a1};
     shared_ptr<Variable> targetVar = a1->getVariable();
-    // start of bfs traverse, filter out route that modifies targetVar along the way
+    // Avoid looping on a while loop
+    unordered_set<shared_ptr<Statement>> visited;
     while (nextLayer.size() > 0) {
         vector<shared_ptr<Statement>> newLayer;
         for (auto s : nextLayer) {
             for (auto n : nextSMap[s]) {
-                if (n->getName() == a2->getName()) {
+                if (n->getStatementNumber() == a2->getStatementNumber()) {
                     // if reached here, a path with no modifies is found
                     return true;
+                }
+                if (visited.find(n) != visited.end()) {
+                    continue;
                 }
                 if ((n->isOfType(EntityType::If) ||  // if statement does not actually modify (but inherits from child); OR
                     n->isOfType(EntityType::While) || // while statement likewise, can pass; OR
@@ -153,6 +157,7 @@ bool hasNotModifiedPath(
                 {
                     // then add this statement to newLayer to be traversed later
                     newLayer.push_back(n);
+                    visited.insert(n);
                 }
             }
         }
@@ -166,8 +171,7 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getAffects() {
     auto nextTMap = am->getNextTMap();
     auto nextT = StmtStmtStore::getStmtPairs(nextTMap);
     auto useStore = am->getUseAllMap(); // map of stmt to unordered_set of variables
-    /* 
-        filter nextT for assign - assign statement pairs (a1, a2)
+    /*  filter nextT for assign - assign statement pairs (a1, a2)
         that exists a variable such that a1 modifies v [from assignstatement itself]
         and a2 uses v
     */
