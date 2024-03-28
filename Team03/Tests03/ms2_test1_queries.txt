@@ -383,3 +383,8 @@ call a; procedure p;
 Select p such that not Calls(_, p)
 hen,rearChickens
 5000
+77 - Get all affects - 11 pairs
+stmt s, x;
+Select <s, x> such that Affects(s, x)
+1 10,2 22,2 11,22 11,22 22,11 11,11 22,10 10,64 68,64 65,68 69
+5000
