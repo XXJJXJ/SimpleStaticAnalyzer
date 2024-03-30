@@ -34,8 +34,7 @@ unordered_map<shared_ptr<Statement>, shared_ptr<Statement>> ParentStore::getChil
 }
 
 void ParentStore::clear() {
-    directMap.clear();
-    transitiveMap.clear();
+    StmtStmtStore::clear();
     childToParentMap.clear();
 }
 
