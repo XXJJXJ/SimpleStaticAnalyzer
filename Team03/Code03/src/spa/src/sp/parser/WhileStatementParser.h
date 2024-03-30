@@ -3,7 +3,7 @@
 #include "StatementParser.h"
 #include "StatementParserFactory.h"
 #include "common/Program.h"
-#include "common/WhileStatement.h"
+#include "common/statement/WhileStatement.h"
 
 class WhileStatementParser : public StatementParser {
 public:

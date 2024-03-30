@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Util.h"
+#include "common/Util.h"
 #include "Statement.h"
-#include "ConditionalOperation.h"
+#include "common/expression/ConditionalOperation.h"
 
 class IfStatement : public Statement {
 public:

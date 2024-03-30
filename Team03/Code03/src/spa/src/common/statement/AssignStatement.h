@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Statement.h"
-#include "Expression.h"
-#include "Variable.h"
+#include "common/expression/Expression.h"
+#include "common/expression/Variable.h"
 
 class AssignStatement : public Statement {
 public:

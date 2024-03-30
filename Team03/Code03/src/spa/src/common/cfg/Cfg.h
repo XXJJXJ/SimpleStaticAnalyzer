@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CfgNode.h"
-#include "spa_exception/SemanticErrorException.h"
+#include "common/spa_exception/SemanticErrorException.h"
 
 class Cfg {
 public:

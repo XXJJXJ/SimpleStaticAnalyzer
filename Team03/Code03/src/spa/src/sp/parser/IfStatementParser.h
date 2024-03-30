@@ -2,7 +2,7 @@
 
 #include "StatementParser.h"
 #include "StatementParserFactory.h"
-#include "common/IfStatement.h"
+#include "common/statement/IfStatement.h"
 #include "common/Program.h"
 
 class IfStatementParser : public StatementParser {

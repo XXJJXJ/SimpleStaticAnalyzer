@@ -7,7 +7,7 @@
 #include "abstraction_store/ParentStore.h"
 #include "abstraction_store/CallStore.h"
 #include "abstraction_store/NextStore.h"
-#include "common/CallStatement.h"
+#include "common/statement/CallStatement.h"
 
 using namespace std;
 

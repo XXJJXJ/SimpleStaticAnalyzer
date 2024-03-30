@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "common/Statement.h"
+#include "common/statement/Statement.h"
 #include "StmtStmtStore.h"
 
 class ParentStore : public StmtStmtStore {

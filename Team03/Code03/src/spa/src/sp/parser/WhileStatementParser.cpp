@@ -1,4 +1,5 @@
 #include "WhileStatementParser.h"
+#include <algorithm>
 
 shared_ptr<Statement> WhileStatementParser::parseEntity(Tokens& tokens) {
     checkStartOfWhileStatement(tokens);

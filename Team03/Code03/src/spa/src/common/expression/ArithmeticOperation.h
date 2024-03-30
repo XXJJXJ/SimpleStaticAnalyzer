@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Operation.h"
-#include "Util.h"
+#include "common/Util.h"
 
 using namespace std;
 
-class RelationalOperation : public Operation {
+class ArithmeticOperation : public Operation {
 public:
-	RelationalOperation(
-		string name, 
+	ArithmeticOperation(
+		string name,
 		PairOfArguments arguments);
 	void accept(shared_ptr<Visitor> visitor) override;
 	bool operator==(const Expression& other) const override;

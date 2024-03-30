@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Util.h"
-#include "Statement.h"
+#include "common/statement/Statement.h"
 #include "Entity.h"
 
 class Procedure : public Entity {

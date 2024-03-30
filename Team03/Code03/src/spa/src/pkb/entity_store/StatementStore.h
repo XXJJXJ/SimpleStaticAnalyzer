@@ -2,13 +2,13 @@
 
 #include <unordered_map>
 
-#include "common/Statement.h"
-#include "common/AssignStatement.h"
-#include "common/CallStatement.h"
-#include "common/IfStatement.h"
-#include "common/ReadStatement.h"
-#include "common/PrintStatement.h"
-#include "common/WhileStatement.h"
+#include "common/statement/Statement.h"
+#include "common/statement/AssignStatement.h"
+#include "common/statement/CallStatement.h"
+#include "common/statement/IfStatement.h"
+#include "common/statement/ReadStatement.h"
+#include "common/statement/PrintStatement.h"
+#include "common/statement/WhileStatement.h"
 
 class StatementStore {
 private:

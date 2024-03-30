@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Statement.h"
-#include "Procedure.h"
+#include "common/Procedure.h"
 
 class CallStatement : public Statement {
 public:
