@@ -125,6 +125,92 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getNextT() {
     return am->getNextT();
 }
 
+bool QueryManager::checkLayer(
+    shared_ptr<AssignStatement> a2, 
+    shared_ptr<Variable> targetVar,
+    vector<shared_ptr<Statement>>& nextLayer,
+    unordered_set<shared_ptr<Statement>>& visited,
+    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>>& nextTMap
+) {
+    auto nextSMap = am->getNextSMap();
+    auto modifyStore = am->getModifyAllMap();
+    vector<shared_ptr<Statement>> newLayer;
+    for (auto s : nextLayer) {
+        for (auto n : nextSMap[s]) {
+            if (n->getStatementNumber() == a2->getStatementNumber()) {
+                // if reached here, a path with no modifies is found
+                return true;
+            }
+            if (visited.find(n) != visited.end()) {
+                continue;
+            }
+            if ((n->isOfType(EntityType::If) ||  // if statement does not actually modify (but inherits from child); OR
+                n->isOfType(EntityType::While) || // while statement likewise, can pass; OR
+                modifyStore.find(n) == modifyStore.end() || // if it does not modify; OR
+                modifyStore[n].find(targetVar) == modifyStore[n].end()) // does not modify target variable
+                && nextTMap[n].find(a2) != nextTMap[n].end())  // AND it will eventually reach a2
+            {
+                // then add this statement to newLayer to be traversed later
+                newLayer.push_back(n);
+                visited.insert(n);
+            }
+        }
+    }
+    nextLayer = newLayer;
+    return false;
+}
+
+// Helper function for affects
+bool QueryManager::hasNotModifiedPath(
+    shared_ptr<AssignStatement> a1,
+    shared_ptr<AssignStatement> a2, 
+    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>>& nextTMap)
+{
+    // do a bfs traverse, initialize starting layer
+    vector<shared_ptr<Statement>> nextLayer = {a1};
+    shared_ptr<Variable> targetVar = a1->getVariable();
+    // Avoid looping on a while loop
+    unordered_set<shared_ptr<Statement>> visited;
+    while (nextLayer.size() > 0) {
+        if (checkLayer(a2, targetVar, nextLayer, visited, nextTMap)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Affects: On the spot calculation using information from all the stores
+vector<vector<shared_ptr<Entity>>> QueryManager::getAffects() {
+    auto nextTMap = am->getNextTMap();
+    auto nextT = StmtStmtStore::getStmtPairs(nextTMap);
+    auto useStore = am->getUseAllMap(); // map of stmt to unordered_set of variables
+    /*  filter nextT for assign - assign statement pairs (a1, a2)
+        that exists a variable such that a1 modifies v [from assignstatement itself]
+        and a2 uses v
+    */
+    vector<vector<shared_ptr<AssignStatement>>> filteredForRelatedAssigns;
+    for (auto & _p : nextT) {
+        if (_p[0]->isOfType(EntityType::Assign) && _p[1]->isOfType(EntityType::Assign)) {
+            auto a1 = dynamic_pointer_cast<AssignStatement>(_p[0]);
+            auto a2 = dynamic_pointer_cast<AssignStatement>(_p[1]);
+            if (useStore[a2].find(a1->getVariable()) != useStore[a2].end()) {
+                filteredForRelatedAssigns.push_back({a1, a2});
+            }
+            
+        }
+    }
+    // if there exist a path from a1 to a2 such that v is not modified, insert into results
+    vector<vector<shared_ptr<Entity>>> results;
+    for (auto _ap : filteredForRelatedAssigns) {
+        if (hasNotModifiedPath(_ap[0],_ap[1], nextTMap)) {
+            results.push_back({_ap[0], _ap[1]});
+        }
+    }
+    return results;
+}
+
+
+
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getFollowSMap() {
     return am->getFollowSMap();
 }

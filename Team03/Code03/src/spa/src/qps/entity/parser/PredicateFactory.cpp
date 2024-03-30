@@ -1,5 +1,6 @@
 #include "PredicateFactory.h"
 #include "qps/QueryValidator.h"
+#include "qps/entity/clause/AffectsPredicate.h"
 #include "qps/entity/clause/AssignPatternPredicate.h"
 #include "qps/entity/clause/FollowsPredicate.h"
 #include "qps/entity/clause/FollowsTPredicate.h"
@@ -56,7 +57,8 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
         NextTPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
         return std::make_shared<NextTPredicate>(predicate);
     } case PredicateType::Affects: {
-
+        AffectsPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
+        return std::make_shared<AffectsPredicate>(predicate);
     }
     case PredicateType::Pattern: {
         return parsePatternPredicate(tokens, synonymMap);

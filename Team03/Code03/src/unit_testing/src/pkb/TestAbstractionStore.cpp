@@ -496,3 +496,72 @@ TEST_CASE("Store and retrieve NextS and NextT") {
     }
     qm.clear();
 }
+
+TEST_CASE("Test calculation of Affects") {
+    Populator pop;
+    pop.clear();
+    /*==== Context
+    procedure main {
+    1    x = 100;
+    2    y = x + 1;
+    3    if (y < x) then {
+    4        x = 99;
+    5        y = y + x;
+    6    } else { y = y - 99;}
+    7    y = x - 1 + y;
+    8    while (y > 1) {
+    9        y = y - 1;}}
+    ========= Expected outcome ========
+    Affects: (1, 2) (1, 7) (2, 5) (2, 6) (4, 5) (4, 7) (5, 7) (6, 7) (7, 9) (9, 9)
+    */
+    shared_ptr<Variable> x = make_shared<Variable>("x");
+    shared_ptr<Variable> y = make_shared<Variable>("y");
+    shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
+    shared_ptr<AssignStatement> stmt1 = make_shared<AssignStatement>(1, x, "main");
+    pop.addModifies(stmt1, x);
+    shared_ptr<AssignStatement> stmt2 = make_shared<AssignStatement>(2, y, "main");
+    pop.addNext(stmt1, stmt2);
+    pop.addModifies(stmt2, y);
+    pop.addUses(stmt2, x);
+    shared_ptr<IfStatement> stmt3 = make_shared<IfStatement>(3, cond, "main");
+    pop.addNext(stmt2, stmt3);
+    pop.addUses(stmt3, x);
+    pop.addUses(stmt3, y);
+    shared_ptr<AssignStatement> stmt4 = make_shared<AssignStatement>(4, x, "main");
+    pop.addNext(stmt3, stmt4);
+    pop.addParent(stmt3, stmt4);
+    pop.addModifies(stmt4, x);
+    shared_ptr<AssignStatement> stmt5 = make_shared<AssignStatement>(5, y, "main");
+    pop.addNext(stmt4, stmt5);
+    pop.addParent(stmt3, stmt5);
+    pop.addModifies(stmt5, y);
+    pop.addUses(stmt5, x);
+    pop.addUses(stmt5, y);
+    shared_ptr<AssignStatement> stmt6 = make_shared<AssignStatement>(6, y, "main");
+    pop.addNext(stmt3, stmt6);
+    pop.addParent(stmt3, stmt6);
+    pop.addModifies(stmt6, y);
+    pop.addUses(stmt6, y);
+    shared_ptr<AssignStatement> stmt7 = make_shared<AssignStatement>(7, y, "main");
+    pop.addNext(stmt5, stmt7);
+    pop.addNext(stmt6, stmt7);
+    pop.addModifies(stmt7, y);
+    pop.addUses(stmt7, x);
+    pop.addUses(stmt7, y);
+    shared_ptr<WhileStatement> stmt8 = make_shared<WhileStatement>(8, cond, "main");
+    pop.addNext(stmt7, stmt8);
+    pop.addUses(stmt8, y);
+    shared_ptr<AssignStatement> stmt9 = make_shared<AssignStatement>(9, y, "main");
+    stmt8->addStatement(stmt9);
+    pop.addNext(stmt8, stmt9);
+    pop.addParent(stmt8, stmt9);
+    pop.addNext(stmt9, stmt8);
+    pop.addUses(stmt9, y);
+    pop.addModifies(stmt9, y);
+    pop.tabulate();
+
+    QueryManager qm;
+    auto affects = qm.getAffects();
+    REQUIRE(affects.size() == 10);
+    qm.clear();
+}

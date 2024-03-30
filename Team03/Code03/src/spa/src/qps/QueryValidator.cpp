@@ -249,6 +249,7 @@ std::vector<std::string> QueryValidator::validateSuchThatPredicate(const std::ve
 
     PredicateType predicateType = getPredicateType(tokens[0]);
     switch (predicateType) {
+    case PredicateType::Affects:
     case PredicateType::Follows:
     case PredicateType::FollowsT:
     case PredicateType::Parent:

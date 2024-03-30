@@ -507,3 +507,33 @@ TEST_CASE("27th SP-PKB Integration Test: nested while next* relation test") {
     REQUIRE(nextStore.size() == 244);
     pkbPopulator->clear();
 }
+
+TEST_CASE("28th SP-PKB Integration Test: Basic Affects relation test") {
+    string str = "procedure rearChickens {eggs = 100000;chicks = 0;while ((chicks < 100000) && (eggs > 0)) {if (chicks > eggs) then {print eggs;read luck;if (luck > eggs) then {eggs = eggs - 1;chicks = chicks + 1;} else { read better;print luck;read next;print time;}} else { print more;print chicks;print than;print eggs;while (chicks > eggs) {chicks = chicks - 1;}print now;read i;print have;read less;print chicks;}}print chicks;}";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> affStore = qm.getAffects();
+    REQUIRE(affStore.size() == 8);
+    pkbPopulator->clear();
+}
+
+TEST_CASE("29th SP-PKB Integration Test: Affects relation test with ms2_test1 source") {
+    string str = "procedure rearChickens { eggs = 100000; chicks = 0; while ((chicks < 100000) && (eggs > 0)) { if (chicks > eggs) then { call wiggle; print eggs; read luck; if (luck > eggs) then { call hatch; eggs = eggs - 1; chicks = chicks + 1; } else { read better; print luck; read next; print time;} } else { print more; print chicks; print than; print eggs; while (chicks > eggs) { call killChicks; chicks = chicks - 1;} print now; read i; print have; read less; print chicks;}} print chicks; } procedure wiggle { print something; read is; print shaking; print is; read it; read hatching; print questionMark; } procedure hatch { call wiggle; call wiggle; call wiggle; call makeNoise; call breakEgg; } procedure makeNoise { pok = 1; print pok; read pok; pok = 2; print pok; read pok; pok = pok + 1; print pok; read pok; pok = 1 * chicks; } procedure breakEgg { print prack; } procedure killChicks { read weapon; print how; print many; read times; read to; read smack; call screamInPain; } procedure screamInPain { print stop; print pls; read stop; print exclaimationMark; } procedure hen { call makeNoise; chicks = eggs + chicks + grow * 2 / times; noise = (chicks + eggs) * times * pok; while (alive < 2) { call layEggs; } chicks = chicks + pok; eggs = pok / chicks; } procedure layEggs { randNum = (read + print * call - statement / procedure + if) / while; if (randNum > 100000) then { print successfully; read laid; print eggs; } else { print randNum; read randNum; } }";
+    Sp sp = Sp();
+    shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
+    shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
+    pkbPopulator->clear();
+    shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
+    design_extractor->extractDesign(program);
+
+    QueryManager qm;
+    vector<vector<shared_ptr<Entity>>> affStore = qm.getAffects();
+    REQUIRE(affStore.size() == 11); // Actual pairs tested and verified in system tests
+    pkbPopulator->clear();
+}

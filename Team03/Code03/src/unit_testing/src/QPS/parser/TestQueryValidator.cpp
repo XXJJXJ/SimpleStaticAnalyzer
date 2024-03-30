@@ -184,6 +184,7 @@ TEST_CASE("Test QueryValidator::validateStatementStatementPredicate") {
         std::vector<std::string> tokens4 = {"Parent*", "(", "_", ",", "5", ")"}; // Wildcard + statement number
         std::vector<std::string> tokens5 = {"Next", "(", "a", ",", "b", ")"}; // Both synonyms
         std::vector<std::string> tokens6 = {"Next*", "(", "a", ",", "_", ")"}; // Synonym + wildcard
+        std::vector<std::string> tokens7 = {"Affects", "(", "a", ",", "_", ")"}; // Synonym + wildcard
 
         std::vector<std::string> expectedResults1 = {"Follows", "a", "b"};
         std::vector<std::string> expectedResults2 = {"Follows*", "a", "_"};
@@ -191,6 +192,7 @@ TEST_CASE("Test QueryValidator::validateStatementStatementPredicate") {
         std::vector<std::string> expectedResults4 = {"Parent*", "_", "5"};
         std::vector<std::string> expectedResults5 = {"Next", "a", "b"};
         std::vector<std::string> expectedResults6 = {"Next*", "a", "_"};
+        std::vector<std::string> expectedResults7 = {"Affects", "a", "_"};
 
         std::vector<std::string> results1 = QueryValidator::validateStatementStatementPredicate(tokens1);
         std::vector<std::string> results2 = QueryValidator::validateStatementStatementPredicate(tokens2);
@@ -198,6 +200,7 @@ TEST_CASE("Test QueryValidator::validateStatementStatementPredicate") {
         std::vector<std::string> results4 = QueryValidator::validateStatementStatementPredicate(tokens4);
         std::vector<std::string> results5 = QueryValidator::validateStatementStatementPredicate(tokens5);
         std::vector<std::string> results6 = QueryValidator::validateStatementStatementPredicate(tokens6);
+        std::vector<std::string> results7 = QueryValidator::validateStatementStatementPredicate(tokens7);
 
         REQUIRE(results1 == expectedResults1);
         REQUIRE(results2 == expectedResults2);
@@ -205,6 +208,7 @@ TEST_CASE("Test QueryValidator::validateStatementStatementPredicate") {
         REQUIRE(results4 == expectedResults4);
         REQUIRE(results5 == expectedResults5);
         REQUIRE(results6 == expectedResults6);
+        REQUIRE(results7 == expectedResults7);
     }
 
     SECTION("Invalid StatementStatementPredicates") {

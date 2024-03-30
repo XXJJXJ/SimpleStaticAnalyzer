@@ -1,0 +1,127 @@
+procedure absoluteTerrorism {
+    one = 1;
+    two = 2;
+    three = 3;
+    four = 4;
+    spa = (one + (two + three)) + four;
+    call simpleTerrorism;
+    spa = (one + two) + (three + four);
+    one = 1;
+    two = 2;
+    three = 3;
+    four = 4;
+    call spaTerrorism;
+    spa = one + ((two + three) + four);
+}
+
+procedure simpleTerrorism {
+    three = 3;
+    four = 4;
+    while (spa < 20) {
+        while (spa < 30) {
+            if (spa < 40) then {
+                while (spa < 50) {
+                    while (spa < 60) {
+                        call notSoScary3;   }}} else {
+                while (spa < 50) {
+                    while (spa < 60) {
+                        call notSoScary4;   }}}}}
+}
+
+procedure spaTerrorism {
+    one = 1;
+    two = 2;
+    while (x < 1) {
+        while (x < 2) {
+            while (x < 3) {
+                while (x < 4) {
+                    if (x < 10) then {
+                        call notSoScary1;   
+                    } else { call notSoScary2;  }}}}}
+    spa = one + two;
+}
+
+procedure notSoScary1 {
+    read one;
+    print one;
+    one = (one * (one + one) / (one + one) - one) % one;
+}
+
+procedure notSoScary2 {
+    read two;
+    print two;
+    two = two * (two + ((two) / (two)) + two) - (two % two);
+}
+
+procedure notSoScary3 {
+    read three;
+    print three;
+    three = (three * (three + ((three) / (three)) + three)) - (three % three);
+}
+
+procedure notSoScary4 {
+    read four;
+    print four;
+    four = (four * (four + four)) / ((four + four) - (four % four));
+}
+
+procedure ifTerrorism {
+    one = 1;
+    if (one >= 1) then {
+        while (two >= 1) {
+            one = 300;
+        }
+        two = one + 1;
+        if (two <= 2) then {
+            while (three == 3) {
+                if (four == 4) then {
+                    two = 2;
+                    two = one + two;
+                } else {
+                    one = one + two;
+                    two = 3;
+                }
+                two = two * 2;
+            }
+            two = 1 * two;
+        } else {
+            call notSoScary1;
+        }
+        two = one + 1;
+    } else {
+        four = 4;
+        one = 1;
+        while (four < 4) {
+            if (two >= 2) then {
+                if (one < 1) then {
+                    four = 4;
+                } else {
+                    while (one == 1) {
+                        one = one + 1;
+                    }
+                    one = one + 3;
+                }
+                four = one + four;
+            } else {
+                call notSoScary4;
+            }
+            three = four + four;
+        }
+        three = four + four;
+        while (four > 4) {
+            if (three == 3) then {
+                two = 2;
+            } else {
+                three = two * two;
+            }
+            three = three + 3;
+            if (four == 4) then {
+                four = four - 1;
+            } else {
+                two = 4000;
+            }
+            three = two + 3;
+        }
+        three = three * four;
+    }
+}
