@@ -1,20 +1,20 @@
 #pragma once
 
 #include <common/Util.h>
-#include <common/Cfg.h>
-#include <common/CfgNode.h>
-#include <common/ArithmeticOperation.h>
-#include <common/AssignStatement.h>
-#include <common/CallStatement.h>
-#include <common/ConditionalOperation.h>
-#include <common/Constant.h>
-#include <common/IfStatement.h>
-#include <common/PrintStatement.h>
+#include <common/cfg/Cfg.h>
+#include <common/cfg/CfgNode.h>
+#include <common/expression/ArithmeticOperation.h>
+#include <common/statement/AssignStatement.h>
+#include <common/statement/CallStatement.h>
+#include <common/expression/ConditionalOperation.h>
+#include <common/expression/Constant.h>
+#include <common/statement/IfStatement.h>
+#include <common/statement/PrintStatement.h>
 #include <common/Procedure.h>
-#include <common/ReadStatement.h>
-#include <common/RelationalOperation.h>
-#include <common/Variable.h>
-#include <common/WhileStatement.h>
+#include <common/statement/ReadStatement.h>
+#include <common/expression/RelationalOperation.h>
+#include <common/expression/Variable.h>
+#include <common/statement/WhileStatement.h>
 #include "Visitor.h"
 
 class CfgExtractor : public Visitor {

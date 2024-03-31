@@ -2,7 +2,7 @@
 
 #include "OperationParser.h"
 #include "RelationalOperationParser.h"
-#include "common/ConditionalOperation.h"
+#include "common/expression/ConditionalOperation.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 #include "../tokenizer/Token.h"
 
@@ -16,7 +16,7 @@ private:
 	bool isSubExpression;
 	bool isProcessedToken; 
 	shared_ptr<Expression> parseRelationalExpression();
-	shared_ptr<Expression> parseSubExpression(int index, TokenType tokenType);
-	shared_ptr<Expression> parseNotSubExpression();
+	shared_ptr<Expression> parseExpression(int index, TokenType tokenType);
+	shared_ptr<Expression> parseSubExpression(string operation, shared_ptr<Expression> subExpression);
 	shared_ptr<Expression> parseAndOrSubExpression();
 };

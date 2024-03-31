@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "common/Constant.h"
-#include "common/Variable.h"
+#include "common/expression/Constant.h"
+#include "common/expression/Variable.h"
 #include "entity_store/ConstVarStore.h"
 #include "entity_store/ProcedureStore.h"
 #include "entity_store/StatementStore.h"

@@ -2,7 +2,7 @@
 
 #include "StatementParser.h"
 #include "common/Program.h"
-#include "common/ReadStatement.h"
+#include "common/statement/ReadStatement.h"
 
 class ReadStatementParser : public StatementParser {
 public:

@@ -3,7 +3,7 @@
 #include <stack>
 #include <unordered_map>
 #include "ExpressionParser.h"
-#include "common/Operation.h"
+#include "common/expression/Operation.h"
 #include "../tokenizer/ArithmeticToken.h"
 #include "../tokenizer/RelationalToken.h"
 #include "../tokenizer/ConditionalToken.h"

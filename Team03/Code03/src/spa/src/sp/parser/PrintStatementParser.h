@@ -1,7 +1,7 @@
 #pragma once
 #include "StatementParser.h"
 #include "common/Program.h"
-#include "common/PrintStatement.h"
+#include "common/statement/PrintStatement.h"
 
 class PrintStatementParser : public StatementParser {
 public:

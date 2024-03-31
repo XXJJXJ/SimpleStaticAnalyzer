@@ -1,9 +1,9 @@
 #pragma once
 
 #include "OperationParser.h"
-#include "common/ArithmeticOperation.h"
-#include "common/Constant.h"
-#include "common/Variable.h"
+#include "common/expression/ArithmeticOperation.h"
+#include "common/expression/Constant.h"
+#include "common/expression/Variable.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 #include "../tokenizer/Token.h"
 #include "unordered_set"

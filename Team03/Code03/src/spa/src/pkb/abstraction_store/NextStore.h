@@ -3,8 +3,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "common/Entity.h"
-#include "common/WhileStatement.h"
-#include "common/IfStatement.h"
+#include "common/statement/WhileStatement.h"
+#include "common/statement/IfStatement.h"
 #include "common/spa_exception/SemanticErrorException.h"
 #include "StmtStmtStore.h"
 

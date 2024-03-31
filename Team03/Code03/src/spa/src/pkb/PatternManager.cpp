@@ -1,4 +1,5 @@
 #include "PatternManager.h"
+#include <algorithm>
 
 // Initialize the static instance to nullptr
 shared_ptr<PatternManager> PatternManager::instance = nullptr;

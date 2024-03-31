@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/Statement.h"
+#include "common/statement/Statement.h"
 #include "common/Procedure.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 #include "EntityParser.h"

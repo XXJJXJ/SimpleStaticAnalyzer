@@ -1,7 +1,7 @@
 
 #pragma once
 #include "CellFilter.h" // Ensure this path is correct
-#include "common/Statement.h" // Ensure this path is correct
+#include "common/statement/Statement.h" // Ensure this path is correct
 #include <memory>
 
 class StatementNumberFilter : public CellFilter {

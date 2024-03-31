@@ -1,5 +1,5 @@
 #include "sp.h"
-#include "common/Variable.h"
+#include "common/expression/Variable.h"
 #include "common/Procedure.h"
 #include <common/spa_exception/SpaException.h>
 

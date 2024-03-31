@@ -2,9 +2,9 @@
 
 #include <unordered_map>
 #include <unordered_set>
-#include "common/Statement.h"
+#include "common/statement/Statement.h"
 #include "common/EntityType.h"
-#include "common/Variable.h"
+#include "common/expression/Variable.h"
 #include "common/Procedure.h"
 
 using namespace std;

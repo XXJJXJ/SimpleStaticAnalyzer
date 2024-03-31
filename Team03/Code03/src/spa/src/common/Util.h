@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <memory>
-#include "common/Statement.h"
+#include "common/statement/Statement.h"
 #include "sp/tokenizer/Token.h"
 
 typedef vector<shared_ptr<Token>> Tokens;

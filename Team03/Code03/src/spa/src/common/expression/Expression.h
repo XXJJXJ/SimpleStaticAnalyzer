@@ -2,8 +2,8 @@
 
 #include <string>
 #include <optional>
-#include "Entity.h"
-#include "Util.h"
+#include "common/Entity.h"
+#include "common/Util.h"
 
 class Expression : public Entity {
 public:

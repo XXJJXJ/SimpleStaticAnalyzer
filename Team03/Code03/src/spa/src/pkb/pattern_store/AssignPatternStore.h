@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <stack>
 #include <map>
-#include "common/AssignStatement.h"
+#include "common/statement/AssignStatement.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 
 class AssignPatternStore {
