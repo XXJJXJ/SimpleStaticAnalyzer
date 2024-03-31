@@ -15,3 +15,7 @@ WhilePatternPredicate::WhilePatternPredicate(Synonym whileSyn, EntityRef entRef)
     addEntityRef(whileSynRef); // WhileSyn is an entityRef as well, as it is a synonym
     addEntityRef(this->entRef);
 }
+
+PredicateType WhilePatternPredicate::getType() const {
+    return PredicateType::WhilePattern;
+}

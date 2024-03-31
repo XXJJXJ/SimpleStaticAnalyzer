@@ -14,3 +14,7 @@ CallsPredicate::CallsPredicate(EntityRef lhs, EntityRef rhs) : lhs(std::move(lhs
 std::shared_ptr<BaseTable> CallsPredicate::getFullTable(QueryManager& qm) {
     return make_shared<BaseTable>(qm.getCallS(), 2);
 }
+
+PredicateType CallsPredicate::getType() const {
+    return PredicateType::Calls;
+}

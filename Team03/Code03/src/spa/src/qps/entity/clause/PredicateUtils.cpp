@@ -8,7 +8,7 @@ PredicateType getPredicateType(const std::string& keyword) {
             {"Parent", PredicateType::Parent},
             {"Parent*", PredicateType::ParentT},
             {"Uses", PredicateType::Uses},
-            {"pattern", PredicateType::Pattern},
+            {"pattern", PredicateType::AssignPattern},
             {"Calls", PredicateType::Calls},
             {"Calls*", PredicateType::CallsT},
             {"Next", PredicateType::Next},

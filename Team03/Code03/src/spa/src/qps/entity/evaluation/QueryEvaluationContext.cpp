@@ -7,7 +7,10 @@
 #include <sstream>
 
 
-QueryEvaluationContext::QueryEvaluationContext() : queryManager(std::make_shared<QueryManager>()) {}
+QueryEvaluationContext::QueryEvaluationContext() {
+    queryManager = std::make_shared<QueryManager>();
+    predicateResultCache = std::make_shared<PredicateResultCache>();
+}
 
 void QueryEvaluationContext::addTableForSynonym(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table) {
     synonymToTableMap[synonym] = table;
@@ -134,3 +137,6 @@ std::vector<SynonymPtrSet> QueryEvaluationContext::getSynonymGroups() const {
     return synonymGroups;
 }
 
+std::shared_ptr<PredicateResultCache> QueryEvaluationContext::getCache() const {
+    return predicateResultCache;
+}
