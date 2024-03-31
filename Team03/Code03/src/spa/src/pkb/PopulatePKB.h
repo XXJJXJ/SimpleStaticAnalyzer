@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "common/ReadStatement.h"
-#include "common/PrintStatement.h"
+#include "common/statement/ReadStatement.h"
+#include "common/statement/PrintStatement.h"
 #include "common/Procedure.h"
 #include "AbstractionManager.h"
 #include "EntityManager.h"

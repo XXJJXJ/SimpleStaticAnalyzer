@@ -2,7 +2,7 @@
 
 #include "StatementParser.h"
 #include "common/Program.h"
-#include "common/AssignStatement.h"
+#include "common/statement/AssignStatement.h"
 
 class AssignStatementParser : public StatementParser {
 public:

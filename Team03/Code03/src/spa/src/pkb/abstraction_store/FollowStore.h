@@ -1,7 +1,7 @@
 #pragma once
 
 #include <unordered_map>
-#include "common/Statement.h"
+#include "common/statement/Statement.h"
 #include "StmtStmtStore.h"
 
 class FollowStore : public StmtStmtStore {

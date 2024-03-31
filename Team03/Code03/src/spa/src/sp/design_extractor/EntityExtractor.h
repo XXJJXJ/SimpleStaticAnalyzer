@@ -2,15 +2,15 @@
 
 #include "Visitor.h"
 #include "common/Util.h"
-#include "common/Operation.h"
+#include "common/expression/Operation.h"
 #include "common/Procedure.h"
-#include "common/Variable.h"
-#include "common/ReadStatement.h"
-#include "common/PrintStatement.h"
-#include "common/Constant.h"
-#include "common/ArithmeticOperation.h"
-#include "common/ConditionalOperation.h"
-#include "common/RelationalOperation.h"
+#include "common/expression/Variable.h"
+#include "common/statement/ReadStatement.h"
+#include "common/statement/PrintStatement.h"
+#include "common/expression/Constant.h"
+#include "common/expression/ArithmeticOperation.h"
+#include "common/expression/ConditionalOperation.h"
+#include "common/expression/RelationalOperation.h"
 #include "pkb/PopulatePKB.h"
 
 class EntityExtractor : public Visitor {

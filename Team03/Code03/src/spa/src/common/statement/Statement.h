@@ -2,8 +2,8 @@
 
 #include <string>
 #include <vector>
-#include "Entity.h"
-#include "EntityType.h"
+#include "common/Entity.h"
+#include "common/EntityType.h"
 
 class Statement : public Entity {
 public:

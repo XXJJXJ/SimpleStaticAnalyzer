@@ -3,8 +3,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <memory>
-#include "common/Statement.h"
-#include "common/Variable.h"
+#include "common/statement/Statement.h"
+#include "common/expression/Variable.h"
 
 using namespace std;
 

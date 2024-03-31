@@ -4,9 +4,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Util.h"
-#include "common/Statement.h"
-#include "spa_exception/SemanticErrorException.h"
+#include "common/Util.h"
+#include "common/statement/Statement.h"
+#include "common/spa_exception/SemanticErrorException.h"
 
 using namespace std;
 

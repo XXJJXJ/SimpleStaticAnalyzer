@@ -1,9 +1,9 @@
 #include "catch.hpp"
 
-#include "common/Constant.h"
-#include "common/Variable.h"
+#include "common/expression/Constant.h"
+#include "common/expression/Variable.h"
 #include "common/Procedure.h"
-#include "common/Statement.h"
+#include "common/statement/Statement.h"
 #include "pkb/PopulatePKB.h"
 #include "pkb/QueryPKB.h"
 

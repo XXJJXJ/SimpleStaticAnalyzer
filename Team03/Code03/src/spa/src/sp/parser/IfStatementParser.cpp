@@ -1,4 +1,5 @@
 #include "IfStatementParser.h"
+#include <algorithm>
 
 shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
     checkStartOfIfStatement(tokens);
