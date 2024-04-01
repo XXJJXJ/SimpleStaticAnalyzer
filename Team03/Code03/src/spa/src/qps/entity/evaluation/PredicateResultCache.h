@@ -14,7 +14,7 @@ private:
                                                                PredicateType::Invalid,
                                                                PredicateType::Unknown,
                                                                PredicateType::AssignPattern,
-                                                               PredicateType::Pattern}
+                                                               PredicateType::Pattern};
 
 public:
     void storeResult(PredicateType predicateType, std::shared_ptr<BaseTable> table);
