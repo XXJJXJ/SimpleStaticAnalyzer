@@ -4,7 +4,7 @@
 #include "RelationalOperationParser.h"
 #include "common/expression/ConditionalOperation.h"
 #include "common/spa_exception/SyntaxErrorException.h"
-#include "../tokenizer/Token.h"
+#include "../tokenizer/Token/Token.h"
 
 using namespace std;
 

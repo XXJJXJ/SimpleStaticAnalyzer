@@ -1,4 +1,4 @@
-#include "RelationalToken.h"
+#include "../Token/RelationalToken.h"
 #include "RelationalTokenFactory.h"
 
 shared_ptr<Token> RelationalTokenFactory::createToken(std::string value) {
