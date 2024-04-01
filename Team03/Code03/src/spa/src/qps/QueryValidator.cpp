@@ -67,30 +67,28 @@ std::vector<std::vector<std::vector<std::string>>> QueryValidator::splitTokens(c
 
     for (const auto& token : tokens) {
         currentList.push_back(token);
+        size_t currSize = currentList.size();
 
-        if (token == ")") {
+        if (token == ")" || (currSize > 2 && currentList[currSize - 2] == "=")) {
             if (!isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
             }
             clauses.push_back(currentList);
             currentList.clear();
-        }
-        else if (token == ";") {
+        } else if (token == ";") {
             if (isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
             }
             declarations.push_back(currentList);
             currentList.clear();
-        }
-        else if (token == ">" && currentList[0] == "Select") {
+        } else if (token == ">" && currentList[0] == "Select") {
             if (isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
             }
             selections.push_back(currentList);
             currentList.clear();
             isClause = true;
-        }
-        else if (currentList.size() == 2 && currentList[0] == "Select" && token != "<") {
+        } else if (currSize == 2 && currentList[0] == "Select" && token != "<") {
             // If the list starts with "Select", and the next token is not "<", end the list
             if (isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
