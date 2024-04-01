@@ -14,6 +14,7 @@ PredicateType getPredicateType(const std::string& keyword) {
             {"Next", PredicateType::Next},
             {"Next*", PredicateType::NextT},
             {"Affects", PredicateType::Affects},
+            {"with", PredicateType::With},
             {"not", PredicateType::Not}
     };
 

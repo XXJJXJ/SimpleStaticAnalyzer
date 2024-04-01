@@ -27,6 +27,7 @@ enum class PredicateType {
     NextT,
     Affects,
     Pattern,
+    With,
     Not,
     Invalid
 };

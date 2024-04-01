@@ -14,6 +14,7 @@
 #include "qps/entity/clause/NextTPredicate.h"
 #include "qps/entity/clause/IfPatternPredicate.h"
 #include "qps/entity/clause/WhilePatternPredicate.h"
+#include "qps/entity/clause/WithPredicate.h"
 #include "qps/entity/clause/NotPredicate.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
@@ -24,24 +25,19 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
     case PredicateType::Follows: {
         FollowsPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
         return std::make_shared<FollowsPredicate>(predicate);
-    }
-    case PredicateType::FollowsT: {
+    } case PredicateType::FollowsT: {
         FollowsTPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
         return std::make_shared<FollowsTPredicate>(predicate);
-    }
-    case PredicateType::Modifies: {
+    } case PredicateType::Modifies: {
         ModifiesPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap));
         return std::make_shared<ModifiesPredicate>(predicate);
-    }
-    case PredicateType::Parent: {
+    } case PredicateType::Parent: {
         ParentPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
         return std::make_shared<ParentPredicate>(predicate);
-    }
-    case PredicateType::ParentT: {
+    } case PredicateType::ParentT: {
         ParentTPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
         return std::make_shared<ParentTPredicate>(predicate);
-    }
-    case PredicateType::Uses: {
+    } case PredicateType::Uses: {
         UsesPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToEntityRef(tokens[2], synonymMap));
         return std::make_shared<UsesPredicate>(predicate);
     } case PredicateType::Calls: {
@@ -59,11 +55,11 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
     } case PredicateType::Affects: {
         AffectsPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
         return std::make_shared<AffectsPredicate>(predicate);
-    }
-    case PredicateType::Pattern: {
+    } case PredicateType::Pattern: {
         return parsePatternPredicate(tokens, synonymMap);
-    }
-    case PredicateType::Not: {
+    } case PredicateType::With: {
+        return parseWithPredicate(tokens, synonymMap);
+    } case PredicateType::Not: {
         return parseNotPredicate(tokens, synonymMap);
     }
     }
@@ -128,6 +124,10 @@ std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::ve
         throw SemanticErrorException("Invalid synonym type for pattern predicate");
     }
     }
+}
+
+std::shared_ptr<Predicate> PredicateFactory::parseWithPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
+    return std::make_shared<WithPredicate>(tokens[1], tokens[2]);
 }
 
 std::shared_ptr<Predicate> PredicateFactory::parseNotPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
