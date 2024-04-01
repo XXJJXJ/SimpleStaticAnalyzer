@@ -71,3 +71,13 @@ TEST_CASE("Test QueryTokenizer::collapseTokens") {
     REQUIRE(results1 == expectedResults1);
     REQUIRE(results2 == expectedResults2);
 }
+
+TEST_CASE("Testing tokenizing attrRefs") {
+    std::string query1 = "assign a; Select <a, a.procName,a.stmt#> with a.stmt#=8";
+
+	std::vector<std::string> results1 = QueryTokenizer::tokenize(query1);
+
+	std::vector<std::string> expectedResults1 = { "assign", "a", ";", "Select", "<", "a", ",", "a.procName", ",", "a.stmt#", ">", "with", "a.stmt#", "=", "8" };
+
+	REQUIRE(results1 == expectedResults1);
+}
