@@ -394,11 +394,11 @@ TEST_CASE("Test QueryValidator::getPredicateArgs") {
 
 TEST_CASE("Test QueryValidator::validateWithPredicate") {
     SECTION("Valid WithPredicates") {
-        std::vector<std::string> tokens1 = {"with", "a.stmt#", "=", "8"};
-        std::vector<std::string> tokens2 = {"with", "not", "a.stmt#", "=", "8"};
+        std::vector<std::string> tokens1 = {"a.stmt#", "=", "8"};
+        std::vector<std::string> tokens2 = {"not", "a.stmt#", "=", "8"};
 
-        std::vector<std::string> expectedResults1 = {"with", "a.stmt#", "=", "8"};
-        std::vector<std::string> expectedResults2 = {"not", "with", "a.stmt#", "=", "8"};
+        std::vector<std::string> expectedResults1 = {"with", "a.stmt#", "8"};
+        std::vector<std::string> expectedResults2 = {"not", "with", "a.stmt#", "8"};
 
         std::vector<std::string> results1 = QueryValidator::validateWithPredicate(tokens1);
         std::vector<std::string> results2 = QueryValidator::validateWithPredicate(tokens2);

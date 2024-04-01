@@ -357,14 +357,15 @@ std::vector<std::string> QueryValidator::validateWithPredicate(const std::vector
     }
 
     if (tokens.size() == 3 && isRef(tokens[0]) && tokens[1] == "=" && isRef(tokens[2])) {
-        return {"with", tokens[0], tokens[2]};
+        std::vector<std::string> validatedTokens = {"with", tokens[0], tokens[2]};
+        return validatedTokens;
     }
 
     throw SyntaxErrorException("Invalid with clause syntax");
 }
 
 bool QueryValidator::isNotPredicate(const std::vector<std::string>& tokens) { 
-    return tokens.size() >2 && tokens[0] == "not" && tokens[1] != "(" && tokens[2] == "(";
+    return tokens.size() >2 && tokens[0] == "not" && tokens[1] != "(";
 }
 
 // Validate that the predicate has the correct number of arguments
