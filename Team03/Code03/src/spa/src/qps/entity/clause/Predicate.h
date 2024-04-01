@@ -32,7 +32,8 @@ protected:
 public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion
     [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
-    [[nodiscard]] virtual shared_ptr<BaseTable> getResultTable(QueryManager& qm);
+    [[nodiscard]] virtual shared_ptr<BaseTable> getResultTable(QueryEvaluationContext &qec);
+    [[nodiscard]] virtual PredicateType getType() const;
 };
 
 #endif // RELATIONSHIPPREDICATE_H

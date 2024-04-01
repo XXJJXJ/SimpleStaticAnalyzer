@@ -14,3 +14,7 @@ AffectsPredicate::AffectsPredicate(StatementRef lhs, StatementRef rhs) {
     addStmtRef(this->lhs);
     addStmtRef(this->rhs);
 }
+
+PredicateType AffectsPredicate::getType() const {
+    return PredicateType::Affects;
+}

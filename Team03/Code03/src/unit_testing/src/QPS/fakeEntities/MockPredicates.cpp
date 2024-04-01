@@ -17,7 +17,7 @@ public:
     explicit MockBooleanPredicate(bool returnValue) : returnValue(returnValue) {}
 
 
-    [[nodiscard]] shared_ptr<BaseTable> getResultTable(QueryManager& qm) override {
+    [[nodiscard]] shared_ptr<BaseTable> getResultTable(QueryEvaluationContext &qec) override {
         // Here we simulate returning a BooleanTable based on the specified return value
         return std::make_shared<BooleanTable>(returnValue);
     }
@@ -37,7 +37,7 @@ public:
     explicit MockTablePredicate(std::shared_ptr<HeaderTable> tableToReturn) : tableToReturn(std::move(tableToReturn)) {}
 
 
-    [[nodiscard]] shared_ptr<BaseTable> getResultTable(QueryManager& qm) override {
+    [[nodiscard]] shared_ptr<BaseTable> getResultTable(QueryEvaluationContext &qec) override {
         // Directly return the predefined HeaderTable
         return tableToReturn;
     }

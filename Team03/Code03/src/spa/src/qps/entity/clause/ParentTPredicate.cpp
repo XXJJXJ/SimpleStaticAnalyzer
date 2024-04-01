@@ -16,4 +16,8 @@ ParentTPredicate::ParentTPredicate(StatementRef lhs, StatementRef rhs)
 std::shared_ptr<BaseTable> ParentTPredicate::getFullTable(QueryManager &qm) {
     return std::make_shared<BaseTable>(qm.getParentT(), 2);
 }
+
+PredicateType ParentTPredicate::getType() const {
+    return PredicateType::ParentT;
+}
 // ai-gen end

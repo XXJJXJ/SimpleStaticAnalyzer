@@ -23,6 +23,7 @@ public:
     explicit BaseTable(const std::vector<std::vector<std::shared_ptr<Entity>>> &entities, int columnCount);
 
     void addRow(const TableRow& row);
+    void append(const BaseTable& other);
     [[nodiscard]] virtual bool isEmpty() const;
     [[nodiscard]] int getSize();
 

@@ -144,4 +144,14 @@ unordered_set<TableRow> BaseTable::getRowSet() {
     return unordered_set<TableRow>(rows.begin(), rows.end());
 }
 
+void BaseTable::append(const BaseTable &other) {
+    // Checks column count
+    if (columnCount != other.columnCount) {
+        throw QPSEvaluationException("BaseTable::append: Column count does not match.");
+    }
+    for (const auto& row : other.getRows()) {
+        addRow(row);
+    }
+}
+
 

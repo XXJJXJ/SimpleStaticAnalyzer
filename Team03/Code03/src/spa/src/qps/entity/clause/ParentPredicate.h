@@ -18,6 +18,8 @@ protected:
 
 public:
     ParentPredicate(StatementRef lhs, StatementRef rhs);
+    ~ParentPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 #endif // PARENTPREDICATE_H

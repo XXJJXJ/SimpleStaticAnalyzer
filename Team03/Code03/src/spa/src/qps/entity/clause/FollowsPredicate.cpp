@@ -18,4 +18,8 @@ FollowsPredicate::FollowsPredicate(StatementRef lhs, StatementRef rhs) {
 std::shared_ptr<BaseTable> FollowsPredicate::getFullTable(QueryManager &qm) {
     return make_shared<BaseTable>(qm.getFollowS(), 2);
 }
+
+PredicateType FollowsPredicate::getType() const {
+    return PredicateType::Follows;
+}
 // ai-gen end

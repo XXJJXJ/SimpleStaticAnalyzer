@@ -40,10 +40,19 @@ void Predicate::addStmtRef(StatementRef &stmtRef) {
 }
 
 
-std::shared_ptr<BaseTable> Predicate::getResultTable(QueryManager& qm) {
+std::shared_ptr<BaseTable> Predicate::getResultTable(QueryEvaluationContext &qec) {
+
+    auto qm = qec.getQueryManager();
+    auto cache = qec.getCache();
 
     // Step 1: Fetch the full table, depending on the type of predicate
-    auto fullTable = getFullTable(qm);
+    shared_ptr<BaseTable> fullTable;
+    if (cache->hasResult(this->getType())) {
+        fullTable = cache->getResult(this->getType());
+    } else {
+        fullTable = getFullTable(*qm);
+        cache->storeResult(this->getType(), fullTable);
+    }
 
     // Step 2: Filter based on the rowFilter
     auto filteredTable = fullTable->filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
@@ -69,3 +78,6 @@ void Predicate::addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef) {
     }
 }
 
+PredicateType Predicate::getType() const {
+    return PredicateType::Unknown;
+}

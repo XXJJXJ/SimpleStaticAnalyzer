@@ -1,3 +1,4 @@
+#include "PredicateUtils.h"
 #include "AssignPatternPredicate.h"
 
 AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs) 
@@ -20,6 +21,10 @@ AssignPatternPredicate::AssignPatternPredicate(Synonym assignSyn, EntityRef lhs,
 std::shared_ptr<BaseTable> AssignPatternPredicate::getFullTable(QueryManager &qm) {
     return make_shared<BaseTable>(
             qm.getAssignPattern(stripWildcard(rhs), hasWildcard(rhs)), 2);
+}
+
+PredicateType AssignPatternPredicate::getType() const {
+    return PredicateType::AssignPattern;
 }
 
 

@@ -22,6 +22,7 @@ protected:
 public:
     ParentTPredicate(StatementRef lhs, StatementRef rhs);
     ~ParentTPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 #endif // PARENTTPREDICATE_H

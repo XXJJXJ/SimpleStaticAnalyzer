@@ -13,16 +13,16 @@ UsesPredicate::UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
     addEntityRef(this->rhs);
 }
 
+// ai-gen end
+
 std::shared_ptr<BaseTable> UsesPredicate::getFullTable(QueryManager &qm) {
-    if (std::holds_alternative<Synonym>(this->lhs)) {
-        Synonym synonym = std::get<Synonym>(this->lhs);
-        return std::make_shared<BaseTable>(qm.getUseByType(synonym.getType()), 2);
-    } else if (std::holds_alternative<int>(this->lhs)) {
-        return std::make_shared<BaseTable>(qm.getUseByType(EntityType::Stmt), 2);
-    } else {
-        return std::make_shared<BaseTable>(qm.getUseByProcedure(), 2);
-    }
+    // Gets full table for both procedure and statement, then concatenate them
+    auto procTable = std::make_shared<BaseTable>(qm.getUseByProcedure(), 2);
+    auto stmtTable = std::make_shared<BaseTable>(qm.getUseByType(EntityType::Stmt), 2);
+    procTable->append(*stmtTable);
+    return procTable;
 }
 
-
-// ai-gen end
+PredicateType UsesPredicate::getType() const {
+    return PredicateType::Uses;
+}
