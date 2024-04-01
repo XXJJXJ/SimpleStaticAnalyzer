@@ -60,7 +60,7 @@ std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<s
         AffectsPredicate predicate(stringToStatementRef(tokens[1], synonymMap), stringToStatementRef(tokens[2], synonymMap));
         return std::make_shared<AffectsPredicate>(predicate);
     }
-    case PredicateType::AssignPattern: {
+    case PredicateType::Pattern: {
         return parsePatternPredicate(tokens, synonymMap);
     }
     case PredicateType::Not: {

@@ -13,7 +13,8 @@ private:
     const std::unordered_set<PredicateType> unCacheableTypes = {PredicateType::Not,
                                                                PredicateType::Invalid,
                                                                PredicateType::Unknown,
-                                                               PredicateType::AssignPattern};
+                                                               PredicateType::AssignPattern,
+                                                               PredicateType::Pattern}
 
 public:
     void storeResult(PredicateType predicateType, std::shared_ptr<BaseTable> table);
