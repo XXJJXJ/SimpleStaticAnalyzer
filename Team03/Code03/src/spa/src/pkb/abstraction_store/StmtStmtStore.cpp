@@ -13,10 +13,23 @@ vector<vector<shared_ptr<Entity>>> StmtStmtStore::getStmtPairs(const unordered_m
 }
 
 vector<vector<shared_ptr<Entity>>> StmtStmtStore::getDirect() {
-    return getStmtPairs(directMap);
+    if (directCache.size() == 0) {
+        directCache = getStmtPairs(directMap);
+    }
+    return directCache;
 }
 vector<vector<shared_ptr<Entity>>> StmtStmtStore::getTransitive() {
-    return getStmtPairs(transitiveMap);
+    if (transitiveCache.size() == 0) {
+        transitiveCache = getStmtPairs(transitiveMap);
+    }
+    return transitiveCache;
+}
+
+void StmtStmtStore::clear() {
+    directMap.clear();
+    transitiveMap.clear();
+    directCache.clear();
+    transitiveCache.clear();
 }
 
 // For testing

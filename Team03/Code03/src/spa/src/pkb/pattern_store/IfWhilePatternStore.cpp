@@ -6,17 +6,20 @@ void IfWhilePatternStore::add(shared_ptr<Statement> stmt, shared_ptr<Variable> v
 }
 
 vector<vector<shared_ptr<Entity>>> IfWhilePatternStore::getPattern() {
-    vector<vector<shared_ptr<Entity>>> res;
-    for (auto & stmtVarPair : stmtToVar) {
-        for (auto & var : stmtVarPair.second) {
-            res.push_back({stmtVarPair.first, var});
+    // empty, must be initialized
+    if (cache.size() == 0) {
+        for (auto & stmtVarPair : stmtToVar) {
+            for (auto & var : stmtVarPair.second) {
+                cache.push_back({stmtVarPair.first, var});
+            }
         }
     }
-    return res;
+    return cache;
 }
 
 void IfWhilePatternStore::clear() {
     stmtToVar.clear();
+    cache.clear();
 }
 
 IfWhilePatternStore::~IfWhilePatternStore() {

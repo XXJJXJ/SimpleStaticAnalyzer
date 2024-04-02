@@ -9,10 +9,11 @@ bool ProcedureStore::add(shared_ptr<Procedure> procedure) {
     return true;
 }
 
-vector<shared_ptr<Procedure>> ProcedureStore::getAll() const {
-    vector<shared_ptr<Procedure>> allProcedures;
-    for (const auto& pair : nameToProcMap) {
-        allProcedures.push_back(pair.second);
+vector<shared_ptr<Procedure>> ProcedureStore::getAll() {
+    if (allProcedures.size() == 0) {
+        for (const auto& pair : nameToProcMap) {
+            allProcedures.push_back(pair.second);
+        }
     }
     return allProcedures;
 }
@@ -27,6 +28,7 @@ shared_ptr<Procedure> ProcedureStore::get(const string& name) {
 void ProcedureStore::clear() {
     // clean the maps
     nameToProcMap.clear();
+    allProcedures.clear();
 }
 
 ProcedureStore::~ProcedureStore() {

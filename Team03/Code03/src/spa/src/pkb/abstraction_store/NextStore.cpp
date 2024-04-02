@@ -121,8 +121,7 @@ unordered_set<shared_ptr<Statement>> NextStore::dfsAdd(
 }
 
 void NextStore::clear() {
-    directMap.clear();
-    transitiveMap.clear(); // should have nth, but clear jic
+    StmtStmtStore::clear();
     roots.clear();
     nonRoots.clear();
 }
