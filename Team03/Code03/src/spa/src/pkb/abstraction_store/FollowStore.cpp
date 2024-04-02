@@ -1,5 +1,9 @@
 #include "FollowStore.h"
 
+// Potential DRY violation with ParentStore (as per MS2): 
+// However it is arguably accepted for clarity.
+// The followedToFollowerMap here is hard to abstract to a general enough name
+// that conveys accurately what it is doing
 bool FollowStore::add(shared_ptr<Statement> follower, shared_ptr<Statement> followed) {
     if (directMap.find(follower) != directMap.end()) {
         // can only follow 1 stmt, already following something

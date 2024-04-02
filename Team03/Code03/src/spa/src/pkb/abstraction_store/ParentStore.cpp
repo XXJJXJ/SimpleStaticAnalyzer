@@ -1,6 +1,9 @@
 #include "ParentStore.h"
 
-
+// Potential DRY violation with FollowStore (as per MS2): 
+// However it is arguably accepted for clarity.
+// The childToParentMap here is hard to abstract to a general enough name
+// that conveys accurately what it is doing
 bool ParentStore::add(shared_ptr<Statement> parent, shared_ptr<Statement> child) {
     // Tree like structure
     if (parent == child) {
