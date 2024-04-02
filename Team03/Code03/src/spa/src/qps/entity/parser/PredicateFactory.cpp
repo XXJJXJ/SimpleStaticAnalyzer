@@ -16,6 +16,10 @@
 #include "qps/entity/clause/WhilePatternPredicate.h"
 #include "qps/entity/clause/WithPredicate.h"
 #include "qps/entity/clause/NotPredicate.h"
+#include "qps/entity/clause/attribute/ProcNameExtractor.h"
+#include "qps/entity/clause/attribute/VarNameExtractor.h"
+#include "qps/entity/clause/attribute/ValueExtractor.h"
+#include "qps/entity/clause/attribute/StmtNumberExtractor.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
 std::shared_ptr<Predicate> PredicateFactory::createPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {	
@@ -94,6 +98,32 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 	}
 }
 
+std::variant<std::string, int, AttrRef> PredicateFactory::stringToRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
+    size_t len = token.size();
+	if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
+		return token.substr(1, len - 2);
+	}
+	else if (QueryValidator::isInteger(token)) {
+		return stoi(token);
+	}
+	else if (QueryValidator::isAttrRef(token)) {
+        size_t pos = token.find('.');
+        Synonym synonym(token.substr(0, pos), synonymMap);
+        AttributeType attributeType = getAttributeType(token.substr(pos + 1));
+        
+        switch (attributeType) {
+        case AttributeType::ProcName:
+            return AttrRef(std::make_shared<Synonym>(synonym), std::make_shared<ProcNameExtractor>());
+        case AttributeType::VarName:
+            return AttrRef(std::make_shared<Synonym>(synonym), std::make_shared<VarNameExtractor>());
+        case AttributeType::Value:
+            return AttrRef(std::make_shared<Synonym>(synonym), std::make_shared<ValueExtractor>());
+        case AttributeType::StmtNumber:
+            return AttrRef(std::make_shared<Synonym>(synonym), std::make_shared<StmtNumberExtractor>());
+        }
+	}
+}
+
 std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
     Synonym syn = Synonym(tokens[1], synonymMap);
     EntityType entityType = syn.getType();
@@ -127,7 +157,8 @@ std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::ve
 }
 
 std::shared_ptr<Predicate> PredicateFactory::parseWithPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
-    return std::make_shared<WithPredicate>(tokens[1], tokens[2]);
+    WithPredicate withPredicate(stringToRef(tokens[1], synonymMap), stringToRef(tokens[2], synonymMap));
+    return std::make_shared<WithPredicate>(withPredicate);
 }
 
 std::shared_ptr<Predicate> PredicateFactory::parseNotPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {

@@ -25,6 +25,15 @@ PredicateType getPredicateType(const std::string& keyword) {
     return (it != keywordMap.end()) ? it->second : PredicateType::Invalid;
 }
 
+AttributeType getAttributeType(const std::string& attribute) {
+    static const std::unordered_map<std::string, AttributeType> attributeMap = {{"procName", AttributeType::ProcName},
+                                                                                {"varName", AttributeType::VarName},
+                                                                                {"value", AttributeType::Value},
+                                                                                {"stmt#", AttributeType::StmtNumber}};
+    auto it = attributeMap.find(attribute);
+    return (it != attributeMap.end()) ? it->second : AttributeType::Invalid;
+}
+
 // Semantic check for whether synonym is a statement, or if statement number > 0
 bool isValidStatementRef(const StatementRef &ref) {
     if (std::holds_alternative<Synonym>(ref)) {

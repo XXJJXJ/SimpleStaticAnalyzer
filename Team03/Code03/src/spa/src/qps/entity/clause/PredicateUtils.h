@@ -12,6 +12,7 @@
 #include "qps/entity/clause/cellFilter/IdentifierFilter.h"
 #include "qps/entity/clause/cellFilter/WildcardFilter.h"
 #include "common/spa_exception/QPSEvaluationException.h"
+#include "qps/entity/clause/attribute/AttrRef.h"
 
 
 enum class PredicateType {
@@ -52,6 +53,16 @@ enum class ClauseType {
     Invalid
 };
 
+enum class AttributeType {
+    ProcName,
+    VarName,
+    Value,
+    StmtNumber,
+    Invalid
+};
+
+AttributeType getAttributeType(const std::string& attribute);
+
 // We cannot do subtype check without initializing the Entity and call .isOfType(), let's get back to something simple.
 const unordered_set<EntityType> VALID_STATEMENT_TYPES = {EntityType::Stmt, EntityType::Assign, EntityType::Call,
                                                          EntityType::While, EntityType::If, EntityType::Read,
@@ -78,6 +89,7 @@ template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 using StatementRef = std::variant<int, Synonym, std::string>; // stmtRef: synonym | '_' | INTEGER
 using EntityRef = std::variant<Synonym, std::string>; // entRef : synonym | '_' | 'IDENT'
 using ProcAndStmtRef = std::variant<int, Synonym, std::string>; // procAndStmtRef: synonym | '_' | 'IDENT' | INTEGER
+using Ref = std::variant<std::string, int, AttrRef>; // ref : '"' IDENT '"' | INTEGER | attrRef
 
 bool isValidStatementRef(const StatementRef &ref);
 bool isValidEntityRef(const EntityRef &ref);
