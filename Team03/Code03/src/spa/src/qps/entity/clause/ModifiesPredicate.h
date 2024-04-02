@@ -20,6 +20,7 @@ protected:
 public:
     ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~ModifiesPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 #endif // MODIFIESPREDICATE_H

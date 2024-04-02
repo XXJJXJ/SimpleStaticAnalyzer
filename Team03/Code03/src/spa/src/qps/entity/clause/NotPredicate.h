@@ -14,7 +14,8 @@ private:
     shared_ptr<Predicate> predicate;
 public:
     explicit NotPredicate(shared_ptr<Predicate> predicate);
-    std::shared_ptr<BaseTable> getResultTable(QueryManager& qm) override;
+    std::shared_ptr<BaseTable> getResultTable(QueryEvaluationContext &qec) override;
+    PredicateType getType() const override;
 };
 
 

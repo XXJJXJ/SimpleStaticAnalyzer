@@ -6,16 +6,18 @@
 #include "../fakeEntities/MockEntity.cpp" // Assuming MockEntity is in this file
 
 TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredicate]") {
-    FakeQueryManager qm;
+    QueryEvaluationContext qec = QueryEvaluationContext();
+    shared_ptr<FakeQueryManager> qm = make_shared<FakeQueryManager>();
+    qec.setQueryManager(qm);
     shared_ptr<MockEntity> varX = make_shared<MockEntity>("x", EntityType::Variable);
     shared_ptr<MockEntity> varY = make_shared<MockEntity>("y", EntityType::Variable);
     shared_ptr<MockEntity> whileStmt1 = make_shared<MockEntity>("1", EntityType::While);
     shared_ptr<MockEntity> whileStmt2 = make_shared<MockEntity>("2", EntityType::While);
     shared_ptr<MockEntity> whileStmt3 = make_shared<MockEntity>("3", EntityType::While);
 
-    qm.addFakeWhilePattern(whileStmt1, varX);
-    qm.addFakeWhilePattern(whileStmt2, varX);
-    qm.addFakeWhilePattern(whileStmt3, varY);
+    qm->addFakeWhilePattern(whileStmt1, varX);
+    qm->addFakeWhilePattern(whileStmt2, varX);
+    qm->addFakeWhilePattern(whileStmt3, varY);
 
     Synonym whileSyn(EntityType::While, "i");
 
@@ -51,7 +53,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
         SECTION("EntityRef as specific variable name") {
             EntityRef varRef = std::string("x");
             WhilePatternPredicate whilePatternPred(whileSyn, varRef);
-            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPred.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPred.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1", "2"};
             REQUIRE(resultTable != nullptr);
@@ -63,7 +65,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
         SECTION("EntityRef as wildcard") {
             EntityRef wildcard = "_";
             WhilePatternPredicate whilePatternPredWildcard(whileSyn, wildcard);
-            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPredWildcard.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPredWildcard.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1", "2", "3"};
             REQUIRE(resultTable != nullptr);
@@ -75,7 +77,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
         SECTION("EntityRef as synonym of type Variable") {
             Synonym varSyn(EntityType::Variable, "v");
             WhilePatternPredicate whilePatternPredSyn(whileSyn, varSyn);
-            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPredSyn.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPredSyn.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1 x", "2 x", "3 y"};
             REQUIRE(resultTable != nullptr);
@@ -90,15 +92,15 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
         shared_ptr<MockEntity> whileStmt4 = make_shared<MockEntity>("4", EntityType::While);
         shared_ptr<MockEntity> whileStmt5 = make_shared<MockEntity>("5", EntityType::While);
         // Adding patterns involving new variable 'z'
-        qm.addFakeWhilePattern(whileStmt4, varZ);
-        qm.addFakeWhilePattern(whileStmt5, varZ);
-        qm.addFakeWhilePattern(whileStmt5, varY);
+        qm->addFakeWhilePattern(whileStmt4, varZ);
+        qm->addFakeWhilePattern(whileStmt5, varZ);
+        qm->addFakeWhilePattern(whileStmt5, varY);
 
         // Test with specific variable name 'y'
         SECTION("EntityRef as specific variable name 'y'") {
             EntityRef varRef = std::string("y");
             WhilePatternPredicate whilePatternPred(whileSyn, varRef);
-            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPred.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPred.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"3", "5"}; // Only '1' and '2' use 'x'
             REQUIRE(resultTable != nullptr);
@@ -109,7 +111,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
         SECTION("EntityRef as wildcard") {
             EntityRef wildcard = "_";
             WhilePatternPredicate whilePatternPredWildcard(whileSyn, wildcard);
-            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPredWildcard.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPredWildcard.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1", "2", "3", "4", "5"};
             REQUIRE(resultTable != nullptr);
@@ -120,7 +122,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
         SECTION("EntityRef as synonym of type Variable 'v'") {
             Synonym varSyn(EntityType::Variable, "v");
             WhilePatternPredicate whilePatternPredSyn(whileSyn, varSyn);
-            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPredSyn.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPredSyn.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1 x", "2 x", "3 y", "4 z", "5 z", "5 y"};
             REQUIRE(resultTable != nullptr);
@@ -131,7 +133,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
         SECTION("EntityRef as specific variable name 'z'") {
             EntityRef varRef = std::string("z");
             WhilePatternPredicate whilePatternPred(whileSyn, varRef);
-            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPred.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(whilePatternPred.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"4", "5"}; // Only '4' and '5' use 'z'
             REQUIRE(resultTable != nullptr);

@@ -1,4 +1,4 @@
-#include "IntegerToken.h"
+#include "../Token/IntegerToken.h"
 #include "IntegerTokenFactory.h"
 
 shared_ptr<Token> IntegerTokenFactory::createToken(std::string value) {

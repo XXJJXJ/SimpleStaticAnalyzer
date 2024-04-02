@@ -22,6 +22,7 @@ protected:
 public:
 	AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs);
 	~AssignPatternPredicate() override = default;
+    [[nodiscard]] PredicateType getType() const override;
 
 };
 

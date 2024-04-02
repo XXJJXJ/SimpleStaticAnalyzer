@@ -14,6 +14,7 @@
 #include "pkb/QueryPKB.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 #include "common/spa_exception/QPSEvaluationException.h"
+#include "PredicateResultCache.h"
 
 class QueryEvaluationContext {
 private:
@@ -22,6 +23,8 @@ private:
     std::shared_ptr<QueryManager> queryManager;
     std::shared_ptr<BaseTable> resultTable;
     std::vector<SynonymPtrSet> synonymGroups;
+    std::shared_ptr<PredicateResultCache> predicateResultCache;
+
 
 public:
     QueryEvaluationContext();
@@ -41,6 +44,7 @@ public:
     void setSynonymGroups(const std::vector<SynonymPtrSet>& synonymGroups);
     [[nodiscard]] std::vector<SynonymPtrSet> getSynonymGroups() const;
     void setResultToFalse();
+    [[nodiscard]] std::shared_ptr<PredicateResultCache> getCache() const;
 };
 
 #endif // QUERY_EVALUATION_CONTEXT_H

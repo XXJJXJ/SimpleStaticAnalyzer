@@ -5,7 +5,7 @@
 #include "ConstantParser.h"
 #include "ArithmeticOperationParser.h"
 #include "ConditionalOperationParser.h"
-#include "../tokenizer/NameToken.h"
+#include "../tokenizer/Token/NameToken.h"
 
 class ExpressionParserFactory {
     typedef Tokens Tokens;

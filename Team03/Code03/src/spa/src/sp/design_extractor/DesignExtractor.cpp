@@ -38,25 +38,16 @@ void DesignExtractor::nodeTraversalHelper(shared_ptr<CfgNode> currNode, vector<s
 	shared_ptr<Statement> currNodeLastStatement = NULL;
 	if (count(visited.begin(), visited.end(), currNode) <= 0) {
 		if (statementList.size() != 0) {
-			if (prevNodeStatement != NULL) {
-				pkbPopulator->addNext(prevNodeStatement, statementList[0]);
-			}
+			if (prevNodeStatement != NULL) pkbPopulator->addNext(prevNodeStatement, statementList[0]);
 
-			if (statementList.size() > 1) {
-				for (size_t i = 0; i < statementList.size() - 1; ++i) {
-					pkbPopulator->addNext(statementList[i], statementList[i + 1]);
-					if ((i + 1) == (statementList.size() - 1)) {
-						prevNodeStatement = statementList[i + 1];
-						currNodeLastStatement = statementList[i + 1];
-					}
+			for (size_t i = 0; i < statementList.size(); ++i) {
+				if (i == (statementList.size() - 1)) {
+					prevNodeStatement = statementList[i];
+					currNodeLastStatement = statementList[i];
 				}
-			}
-			else {
-				prevNodeStatement = statementList[0];
-				currNodeLastStatement = statementList[0];
+				else pkbPopulator->addNext(statementList[i], statementList[i + 1]);
 			}
 		}
-
 		visited.push_back(currNode);
 		auto nextNodes = currNode->getNextNodes();
 		if (nextNodes.find(true) != nextNodes.end()) {

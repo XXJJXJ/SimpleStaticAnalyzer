@@ -6,7 +6,9 @@
 
 
 TEST_CASE("NotPredicate with QueryManager Setup", "[NotPredicate]") {
-    FakeQueryManager qm;
+    QueryEvaluationContext qec;
+    shared_ptr<FakeQueryManager> qm = make_shared<FakeQueryManager>();
+    qec.setQueryManager(qm);
 
     // Mock data setup for QueryManager
     shared_ptr<Synonym> synonymA = std::make_shared<Synonym>(EntityType::Stmt, "A");
@@ -19,15 +21,15 @@ TEST_CASE("NotPredicate with QueryManager Setup", "[NotPredicate]") {
             std::make_shared<MockEntity>("x", EntityType::Variable),
             std::make_shared<MockEntity>("y", EntityType::Variable)};
     // Configure the QueryManager with mock responses for all entities by type
-    qm.addFakeResponse(EntityType::Stmt, allEntitiesA);
-    qm.addFakeResponse(EntityType::Variable, allEntitiesB);
+    qm->addFakeResponse(EntityType::Stmt, allEntitiesA);
+    qm->addFakeResponse(EntityType::Variable, allEntitiesB);
 
     // Test negating a Boolean result
     SECTION("Negating a Boolean Result") {
         auto truePredicate = std::make_shared<MockBooleanPredicate>(true);
         NotPredicate notPredicate(truePredicate);
 
-        auto resultTable = notPredicate.getResultTable(qm);
+        auto resultTable = notPredicate.getResultTable(qec);
         REQUIRE(resultTable->isBoolean());
         auto boolTable = std::dynamic_pointer_cast<BooleanTable>(resultTable);
         REQUIRE(boolTable != nullptr);
@@ -44,14 +46,16 @@ TEST_CASE("NotPredicate with QueryManager Setup", "[NotPredicate]") {
         auto tablePredicate = std::make_shared<MockTablePredicate>(headerTable);
         NotPredicate notTablePredicate(tablePredicate);
 
-        auto complementTable = notTablePredicate.getResultTable(qm);
+        auto complementTable = notTablePredicate.getResultTable(qec);
         REQUIRE(complementTable != nullptr);
         REQUIRE(complementTable->getSize() == 5); // Expecting complement size to be total possible combinations minus the existing row
     }
 }
 
 TEST_CASE("NotPredicate with QueryManager Setup Extended", "[NotPredicate]") {
-    FakeQueryManager qm;
+    QueryEvaluationContext qec;
+    shared_ptr<FakeQueryManager> qm = make_shared<FakeQueryManager>();
+    qec.setQueryManager(qm);
 
     // Mock data setup for QueryManager
     shared_ptr<Synonym> synonymA = std::make_shared<Synonym>(EntityType::Stmt, "A");
@@ -64,15 +68,15 @@ TEST_CASE("NotPredicate with QueryManager Setup Extended", "[NotPredicate]") {
             std::make_shared<MockEntity>("x", EntityType::Variable),
             std::make_shared<MockEntity>("y", EntityType::Variable)};
     // Configure the QueryManager with mock responses for all entities by type
-    qm.addFakeResponse(EntityType::Stmt, allEntitiesA);
-    qm.addFakeResponse(EntityType::Variable, allEntitiesB);
+    qm->addFakeResponse(EntityType::Stmt, allEntitiesA);
+    qm->addFakeResponse(EntityType::Variable, allEntitiesB);
 
     // Negating a Boolean result (True to False tested before)
     SECTION("Negating a False Boolean Result") {
         auto falsePredicate = std::make_shared<MockBooleanPredicate>(false);
         NotPredicate notPredicate(falsePredicate);
 
-        auto resultTable = notPredicate.getResultTable(qm);
+        auto resultTable = notPredicate.getResultTable(qec);
         REQUIRE(resultTable->isBoolean());
         auto boolTable = std::dynamic_pointer_cast<BooleanTable>(resultTable);
         REQUIRE(boolTable != nullptr);
@@ -87,7 +91,7 @@ TEST_CASE("NotPredicate with QueryManager Setup Extended", "[NotPredicate]") {
         auto tablePredicate = std::make_shared<MockTablePredicate>(emptyTable);
         NotPredicate notTablePredicate(tablePredicate);
 
-        auto complementTable = notTablePredicate.getResultTable(qm);
+        auto complementTable = notTablePredicate.getResultTable(qec);
         REQUIRE(complementTable != nullptr);
         // Assuming the full universe for A and B entities would give us 6 total combinations
         REQUIRE(complementTable->getSize() == 6); // All combinations are part of the complement since the original table was empty
@@ -104,10 +108,10 @@ TEST_CASE("NotPredicate with QueryManager Setup Extended", "[NotPredicate]") {
         NotPredicate notTwicePredicate(std::make_shared<NotPredicate>(tablePredicate));
         NotPredicate notThricePredicate(std::make_shared<NotPredicate>(std::make_shared<NotPredicate>(tablePredicate)));
 
-        auto originalResulTable = tablePredicate->getResultTable(qm);
-        auto onceComplementTable = notOncePredicate.getResultTable(qm);
-        auto twiceComplementTable = notTwicePredicate.getResultTable(qm);
-        auto thriceComplementTable = notThricePredicate.getResultTable(qm);
+        auto originalResulTable = tablePredicate->getResultTable(qec);
+        auto onceComplementTable = notOncePredicate.getResultTable(qec);
+        auto twiceComplementTable = notTwicePredicate.getResultTable(qec);
+        auto thriceComplementTable = notThricePredicate.getResultTable(qec);
 
         // For the double negation, the resulting table should match the original table's rows
         REQUIRE(twiceComplementTable != nullptr);

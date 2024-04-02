@@ -13,6 +13,7 @@ protected:
 public:
     IfPatternPredicate(Synonym ifSyn, EntityRef entRef);
     ~IfPatternPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 

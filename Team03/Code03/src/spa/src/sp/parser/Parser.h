@@ -3,7 +3,7 @@
 #include "common/spa_exception/SemanticErrorException.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 #include "common/Program.h"
-#include "../tokenizer/Token.h"
+#include "../tokenizer/Token/Token.h"
 
 class Parser {
 public:

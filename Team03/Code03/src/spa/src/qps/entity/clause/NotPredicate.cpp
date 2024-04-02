@@ -14,8 +14,8 @@ NotPredicate::NotPredicate(shared_ptr<Predicate> predicate) {
  *     2. If the result table is boolean, return the negation of the result table.
  *     3. Else, obtain the complementary table.
  */
-std::shared_ptr<BaseTable> NotPredicate::getResultTable(QueryManager &qm) {
-    auto resultTable = predicate->getResultTable(qm);
+std::shared_ptr<BaseTable> NotPredicate::getResultTable(QueryEvaluationContext &qec) {
+    auto resultTable = predicate->getResultTable(qec);
 
     // if result table is boolean, return the negation of the result table
     if (resultTable->isBoolean()) {
@@ -28,5 +28,9 @@ std::shared_ptr<BaseTable> NotPredicate::getResultTable(QueryManager &qm) {
     if (headerTable == nullptr) {
         throw QPSEvaluationException("NotPredicate::getResultTable: resultTable is not a HeaderTable/BooleanTable");
     }
-    return headerTable->getComplement(qm);
+    return headerTable->getComplement(*qec.getQueryManager());
+}
+
+PredicateType NotPredicate::getType() const {
+    return PredicateType::Not;
 }

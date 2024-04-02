@@ -4,9 +4,9 @@
 #include <unordered_map>
 #include "ExpressionParser.h"
 #include "common/expression/Operation.h"
-#include "../tokenizer/ArithmeticToken.h"
-#include "../tokenizer/RelationalToken.h"
-#include "../tokenizer/ConditionalToken.h"
+#include "../tokenizer/Token/ArithmeticToken.h"
+#include "../tokenizer/Token/RelationalToken.h"
+#include "../tokenizer/Token/ConditionalToken.h"
 
 class OperationParser : public ExpressionParser {
 public:

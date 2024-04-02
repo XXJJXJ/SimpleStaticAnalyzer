@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "../tokenizer/Token.h"
+#include "../tokenizer/Token/Token.h"
 
 template<typename Entity>
 class EntityParser {

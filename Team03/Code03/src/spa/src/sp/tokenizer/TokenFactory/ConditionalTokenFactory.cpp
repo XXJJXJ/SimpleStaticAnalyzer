@@ -1,4 +1,4 @@
-#include "ConditionalToken.h"
+#include "../Token/ConditionalToken.h"
 #include "ConditionalTokenFactory.h"
 
 shared_ptr<Token> ConditionalTokenFactory::createToken(std::string value) {
