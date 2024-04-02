@@ -10,7 +10,7 @@ public:
         shared_ptr<Procedure> procedure,
         string procedureName);
     void accept(shared_ptr<Visitor> visitor) override;
-    string getTargetProcedureName() const;
+    string getTargetProcedureName();
     [[nodiscard]] EntityType getType() const override;
     [[nodiscard]] bool isOfType(EntityType type) const override;
 
