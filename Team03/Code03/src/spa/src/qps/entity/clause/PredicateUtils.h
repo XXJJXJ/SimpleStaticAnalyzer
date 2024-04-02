@@ -28,7 +28,6 @@ enum class PredicateType {
     Affects,
     With,
     Pattern,
-    With,
     AssignPattern,
     IfPattern,
     WhilePattern,
