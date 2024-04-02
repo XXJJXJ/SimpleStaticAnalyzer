@@ -12,6 +12,7 @@ protected:
 public:
     WhilePatternPredicate(Synonym whileSyn, EntityRef entRef);
     ~WhilePatternPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 

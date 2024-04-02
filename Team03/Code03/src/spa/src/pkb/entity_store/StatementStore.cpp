@@ -58,60 +58,74 @@ bool StatementStore::addWhile(shared_ptr<WhileStatement> stmt) {
     return false;
 }
 
-vector<shared_ptr<Statement>> StatementStore::getAll() const {
-    vector<shared_ptr<Statement>> allStatements;
-    for (const auto& item : lineToStatementMap) {
-        allStatements.push_back(item.second);
+vector<shared_ptr<Statement>> StatementStore::getAll() {
+    if (allStatementsCache.size() == 0) {
+        for (const auto& item : lineToStatementMap) {
+            allStatementsCache.push_back(item.second);
+        }
+        lineToStatementMap.clear(); // reduce memory usage
     }
-    return allStatements;
+    return allStatementsCache;
 }
 
-vector<shared_ptr<AssignStatement>> StatementStore::getAllAssign() const {
-    vector<shared_ptr<AssignStatement>> allStatements;
-    for (const auto& item : lineToAssignStatementMap) {
-        allStatements.push_back(item.second);
+vector<shared_ptr<AssignStatement>> StatementStore::getAllAssign() {
+    if (assignStatementsCache.size() == 0) {
+        for (const auto& item : lineToAssignStatementMap) {
+            assignStatementsCache.push_back(item.second);
+        }
+        lineToAssignStatementMap.clear();
     }
-    return allStatements;
+    return assignStatementsCache;
 }
 
-vector<shared_ptr<CallStatement>> StatementStore::getAllCall() const {
-    vector<shared_ptr<CallStatement>> allStatements;
-    for (const auto& item : lineToCallStatementMap) {
-        allStatements.push_back(item.second);
+vector<shared_ptr<CallStatement>> StatementStore::getAllCall() {
+    if (callStatementsCache.size() == 0) {
+        for (const auto& item : lineToCallStatementMap) {
+            callStatementsCache.push_back(item.second);
+        }
+        lineToCallStatementMap.clear();
     }
-    return allStatements;
+    return callStatementsCache;
 }
 
-vector<shared_ptr<IfStatement>> StatementStore::getAllIf() const {
-    vector<shared_ptr<IfStatement>> allStatements;
-    for (const auto& item : lineToIfStatementMap) {
-        allStatements.push_back(item.second);
+vector<shared_ptr<IfStatement>> StatementStore::getAllIf() {
+    if (ifStatementsCache.size() == 0) {
+        for (const auto& item : lineToIfStatementMap) {
+            ifStatementsCache.push_back(item.second);
+        }
+        lineToIfStatementMap.clear();
     }
-    return allStatements;
+    return ifStatementsCache;
 }
 
-vector<shared_ptr<PrintStatement>> StatementStore::getAllPrint() const {
-    vector<shared_ptr<PrintStatement>> allStatements;
-    for (const auto& item : lineToPrintStatementMap) {
-        allStatements.push_back(item.second);
+vector<shared_ptr<PrintStatement>> StatementStore::getAllPrint() {
+    if (printStatementsCache.size() == 0) {
+        for (const auto& item : lineToPrintStatementMap) {
+            printStatementsCache.push_back(item.second);
+        }
+        lineToPrintStatementMap.clear();
     }
-    return allStatements;
+    return printStatementsCache;
 }
 
-vector<shared_ptr<ReadStatement>> StatementStore::getAllRead() const {
-    vector<shared_ptr<ReadStatement>> allStatements;
-    for (const auto& item : lineToReadStatementMap) {
-        allStatements.push_back(item.second);
+vector<shared_ptr<ReadStatement>> StatementStore::getAllRead() {
+    if (readStatementsCache.size() == 0) {
+        for (const auto& item : lineToReadStatementMap) {
+            readStatementsCache.push_back(item.second);
+        }
+        lineToReadStatementMap.clear();
     }
-    return allStatements;
+    return readStatementsCache;
 }
 
-vector<shared_ptr<WhileStatement>> StatementStore::getAllWhile() const {
-    vector<shared_ptr<WhileStatement>> allStatements;
-    for (const auto& item : lineToWhileStatementMap) {
-        allStatements.push_back(item.second);
+vector<shared_ptr<WhileStatement>> StatementStore::getAllWhile() {
+    if (whileStatementsCache.size() == 0) {
+        for (const auto& item : lineToWhileStatementMap) {
+            whileStatementsCache.push_back(item.second);
+        }
+        lineToWhileStatementMap.clear();
     }
-    return allStatements;
+    return whileStatementsCache;
 }
 
 void StatementStore::clear() {
@@ -122,6 +136,14 @@ void StatementStore::clear() {
     lineToIfStatementMap.clear();
     lineToReadStatementMap.clear();
     lineToWhileStatementMap.clear();
+
+    allStatementsCache.clear();
+    assignStatementsCache.clear();
+    callStatementsCache.clear();
+    readStatementsCache.clear();
+    printStatementsCache.clear();
+    whileStatementsCache.clear();
+    ifStatementsCache.clear();
 }
 
 StatementStore::~StatementStore() {

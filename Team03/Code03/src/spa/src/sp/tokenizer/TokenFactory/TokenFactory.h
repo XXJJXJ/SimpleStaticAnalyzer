@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "Token.h"
+#include "../Token/Token.h"
 
 class TokenFactory {
 public:

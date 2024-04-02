@@ -20,6 +20,7 @@ private:
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> callStmts;
 
     unordered_map<EntityType, vector<vector<shared_ptr<Entity>>>> cache;
+    vector<vector<shared_ptr<Entity>>> procVarCache;
     // string or procedure object?
     unordered_map<string, unordered_set<shared_ptr<Variable>>> procedureToVar;
     vector<vector<shared_ptr<Entity>>> getStmtVarPairs(const unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>>& table, EntityType type);

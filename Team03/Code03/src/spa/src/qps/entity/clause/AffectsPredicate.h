@@ -12,6 +12,7 @@ protected:
 
 public:
     AffectsPredicate(StatementRef lhs, StatementRef rhs);
+    [[nodiscard]] PredicateType getType() const override;
 };
 
 

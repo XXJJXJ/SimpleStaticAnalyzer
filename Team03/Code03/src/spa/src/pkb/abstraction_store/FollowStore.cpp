@@ -29,8 +29,7 @@ bool FollowStore::add(shared_ptr<Statement> follower, shared_ptr<Statement> foll
 }
 
 void FollowStore::clear() {
-    directMap.clear();
-    transitiveMap.clear();
+    StmtStmtStore::clear();
     followedToFollowerMap.clear();
 }
 

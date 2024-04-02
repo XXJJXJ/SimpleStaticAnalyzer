@@ -80,15 +80,16 @@ unordered_map<string, unordered_set<shared_ptr<Variable>>> SPVStore::getByProced
 }
 
 vector<vector<shared_ptr<Entity>>> SPVStore::getProcVarPairs(unordered_map<string, unordered_set<shared_ptr<Variable>>> map) {
-    vector<vector<shared_ptr<Entity>>> res;
-    for (auto &v : map) {
-        auto procName = v.first;
-        shared_ptr<Procedure> proc = make_shared<Procedure>(procName);
-        for (auto var : v.second) {
-            res.push_back({proc, var});
+    if (procVarCache.size() == 0) {
+        for (auto &v : map) {
+            auto procName = v.first;
+            shared_ptr<Procedure> proc = make_shared<Procedure>(procName);
+            for (auto var : v.second) {
+                procVarCache.push_back({proc, var});
+            }
         }
     }
-    return res;
+    return procVarCache;
 }
 
 void SPVStore::clear() {
@@ -100,7 +101,9 @@ void SPVStore::clear() {
     callStmts.clear();
     procedureToVar.clear();
     cache.clear();
+    procVarCache.clear();
 };
+
 SPVStore::~SPVStore() {
     clear();
 };

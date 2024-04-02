@@ -19,6 +19,7 @@ protected:
 public:
     CallsTPredicate(EntityRef lhs, EntityRef rhs);
     ~CallsTPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 #endif // CALLSTPREDICATE_H

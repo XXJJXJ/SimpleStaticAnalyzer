@@ -22,6 +22,7 @@ protected:
 public:
     FollowsTPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsTPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 #endif // FOLLOWSTPREDICATE_H
