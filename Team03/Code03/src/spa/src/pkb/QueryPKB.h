@@ -15,9 +15,9 @@
 #include "common/statement/CallStatement.h"
 #include "common/statement/IfStatement.h"
 #include "common/statement/WhileStatement.h"
-#include "AbstractionManager.h"
-#include "EntityManager.h"
-#include "PatternManager.h"
+#include "manager/AbstractionManager.h"
+#include "manager/EntityManager.h"
+#include "manager/PatternManager.h"
 
 using namespace std;
 
