@@ -1,4 +1,4 @@
-#include "PunctuationToken.h"
+#include "../Token/PunctuationToken.h"
 #include "PunctuationTokenFactory.h"
 
 shared_ptr<Token> PunctuationTokenFactory::createToken(std::string value) {

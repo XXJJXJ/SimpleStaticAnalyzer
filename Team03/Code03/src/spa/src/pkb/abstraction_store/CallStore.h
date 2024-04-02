@@ -13,6 +13,9 @@ class CallStore {
 private:
     unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>> directMap;
     unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>> transitiveMap;
+
+    vector<vector<shared_ptr<Entity>>> directRes;
+    vector<vector<shared_ptr<Entity>>> transitiveRes;
     // Private helper
     unordered_set<shared_ptr<Procedure>> dfsAdd(shared_ptr<Procedure> proc, unordered_set<shared_ptr<Procedure>>& visited);
 public:

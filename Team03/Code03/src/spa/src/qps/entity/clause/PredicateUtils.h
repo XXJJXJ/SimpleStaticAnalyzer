@@ -28,8 +28,18 @@ enum class PredicateType {
     Affects,
     Pattern,
     With,
+    AssignPattern,
+    IfPattern,
+    WhilePattern,
     Not,
-    Invalid
+    Invalid,
+    Unknown
+};
+
+struct PredicateTypeHash {
+    std::size_t operator()(PredicateType t) const {
+        return std::hash<int>()(static_cast<int>(t));
+    }
 };
 
 PredicateType getPredicateType(const std::string& keyword);

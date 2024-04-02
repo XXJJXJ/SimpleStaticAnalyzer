@@ -16,3 +16,7 @@ IfPatternPredicate::IfPatternPredicate(Synonym ifSyn, EntityRef entRef)
     addEntityRef(this->entRef);
 }
 
+PredicateType IfPatternPredicate::getType() const {
+    return PredicateType::IfPattern;
+}
+

@@ -22,6 +22,7 @@ protected:
 public:
     UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~UsesPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 #endif // USESPREDICATE_H

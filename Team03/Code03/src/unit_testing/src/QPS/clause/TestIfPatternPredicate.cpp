@@ -6,16 +6,18 @@
 #include "../fakeEntities/MockEntity.cpp" // Assuming MockEntity is in this file
 
 TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]") {
-    FakeQueryManager qm;
+    QueryEvaluationContext qec = QueryEvaluationContext();
+    shared_ptr<FakeQueryManager> qm = make_shared<FakeQueryManager>();
+    qec.setQueryManager(qm);
     shared_ptr<MockEntity> varX = make_shared<MockEntity>("x", EntityType::Variable);
     shared_ptr<MockEntity> varY = make_shared<MockEntity>("y", EntityType::Variable);
     shared_ptr<MockEntity> ifStmt1 = make_shared<MockEntity>("1", EntityType::If);
     shared_ptr<MockEntity> ifStmt2 = make_shared<MockEntity>("2", EntityType::If);
     shared_ptr<MockEntity> ifStmt3 = make_shared<MockEntity>("3", EntityType::If);
 
-    qm.addFakeIfPattern(ifStmt1, varX);
-    qm.addFakeIfPattern(ifStmt2, varX);
-    qm.addFakeIfPattern(ifStmt3, varY);
+    qm->addFakeIfPattern(ifStmt1, varX);
+    qm->addFakeIfPattern(ifStmt2, varX);
+    qm->addFakeIfPattern(ifStmt3, varY);
 
     Synonym ifSyn(EntityType::If, "i");
 
@@ -51,7 +53,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
         SECTION("EntityRef as specific variable name") {
             EntityRef varRef = std::string("x");
             IfPatternPredicate ifPatternPred(ifSyn, varRef);
-            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPred.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPred.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1", "2"};
             REQUIRE(resultTable != nullptr);
@@ -63,7 +65,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
         SECTION("EntityRef as wildcard") {
             EntityRef wildcard = "_";
             IfPatternPredicate ifPatternPredWildcard(ifSyn, wildcard);
-            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPredWildcard.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPredWildcard.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1", "2", "3"};
             REQUIRE(resultTable != nullptr);
@@ -75,7 +77,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
         SECTION("EntityRef as synonym of type Variable") {
             Synonym varSyn(EntityType::Variable, "v");
             IfPatternPredicate ifPatternPredSyn(ifSyn, varSyn);
-            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPredSyn.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPredSyn.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1 x", "2 x", "3 y"};
             REQUIRE(resultTable != nullptr);
@@ -90,15 +92,15 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
         shared_ptr<MockEntity> ifStmt4 = make_shared<MockEntity>("4", EntityType::If);
         shared_ptr<MockEntity> ifStmt5 = make_shared<MockEntity>("5", EntityType::If);
         // Adding patterns involving new variable 'z'
-        qm.addFakeIfPattern(ifStmt4, varZ);
-        qm.addFakeIfPattern(ifStmt5, varZ);
-        qm.addFakeIfPattern(ifStmt5, varY);
+        qm->addFakeIfPattern(ifStmt4, varZ);
+        qm->addFakeIfPattern(ifStmt5, varZ);
+        qm->addFakeIfPattern(ifStmt5, varY);
 
         // Test with specific variable name 'y'
         SECTION("EntityRef as specific variable name 'y'") {
             EntityRef varRef = std::string("y");
             IfPatternPredicate ifPatternPred(ifSyn, varRef);
-            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPred.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPred.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"3", "5"}; // Only 'if1' and 'if2' use 'x'
             REQUIRE(resultTable != nullptr);
@@ -109,7 +111,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
         SECTION("EntityRef as wildcard") {
             EntityRef wildcard = "_";
             IfPatternPredicate ifPatternPredWildcard(ifSyn, wildcard);
-            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPredWildcard.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPredWildcard.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1", "2", "3", "4", "5"};
             REQUIRE(resultTable != nullptr);
@@ -120,7 +122,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
         SECTION("EntityRef as synonym of type Variable 'v'") {
             Synonym varSyn(EntityType::Variable, "v");
             IfPatternPredicate ifPatternPredSyn(ifSyn, varSyn);
-            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPredSyn.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPredSyn.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"1 x", "2 x", "3 y", "4 z", "5 z", "5 y"};
             REQUIRE(resultTable != nullptr);
@@ -131,7 +133,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
         SECTION("EntityRef as specific variable name 'z'") {
             EntityRef varRef = std::string("z");
             IfPatternPredicate ifPatternPred(ifSyn, varRef);
-            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPred.getResultTable(qm));
+            auto resultTable = static_pointer_cast<HeaderTable>(ifPatternPred.getResultTable(qec));
             auto result = resultTable->toStrings();
             std::unordered_set<std::string> expected = {"4", "5"}; // Only 'if4' and 'if5' use 'z'
             REQUIRE(resultTable != nullptr);

@@ -14,14 +14,14 @@ ModifiesPredicate::ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
 }
 
 std::shared_ptr<BaseTable> ModifiesPredicate::getFullTable(QueryManager& qm) {
-    if (std::holds_alternative<Synonym>(this->lhs)) {
-        Synonym synonym = std::get<Synonym>(this->lhs);
-        return std::make_shared<BaseTable>(qm.getModifyByType(synonym.getType()), 2);
-    } else if (std::holds_alternative<int>(this->lhs)) {
-        return std::make_shared<BaseTable>(qm.getModifyByType(EntityType::Stmt), 2);
-    } else {
-        return std::make_shared<BaseTable>(qm.getModifyByProcedure(), 2);
-    }
+    auto procTable = std::make_shared<BaseTable>(qm.getModifyByProcedure(), 2);
+    auto stmtTable = std::make_shared<BaseTable>(qm.getModifyByType(EntityType::Stmt), 2);
+    procTable->append(*stmtTable);
+    return procTable;
+}
+
+PredicateType ModifiesPredicate::getType() const {
+    return PredicateType::Modifies;
 }
 
 

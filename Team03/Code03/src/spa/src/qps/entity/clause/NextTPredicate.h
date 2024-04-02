@@ -12,6 +12,8 @@ protected:
 
 public:
     NextTPredicate(StatementRef lhs, StatementRef rhs);
+    ~NextTPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 

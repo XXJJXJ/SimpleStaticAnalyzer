@@ -7,13 +7,13 @@
 #include <string>
 #include <vector>
 #include <regex>
-#include "Token.h"
-#include "NameTokenFactory.h"
-#include "PunctuationTokenFactory.h"
-#include "IntegerTokenFactory.h"
-#include "ArithmeticTokenFactory.h"
-#include "ConditionalTokenFactory.h"
-#include "RelationalTokenFactory.h"
+#include "Token/Token.h"
+#include "TokenFactory/NameTokenFactory.h"
+#include "TokenFactory/PunctuationTokenFactory.h"
+#include "TokenFactory/IntegerTokenFactory.h"
+#include "TokenFactory/ArithmeticTokenFactory.h"
+#include "TokenFactory/ConditionalTokenFactory.h"
+#include "TokenFactory/RelationalTokenFactory.h"
 #include "common/Util.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 

@@ -14,3 +14,7 @@ NextTPredicate::NextTPredicate(StatementRef lhs, StatementRef rhs) {
     addStmtRef(this->lhs);
     addStmtRef(this->rhs);
 }
+
+PredicateType NextTPredicate::getType() const {
+    return PredicateType::NextT;
+}

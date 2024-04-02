@@ -5,7 +5,7 @@
 #include "ArithmeticOperationParser.h"
 #include "common/expression/RelationalOperation.h"
 #include "common/spa_exception/SyntaxErrorException.h"
-#include "../tokenizer/Token.h"
+#include "../tokenizer/Token/Token.h"
 #include "unordered_set"
 
 using namespace std;

@@ -74,10 +74,16 @@ vector<vector<shared_ptr<Entity>>> getProcPairs(const unordered_map<shared_ptr<P
 }
 
 vector<vector<shared_ptr<Entity>>> CallStore::getDirect() {
-    return getProcPairs(directMap);
+    if (directRes.size() == 0) {
+        directRes = getProcPairs(directMap);
+    }
+    return directRes;
 }
 vector<vector<shared_ptr<Entity>>> CallStore::getTransitive() {
-    return getProcPairs(transitiveMap);
+    if (transitiveRes.size() == 0) {
+        transitiveRes = getProcPairs(transitiveMap);
+    }
+    return transitiveRes;
 }
 
 unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>> CallStore::getTransitiveMap() {
@@ -87,6 +93,8 @@ unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>> CallS
 void CallStore::clear() {
     directMap.clear();
     transitiveMap.clear();
+    directRes.clear();
+    transitiveRes.clear();
 }
 
 CallStore::~CallStore() {
