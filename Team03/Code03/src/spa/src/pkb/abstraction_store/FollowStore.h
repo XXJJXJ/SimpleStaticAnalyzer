@@ -5,10 +5,7 @@
 #include "StmtStmtStore.h"
 
 class FollowStore : public StmtStmtStore {
-private:
-    unordered_map<shared_ptr<Statement>, shared_ptr<Statement>> followedToFollowerMap;
 public:
-    bool add(shared_ptr<Statement> follower, shared_ptr<Statement> followed) override;
-    void clear() override;
+    bool checkValidity(shared_ptr<Statement> follower, shared_ptr<Statement> followed) override;
     ~FollowStore();
 };
