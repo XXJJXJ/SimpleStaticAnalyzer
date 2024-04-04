@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "pattern_store/AssignPatternStore.h"
-#include "pattern_store/IfWhilePatternStore.h"
+#include "../pattern_store/AssignPatternStore.h"
+#include "../pattern_store/IfWhilePatternStore.h"
 
 using namespace std;
 

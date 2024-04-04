@@ -8,9 +8,9 @@
 #include "common/statement/ReadStatement.h"
 #include "common/statement/PrintStatement.h"
 #include "common/Procedure.h"
-#include "AbstractionManager.h"
-#include "EntityManager.h"
-#include "PatternManager.h"
+#include "manager/AbstractionManager.h"
+#include "manager/EntityManager.h"
+#include "manager/PatternManager.h"
 
 using namespace std;
 

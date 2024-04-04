@@ -6,11 +6,8 @@
 #include "StmtStmtStore.h"
 
 class ParentStore : public StmtStmtStore {
-private:
-    unordered_map<shared_ptr<Statement>, shared_ptr<Statement>> childToParentMap;
 public:
-    bool add(shared_ptr<Statement> parent, shared_ptr<Statement> child) override;
-    void clear() override;
+    bool checkValidity(shared_ptr<Statement> parent, shared_ptr<Statement> child) override;
     ~ParentStore();
     // For internal use, not exposed to SP or QPS
     unordered_map<shared_ptr<Statement>, shared_ptr<Statement>> getChildToParentMap();
