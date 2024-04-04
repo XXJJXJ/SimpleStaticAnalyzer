@@ -101,7 +101,6 @@ TEST_CASE("Debugging whole strings") {
     REQUIRE(result14 != expectedSyntaxError);
     REQUIRE(result14 != expectedSemanticError);
     REQUIRE(result15 == expectedSyntaxError);
-    REQUIRE(result16 != expectedSyntaxError);
-    //REQUIRE(result16 != expectedSemanticError); // uncomment when with evaluation is completed
+    REQUIRE(result16 == expectedSemanticError);
 }
 
