@@ -4,7 +4,7 @@
 #include "Predicate.h"
 #include <memory>
 #include <variant>
-#include "PredicateUtils.h"
+#include "qps/entity/clause/attribute/Ref.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
 // Forward declaration of Strategy to avoid circular dependency

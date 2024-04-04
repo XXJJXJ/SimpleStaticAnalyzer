@@ -109,17 +109,18 @@ std::variant<std::string, int, AttrRef> PredicateFactory::stringToRef(const std:
 	else if (QueryValidator::isAttrRef(token)) {
         size_t pos = token.find('.');
         Synonym synonym(token.substr(0, pos), synonymMap);
+        EntityType entityType = synonym.getType();
         AttributeType attributeType = getAttributeType(token.substr(pos + 1));
         
         switch (attributeType) {
         case AttributeType::ProcName:
-            return AttrRef(std::make_shared<Synonym>(synonym), std::make_shared<ProcNameExtractor>());
+            return AttrRef(std::make_shared<Synonym>(synonym), attributeType, std::make_shared<ProcNameExtractor>());
         case AttributeType::VarName:
-            return AttrRef(std::make_shared<Synonym>(synonym), std::make_shared<VarNameExtractor>());
+            return AttrRef(std::make_shared<Synonym>(synonym), attributeType, std::make_shared<VarNameExtractor>());
         case AttributeType::Value:
-            return AttrRef(std::make_shared<Synonym>(synonym), std::make_shared<ValueExtractor>());
+            return AttrRef(std::make_shared<Synonym>(synonym), attributeType, std::make_shared<ValueExtractor>());
         case AttributeType::StmtNumber:
-            return AttrRef(std::make_shared<Synonym>(synonym), std::make_shared<StmtNumberExtractor>());
+            return AttrRef(std::make_shared<Synonym>(synonym), attributeType, std::make_shared<StmtNumberExtractor>());
         }
 	}
 }

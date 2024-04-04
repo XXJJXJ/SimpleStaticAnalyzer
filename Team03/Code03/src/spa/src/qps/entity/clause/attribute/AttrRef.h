@@ -5,18 +5,25 @@
 #include "AttributeExtractor.h"
 #include "qps/entity/query/Synonym.h"
 #include "AttributeValue.h"
+#include "qps/entity/clause/PredicateUtils.h"
 
 class AttrRef {
 private:
     std::shared_ptr<Synonym> synonym; // Shared pointer to a Synonym object
     std::shared_ptr<AttributeExtractor> extractor; // Shared pointer to the attribute extractor
+    AttributeType attributeType;
+
+    bool isValidAttributeType();
 
 public:
     // Updated constructor to accept a shared_ptr<Synonym>
-    AttrRef(std::shared_ptr<Synonym> synonym, std::shared_ptr<AttributeExtractor> extractor);
+    AttrRef(std::shared_ptr<Synonym> synonym, AttributeType attributeType, std::shared_ptr<AttributeExtractor> extractor);
 
     // Method to get the synonym
     std::shared_ptr<Synonym> getSynonym() const;
+    
+    AttributeType getAttributeType() const;
+    AttributeValueType getAttributeValueType() const;
 
     AttributeValue extractAttribute(const Entity& entity) const;
 };

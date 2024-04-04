@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "qps/entity/clause/Predicate.h"
+#include "qps/entity/clause/attribute/AttrRef.h"
 
 class PredicateFactory {
 public:
