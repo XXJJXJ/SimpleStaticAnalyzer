@@ -1,0 +1,667 @@
+procedure multipleWhiles {
+    x = 10;
+    while (x > 5) {
+        call decrementX;
+        while (x < 20) {
+            call incrementX;
+        }
+    }
+}
+
+procedure decrementX {
+    x = x - 1;
+    print x;
+}
+
+procedure incrementX {
+    x = x + 1;
+    print x;
+}
+
+procedure complexAssignments {
+    a = b + c;
+    d = a * (e - f);
+    while (g < h) {
+        i = j + (k * l);
+        m = (n + o) * (p - q);
+        r = s / (t + u);
+        print r;
+    }
+}
+
+procedure nestedIfs {
+    if (((a > b) && (c < d)) || (e == f)) then {
+        if (((g != h) && (i >= j)) || (k <= l)) then {
+            m = n + o;
+            print m;
+        } else {
+            p = q * r;
+            print p;
+        }
+    } else {
+        s = t - u;
+        print s;
+    }
+}
+
+procedure loopWithNesting {
+    while (((a == b) && (c != d)) || (!(e < f))) {
+        if (((g > h) && (i <= j)) || (k == l)) then {
+            print m;
+            m = m + 1;
+        } else {
+			a = a + 1;
+		}
+    }
+}
+
+procedure combinedLogic {
+    x = 1;
+    while (x < 100) {
+        if (((x % 2 == 0) && (x % 3 == 0)) || (x % 5 == 0)) then {
+            print x;
+        } else {
+			x = x + 1;
+		}
+    }
+}
+
+procedure simulateRecursion {
+    a = 1;
+    while (a < 5) {
+        call incrementA;
+        a = a + 1;
+    }
+}
+
+procedure incrementA {
+    a = a + 1;
+    print a;
+}
+
+procedure complexMath {
+    a = (b + c) * (d - e) / (f % g);
+    if (((h > i) && (j <= k)) || (l != m)) then {
+        n = o + p;
+        print n;
+    } else {
+		a = b * c + d % e;
+	}
+}
+
+procedure nestedLoopsArithmetic {
+    x = 1;
+    while (x < 10) {
+        y = 1;
+        while (y <= x) {
+            print y;
+            y = y + 1;
+        }
+        x = x + 1;
+    }
+}
+
+procedure complexConditionAssign {
+    while ((a < b) || ((c >= d) && (e != f))) {
+        g = h + i;
+        j = k * l;
+        if ((m == n) || (o < p)) then {
+            q = r + s;
+            print q;
+        } else {
+			a = a + 1;
+		}
+    }
+}
+
+procedure complexIfElse {
+    a = 1;
+    while (a < 10) {
+        if (a % 2 == 0) then {
+            b = a * 2;
+            if (b > 5) then {
+                print b;
+            } else {
+                print a;
+            }
+        } else {
+            c = a + 2;
+            print c;
+        }
+        a = a + 1;
+    }
+}
+
+procedure one {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call two;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call two;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure two {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call complexConditionAssign;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call three;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure three {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call nestedLoopsArithmetic;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call four;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure four {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call complexMath;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call five;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure five {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call six;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call incrementA;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure six {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call seven;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call simulateRecursion;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure seven {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call eight;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call combinedLogic;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure eight {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call nine;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call loopWithNesting;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure nine {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call ten;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call nestedIfs;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure ten {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call eleven;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call loopWithNesting;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure eleven {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call complexAssignments;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call loopWithNesting;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure twelve {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call thirteen;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call multipleWhiles;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+procedure thirteen {
+	a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z;
+	b = a * c + d * e + f * g + h * i + j * k + l * m + n * o + p * q + r * s + t * u + v * w + x * y + z;
+	while ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) {
+		print result;
+		if ((((x <= y) && (a >= b)) || ((z == 0) && (w != 0))) && ((g > h) || (i < j))) then {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		} else {
+			while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+				result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+				print result;
+				while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+					result = (((a + b) * (c - d)) / ((e % f) + (g * h))) - ((i / j) + (k - l));
+					read result;
+					while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+						call decrementX;
+						call incrementX;
+						call complexIfElse;
+						while (((x > y) && (a < b)) || (!((c == d) || (e != f)))) {
+							print result;
+							read result;
+						}
+					}
+				}
+			}
+		}
+	}
+}
