@@ -6,15 +6,15 @@ SelectionsParser::SelectionsParser() = default;
 
 SelectionsParser::~SelectionsParser() = default;
 
-std::vector<std::shared_ptr<Synonym>>
+std::vector<std::shared_ptr<AttrRef>>
 SelectionsParser::parse(const std::vector<std::string>& tokens,
     const std::unordered_map<std::string, EntityType>& synonymMap) {
-    std::vector<std::shared_ptr<Synonym>> selections = {};
+    std::vector<std::shared_ptr<AttrRef>> selections = {};
 
     if (!isBoolean(tokens, synonymMap)) {
         for (const auto& token : tokens) {
-            std::shared_ptr<Synonym> synonym = std::make_shared<Synonym>(token, synonymMap);
-            selections.push_back(synonym);
+            std::shared_ptr<AttrRef> selection = std::make_shared<AttrRef>(token, synonymMap);
+            selections.push_back(selection);
         }
     }
   

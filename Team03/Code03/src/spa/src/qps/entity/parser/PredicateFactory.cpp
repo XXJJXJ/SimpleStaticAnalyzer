@@ -107,21 +107,7 @@ Ref PredicateFactory::stringToRef(const std::string& token, const std::unordered
 		return Ref(stoi(token));
 	}
 	else if (QueryValidator::isAttrRef(token)) {
-        size_t pos = token.find('.');
-        Synonym synonym(token.substr(0, pos), synonymMap);
-        EntityType entityType = synonym.getType();
-        AttributeType attributeType = getAttributeType(token.substr(pos + 1));
-        
-        switch (attributeType) {
-        case AttributeType::ProcName:
-            return Ref(AttrRef(std::make_shared<Synonym>(synonym), attributeType, std::make_shared<ProcNameExtractor>()));
-        case AttributeType::VarName:
-            return Ref(AttrRef(std::make_shared<Synonym>(synonym), attributeType, std::make_shared<VarNameExtractor>()));
-        case AttributeType::Value:
-            return Ref(AttrRef(std::make_shared<Synonym>(synonym), attributeType, std::make_shared<ValueExtractor>()));
-        case AttributeType::StmtNumber:
-            return Ref(AttrRef(std::make_shared<Synonym>(synonym), attributeType, std::make_shared<StmtNumberExtractor>()));
-        }
+        return Ref(AttrRef(token, synonymMap));
 	}
 }
 

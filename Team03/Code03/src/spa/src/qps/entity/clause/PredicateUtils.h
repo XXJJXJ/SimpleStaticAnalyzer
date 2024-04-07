@@ -56,10 +56,11 @@ enum class AttributeType {
     VarName,
     Value,
     StmtNumber,
+    NoAttribute,
     Invalid
 };
 
-AttributeType getAttributeType(const std::string& attribute);
+AttributeType getAttributeTypeFromString(const std::string& attribute);
 
 enum class AttributeValueType { 
     Name, Integer 
