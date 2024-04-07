@@ -75,17 +75,24 @@ TEST_CASE("WithPredicate semantic validation") {
     synonymMap["c"] = EntityType::Constant; // valid for value
     synonymMap["d"] = EntityType::While; // valid for stmt#
     std::string VALID_NAME = "\"validName\"";
+    std::string VALID_NAME1 = "\"validName\"";
 
     SECTION("Valid WithPredicates") {
         std::vector<std::string> tokens1 = {"with", "a.procName", VALID_NAME};
         std::vector<std::string> tokens2 = {"with", VALID_NAME, "b.varName"};
         std::vector<std::string> tokens3 = {"with", "c.value", "8"};
         std::vector<std::string> tokens4 = {"with", "8", "d.stmt#"};
+        std::vector<std::string> tokens5 = {"with", "8", "8"};
+        std::vector<std::string> tokens6 = {"with", "a.procName", "b.varName"};
+        std::vector<std::string> tokens7 = {"with", VALID_NAME, VALID_NAME1};
 
         REQUIRE_NOTHROW(PredicateFactory::createPredicate(tokens1, synonymMap));
         REQUIRE_NOTHROW(PredicateFactory::createPredicate(tokens2, synonymMap));
         REQUIRE_NOTHROW(PredicateFactory::createPredicate(tokens3, synonymMap));
         REQUIRE_NOTHROW(PredicateFactory::createPredicate(tokens4, synonymMap));
+        REQUIRE_NOTHROW(PredicateFactory::createPredicate(tokens5, synonymMap));
+        REQUIRE_NOTHROW(PredicateFactory::createPredicate(tokens6, synonymMap));
+        REQUIRE_NOTHROW(PredicateFactory::createPredicate(tokens7, synonymMap));
     }
 
     SECTION("Invalid WithPredicates") {
