@@ -527,8 +527,8 @@ bool QueryValidator::isAttrRef(const std::string& token) {
 }
 
 bool QueryValidator::isAttrName(const std::string& token) {
-    static const std::unordered_set<std::string> validAttrNames = {"procName", "varName", "value", "stmt#"};
-    return validAttrNames.find(token) != validAttrNames.end();
+    AttributeType attributeType = getAttributeType(token);
+    return attributeType != AttributeType::Invalid;
 }
 
 bool QueryValidator::isRef(const std::string& token) {

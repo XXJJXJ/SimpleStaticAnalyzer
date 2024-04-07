@@ -13,7 +13,6 @@
 #include "qps/entity/clause/cellFilter/WildcardFilter.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 
-
 enum class PredicateType {
     Follows,
     FollowsT,
@@ -50,6 +49,20 @@ enum class ClauseType {
     With,
     And,
     Invalid
+};
+
+enum class AttributeType {
+    ProcName,
+    VarName,
+    Value,
+    StmtNumber,
+    Invalid
+};
+
+AttributeType getAttributeType(const std::string& attribute);
+
+enum class AttributeValueType { 
+    Name, Integer 
 };
 
 // We cannot do subtype check without initializing the Entity and call .isOfType(), let's get back to something simple.
