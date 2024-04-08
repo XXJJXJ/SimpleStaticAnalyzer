@@ -527,7 +527,7 @@ bool QueryValidator::isAttrRef(const std::string& token) {
 }
 
 bool QueryValidator::isAttrName(const std::string& token) {
-    AttributeType attributeType = getAttributeType(token);
+    AttributeType attributeType = getAttributeTypeFromString(token);
     return attributeType != AttributeType::Invalid;
 }
 

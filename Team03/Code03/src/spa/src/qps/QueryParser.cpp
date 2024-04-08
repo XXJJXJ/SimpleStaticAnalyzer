@@ -24,10 +24,8 @@ QueryParser::~QueryParser() = default;
 std::shared_ptr<Query>
 QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     std::vector<std::shared_ptr<Synonym>> declarations;
-    std::vector<std::shared_ptr<Synonym>> selections;
+    std::vector<std::shared_ptr<AttrRef>> selections;
     std::vector<std::shared_ptr<Predicate>> predicates;
-    SelectionsParser sp;
-    PredicateFactory pf;
 
     std::unordered_map<std::string, EntityType> synonymMap;
 
@@ -46,14 +44,14 @@ QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
 
     // Create synonym objects for selections
     for (const auto &selectTokens: selectionsTokens) {
-        std::vector<std::shared_ptr<Synonym>> currentSelections = sp.parse(selectTokens, synonymMap);
-        for (std::shared_ptr<Synonym> synonym: currentSelections) {
+        std::vector<std::shared_ptr<AttrRef>> currentSelections = SelectionsParser::parse(selectTokens, synonymMap);
+        for (std::shared_ptr<AttrRef> synonym: currentSelections) {
             selections.push_back(synonym);
         }
     }
     // Create predicate objects for clauses
     for (auto tokens: predicateTokens) {
-        std::shared_ptr<Predicate> predicate = pf.createPredicate(tokens, synonymMap);
+        std::shared_ptr<Predicate> predicate = PredicateFactory::createPredicate(tokens, synonymMap);
         predicates.push_back(predicate);
     }
 

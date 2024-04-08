@@ -1,12 +1,12 @@
 #pragma once
 
 #include <unordered_map>
-#include "abstraction_store/ModifyStore.h"
-#include "abstraction_store/UseStore.h"
-#include "abstraction_store/FollowStore.h"
-#include "abstraction_store/ParentStore.h"
-#include "abstraction_store/CallStore.h"
-#include "abstraction_store/NextStore.h"
+#include "../abstraction_store/ModifyStore.h"
+#include "../abstraction_store/UseStore.h"
+#include "../abstraction_store/FollowStore.h"
+#include "../abstraction_store/ParentStore.h"
+#include "../abstraction_store/CallStore.h"
+#include "../abstraction_store/NextStore.h"
 #include "common/statement/CallStatement.h"
 
 using namespace std;

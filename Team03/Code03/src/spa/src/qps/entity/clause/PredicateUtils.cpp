@@ -25,7 +25,7 @@ PredicateType getPredicateType(const std::string& keyword) {
     return (it != keywordMap.end()) ? it->second : PredicateType::Invalid;
 }
 
-AttributeType getAttributeType(const std::string& attribute) {
+AttributeType getAttributeTypeFromString(const std::string& attribute) {
     static const std::unordered_map<std::string, AttributeType> attributeMap = {{"procName", AttributeType::ProcName},
                                                                                 {"varName", AttributeType::VarName},
                                                                                 {"value", AttributeType::Value},

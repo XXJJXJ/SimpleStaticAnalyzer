@@ -1,12 +1,58 @@
 #include "AttrRef.h"
+#include "qps/QueryValidator.h"
+#include "qps/entity/clause/PredicateUtils.h"
+#include "qps/entity/clause/attribute/ProcNameExtractor.h"
+#include "qps/entity/clause/attribute/VarNameExtractor.h"
+#include "qps/entity/clause/attribute/ValueExtractor.h"
+#include "qps/entity/clause/attribute/StmtNumberExtractor.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
 // Constructor definition
-AttrRef::AttrRef(std::shared_ptr<Synonym> synonym, AttributeType attributeType, std::shared_ptr<AttributeExtractor> extractor)
-        : synonym(std::move(synonym)), extractor(std::move(extractor)) {
-    this->attributeType = attributeType;
-    if (!isValidAttributeType()) {
-        throw SemanticErrorException("Invalid attribute type for the synonym used");
+//AttrRef::AttrRef(std::shared_ptr<Synonym> synonym, AttributeType attributeType, std::shared_ptr<AttributeExtractor> extractor)
+//        : synonym(std::move(synonym)), extractor(std::move(extractor)) {
+//    this->attributeType = attributeType;
+//    if (!isValidAttributeType()) {
+//        throw SemanticErrorException("Invalid attribute type for the synonym used");
+//    }
+//}
+
+AttrRef::AttrRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
+    if (QueryValidator::isAttrRef(token)) {
+        size_t pos = token.find('.');
+        Synonym synonym(token.substr(0, pos), synonymMap);
+        EntityType entityType = synonym.getType();
+        AttributeType attributeType = getAttributeTypeFromString(token.substr(pos + 1));
+        
+        this->synonym = std::make_shared<Synonym>(synonym);
+        this->attributeType = attributeType;
+
+        if (!isValidAttributeType()) {
+            throw SemanticErrorException("Invalid attribute type for the synonym used");
+        }
+
+        switch (attributeType) {
+        case AttributeType::ProcName:
+            this->extractor = std::make_shared<ProcNameExtractor>();
+            break;
+        case AttributeType::VarName:
+            this->extractor = std::make_shared<VarNameExtractor>();
+            break;
+        case AttributeType::Value:
+            this->extractor = std::make_shared<ValueExtractor>();
+            break;
+        case AttributeType::StmtNumber:
+            this->extractor = std::make_shared<StmtNumberExtractor>();
+            break;
+        }
+    } else {
+        Synonym synonym(token, synonymMap);
+        AttributeType attributeType = AttributeType::NoAttribute;
+
+        this->synonym = std::make_shared<Synonym>(synonym);
+        this->attributeType = attributeType;
+
+        //TODO: replace with default extractor
+        this->extractor = std::make_shared<ProcNameExtractor>();
     }
 }
 
