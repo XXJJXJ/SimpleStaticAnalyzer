@@ -1,7 +1,3 @@
-//
-// Created by ZHENGTAO JIANG on 23/2/24.
-//
-
 #ifndef SPA_EVALUATIONPLANNER_H
 #define SPA_EVALUATIONPLANNER_H
 

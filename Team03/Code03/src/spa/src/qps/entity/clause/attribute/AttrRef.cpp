@@ -16,6 +16,7 @@
 //    }
 //}
 
+// TODO: we're not supposed to do parsing in AttrRef constructor.
 AttrRef::AttrRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
     if (QueryValidator::isAttrRef(token)) {
         size_t pos = token.find('.');
@@ -51,8 +52,7 @@ AttrRef::AttrRef(const std::string& token, const std::unordered_map<std::string,
         this->synonym = std::make_shared<Synonym>(synonym);
         this->attributeType = attributeType;
 
-        //TODO: replace with default extractor
-        this->extractor = std::make_shared<ProcNameExtractor>();
+        this->extractor = std::make_shared<NameExtractor>();
     }
 }
 
@@ -90,4 +90,8 @@ bool AttrRef::isValidAttributeType() {
     }
 
     return false;
+}
+
+shared_ptr<AttributeExtractor> AttrRef::getExtractor() const {
+    return extractor;
 }

@@ -47,6 +47,22 @@ std::unordered_set<std::string> BaseTable::toStrings() {
     return rowStrings;
 }
 
+std::unordered_set<std::string> BaseTable::toAttributeStrings(vector<shared_ptr<AttributeExtractor>> extractors) {
+    // If number of columns doesn't match, use name extractor as default value.
+    if (extractors.size() != columnCount) {
+        extractors.clear();
+        extractors.resize(columnCount, std::make_shared<NameExtractor>());
+
+    }
+    makeRowsUnique();
+    std::unordered_set<std::string> rowStrings;
+    rowStrings.reserve(rows.size());
+    for (const auto &row: rows) {
+        auto result = rowStrings.insert(row.toAttributeString(extractors));
+    }
+    return rowStrings;
+}
+
 shared_ptr<BaseTable> BaseTable::filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const {
     std::vector<std::vector<std::shared_ptr<Entity>>> filteredEntities;
 

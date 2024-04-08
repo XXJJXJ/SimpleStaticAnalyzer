@@ -57,3 +57,18 @@ bool TableRow::operator<(const TableRow& other) const {
     }
     return false; // Rows are equal
 }
+
+string TableRow::toAttributeString(vector<shared_ptr<AttributeExtractor>>& extractors) const {
+    // First verify size of extractors matches size of values
+    if (extractors.size() != values.size()) {
+        throw QPSEvaluationException("TableRow::toAttributeString: Number of extractors does not match number of values.");
+    }
+    ostringstream oss;
+    for (auto it = values.begin(); it != values.end(); ++it) {
+        if (it != values.begin()) {
+            oss << " "; // Add space before all but the first entity's name
+        }
+        oss << extractors[it - values.begin()]->extract(**it).toString();
+    }
+    return oss.str();
+}

@@ -11,6 +11,8 @@
 #include <string>
 #include <sstream>
 #include <functional>
+#include "qps/entity/clause/attribute/AttributeExtractor.h"
+
 
 // Class to represent a row in the table.
 class TableRow {
@@ -22,6 +24,7 @@ public:
     [[nodiscard]] const vector<shared_ptr<Entity>>& getValues() const;
     bool operator==(const TableRow& other) const;
     [[nodiscard]] string toString() const;
+    [[nodiscard]] string toAttributeString(vector<shared_ptr<AttributeExtractor>>& extractors) const;
     [[nodiscard]] std::shared_ptr<Entity> getByIndex(int index) const; // New function for direct access
     friend class HeaderTable; // Allows HeaderTable to access private members of TableRow
     bool operator<(const TableRow& other) const;

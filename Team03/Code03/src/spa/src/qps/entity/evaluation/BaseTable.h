@@ -8,6 +8,8 @@
 #include "TableRow.h"
 #include <functional>
 #include "qps/entity/query/Synonym.h"
+#include "qps/entity/clause/attribute/AttributeExtractor.h"
+#include "qps/entity/clause/attribute/NameExtractor.h"
 
 class BaseTable {
 private:
@@ -28,6 +30,7 @@ public:
     [[nodiscard]] int getSize();
 
     virtual std::unordered_set<std::string> toStrings();
+    virtual std::unordered_set<std::string> toAttributeStrings(vector<shared_ptr<AttributeExtractor>> extractors);
     shared_ptr<BaseTable> filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const;
     shared_ptr<BaseTable> project(const std::vector<bool>& columnMask) const; // Projection function
     const vector<TableRow> getRows() const;

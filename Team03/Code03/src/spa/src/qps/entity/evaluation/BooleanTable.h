@@ -18,6 +18,7 @@ public:
     bool isBoolean() const override;
     bool operator==(const BaseTable& other) const override;
     unordered_set<string> toStrings() override;
+    unordered_set<string> toAttributeStrings(vector<shared_ptr<AttributeExtractor>> extractors) override;
     std::shared_ptr<BaseTable> negate();
 };
 

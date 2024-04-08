@@ -14,13 +14,8 @@ Query::Query(vector<shared_ptr<Synonym>> declarations, vector<shared_ptr<AttrRef
     this->predicates = std::move(predicates);
 }
 
-// TODO: uncomment when evaluation refactoring done
-//vector<shared_ptr<AttrRef>> Query::getSelections() const {
-//    return selections;
-//}
-
-// TEMP: to convert AttrRef back to Synonym for evaluator, until evaluator refactors to use AttrRef for selections instead
-vector<shared_ptr<Synonym>> Query::getSelections() const {
+// TODO: to convert AttrRef back to Synonym for evaluator, until evaluator refactors to use AttrRef for selections instead
+vector<shared_ptr<Synonym>> Query::getSelectedSynonyms() const {
     vector<shared_ptr<Synonym>> synonyms;
 
     std::transform(selections.begin(), selections.end(), std::back_inserter(synonyms), [](const std::shared_ptr<AttrRef>& attrRef) {
@@ -32,5 +27,14 @@ vector<shared_ptr<Synonym>> Query::getSelections() const {
 
 vector<shared_ptr<Synonym>> Query::getDeclarations() const {
     return declarations;
+}
+
+vector<shared_ptr<AttributeExtractor>> Query::getSelectedAttributes() const {
+    vector<shared_ptr<AttributeExtractor>> selectedAttributes;
+    selectedAttributes.reserve(selections.size());
+    for (const auto& attrRef : selections) {
+        selectedAttributes.push_back(attrRef->getExtractor());
+    }
+    return selectedAttributes;
 }
 

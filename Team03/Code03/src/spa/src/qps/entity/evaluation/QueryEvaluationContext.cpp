@@ -71,8 +71,7 @@ std::vector<std::string> QueryEvaluationContext::getResults() const {
     if (resultTable == nullptr) {
         throw std::runtime_error("No result table present");
     }
-    // temp fix
-    std::unordered_set resultTableString = resultTable->toStrings();
+    std::unordered_set resultTableString = resultTable->toAttributeStrings(selectedAttributes);
     std::vector<std::string> stringVector(resultTableString.begin(), resultTableString.end());
 
     return stringVector;
@@ -139,4 +138,8 @@ std::vector<SynonymPtrSet> QueryEvaluationContext::getSynonymGroups() const {
 
 std::shared_ptr<PredicateResultCache> QueryEvaluationContext::getCache() const {
     return predicateResultCache;
+}
+
+void QueryEvaluationContext::setSelectedAttributes(const vector<shared_ptr<AttributeExtractor>> &selectedAttributes) {
+    this->selectedAttributes = selectedAttributes;
 }

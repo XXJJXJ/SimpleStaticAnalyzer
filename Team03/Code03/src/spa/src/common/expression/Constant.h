@@ -11,6 +11,7 @@ public:
 	bool operator==(const Constant& other) const;
     [[nodiscard]] EntityType getType() const override;
     [[nodiscard]] bool isOfType(EntityType type) const override;
+    [[nodiscard]] int getValue() const;
 };
 
 namespace std {

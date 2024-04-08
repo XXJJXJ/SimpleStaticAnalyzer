@@ -60,6 +60,10 @@ unordered_set<string> BooleanTable::toStrings() {
     return {this->value ? "TRUE" : "FALSE"};
 }
 
+unordered_set<string> BooleanTable::toAttributeStrings(vector<shared_ptr<AttributeExtractor>> extractors) {
+    return toStrings();
+}
+
 std::shared_ptr<BaseTable> BooleanTable::negate() {
     return std::make_shared<BooleanTable>(!this->value);
 }

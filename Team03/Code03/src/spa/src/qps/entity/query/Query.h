@@ -21,8 +21,8 @@ public:
     vector<shared_ptr<AttrRef>> selections;  // selected synonym
     vector<shared_ptr<Predicate>> predicates;
     vector<shared_ptr<Predicate>> getPredicates() const;
-    //vector<shared_ptr<AttrRef>> getSelections() const;
-    vector<shared_ptr<Synonym>> getSelections() const;
+    vector<shared_ptr<AttributeExtractor>> getSelectedAttributes() const;
+    vector<shared_ptr<Synonym>> getSelectedSynonyms() const;
     vector<shared_ptr<Synonym>> getDeclarations() const;
 };
 

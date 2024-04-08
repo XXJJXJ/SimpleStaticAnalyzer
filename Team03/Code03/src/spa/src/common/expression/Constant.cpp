@@ -28,3 +28,7 @@ EntityType Constant::getType() const {
 bool Constant::isOfType(EntityType type) const {
     return type == EntityType::Constant || Expression::isOfType(type);
 }
+
+int Constant::getValue() const {
+    return stoi(getName());
+}

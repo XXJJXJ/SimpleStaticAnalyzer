@@ -16,6 +16,7 @@ public:
     AttributeValue(std::string stringValue) : value(std::move(stringValue)) {}
 
     [[nodiscard]] bool equals(const AttributeValue& other) const;
+    [[nodiscard]] std::string toString() const;
 };
 
 #endif // ATTRIBUTE_VALUE_H
