@@ -8,11 +8,14 @@ TEST_CASE("QueryValidator::splitTokens should correctly split query into lists o
 	std::vector<std::string> testQuery = { "variable", "a", ";", 
                                            "Select", "a", 
                                            "such", "that", "Follows", "(", "a", ",", "_", ")", 
-                                           "pattern", "a", "(", "_", ",", "_", ")" };
+                                           "with", "a.stmt#", "=", "8", 
+                                           "pattern", "a", "(", "_", ",", "_", ")"};
 
 	std::vector<std::vector<std::vector<std::string>>> result = QueryValidator::splitTokens(testQuery);
 
-	std::vector<std::vector<std::vector<std::string>>> expectedResult = { {{"variable", "a", ";"}}, {{"Select", "a"}}, {{"such", "that", "Follows", "(", "a", ",", "_", ")"}, {"pattern", "a", "(", "_", ",", "_", ")"}} };
+	std::vector<std::vector<std::vector<std::string>>> expectedResult = { {{"variable", "a", ";"}}, 
+                                                                          {{"Select", "a"}}, 
+                                                                          {{"such", "that", "Follows", "(", "a", ",", "_", ")"}, {"with", "a.stmt#", "=", "8"}, {"pattern", "a", "(", "_", ",", "_", ")"}} };
 
 	REQUIRE(result == expectedResult);
 }
@@ -81,20 +84,29 @@ TEST_CASE("Test QueryValidator::validateDeclaration") {
 TEST_CASE("Test QueryValidator::validateSelection") {
     SECTION("Valid selections") {
         std::vector<std::string> tokens1 = {"Select", "a"};
-        std::vector<std::string> tokens2 = {"Select", "<", "a", ",", "b", ",", "c",">"};
+        std::vector<std::string> tokens2 = {"Select", "<", "a", ",", "b", ",", "c", ">"};
         std::vector<std::string> tokens3 = {"Select", "BOOLEAN"};
+        std::vector<std::string> tokens4 = {"Select", "a.procName"};
+        std::vector<std::string> tokens5 = {"Select", "<", "a", ",", "a.procName", ",", "a.varName", ",", "a.value", ",", "a.stmt#", ">"};
+
 
         std::vector<std::string> expectedResults1 = {"a"};
         std::vector<std::string> expectedResults2 = {"a", "b", "c"};
         std::vector<std::string> expectedResults3 = {"BOOLEAN"};
+        std::vector<std::string> expectedResults4 = {"a.procName"};
+        std::vector<std::string> expectedResults5 = {"a", "a.procName", "a.varName", "a.value", "a.stmt#"};
 
         std::vector<std::string> results1 = QueryValidator::validateSelection(tokens1);
         std::vector<std::string> results2 = QueryValidator::validateSelection(tokens2);
         std::vector<std::string> results3 = QueryValidator::validateSelection(tokens3);
+        std::vector<std::string> results4 = QueryValidator::validateSelection(tokens4);
+        std::vector<std::string> results5 = QueryValidator::validateSelection(tokens5);
 
         REQUIRE(results1 == expectedResults1);
         REQUIRE(results2 == expectedResults2);
         REQUIRE(results3 == expectedResults3);
+        REQUIRE(results4 == expectedResults4);
+        REQUIRE(results5 == expectedResults5);
     }
 
     SECTION("Invalid selections") {
@@ -102,11 +114,15 @@ TEST_CASE("Test QueryValidator::validateSelection") {
         std::vector<std::string> tokens2 = {"Select", "<", "a", ",", "b", ",", "c", ",", ">"}; // Extra comma
         std::vector<std::string> tokens3 = {"Select", "<", "a", "b", ",", "c",">"}; // No comma
         std::vector<std::string> tokens4 = {"Select", "a", ",", "b", ",", "c", ">"}; // No opening bracket
+        std::vector<std::string> tokens5 = {"Select", "a.attribute"}; // Invalid attribute
+        std::vector<std::string> tokens6 = {"Select", "123.procName"}; // Invalid name
 
         REQUIRE_THROWS_AS(QueryValidator::validateSelection(tokens1), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validateSelection(tokens2), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validateSelection(tokens3), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validateSelection(tokens4), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateSelection(tokens5), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateSelection(tokens6), SyntaxErrorException);
     }
 }
 
@@ -115,18 +131,23 @@ TEST_CASE("Test QueryValidator::validatePredicate") {
     ClauseType noPrevClause = ClauseType::Invalid;
     ClauseType suchThatClause = ClauseType::SuchThat;
     ClauseType patternClause = ClauseType::Pattern;
+    ClauseType withClause = ClauseType::With;
     SECTION("Valid predicates") {
         std::vector<std::string> tokens1 = {"such", "that", "Follows", "(", "a", ",", "b", ")"};
         std::vector<std::string> tokens2 = {"pattern", "a", "(", "_", ",", "_", ")"};
         std::vector<std::string> tokens3 = {"and", "Follows", "(", "a", ",", "b", ")"};
         std::vector<std::string> tokens4 = {"and", "a", "(", "_", ",", "_", ")"};
         std::vector<std::string> tokens5 = {"such", "that", "not", "Follows", "(", "a", ",", "b", ")"};
+        std::vector<std::string> tokens6 = {"with", "a.stmt#", "=", "8"};
+        std::vector<std::string> tokens7 = {"and", "not", "a.procName", "=", "\"procName\""};
 
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens1, noPrevClause));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens2, noPrevClause));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens3, suchThatClause));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens4, patternClause));
         REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens5, noPrevClause));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens6, noPrevClause));
+        REQUIRE_NOTHROW(QueryValidator::validatePredicate(tokens7, withClause));
     }
 
     SECTION("Invalid predicates") {
@@ -135,12 +156,14 @@ TEST_CASE("Test QueryValidator::validatePredicate") {
         std::vector<std::string> tokens3 = { "and", "Follows", "(", "a", ",", "b", ")" };
         std::vector<std::string> tokens4 = { "and", "a", "(", "_", ",", "_", ")" };
         std::vector<std::string> tokens5 = { "not", "a", "(", "_", ",", "_", ")" };
+        std::vector<std::string> tokens6 = {"and", "a.stmt#", "=", "8"};
 
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens1, noPrevClause), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens2, noPrevClause), SyntaxErrorException);
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens3, patternClause), SyntaxErrorException); // Pattern pred and such that pred
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens4, suchThatClause), SyntaxErrorException); // Such that pred and pattern pred
         REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens5, noPrevClause), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validatePredicate(tokens6, patternClause), SyntaxErrorException); // Pattern pred and with pred
     }
 }
 
@@ -372,18 +395,47 @@ TEST_CASE("Test QueryValidator::getPredicateArgs") {
     REQUIRE(results2 == expectedResults2);
 }
 
+TEST_CASE("Test QueryValidator::validateWithPredicate") {
+    SECTION("Valid WithPredicates") {
+        std::vector<std::string> tokens1 = {"a.stmt#", "=", "8"};
+        std::vector<std::string> tokens2 = {"not", "a.stmt#", "=", "8"};
+
+        std::vector<std::string> expectedResults1 = {"with", "a.stmt#", "8"};
+        std::vector<std::string> expectedResults2 = {"not", "with", "a.stmt#", "8"};
+
+        std::vector<std::string> results1 = QueryValidator::validateWithPredicate(tokens1);
+        std::vector<std::string> results2 = QueryValidator::validateWithPredicate(tokens2);
+
+        REQUIRE(results1 == expectedResults1);
+        REQUIRE(results2 == expectedResults2);
+    }
+
+    SECTION("Invalid WithPredicates") {
+        std::vector<std::string> tokens1 = {"with", "a.stmt#", "!", "8"}; // no "="
+        std::vector<std::string> tokens2 = {"with", "extraToken", "a.stmt#", "=", "8"}; // extra token
+        std::vector<std::string> tokens3 = {"with", "a.invalidAttr", "=", "8"}; // lhs invalid
+        std::vector<std::string> tokens4 = {"with", "a.stmt#", "=", "invalid123"}; //rhs invalid
+
+        REQUIRE_THROWS_AS(QueryValidator::validateWithPredicate(tokens1), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateWithPredicate(tokens2), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateWithPredicate(tokens3), SyntaxErrorException);
+        REQUIRE_THROWS_AS(QueryValidator::validateWithPredicate(tokens4), SyntaxErrorException);
+    }
+}
+
 // Actual validity of each component already tested above, only testing that all 3 components work together correctly here 
 TEST_CASE("Test QueryValidator::validate") {
     SECTION("Valid query") {
         std::vector<std::string> tokens1 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
                                             "Select", "a",
-                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "a", "(", "_", ",", "_", ")"};
+                                            "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "a", "(", "_", ",", "_", ")", "with", "a.stmt#", "=", "8"};
         std::vector<std::string> tokens2 = {"Select", "<", "a", ",", "b", ",", "c",">",
                                             "such", "that", "Follows", "(", "a", ",", "b", ")", "pattern", "a", "(", "_", ",", "_", ")"}; // No declaration, syntactically valid but semantically invalid
         std::vector<std::string> tokens3 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
                                             "Select", "a",
                                             "such", "that", "Follows", "(", "a", ",", "b", ")", "and", "Modifies", "(", "a", ",", "b", ")", "and", "Uses", "(", "a", ",", "b", ")",
-                                            "pattern", "a", "(", "_", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ",", "_", ")"};
+                                            "pattern", "a", "(", "_", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ")", "and", "b", "(", "validName", ",", "_", ",", "_", ")",
+                                            "with", "a.stmt#", "=", "8", "and", "b.varName", "=", "\"validVarName\""};
         std::vector<std::string> tokens4 = {"variable", "a", ",", "b", ",", "c", ";", "assign", "a", ";",
                                             "Select", "a",
                                             "such", "that", "Follows", "(", "a", ",", "b", ")", "and", "Modifies", "(", "a", ",", "b", ")", "and", "Uses", "(", "a", ",", "b", ")",
@@ -553,4 +605,34 @@ TEST_CASE("Test isFactor", "[isFactor]") {
     REQUIRE_FALSE(QueryValidator::isFactor("a+b"));
     REQUIRE_FALSE(QueryValidator::isFactor("(a+b"));
     REQUIRE_FALSE(QueryValidator::isFactor("a+b)"));
+}
+
+TEST_CASE("Test QueryValidator::isRef") {
+    SECTION("Valid refs") {
+        std::string token1 = "123";
+        std::string token2 = "validSynonym.procName";
+        std::string token3 = "validSynonym.varName";
+        std::string token4 = "validSynonym.value";
+        std::string token5 = "validSynonym.stmt#";
+        std::string token6 = "\"validIdent\"";
+
+        REQUIRE(QueryValidator::isRef(token1));
+        REQUIRE(QueryValidator::isRef(token2));
+        REQUIRE(QueryValidator::isRef(token3));
+        REQUIRE(QueryValidator::isRef(token4));
+        REQUIRE(QueryValidator::isRef(token5));
+        REQUIRE(QueryValidator::isRef(token6));
+    }
+
+    SECTION("Invalid refs") {
+        std::string token1 = "123Invalid";
+        std::string token2 = "validSynonym.invalidAttribute";
+        std::string token3 = "123InvalidSynonym.stmt#";
+        std::string token4 = "\"123InvalidIdent\"";
+
+        REQUIRE(!QueryValidator::isRef(token1));
+        REQUIRE(!QueryValidator::isRef(token2));
+        REQUIRE(!QueryValidator::isRef(token3));
+        REQUIRE(!QueryValidator::isRef(token4));
+    }
 }

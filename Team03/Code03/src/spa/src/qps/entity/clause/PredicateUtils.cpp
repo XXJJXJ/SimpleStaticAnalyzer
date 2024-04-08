@@ -17,11 +17,21 @@ PredicateType getPredicateType(const std::string& keyword) {
             {"Next", PredicateType::Next},
             {"Next*", PredicateType::NextT},
             {"Affects", PredicateType::Affects},
+            {"with", PredicateType::With},
             {"not", PredicateType::Not}
     };
 
     auto it = keywordMap.find(keyword);
     return (it != keywordMap.end()) ? it->second : PredicateType::Invalid;
+}
+
+AttributeType getAttributeTypeFromString(const std::string& attribute) {
+    static const std::unordered_map<std::string, AttributeType> attributeMap = {{"procName", AttributeType::ProcName},
+                                                                                {"varName", AttributeType::VarName},
+                                                                                {"value", AttributeType::Value},
+                                                                                {"stmt#", AttributeType::StmtNumber}};
+    auto it = attributeMap.find(attribute);
+    return (it != attributeMap.end()) ? it->second : AttributeType::Invalid;
 }
 
 // Semantic check for whether synonym is a statement, or if statement number > 0

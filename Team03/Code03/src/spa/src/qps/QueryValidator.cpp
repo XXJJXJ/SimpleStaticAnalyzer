@@ -67,30 +67,28 @@ std::vector<std::vector<std::vector<std::string>>> QueryValidator::splitTokens(c
 
     for (const auto& token : tokens) {
         currentList.push_back(token);
+        size_t currSize = currentList.size();
 
-        if (token == ")") {
+        if (token == ")" || (currSize > 2 && currentList[currSize - 2] == "=")) {
             if (!isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
             }
             clauses.push_back(currentList);
             currentList.clear();
-        }
-        else if (token == ";") {
+        } else if (token == ";") {
             if (isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
             }
             declarations.push_back(currentList);
             currentList.clear();
-        }
-        else if (token == ">" && currentList[0] == "Select") {
+        } else if (token == ">" && currentList[0] == "Select") {
             if (isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
             }
             selections.push_back(currentList);
             currentList.clear();
             isClause = true;
-        }
-        else if (currentList.size() == 2 && currentList[0] == "Select" && token != "<") {
+        } else if (currSize == 2 && currentList[0] == "Select" && token != "<") {
             // If the list starts with "Select", and the next token is not "<", end the list
             if (isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
@@ -172,7 +170,7 @@ std::vector<std::string> QueryValidator::validateSelection(const std::vector<std
         for (size_t i = 2; i < len - 1; i++) {
             const std::string &token = tokens[i];
             if (isSyn) {
-                if (!isName(token)) {
+                if (!isName(token) && !isAttrRef(token)) {
                     throw SyntaxErrorException("Invalid synonym name " + token);
                 }
                 validatedTokens.push_back(token);
@@ -185,7 +183,7 @@ std::vector<std::string> QueryValidator::validateSelection(const std::vector<std
         }
     } else if (len == 2) {
         const std::string &token = tokens[1];
-        if (!isName(token)) {
+        if (!isName(token) && !isAttrRef(token)) {
             throw SyntaxErrorException("Invalid synonym name " + token);
         }
         validatedTokens.push_back(token);
@@ -211,6 +209,10 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
         prevClause = ClauseType::Pattern;
         std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
         return validatePatternPredicate(predicateTokens);
+    } case ClauseType::With: {
+        prevClause = ClauseType::With;
+        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        return validateWithPredicate(predicateTokens);
     } case ClauseType::And: {
         std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
         switch (prevClause) {
@@ -218,6 +220,8 @@ std::vector<std::string> QueryValidator::validatePredicate(const std::vector<std
             return validateSuchThatPredicate(predicateTokens);
         case ClauseType::Pattern:
             return validatePatternPredicate(predicateTokens);
+        case ClauseType::With:
+            return validateWithPredicate(predicateTokens);
         default:
             throw SyntaxErrorException("Invalid use of and keyword");
         }
@@ -232,6 +236,8 @@ ClauseType QueryValidator::getClauseType(const std::vector<std::string>& tokens)
         return ClauseType::SuchThat;
     } else if (tokens.size() > 2 && tokens[0] == "pattern") {
         return ClauseType::Pattern;
+    } else if (tokens.size() > 2 && tokens[0] == "with") {
+        return ClauseType::With;
     } else if (tokens.size() > 2 && tokens[0] == "and") {
         return ClauseType::And;
     } else {
@@ -340,8 +346,24 @@ std::vector<std::string> QueryValidator::validatePatternPredicate(const std::vec
     }
 }
 
+std::vector<std::string> QueryValidator::validateWithPredicate(const std::vector<std::string>& tokens) {
+    if (isNotPredicate(tokens)) {
+        std::vector<std::string> predicateTokens(tokens.begin() + 1, tokens.end());
+        std::vector<std::string> validatedTokens = validateWithPredicate(predicateTokens);
+        validatedTokens.insert(validatedTokens.begin(), "not");
+        return validatedTokens;
+    }
+
+    if (tokens.size() == 3 && isRef(tokens[0]) && tokens[1] == "=" && isRef(tokens[2])) {
+        std::vector<std::string> validatedTokens = {"with", tokens[0], tokens[2]};
+        return validatedTokens;
+    }
+
+    throw SyntaxErrorException("Invalid with clause syntax");
+}
+
 bool QueryValidator::isNotPredicate(const std::vector<std::string>& tokens) { 
-    return tokens.size() >2 && tokens[0] == "not" && tokens[1] != "(" && tokens[2] == "(";
+    return tokens.size() >2 && tokens[0] == "not" && tokens[1] != "(";
 }
 
 // Validate that the predicate has the correct number of arguments
@@ -495,3 +517,22 @@ bool QueryValidator::isFactor(const std::string& token) {
 }
 
 // ai-gen end
+
+bool QueryValidator::isAttrRef(const std::string& token) { 
+    size_t pos = token.find('.');
+    if (pos != std::string::npos) {
+        return isSynonym(token.substr(0, pos)) && isAttrName(token.substr(pos + 1));
+    }
+    return false;
+}
+
+bool QueryValidator::isAttrName(const std::string& token) {
+    AttributeType attributeType = getAttributeTypeFromString(token);
+    return attributeType != AttributeType::Invalid;
+}
+
+bool QueryValidator::isRef(const std::string& token) {
+    return isInteger(token) || isAttrRef(token) ||
+           (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
+            isIdent(token.substr(1, token.length() - 2)));
+}
