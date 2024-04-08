@@ -123,3 +123,83 @@ stmt s1, s2;
 Select <s1, s2> such that Affects(s1, s2)
 10 11,124 125,124 130,124 133,124 141,124 144,125 130,125 133,125 141,125 144,151 152,151 157,151 160,151 168,151 171,152 157,152 160,152 168,152 171,178 179,178 184,178 187,178 195,178 198,179 184,179 187,179 195,179 198,205 206,205 211,205 214,205 222,205 225,206 211,206 214,206 222,206 225,232 233,232 238,232 241,232 249,232 252,233 238,233 241,233 249,233 252,259 260,259 265,259 268,259 276,259 279,260 265,260 268,260 276,260 279,286 287,286 292,286 295,286 303,286 306,287 292,287 295,287 303,287 306,30 34,313 314,313 319,313 322,313 330,313 333,314 319,314 322,314 330,314 333,34 34,340 341,340 346,340 349,340 357,340 360,341 346,341 349,341 357,341 360,367 368,367 373,367 376,367 384,367 387,368 373,368 376,368 384,368 387,394 395,394 400,394 403,394 410,394 413,395 400,395 403,395 410,395 413,46 52,48 51,51 51,52 52,60 63,60 67,60 69,69 63,69 67,69 69,70 71,70 76,70 79,70 87,70 90,71 76,71 79,71 87,71 90,97 103,97 106,97 114,97 117,97 98,98 103,98 106,98 114,98 117
 5000
+26
+procedur p;
+Select p;
+SyntaxError
+5000
+27
+assign a; 
+Select a suchthat Modifies(a, "x")
+SyntaxError
+5000
+28
+assign a;
+Select a pattern b("x", _)
+SemanticError
+5000
+29
+var v; 
+Select v;
+SyntaxError
+5000
+30
+while w;
+Select w pattern w(_, none)
+SyntaxError
+5000
+31 
+procedure p;
+Select p pattern p(p, p)
+SyntaxError
+5000
+32
+assign a;
+Select a such that Uses(a, "x") or Modifies(a, "x")
+SyntaxError
+5000
+33
+if ifs;
+Select ifs such that Parent(ifs)
+SyntaxError
+5000
+34
+assign a;
+Select a pattern a("x", )
+SyntaxError
+5000
+35
+assign a;
+Select a pattern a("x", _"1"+_)
+SyntaxError
+5000
+36
+procedure p;
+Select p such that Calls(p, "Nonexistentprocedure")
+none
+5000
+37
+variable v;
+Select var
+SemanticError
+5000
+38
+procedure p;
+Select p such that Calls(p, _
+SyntaxError
+5000
+39
+variable v;
+Select                                                                 v
+a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,result,s,t,u,v,w,x,y,z
+5000
+40
+procedure p;
+Select p such that Calls(p,                                                                      _                                               )
+eight,eleven,five,four,multipleWhiles,nine,one,seven,simulateRecursion,six,ten,thirteen,three,twelve,two
+5000
+41
+assign a; 
+Select a pattern a("                    x                          ",                                          _)
+1,30,34,46,52,6,8
+5000
