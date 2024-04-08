@@ -77,6 +77,16 @@ void Predicate::addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef) {
         this->projectionFilter.push_back(false);
     }
 }
+void Predicate::addRef(Ref &ref) {
+    this->rowFilter.push_back(getFilterForRef(ref));
+    if (ref.holdsSynonym()) {
+        auto synonym = ref.getSynonym();
+        this->synonyms.push_back(synonym);
+        this->projectionFilter.push_back(true);
+    } else {
+        this->projectionFilter.push_back(false);
+    }
+}
 
 PredicateType Predicate::getType() const {
     return PredicateType::Unknown;

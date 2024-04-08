@@ -13,4 +13,7 @@ private:
 public:
     Ref(RefVariant ref) : ref(ref) {}
     AttributeValueType getAttributeValueType() const;
+    bool holdsSynonym() const;
+    shared_ptr<Synonym> getSynonym() const;
+    RefVariant getValue() const;
 };
