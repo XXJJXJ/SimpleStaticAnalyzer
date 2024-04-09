@@ -75,6 +75,38 @@ HeaderTable HeaderTable::selectColumns(const vector<shared_ptr<Synonym>> &synony
 
 // ai-gen end
 
+std::shared_ptr<HeaderTable> HeaderTable::crossJoin(BaseTable &other) {
+    auto resultTable = std::make_shared<HeaderTable>();
+    auto otherHeader = dynamic_cast<HeaderTable *>(&other);
+
+    if (otherHeader) {
+        std::vector<std::shared_ptr<Synonym>> newHeaders(this->headers);
+        newHeaders.insert(newHeaders.end(), otherHeader->headers.begin(), otherHeader->headers.end());
+        resultTable->setHeaders(newHeaders);
+
+        // Cross join rows
+        for (auto& row1 : this->getRows()) {
+            for (auto& row2 : other.getRows()) {
+                auto newValues = row1.getValues();
+                newValues.insert(newValues.end(), row2.getValues().begin(), row2.getValues().end());
+                resultTable->addRow(TableRow(newValues));
+            }
+        }
+    } else if (auto otherBoolean = dynamic_cast<BooleanTable *>(&other)) {
+        // If the BooleanTable represents false, return an empty table
+        if (!otherBoolean->isTrue()) {
+            return std::make_shared<HeaderTable>();
+        } else {
+            // If true, return a copy of the current table
+            resultTable = std::make_shared<HeaderTable>(*this);
+        }
+    } else {
+        throw QPSEvaluationException("HeaderTable::crossJoin: other is not a HeaderTable or a BooleanTable");
+    }
+
+    return resultTable;
+}
+
 std::shared_ptr<BaseTable> HeaderTable::join(BaseTable &other) {
     auto resultTable = std::make_shared<HeaderTable>();
     auto otherHeader = dynamic_cast<HeaderTable *>(&other);
@@ -303,8 +335,8 @@ shared_ptr<HeaderTable> HeaderTable::getFullTable(const vector<shared_ptr<Synony
 }
 
 // Constructor for HeaderTable with single column, where each entity is a row
-HeaderTable::HeaderTable(const shared_ptr<Synonym> &headers, const vector<shared_ptr<Entity>> &entities) {
-    this->headers = {headers};
+HeaderTable::HeaderTable(const shared_ptr<Synonym> &header, const vector<shared_ptr<Entity>> &entities) {
+    this->headers = {header};
     setColumnCount(1);
     for (const auto &entity: entities) {
         this->addRow(TableRow({entity}));

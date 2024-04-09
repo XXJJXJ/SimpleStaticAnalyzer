@@ -10,6 +10,7 @@
 #include "qps/entity/query/Synonym.h"
 #include "qps/entity/clause/attribute/AttributeExtractor.h"
 #include "qps/entity/clause/attribute/NameExtractor.h"
+#include "qps/entity/clause/cellFilter/RowFilter.h"
 
 class BaseTable {
 private:
@@ -23,7 +24,7 @@ protected:
 public:
     BaseTable() = default;
     explicit BaseTable(const std::vector<std::vector<std::shared_ptr<Entity>>> &entities, int columnCount);
-
+    explicit BaseTable(const std::vector<shared_ptr<TableRow>> rows, int columnCount);
     void addRow(const TableRow& row);
     void append(const BaseTable& other);
     [[nodiscard]] virtual bool isEmpty() const;
@@ -31,14 +32,15 @@ public:
 
     virtual std::unordered_set<std::string> toStrings();
     virtual std::unordered_set<std::string> toAttributeStrings(vector<shared_ptr<AttributeExtractor>> extractors);
-    shared_ptr<BaseTable> filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const;
+    virtual shared_ptr<BaseTable> filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const;
+    virtual shared_ptr<BaseTable> filter(RowFilter& filter) const;
     shared_ptr<BaseTable> project(const std::vector<bool>& columnMask) const; // Projection function
     const vector<TableRow> getRows() const;
     int getColumnCount() const;
     void setColumnCount(int count);
     void clearRows();
     virtual bool isBoolean() const;
-    virtual shared_ptr<BaseTable> join(BaseTable& other);
+    virtual shared_ptr<BaseTable> join(BaseTable& other);   // Join on common columns
 
     virtual ~BaseTable() = default;
 

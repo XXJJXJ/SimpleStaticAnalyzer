@@ -6,3 +6,4 @@
 ./autotester ../../../tests/milestone1_super_source.txt ../../../tests/milestone1_super_queries.txt ../../../tests/out.xml
 ./autotester ../../../tests/ms2_test1_source.txt ../../../tests/ms2_test1_queries.txt ../../../tests/out.xml
 ./autotester ../../../tests/ms3/milestone3_basic_multi_clause_source.txt ../../../tests/ms3/milestone3_basic_multi_clause_queries.txt ../../../tests/out.xml
+./autotester ../../../tests/ms3/milestone3_optimization_source.txt ../../../tests/ms3/milestone3_optimization_queries.txt ../../../tests/out.xml

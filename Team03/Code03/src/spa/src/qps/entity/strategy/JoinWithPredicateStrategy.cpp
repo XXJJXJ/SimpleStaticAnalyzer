@@ -6,6 +6,7 @@
 JoinWithPredicateStrategy::JoinWithPredicateStrategy(std::shared_ptr<Predicate> pred)
         : predicate(std::move(pred)) {}
 
+// TODO: reduce function length
 void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
 
     if (context.isCurrentResultEmpty()) {

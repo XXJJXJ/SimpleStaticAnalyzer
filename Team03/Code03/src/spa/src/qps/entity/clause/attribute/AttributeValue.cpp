@@ -1,5 +1,17 @@
 #include "AttributeValue.h"
 
+AttributeValue::AttributeValue(int value) : value(value) {
+    valueType = AttributeValueType::Integer;
+}
+
+AttributeValue::AttributeValue(std::string value) : value(value) {
+    valueType = AttributeValueType::Name;
+}
+
+AttributeValueType AttributeValue::getAttributeValueType() const {
+    return valueType;
+}
+
 bool AttributeValue::equals(const AttributeValue& other) const {
     return value == other.value;
 }

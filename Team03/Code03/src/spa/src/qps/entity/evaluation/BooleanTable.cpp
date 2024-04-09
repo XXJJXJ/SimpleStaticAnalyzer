@@ -67,3 +67,12 @@ unordered_set<string> BooleanTable::toAttributeStrings(vector<shared_ptr<Attribu
 std::shared_ptr<BaseTable> BooleanTable::negate() {
     return std::make_shared<BooleanTable>(!this->value);
 }
+
+// Filter doesn't affect the value of a boolean table
+shared_ptr<BaseTable> BooleanTable::filter(RowFilter &filter) const {
+    return std::make_shared<BooleanTable>(this->value);
+}
+
+shared_ptr<BaseTable> BooleanTable::filter(std::function<bool(const std::vector<std::shared_ptr<Entity>> &)> predicate) const {
+    return std::make_shared<BooleanTable>(this->value);
+}

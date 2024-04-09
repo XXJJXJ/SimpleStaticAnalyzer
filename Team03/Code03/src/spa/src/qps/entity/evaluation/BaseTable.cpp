@@ -75,6 +75,16 @@ shared_ptr<BaseTable> BaseTable::filter(std::function<bool(const std::vector<std
     return std::make_shared<BaseTable>(filteredEntities, columnCount);
 }
 
+shared_ptr<BaseTable> BaseTable::filter(RowFilter &filter) const {
+    vector<shared_ptr<TableRow>> filteredRows;
+    for (const auto& row : rows) {
+        if (filter.filterRow(row)) {
+            filteredRows.push_back(std::make_shared<TableRow>(row));
+        }
+    }
+    return std::make_shared<BaseTable>(filteredRows, columnCount);
+}
+
 // This should return either Boolean or BaseTable, depending on the columnMask
 shared_ptr<BaseTable> BaseTable::project(const std::vector<bool>& columnMask) const {
     if (columnMask.size() != columnCount) {
@@ -130,6 +140,7 @@ shared_ptr<BaseTable> BaseTable::join(BaseTable &other) {
     throw QPSEvaluationException("BaseTable::join: Join operation not supported for BaseTable.");
 }
 
+
 const vector<TableRow> BaseTable::getRows() const {
     return rows;
 }
@@ -169,5 +180,14 @@ void BaseTable::append(const BaseTable &other) {
         addRow(row);
     }
 }
+
+BaseTable::BaseTable(const std::vector<shared_ptr<TableRow>> rows, int columnCount) {
+    this->columnCount = columnCount;
+    for (const auto& row : rows) {
+        addRow(*row);
+    }
+
+}
+
 
 

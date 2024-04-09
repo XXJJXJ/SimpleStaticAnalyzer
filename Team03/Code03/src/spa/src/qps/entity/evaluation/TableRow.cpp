@@ -72,3 +72,7 @@ string TableRow::toAttributeString(vector<shared_ptr<AttributeExtractor>>& extra
     }
     return oss.str();
 }
+
+int TableRow::size() const {
+    return values.size();
+}

@@ -18,7 +18,13 @@ std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef
 }
 
 std::shared_ptr<CellFilter> getFilterForRef(const Ref& ref) {
+    // If ref contains synonym, return synonym filter
+    if (ref.holdsSynonym()) {
+        return std::make_shared<SynonymFilter>(*ref.getSynonym());
+    }
 
+    // Otherwise, code shouldn't reach here, as non-synonym ref shouldn't correspond to any column
+    throw QPSEvaluationException("filterUtils::getFilterForRef Unsupported Ref type for cellFilter creation.");
 }
 
 std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef& entRef) {

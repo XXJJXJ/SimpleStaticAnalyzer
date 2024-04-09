@@ -26,6 +26,7 @@ public:
     [[nodiscard]] string toString() const;
     [[nodiscard]] string toAttributeString(vector<shared_ptr<AttributeExtractor>>& extractors) const;
     [[nodiscard]] std::shared_ptr<Entity> getByIndex(int index) const; // New function for direct access
+    [[nodiscard]] int size() const;
     friend class HeaderTable; // Allows HeaderTable to access private members of TableRow
     bool operator<(const TableRow& other) const;
 };

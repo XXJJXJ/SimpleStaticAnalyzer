@@ -27,11 +27,12 @@ public:
     HeaderTable() = default;
     HeaderTable(const vector<shared_ptr<Synonym>>& headers, const vector<vector<shared_ptr<Entity>>>& entities);
     HeaderTable(const vector<shared_ptr<Synonym>>& headers, shared_ptr<BaseTable> baseTable);
-    HeaderTable(const shared_ptr<Synonym>& headers, const vector<shared_ptr<Entity>>& entities);
+    HeaderTable(const shared_ptr<Synonym>& header, const vector<shared_ptr<Entity>>& entities);
     void setHeaders(const vector<shared_ptr<Synonym>>& headers);
     [[nodiscard]] const vector<shared_ptr<Synonym>>& getHeaders() const;
     [[nodiscard]] HeaderTable selectColumns(const vector<shared_ptr<Synonym>>& synonyms) const; // Projection operation
     shared_ptr<BaseTable> join(BaseTable& other) override;
+    shared_ptr<HeaderTable> crossJoin(BaseTable& other);
 
     void updateHeaderIndexMap(); // Utility function to update headerIndexMap
     int indexOf(const Synonym& synonym) const; // Get index of a synonym
