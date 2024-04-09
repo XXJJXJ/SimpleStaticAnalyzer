@@ -6,11 +6,6 @@
 #include "common/EntityType.h"
 #include "qps/entity/query/Synonym.h"
 #include "common/Util.h"
-#include "qps/entity/clause/cellFilter/CellFilter.h"
-#include "qps/entity/clause/cellFilter/StatementNumberFilter.h"
-#include "qps/entity/clause/cellFilter/SynonymFilter.h"
-#include "qps/entity/clause/cellFilter/IdentifierFilter.h"
-#include "qps/entity/clause/cellFilter/WildcardFilter.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 
 enum class PredicateType {
@@ -62,8 +57,8 @@ enum class AttributeType {
 
 AttributeType getAttributeTypeFromString(const std::string& attribute);
 
-enum class AttributeValueType { 
-    Name, Integer 
+enum class AttributeValueType {
+    Name, Integer
 };
 
 // We cannot do subtype check without initializing the Entity and call .isOfType(), let's get back to something simple.
@@ -102,8 +97,5 @@ bool isWildcard(StatementRef& ref);
 bool isWildcard(EntityRef & ref);
 bool hasWildcard(std::string& expr);
 std::string stripWildcard(std::string& expr);
-std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef);
-std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef& entRef);
-std::shared_ptr<CellFilter> getFilterForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef);
 bool isValidEntityRefWithType(const EntityRef& ref, EntityType type);
 

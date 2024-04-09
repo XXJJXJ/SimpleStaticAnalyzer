@@ -47,6 +47,22 @@ std::unordered_set<std::string> BaseTable::toStrings() {
     return rowStrings;
 }
 
+std::unordered_set<std::string> BaseTable::toAttributeStrings(vector<shared_ptr<AttributeExtractor>> extractors) {
+    // If number of columns doesn't match, use name extractor as default value.
+    if (extractors.size() != columnCount) {
+        extractors.clear();
+        extractors.resize(columnCount, std::make_shared<NameExtractor>());
+
+    }
+    makeRowsUnique();
+    std::unordered_set<std::string> rowStrings;
+    rowStrings.reserve(rows.size());
+    for (const auto &row: rows) {
+        auto result = rowStrings.insert(row.toAttributeString(extractors));
+    }
+    return rowStrings;
+}
+
 shared_ptr<BaseTable> BaseTable::filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const {
     std::vector<std::vector<std::shared_ptr<Entity>>> filteredEntities;
 
@@ -57,6 +73,16 @@ shared_ptr<BaseTable> BaseTable::filter(std::function<bool(const std::vector<std
     }
 
     return std::make_shared<BaseTable>(filteredEntities, columnCount);
+}
+
+shared_ptr<BaseTable> BaseTable::filter(RowFilter &filter) const {
+    vector<shared_ptr<TableRow>> filteredRows;
+    for (const auto& row : rows) {
+        if (filter.filterRow(row)) {
+            filteredRows.push_back(std::make_shared<TableRow>(row));
+        }
+    }
+    return std::make_shared<BaseTable>(filteredRows, columnCount);
 }
 
 // This should return either Boolean or BaseTable, depending on the columnMask
@@ -114,6 +140,7 @@ shared_ptr<BaseTable> BaseTable::join(BaseTable &other) {
     throw QPSEvaluationException("BaseTable::join: Join operation not supported for BaseTable.");
 }
 
+
 const vector<TableRow> BaseTable::getRows() const {
     return rows;
 }
@@ -153,5 +180,14 @@ void BaseTable::append(const BaseTable &other) {
         addRow(row);
     }
 }
+
+BaseTable::BaseTable(const std::vector<shared_ptr<TableRow>> rows, int columnCount) {
+    this->columnCount = columnCount;
+    for (const auto& row : rows) {
+        addRow(*row);
+    }
+
+}
+
 
 

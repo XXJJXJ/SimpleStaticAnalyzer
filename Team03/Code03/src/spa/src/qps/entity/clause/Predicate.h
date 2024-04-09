@@ -9,8 +9,11 @@
 #include "common/spa_exception/SemanticErrorException.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/clause/cellFilter/CellFilter.h"
+#include "qps/entity/clause/cellFilter/RowFilter.h"
+#include "qps/entity/clause/cellFilter/filterUtils.h"
 #include "qps/entity/evaluation/TableFactory.h"
 #include "qps/entity/clause/PredicateUtils.h"
+#include "attribute/Ref.h"
 
 
 
@@ -22,12 +25,16 @@
 class Predicate {
 protected:
     vector<shared_ptr<Synonym>> synonyms; // Synonyms used in the predicate
-    vector<shared_ptr<CellFilter>> rowFilter; // Cell filters that are used to filter the rows in result table
+    // TODO: it's possible to keep rowFilters only, but idc already
+    vector<shared_ptr<CellFilter>> cellFilters; // Cell filters that are used to filter the rows in result table
+    vector<shared_ptr<RowFilter>> rowFilters; // Row filters that are used to filter the rows in result table
     vector<bool> projectionFilter; // Filter to determine which columns to keep in the result table
     virtual std::shared_ptr<BaseTable> getFullTable(QueryManager& qm); // Gets the full table for the predicate
+    void addRowFilter(RowFilter &rowFilter);
     void addStmtRef(StatementRef &stmtRef);
     void addEntityRef(EntityRef& entityRef);
     void addProcAndStmtRef(ProcAndStmtRef &procAndStmtRef);
+    void addRef(Ref &ref);
     bool isValidRow(const vector<shared_ptr<Entity>>& row) const;
 public:
     virtual ~Predicate() = default; // Ensure proper polymorphic deletion

@@ -25,9 +25,12 @@ void EvaluationPlanner::plan() {
     }
     // Projection strategy, only one selection is supported for now due to the implementation of the ProjectionStrategy.
 
-    strategies.push_back(make_shared<ProjectionStrategy>(query->getSelections()));
+    strategies.push_back(make_shared<ProjectionStrategy>(query->getSelectedSynonyms()));
 
     evaluator->setStrategies(strategies);
+
+    // Step 3: set selected attributes
+    evaluator->getContext()->setSelectedAttributes(query->getSelectedAttributes());
 
 }
 

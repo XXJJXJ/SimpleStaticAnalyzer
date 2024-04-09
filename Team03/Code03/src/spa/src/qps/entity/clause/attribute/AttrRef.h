@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "AttributeExtractor.h"
+#include "NameExtractor.h"
 #include "qps/entity/query/Synonym.h"
 #include "AttributeValue.h"
 #include "qps/entity/clause/PredicateUtils.h"
@@ -27,6 +28,7 @@ public:
     AttributeValueType getAttributeValueType() const;
 
     AttributeValue extractAttribute(const Entity& entity) const;
+    [[nodiscard]] shared_ptr<AttributeExtractor> getExtractor() const;
 };
 
 #endif // ATTR_REF_H

@@ -14,9 +14,13 @@ class WithPredicate : public Predicate {
 private:
     Ref ref1;
     Ref ref2;
+    shared_ptr<RowFilter> getRowFilter();
+protected:
+    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
 public:
     WithPredicate(Ref ref1, Ref ref2);
     ~WithPredicate() override = default;
+    PredicateType getType() const override;
 };
 
 #endif  // WITHPREDICATE_H

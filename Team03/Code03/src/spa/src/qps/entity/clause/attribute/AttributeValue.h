@@ -3,6 +3,7 @@
 
 #include <variant>
 #include <string>
+#include "../PredicateUtils.h"
 
 using AttributeVariant = std::variant<int, std::string>;
 
@@ -10,12 +11,15 @@ using AttributeVariant = std::variant<int, std::string>;
 class AttributeValue {
 private:
     AttributeVariant value;
+    AttributeValueType valueType;
 
 public:
-    AttributeValue(int intValue) : value(intValue) {}
-    AttributeValue(std::string stringValue) : value(std::move(stringValue)) {}
+    AttributeValue(int intValue);
+    AttributeValue(std::string stringValue);
+    AttributeValueType getAttributeValueType() const;
 
     [[nodiscard]] bool equals(const AttributeValue& other) const;
+    [[nodiscard]] std::string toString() const;
 };
 
 #endif // ATTRIBUTE_VALUE_H
