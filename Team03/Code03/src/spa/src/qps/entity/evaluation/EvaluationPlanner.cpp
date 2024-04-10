@@ -19,10 +19,17 @@ void EvaluationPlanner::plan() {
     // step 2: set strategies
     // Grouping and ordering within group not implemented yet, but it should work fine (just less efficient).
     vector<shared_ptr<Strategy>> strategies;
+    vector<shared_ptr<Strategy>> otherStrategies;
     for (auto& predicate : query->getPredicates()) {
+        // prioritise with
         auto strategy = make_shared<JoinWithPredicateStrategy>(predicate);
-        strategies.push_back(strategy);
+        if (predicate->getType() == PredicateType::With) {
+            strategies.push_back(strategy);
+        } else {
+            otherStrategies.push_back(strategy);
+        }
     }
+    strategies.insert(strategies.end(), otherStrategies.begin(), otherStrategies.end());
     // Projection strategy, only one selection is supported for now due to the implementation of the ProjectionStrategy.
 
     strategies.push_back(make_shared<ProjectionStrategy>(query->getSelectedSynonyms()));
