@@ -41,6 +41,8 @@ public:
     [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
     [[nodiscard]] virtual shared_ptr<BaseTable> getResultTable(QueryEvaluationContext &qec);
     [[nodiscard]] virtual PredicateType getType() const;
+    virtual std::size_t hash() const;
+    virtual bool equals(const Predicate& other) const;
 };
 
 #endif // RELATIONSHIPPREDICATE_H

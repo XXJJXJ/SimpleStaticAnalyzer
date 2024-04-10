@@ -34,3 +34,17 @@ std::shared_ptr<BaseTable> NotPredicate::getResultTable(QueryEvaluationContext &
 PredicateType NotPredicate::getType() const {
     return PredicateType::Not;
 }
+
+bool NotPredicate::operator==(const NotPredicate &other) const {
+    return predicate->equals(*other.predicate);
+}
+size_t NotPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (predicate->hash());
+}
+bool NotPredicate::equals(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const NotPredicate&>(other);
+    return *this == castedOther;
+}

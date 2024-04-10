@@ -23,3 +23,7 @@ std::string AttributeValue::toString() const {
         return std::get<std::string>(value);
     }
 }
+
+std::size_t AttributeValue::hash() const {
+    return std::hash<string>()(toString());
+}

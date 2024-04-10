@@ -18,4 +18,6 @@ public:
     shared_ptr<Synonym> getSynonym() const;
     AttributeValue getValue() const;
     AttributeValue extractAttribute(Entity& entity) const;
+    bool operator==(const Ref &other) const;
+    std::size_t hash() const;
 };

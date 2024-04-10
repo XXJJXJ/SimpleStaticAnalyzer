@@ -40,3 +40,24 @@ AttributeValue Ref::extractAttribute(Entity &entity) const {
     throw QPSEvaluationException("Ref::extractAttribute() called on non-synonym ref");
 }
 
+bool Ref::operator==(const Ref &other) const {
+    if (this->holdsSynonym() && other.holdsSynonym()) {
+        AttrRef attrRef = std::get<AttrRef>(this->ref);
+        AttrRef otherAttrRef = std::get<AttrRef>(other.ref);
+        return attrRef == otherAttrRef;
+    } else if (std::holds_alternative<AttributeValue>(this->ref) && std::holds_alternative<AttributeValue>(other.ref)) {
+        return this->getValue().equals(other.getValue());
+    } else {
+        // diff types
+        return false;
+    }
+}
+
+std::size_t Ref::hash() const {
+    if (this->holdsSynonym()) {
+        return std::get<AttrRef>(this->ref).hash();
+    } else {
+        return this->getValue().hash();
+    }
+}
+

@@ -20,6 +20,24 @@ public:
     CallsPredicate(EntityRef lhs, EntityRef rhs);
     ~CallsPredicate() override = default;
     PredicateType getType() const override;
+    bool operator==(const CallsPredicate &other) const;
+    std::size_t hash() const override;
+    bool equals(const Predicate &other) const override;
 };
+
+namespace std {
+	template<>
+    struct hash<shared_ptr<CallsPredicate>> {
+        std::size_t operator()(const shared_ptr<CallsPredicate>& pred) const {
+            return pred->hash();
+        }
+    };
+    template <>
+    struct equal_to<shared_ptr<CallsPredicate>> {
+        bool operator()(const shared_ptr<CallsPredicate>& lhs, const shared_ptr<CallsPredicate>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
+}
 
 #endif // CALLSPREDICATE_H

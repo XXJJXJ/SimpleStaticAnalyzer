@@ -29,6 +29,8 @@ public:
 
     AttributeValue extractAttribute(const Entity& entity) const;
     [[nodiscard]] shared_ptr<AttributeExtractor> getExtractor() const;
+    bool operator==(const AttrRef &other) const;
+    std::size_t hash() const;
 };
 
 #endif // ATTR_REF_H

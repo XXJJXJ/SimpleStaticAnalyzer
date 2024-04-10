@@ -18,3 +18,18 @@ std::shared_ptr<BaseTable> CallsPredicate::getFullTable(QueryManager& qm) {
 PredicateType CallsPredicate::getType() const {
     return PredicateType::Calls;
 }
+
+bool CallsPredicate::operator==(const CallsPredicate &other) const {
+    return this->lhs == other.lhs && this->rhs == other.rhs;
+}
+size_t CallsPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<EntityRef>()(lhs) << 1) 
+            ^ (std::hash<EntityRef>()(rhs) >> 1);
+}
+bool CallsPredicate::equals(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const CallsPredicate&>(other);
+    return *this == castedOther;
+}

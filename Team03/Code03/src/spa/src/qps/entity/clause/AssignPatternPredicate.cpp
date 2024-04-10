@@ -27,6 +27,23 @@ PredicateType AssignPatternPredicate::getType() const {
     return PredicateType::AssignPattern;
 }
 
+bool AssignPatternPredicate::operator==(const AssignPatternPredicate &other) const {
+    return this->assignSyn == other.assignSyn
+        && this->lhs == other.lhs 
+        && this->rhs == other.rhs;
+}
+
+size_t AssignPatternPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<EntityRef>()(lhs) << 1) 
+            ^ (std::hash<string>()(rhs) >> 1);
+}
+bool AssignPatternPredicate::equals(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const AssignPatternPredicate&>(other);
+    return *this == castedOther;
+}
 
 
 

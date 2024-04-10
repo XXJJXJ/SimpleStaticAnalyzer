@@ -21,7 +21,25 @@ public:
     ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~ModifiesPredicate() override = default;
     PredicateType getType() const override;
+    bool operator==(const ModifiesPredicate &other) const;
+    std::size_t hash() const override;
+    bool equals(const Predicate &other) const override;
 };
+
+namespace std {
+	template<>
+    struct hash<shared_ptr<ModifiesPredicate>> {
+        std::size_t operator()(const shared_ptr<ModifiesPredicate>& pred) const {
+            return pred->hash();
+        }
+    };
+    template <>
+    struct equal_to<shared_ptr<ModifiesPredicate>> {
+        bool operator()(const shared_ptr<ModifiesPredicate>& lhs, const shared_ptr<ModifiesPredicate>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
+}
 
 #endif // MODIFIESPREDICATE_H
 

@@ -18,3 +18,18 @@ NextPredicate::NextPredicate(StatementRef lhs, StatementRef rhs) {
 PredicateType NextPredicate::getType() const {
     return PredicateType::Next;
 }
+
+bool NextPredicate::operator==(const NextPredicate &other) const {
+    return this->lhs == other.lhs && this->rhs == other.rhs;
+}
+size_t NextPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
+            ^ (std::hash<StatementRef>()(rhs) >> 1);
+}
+bool NextPredicate::equals(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const NextPredicate&>(other);
+    return *this == castedOther;
+}

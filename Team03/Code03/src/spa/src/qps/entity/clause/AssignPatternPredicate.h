@@ -23,7 +23,24 @@ public:
 	AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs);
 	~AssignPatternPredicate() override = default;
     [[nodiscard]] PredicateType getType() const override;
-
+	bool operator==(const AssignPatternPredicate &other) const;
+	std::size_t hash() const override;
+	bool equals(const Predicate &other) const override;
 };
+
+namespace std {
+	template<>
+    struct hash<shared_ptr<AssignPatternPredicate>> {
+        std::size_t operator()(const shared_ptr<AssignPatternPredicate>& pred) const {
+            return pred->hash();
+        }
+    };
+    template <>
+    struct equal_to<shared_ptr<AssignPatternPredicate>> {
+        bool operator()(const shared_ptr<AssignPatternPredicate>& lhs, const shared_ptr<AssignPatternPredicate>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
+}
 
 #endif // ASSIGNPATTERNPREDICATE_H
