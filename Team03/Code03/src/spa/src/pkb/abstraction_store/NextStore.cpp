@@ -4,7 +4,9 @@ bool NextStore::add(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2) {
     directMap[stmt1].insert(stmt2);
     // toposort similar to callStore, but for statements and save it for getTransitive
     nonRoots.insert(stmt2);
-    if (roots.find(stmt2) != roots.end()) {
+    if (roots.find(stmt2) != roots.end() && stmt2->getStatementNumber() > stmt1->getStatementNumber()) {
+        // Only erase if stmt2 is after stmt1, backwards "traversal" to start of while
+        // no need remove the while statement
         roots.erase(stmt2);
     }
     if (nonRoots.find(stmt1) == nonRoots.end()) {
