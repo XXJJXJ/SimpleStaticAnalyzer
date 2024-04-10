@@ -14,6 +14,7 @@
 #include "common/EntityType.h"
 #include "qps/entity/parser/DeclarationsParser.h"
 #include "qps/entity/parser/SelectionsParser.h"
+#include "qps/entity/evaluation/PredicateSet.h"
 #include <unordered_map>
 
 QueryParser::QueryParser() = default;
@@ -25,7 +26,7 @@ std::shared_ptr<Query>
 QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     std::vector<std::shared_ptr<Synonym>> declarations;
     std::vector<std::shared_ptr<AttrRef>> selections;
-    std::vector<std::shared_ptr<Predicate>> predicates;
+    PredicateSet predSet;
 
     std::unordered_map<std::string, EntityType> synonymMap;
 
@@ -52,10 +53,11 @@ QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     // Create predicate objects for clauses
     for (auto tokens: predicateTokens) {
         std::shared_ptr<Predicate> predicate = PredicateFactory::createPredicate(tokens, synonymMap);
-        predicates.push_back(predicate);
+        predSet.add(predicate);
     }
 
     //Query query(declarations, selections, clauses);
+    auto predicates = predSet.getUniquePredicates();
     Query query(declarations, selections, predicates);
     std::shared_ptr<Query> sharedQueryObj = std::make_shared<Query>(query);
 
