@@ -1,0 +1,50 @@
+1 - With clause
+procedure p;
+Select p with p.procName = "modifyone"
+modifyone
+5000
+2 - With clause
+procedure p, q;
+Select p such that Calls(p, q) with q.procName = "modifyone"
+first
+5000
+3 - With clause
+procedure p, q;
+Select <p, q> such that Calls(p, q) with q.procName = "modifytwo" such that Modifies(q, "z")
+first modifytwo
+5000
+4 - With clause
+procedure p, q;
+Select p such that Calls(p, q) with q.procName = "modifyone"
+first
+5000
+5 - With clause
+variable v; assign a;
+Select v with v.varName = "z"
+z
+5000
+6 - With clause
+variable v; assign a;
+Select v with v.varName = "z" such that Modifies(a, v)
+z
+5000
+7 - With clause
+variable v; procedure p;
+Select <v, p> such that Modifies(p, v) with v.varName = "z"
+z first, z modifyone, z modifytwo
+5000
+8 - With clause
+stmt s; constant c;
+Select s such that Modifies(s, "z") with c.value = s.stmt#
+10, 11
+5000
+9 - With clause
+stmt s; constant c;
+Select s such that Modifies(s, "z") with c.value = s.stmt# such that Uses(s, "z")
+10
+5000
+10 - With clause
+stmt s; constant c; assign a;
+Select s such that Modifies(s, "z") with c.value = s.stmt# such that Uses(s, "x") with s.stmt# = a.stmt#
+11
+5000
