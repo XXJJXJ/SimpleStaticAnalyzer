@@ -1,6 +1,5 @@
 #include "QueryTokenizer.h"
-#include "QueryValidator.h"
-#include "common/spa_exception/SyntaxErrorException.h"
+#include "qps/util/QueryTokenValidator.h"
 
 QueryTokenizer::QueryTokenizer() {}
 QueryTokenizer::~QueryTokenizer() {}
@@ -68,7 +67,7 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
                 currToken.clear();
                 isWithinWildcard = false;
             } else {
-                if (QueryValidator::isIdent(t)) {
+                if (QueryTokenValidator::isIdent(t)) {
                     if (isPrevSyn){
                         currToken.append(" ");
                     }
