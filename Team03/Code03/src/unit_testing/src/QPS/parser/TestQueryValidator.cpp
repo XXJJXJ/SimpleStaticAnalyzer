@@ -2,8 +2,6 @@
 #include "qps/QueryValidator.h"
 #include "common/spa_exception/SyntaxErrorException.h"
 
-QueryValidator validator;
-
 TEST_CASE("QueryValidator::splitTokens should correctly split query into lists of tokens, where each list is a part of the query") {
 	std::vector<std::string> testQuery = { "variable", "a", ";", 
                                            "Select", "a", 

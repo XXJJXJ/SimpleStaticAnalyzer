@@ -1,10 +1,3 @@
-/*
- * Created by ZHENGTAO JIANG on 8/2/24.
- *
- * Methods for validating input string based on the predefined PQL grammar
- *
- */
-
 #ifndef SPA_QUERYVALIDATOR_H
 #define SPA_QUERYVALIDATOR_H
 #include <string>

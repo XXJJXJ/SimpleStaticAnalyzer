@@ -1,13 +1,6 @@
-/*
- * Created by ZHENGTAO JIANG on 6/2/24.
- */
-
 #include <algorithm>
-#include <sstream>
 
 #include "QueryParser.h"
-#include "QueryEvaluator.h"
-
 #include "qps/entity/query/Query.h"
 #include "qps/entity/query/Synonym.h"
 #include "qps/entity/parser/PredicateFactory.h"

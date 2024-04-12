@@ -47,48 +47,14 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
 
     for (std::string t : tokens) {
         if (isWithinQuotes) {
-            if (t == "\"") {
-                currToken.append(t);
-                collapsedTokens.push_back(currToken);
-                currToken.clear();
-                isWithinQuotes = false;
-            } else {
-                currToken.append(t);
-            }
+            handleWithinQuotes(t, currToken, collapsedTokens, isWithinQuotes, isPrevSyn);
         } else if (isWithinWildcard) {
-            if ((t == ")" || t == ",") && currToken == "_") {
-                collapsedTokens.push_back(currToken);
-                collapsedTokens.push_back(t);
-                isWithinWildcard = false;
-                currToken.clear();
-            } else if (t == "_") {
-                currToken.append(t);
-                collapsedTokens.push_back(currToken);
-                currToken.clear();
-                isWithinWildcard = false;
-            } else {
-                if (QueryTokenValidator::isIdent(t)) {
-                    if (isPrevSyn){
-                        currToken.append(" ");
-                    }
-                    isPrevSyn = true;
-                } else {
-                    isPrevSyn = false;
-                }
-                currToken.append(t);
-            }
+            handleWithinWildcard(t, currToken, collapsedTokens, isWithinWildcard, isPrevSyn);
         } else {
-            if (t == "_") {
-                isWithinWildcard = true;
-                currToken.append(t);
-            } else if (t == "\"") {
-                isWithinQuotes = true;
-                currToken.append(t);
-            } else {
-                collapsedTokens.push_back(t);
-            }
+            handleNormalToken(t, currToken, collapsedTokens, isWithinQuotes, isWithinWildcard);
         }
     }
+
     if (!currToken.empty()) {
         collapsedTokens.push_back(currToken);
     }
@@ -96,6 +62,60 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
     return collapsedTokens;
 }
 
+void QueryTokenizer::handleWithinQuotes(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinQuotes, bool& isPrevSyn) {
+    if (t == "\"") {
+        currToken.append(t);
+        collapsedTokens.push_back(currToken);
+        currToken.clear();
+        isWithinQuotes = false;
+    } else {
+        if (QueryTokenValidator::isIdent(t)) {
+            if (isPrevSyn){
+                currToken.append(" ");
+            }
+            isPrevSyn = true;
+        } else {
+            isPrevSyn = false;
+        }
+        currToken.append(t);
+    }
+}
+
+void QueryTokenizer::handleWithinWildcard(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinWildcard, bool& isPrevSyn) {
+    if ((t == ")" || t == ",") && currToken == "_") {
+        collapsedTokens.push_back(currToken);
+        collapsedTokens.push_back(t);
+        isWithinWildcard = false;
+        currToken.clear();
+    } else if (t == "_") {
+        currToken.append(t);
+        collapsedTokens.push_back(currToken);
+        currToken.clear();
+        isWithinWildcard = false;
+    } else {
+        if (QueryTokenValidator::isIdent(t)) {
+            if (isPrevSyn){
+                currToken.append(" ");
+            }
+            isPrevSyn = true;
+        } else {
+            isPrevSyn = false;
+        }
+        currToken.append(t);
+    }
+}
+
+void QueryTokenizer::handleNormalToken(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinQuotes, bool& isWithinWildcard) {
+    if (t == "_") {
+        isWithinWildcard = true;
+        currToken.append(t);
+    } else if (t == "\"") {
+        isWithinQuotes = true;
+        currToken.append(t);
+    } else {
+        collapsedTokens.push_back(t);
+    }
+}
 
 bool QueryTokenizer::isPunctuation(char c) {
     return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>' || c == '_' || c == '"' || c == '=';
