@@ -69,15 +69,7 @@ void QueryTokenizer::handleWithinQuotes(std::string& t, std::string& currToken, 
         currToken.clear();
         isWithinQuotes = false;
     } else {
-        if (QueryTokenValidator::isIdent(t)) {
-            if (isPrevSyn){
-                currToken.append(" ");
-            }
-            isPrevSyn = true;
-        } else {
-            isPrevSyn = false;
-        }
-        currToken.append(t);
+        handleCollapsingTokens(t, currToken, isPrevSyn);
     }
 }
 
@@ -93,15 +85,7 @@ void QueryTokenizer::handleWithinWildcard(std::string& t, std::string& currToken
         currToken.clear();
         isWithinWildcard = false;
     } else {
-        if (QueryTokenValidator::isIdent(t)) {
-            if (isPrevSyn){
-                currToken.append(" ");
-            }
-            isPrevSyn = true;
-        } else {
-            isPrevSyn = false;
-        }
-        currToken.append(t);
+        handleCollapsingTokens(t, currToken, isPrevSyn);
     }
 }
 
@@ -115,6 +99,18 @@ void QueryTokenizer::handleNormalToken(std::string& t, std::string& currToken, s
     } else {
         collapsedTokens.push_back(t);
     }
+}
+
+void QueryTokenizer::handleCollapsingTokens(std::string& t, std::string& currToken, bool& isPrevSyn) {
+    if (QueryTokenValidator::isIdent(t)) {
+        if (isPrevSyn){
+            currToken.append(" ");
+        }
+        isPrevSyn = true;
+    } else {
+        isPrevSyn = false;
+    }
+    currToken.append(t);
 }
 
 bool QueryTokenizer::isPunctuation(char c) {

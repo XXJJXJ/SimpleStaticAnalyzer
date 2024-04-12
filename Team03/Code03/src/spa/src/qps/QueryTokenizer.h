@@ -18,6 +18,8 @@ private:
     static void handleWithinQuotes(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinQuotes, bool& isPrevSyn);
     static void handleWithinWildcard(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinWildcard, bool& isPrevSyn);
     static void handleNormalToken(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinQuotes, bool& isWithinWildcard);
+    static void handleCollapsingTokens(std::string& t, std::string& currToken, bool& isPrevSyn);
+
 };
 
 
