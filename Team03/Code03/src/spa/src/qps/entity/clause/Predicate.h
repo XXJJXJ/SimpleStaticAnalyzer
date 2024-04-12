@@ -25,7 +25,6 @@
 class Predicate {
 protected:
     vector<shared_ptr<Synonym>> synonyms; // Synonyms used in the predicate
-    // TODO: it's possible to keep rowFilters only, but idc already
     vector<shared_ptr<CellFilter>> cellFilters; // Cell filters that are used to filter the rows in result table
     vector<shared_ptr<RowFilter>> rowFilters; // Row filters that are used to filter the rows in result table
     vector<bool> projectionFilter; // Filter to determine which columns to keep in the result table

@@ -14,12 +14,11 @@ Query::Query(vector<shared_ptr<Synonym>> declarations, vector<shared_ptr<AttrRef
     this->predicates = std::move(predicates);
 }
 
-// TODO: to convert AttrRef back to Synonym for evaluator, until evaluator refactors to use AttrRef for selections instead
 vector<shared_ptr<Synonym>> Query::getSelectedSynonyms() const {
     vector<shared_ptr<Synonym>> synonyms;
 
     std::transform(selections.begin(), selections.end(), std::back_inserter(synonyms), [](const std::shared_ptr<AttrRef>& attrRef) {
-        return attrRef.get()->getSynonym();
+        return attrRef->getSynonym();
         });
 
     return synonyms;
