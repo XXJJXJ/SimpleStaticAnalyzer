@@ -77,8 +77,7 @@ TEST_CASE("Debugging whole strings") {
     std::vector<std::string> result14 = qm.processQuery(string14);
     std::vector<std::string> result15 = qm.processQuery(string15);
 	std::vector<std::string> result16 = qm.processQuery(string16);
-	// uncomment when With evaluation is complete
-	//std::vector<std::string> result17 = qm.processQuery(string17);
+	std::vector<std::string> result17 = qm.processQuery(string17);
 
     std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
     std::vector<std::string> expectedSemanticError = { "SemanticError" };
@@ -105,8 +104,7 @@ TEST_CASE("Debugging whole strings") {
     REQUIRE(result14 != expectedSemanticError);
     REQUIRE(result15 == expectedSyntaxError);
     REQUIRE(result16 == expectedSemanticError);
-    // uncomment when With evaluation is complete
-    /*REQUIRE(result17 != expectedSyntaxError);
-    REQUIRE(result17 != expectedSemanticError);*/
+    REQUIRE(result17 != expectedSyntaxError);
+    REQUIRE(result17 != expectedSemanticError);
 }
 

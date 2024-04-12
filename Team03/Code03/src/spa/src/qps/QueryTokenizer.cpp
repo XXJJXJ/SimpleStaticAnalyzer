@@ -68,6 +68,7 @@ void QueryTokenizer::handleWithinQuotes(std::string& t, std::string& currToken, 
         collapsedTokens.push_back(currToken);
         currToken.clear();
         isWithinQuotes = false;
+        isPrevSyn = false;
     } else {
         handleCollapsingTokens(t, currToken, isPrevSyn);
     }
@@ -84,6 +85,7 @@ void QueryTokenizer::handleWithinWildcard(std::string& t, std::string& currToken
         collapsedTokens.push_back(currToken);
         currToken.clear();
         isWithinWildcard = false;
+        isPrevSyn = false;
     } else {
         handleCollapsingTokens(t, currToken, isPrevSyn);
     }
