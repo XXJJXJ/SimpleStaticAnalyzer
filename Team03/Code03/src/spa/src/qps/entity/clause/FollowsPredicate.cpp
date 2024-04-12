@@ -24,17 +24,14 @@ PredicateType FollowsPredicate::getType() const {
 }
 // ai-gen end
 
-bool FollowsPredicate::operator==(const FollowsPredicate &other) const {
-    return this->lhs == other.lhs && this->rhs == other.rhs;
-}
-size_t FollowsPredicate::hash() const {
-    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
-            ^ (std::hash<StatementRef>()(rhs) >> 1);
-}
-bool FollowsPredicate::equals(const Predicate &other) const {
+bool FollowsPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
     auto castedOther = static_cast<const FollowsPredicate&>(other);
-    return *this == castedOther;
+    return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
+}
+size_t FollowsPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
+            ^ (std::hash<StatementRef>()(rhs) >> 1);
 }

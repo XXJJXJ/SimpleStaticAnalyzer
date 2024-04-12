@@ -21,17 +21,14 @@ PredicateType ParentTPredicate::getType() const {
     return PredicateType::ParentT;
 }
 // ai-gen end
-bool ParentTPredicate::operator==(const ParentTPredicate &other) const {
-    return this->lhs == other.lhs && this->rhs == other.rhs;
-}
-size_t ParentTPredicate::hash() const {
-    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
-            ^ (std::hash<StatementRef>()(rhs) >> 1);
-}
-bool ParentTPredicate::equals(const Predicate &other) const {
+bool ParentTPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
     auto castedOther = static_cast<const ParentTPredicate&>(other);
-    return *this == castedOther;
+    return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
+}
+size_t ParentTPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
+            ^ (std::hash<StatementRef>()(rhs) >> 1);
 }

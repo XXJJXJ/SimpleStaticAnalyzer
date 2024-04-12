@@ -20,17 +20,14 @@ PredicateType WhilePatternPredicate::getType() const {
     return PredicateType::WhilePattern;
 }
 
-bool WhilePatternPredicate::operator==(const WhilePatternPredicate &other) const {
-    return this->whileSyn == other.whileSyn && this->entRef == other.entRef;
-}
-size_t WhilePatternPredicate::hash() const {
-    return std::hash<PredicateType>()(getType()) ^ (std::hash<Synonym>()(whileSyn) << 1) 
-            ^ (std::hash<EntityRef>()(entRef) >> 1);
-}
-bool WhilePatternPredicate::equals(const Predicate &other) const {
+bool WhilePatternPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
     auto castedOther = static_cast<const WhilePatternPredicate&>(other);
-    return *this == castedOther;
+    return this->whileSyn == castedOther.whileSyn && this->entRef == castedOther.entRef;
+}
+size_t WhilePatternPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<Synonym>()(whileSyn) << 1) 
+            ^ (std::hash<EntityRef>()(entRef) >> 1);
 }

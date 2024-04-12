@@ -1,7 +1,22 @@
 #include <catch.hpp>
 
 #include "qps/entity/query/Synonym.h"
-#include "qps/entity/evaluation/PredicateSet.h"
+#include "qps/entity/clause/AffectsPredicate.h"
+#include "qps/entity/clause/AssignPatternPredicate.h"
+#include "qps/entity/clause/CallsPredicate.h"
+#include "qps/entity/clause/CallsTPredicate.h"
+#include "qps/entity/clause/FollowsPredicate.h"
+#include "qps/entity/clause/FollowsTPredicate.h"
+#include "qps/entity/clause/IfPatternPredicate.h"
+#include "qps/entity/clause/ModifiesPredicate.h"
+#include "qps/entity/clause/NextPredicate.h"
+#include "qps/entity/clause/NextTPredicate.h"
+#include "qps/entity/clause/NotPredicate.h"
+#include "qps/entity/clause/ParentPredicate.h"
+#include "qps/entity/clause/ParentTPredicate.h"
+#include "qps/entity/clause/UsesPredicate.h"
+#include "qps/entity/clause/WhilePatternPredicate.h"
+#include "qps/entity/clause/WithPredicate.h"
 
 TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]") {
     Synonym stmtSyn(EntityType::Stmt, "s1");
@@ -17,7 +32,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
     std::string partialMatch = "_\"x*y\"_";
 
     SECTION("Affects Predicates Test") {
-        std::unordered_set<std::shared_ptr<AffectsPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<AffectsPredicate>(stmtSyn, stmtSyn2);
         auto a2 = make_shared<AffectsPredicate>(stmtSyn, stmtSyn2);
         predicatesSet.insert(a1);
@@ -28,7 +43,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("AssignPattern Predicates Test") {
-        std::unordered_set<std::shared_ptr<AssignPatternPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<AssignPatternPredicate>(assignSyn, varSyn, wildcard);
         auto a2 = make_shared<AssignPatternPredicate>(assignSyn, varSyn, wildcard);
         predicatesSet.insert(a1);
@@ -39,7 +54,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("Calls Predicates Test") {
-        std::unordered_set<std::shared_ptr<CallsPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<CallsPredicate>(procSyn, procSyn2);
         auto a2 = make_shared<CallsPredicate>(procSyn, procSyn2);
         predicatesSet.insert(a1);
@@ -50,7 +65,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("CallsT Predicates Test") {
-        std::unordered_set<std::shared_ptr<CallsTPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<CallsTPredicate>(procSyn, procSyn2);
         auto a2 = make_shared<CallsTPredicate>(procSyn, procSyn2);
         predicatesSet.insert(a1);
@@ -61,7 +76,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("Follows Predicates Test") {
-        std::unordered_set<std::shared_ptr<FollowsPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<FollowsPredicate>(stmtSyn, stmtSyn2);
         auto a2 = make_shared<FollowsPredicate>(stmtSyn, stmtSyn2);
         predicatesSet.insert(a1);
@@ -72,7 +87,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("FollowsT Predicates Test") {
-        std::unordered_set<std::shared_ptr<FollowsTPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<FollowsTPredicate>(stmtSyn, stmtSyn2);
         auto a2 = make_shared<FollowsTPredicate>(stmtSyn, stmtSyn2);
         predicatesSet.insert(a1);
@@ -84,7 +99,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
     }
     SECTION("IfPattern Predicates Test") {
         Synonym ifSyn(EntityType::If, "s1");
-        std::unordered_set<std::shared_ptr<IfPatternPredicate> >predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate> >predicatesSet;
         auto a1 = make_shared<IfPatternPredicate>(ifSyn, varSyn);
         auto a2 = make_shared<IfPatternPredicate>(ifSyn, varSyn);
         predicatesSet.insert(a1);
@@ -95,7 +110,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("Modifies Predicates Test") {
-        std::unordered_set<std::shared_ptr<ModifiesPredicate> >predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate> >predicatesSet;
         auto a1 = make_shared<ModifiesPredicate>(stmtSyn, varSyn);
         auto a2 = make_shared<ModifiesPredicate>(stmtSyn, varSyn);
         predicatesSet.insert(a1);
@@ -106,7 +121,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("Next Predicates Test") {
-        std::unordered_set<std::shared_ptr<NextPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<NextPredicate>(stmtSyn, stmtSyn2);
         auto a2 = make_shared<NextPredicate>(stmtSyn, stmtSyn2);
         predicatesSet.insert(a1);
@@ -117,7 +132,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("NextT Predicates Test") {
-        std::unordered_set<std::shared_ptr<NextTPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<NextTPredicate>(stmtSyn, stmtSyn2);
         auto a2 = make_shared<NextTPredicate>(stmtSyn, stmtSyn2);
         predicatesSet.insert(a1);
@@ -128,7 +143,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("Not Predicates Test") {
-        std::unordered_set<std::shared_ptr<NotPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto temp1 = make_shared<NextTPredicate>(stmtSyn, stmtSyn2);
         auto temp2 = make_shared<NextTPredicate>(stmtSyn, stmtSyn2);
         auto a1 = make_shared<NotPredicate>(temp1);
@@ -142,7 +157,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("Parent Predicates Test") {
-        std::unordered_set<std::shared_ptr<ParentPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<ParentPredicate>(stmtSyn, stmtSyn2);
         auto a2 = make_shared<ParentPredicate>(stmtSyn, stmtSyn2);
         predicatesSet.insert(a1);
@@ -153,7 +168,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("ParentT Predicates Test") {
-        std::unordered_set<std::shared_ptr<ParentTPredicate>> predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>> predicatesSet;
         auto a1 = make_shared<ParentTPredicate>(stmtSyn, stmtSyn2);
         auto a2 = make_shared<ParentTPredicate>(stmtSyn, stmtSyn2);
         predicatesSet.insert(a1);
@@ -164,7 +179,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         REQUIRE(predicatesSet.size() == 2);
     }
     SECTION("Uses Predicates Test") {
-        std::unordered_set<std::shared_ptr<UsesPredicate> >predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>>predicatesSet;
         auto a1 = make_shared<UsesPredicate>(stmtSyn, varSyn);
         auto a2 = make_shared<UsesPredicate>(stmtSyn, varSyn);
         predicatesSet.insert(a1);
@@ -176,7 +191,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
     }
     SECTION("WhilePattern Predicates Test") {
         Synonym whileSyn(EntityType::While, "s1");
-        std::unordered_set<std::shared_ptr<WhilePatternPredicate> >predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>>predicatesSet;
         auto a1 = make_shared<WhilePatternPredicate>(whileSyn, varSyn);
         auto a2 = make_shared<WhilePatternPredicate>(whileSyn, varSyn);
         auto a3 = make_shared<WhilePatternPredicate>(whileSyn, varSyn2);
@@ -190,7 +205,7 @@ TEST_CASE("Predicates test individual duplicate removal in set", "[Predicates]")
         Ref r1(AttributeValue(1));
         Ref r2(AttributeValue(1));
         Ref r3(AttributeValue(3));
-        std::unordered_set<std::shared_ptr<WithPredicate> >predicatesSet;
+        std::unordered_set<std::shared_ptr<Predicate>>predicatesSet;
         auto a1 = make_shared<WithPredicate>(r1, r2);
         auto a2 = make_shared<WithPredicate>(r1, r2);
         auto a3 = make_shared<WithPredicate>(r1, r3);
@@ -215,76 +230,76 @@ TEST_CASE("PredicateSet functionality test") {
     Synonym whileSyn(EntityType::While, "whiles");
     std::string wildcard = "_";
 
-    PredicateSet ps;
-    ps.add(make_shared<AffectsPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<AffectsPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<AffectsPredicate>(stmtSyn2, stmtSyn));
+    unordered_set<shared_ptr<Predicate>> ps;
+    ps.insert(make_shared<AffectsPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<AffectsPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<AffectsPredicate>(stmtSyn2, stmtSyn));
 
-    ps.add(make_shared<AssignPatternPredicate>(assignSyn, varSyn, wildcard));
-    ps.add(make_shared<AssignPatternPredicate>(assignSyn, varSyn, wildcard));
-    ps.add(make_shared<AssignPatternPredicate>(assignSyn, varSyn2, wildcard));
+    ps.insert(make_shared<AssignPatternPredicate>(assignSyn, varSyn, wildcard));
+    ps.insert(make_shared<AssignPatternPredicate>(assignSyn, varSyn, wildcard));
+    ps.insert(make_shared<AssignPatternPredicate>(assignSyn, varSyn2, wildcard));
 
-    ps.add(make_shared<CallsPredicate>(procSyn, procSyn2));
-    ps.add(make_shared<CallsPredicate>(procSyn, procSyn2));
-    ps.add(make_shared<CallsPredicate>(procSyn2, procSyn));
+    ps.insert(make_shared<CallsPredicate>(procSyn, procSyn2));
+    ps.insert(make_shared<CallsPredicate>(procSyn, procSyn2));
+    ps.insert(make_shared<CallsPredicate>(procSyn2, procSyn));
 
-    ps.add(make_shared<CallsTPredicate>(procSyn, procSyn2));
-    ps.add(make_shared<CallsTPredicate>(procSyn, procSyn2));
-    ps.add(make_shared<CallsTPredicate>(procSyn2, procSyn));
+    ps.insert(make_shared<CallsTPredicate>(procSyn, procSyn2));
+    ps.insert(make_shared<CallsTPredicate>(procSyn, procSyn2));
+    ps.insert(make_shared<CallsTPredicate>(procSyn2, procSyn));
 
-    ps.add(make_shared<FollowsPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<FollowsPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<FollowsPredicate>(stmtSyn2, stmtSyn));
+    ps.insert(make_shared<FollowsPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<FollowsPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<FollowsPredicate>(stmtSyn2, stmtSyn));
     
-    ps.add(make_shared<FollowsTPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<FollowsTPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<FollowsTPredicate>(stmtSyn2, stmtSyn));
+    ps.insert(make_shared<FollowsTPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<FollowsTPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<FollowsTPredicate>(stmtSyn2, stmtSyn));
 
-    ps.add(make_shared<IfPatternPredicate>(ifSyn, varSyn));
-    ps.add(make_shared<IfPatternPredicate>(ifSyn, varSyn));
-    ps.add(make_shared<IfPatternPredicate>(ifSyn, varSyn2));
+    ps.insert(make_shared<IfPatternPredicate>(ifSyn, varSyn));
+    ps.insert(make_shared<IfPatternPredicate>(ifSyn, varSyn));
+    ps.insert(make_shared<IfPatternPredicate>(ifSyn, varSyn2));
 
-    ps.add(make_shared<ModifiesPredicate>(stmtSyn, varSyn));
-    ps.add(make_shared<ModifiesPredicate>(stmtSyn, varSyn));
-    ps.add(make_shared<ModifiesPredicate>(stmtSyn, varSyn2));
+    ps.insert(make_shared<ModifiesPredicate>(stmtSyn, varSyn));
+    ps.insert(make_shared<ModifiesPredicate>(stmtSyn, varSyn));
+    ps.insert(make_shared<ModifiesPredicate>(stmtSyn, varSyn2));
 
-    ps.add(make_shared<NextPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<NextPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<NextPredicate>(stmtSyn2, stmtSyn));
+    ps.insert(make_shared<NextPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<NextPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<NextPredicate>(stmtSyn2, stmtSyn));
 
-    ps.add(make_shared<NextTPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<NextTPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<NextTPredicate>(stmtSyn2, stmtSyn));
+    ps.insert(make_shared<NextTPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<NextTPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<NextTPredicate>(stmtSyn2, stmtSyn));
 
     auto temp1 = make_shared<NextTPredicate>(stmtSyn, stmtSyn2);
     auto temp2 = make_shared<NextTPredicate>(stmtSyn, stmtSyn2);
     auto temp3 = make_shared<NextTPredicate>(stmtSyn2, stmtSyn);
-    ps.add(make_shared<NotPredicate>(temp1));
-    ps.add(make_shared<NotPredicate>(temp2));
-    ps.add(make_shared<NotPredicate>(temp3));
+    ps.insert(make_shared<NotPredicate>(temp1));
+    ps.insert(make_shared<NotPredicate>(temp2));
+    ps.insert(make_shared<NotPredicate>(temp3));
 
-    ps.add(make_shared<ParentPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<ParentPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<ParentPredicate>(stmtSyn2, stmtSyn));
+    ps.insert(make_shared<ParentPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<ParentPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<ParentPredicate>(stmtSyn2, stmtSyn));
 
-    ps.add(make_shared<ParentTPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<ParentTPredicate>(stmtSyn, stmtSyn2));
-    ps.add(make_shared<ParentTPredicate>(stmtSyn2, stmtSyn));
+    ps.insert(make_shared<ParentTPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<ParentTPredicate>(stmtSyn, stmtSyn2));
+    ps.insert(make_shared<ParentTPredicate>(stmtSyn2, stmtSyn));
 
-    ps.add(make_shared<UsesPredicate>(stmtSyn, varSyn));
-    ps.add(make_shared<UsesPredicate>(stmtSyn, varSyn));
-    ps.add(make_shared<UsesPredicate>(stmtSyn, varSyn2));
+    ps.insert(make_shared<UsesPredicate>(stmtSyn, varSyn));
+    ps.insert(make_shared<UsesPredicate>(stmtSyn, varSyn));
+    ps.insert(make_shared<UsesPredicate>(stmtSyn, varSyn2));
 
-    ps.add(make_shared<WhilePatternPredicate>(whileSyn, varSyn));
-    ps.add(make_shared<WhilePatternPredicate>(whileSyn, varSyn));
-    ps.add(make_shared<WhilePatternPredicate>(whileSyn, varSyn2));
+    ps.insert(make_shared<WhilePatternPredicate>(whileSyn, varSyn));
+    ps.insert(make_shared<WhilePatternPredicate>(whileSyn, varSyn));
+    ps.insert(make_shared<WhilePatternPredicate>(whileSyn, varSyn2));
 
     Ref r1(AttributeValue(1));
     Ref r2(AttributeValue(1));
     Ref r3(AttributeValue(3));
-    ps.add(make_shared<WithPredicate>(r1, r2));
-    ps.add(make_shared<WithPredicate>(r1, r2));
-    ps.add(make_shared<WithPredicate>(r1, r3));
+    ps.insert(make_shared<WithPredicate>(r1, r2));
+    ps.insert(make_shared<WithPredicate>(r1, r2));
+    ps.insert(make_shared<WithPredicate>(r1, r3));
 
-    REQUIRE(ps.getUniquePredicates().size() == 32);
+    REQUIRE(ps.size() == 32);
 }

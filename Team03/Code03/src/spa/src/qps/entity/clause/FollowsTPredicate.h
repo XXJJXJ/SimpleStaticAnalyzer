@@ -23,25 +23,10 @@ public:
     FollowsTPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsTPredicate() override = default;
     PredicateType getType() const override;
-    bool operator==(const FollowsTPredicate &other) const;
     std::size_t hash() const override;
-    bool equals(const Predicate &other) const override;
+    bool operator==(const Predicate &other) const override;
 };
 
-namespace std {
-	template<>
-    struct hash<shared_ptr<FollowsTPredicate>> {
-        std::size_t operator()(const shared_ptr<FollowsTPredicate>& pred) const {
-            return pred->hash();
-        }
-    };
-    template <>
-    struct equal_to<shared_ptr<FollowsTPredicate>> {
-        bool operator()(const shared_ptr<FollowsTPredicate>& lhs, const shared_ptr<FollowsTPredicate>& rhs) const {
-            return *lhs == *rhs;
-        }
-    };
-}
 
 #endif // FOLLOWSTPREDICATE_H
 

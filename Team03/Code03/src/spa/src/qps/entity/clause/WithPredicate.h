@@ -21,24 +21,8 @@ public:
     WithPredicate(Ref ref1, Ref ref2);
     ~WithPredicate() override = default;
     PredicateType getType() const override;
-    bool operator==(const WithPredicate &other) const;
     std::size_t hash() const override;
-    bool equals(const Predicate &other) const override;
+    bool operator==(const Predicate &other) const override;
 };
-
-namespace std {
-	template<>
-    struct hash<shared_ptr<WithPredicate>> {
-        std::size_t operator()(const shared_ptr<WithPredicate>& pred) const {
-            return pred->hash();
-        }
-    };
-    template <>
-    struct equal_to<shared_ptr<WithPredicate>> {
-        bool operator()(const shared_ptr<WithPredicate>& lhs, const shared_ptr<WithPredicate>& rhs) const {
-            return *lhs == *rhs;
-        }
-    };
-}
 
 #endif  // WITHPREDICATE_H

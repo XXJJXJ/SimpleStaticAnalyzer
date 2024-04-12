@@ -102,6 +102,6 @@ size_t Predicate::hash() const {
     return 0; // not used
 }
 
-bool Predicate::equals(const Predicate& other) const {
+bool Predicate::operator==(const Predicate& other) const {
     return true; // not used
 }

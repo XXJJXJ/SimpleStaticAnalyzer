@@ -23,25 +23,9 @@ public:
     ParentTPredicate(StatementRef lhs, StatementRef rhs);
     ~ParentTPredicate() override = default;
     PredicateType getType() const override;
-    bool operator==(const ParentTPredicate &other) const;
     std::size_t hash() const override;
-    bool equals(const Predicate &other) const override;
+    bool operator==(const Predicate &other) const override;
 };
-
-namespace std {
-	template<>
-    struct hash<shared_ptr<ParentTPredicate>> {
-        std::size_t operator()(const shared_ptr<ParentTPredicate>& pred) const {
-            return pred->hash();
-        }
-    };
-    template <>
-    struct equal_to<shared_ptr<ParentTPredicate>> {
-        bool operator()(const shared_ptr<ParentTPredicate>& lhs, const shared_ptr<ParentTPredicate>& rhs) const {
-            return *lhs == *rhs;
-        }
-    };
-}
 
 #endif // PARENTTPREDICATE_H
 

@@ -27,17 +27,14 @@ PredicateType UsesPredicate::getType() const {
     return PredicateType::Uses;
 }
 
-bool UsesPredicate::operator==(const UsesPredicate &other) const {
-    return this->lhs == other.lhs && this->rhs == other.rhs;
-}
-size_t UsesPredicate::hash() const {
-    return std::hash<PredicateType>()(getType()) ^ (std::hash<ProcAndStmtRef>()(lhs) << 1) 
-            ^ (std::hash<EntityRef>()(rhs) >> 1);
-}
-bool UsesPredicate::equals(const Predicate &other) const {
+bool UsesPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
     auto castedOther = static_cast<const UsesPredicate&>(other);
-    return *this == castedOther;
+    return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
+}
+size_t UsesPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<ProcAndStmtRef>()(lhs) << 1) 
+            ^ (std::hash<EntityRef>()(rhs) >> 1);
 }
