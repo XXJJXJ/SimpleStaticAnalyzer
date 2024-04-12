@@ -7,6 +7,7 @@
 #include "qps/entity/query/Synonym.h"
 #include "AttributeValue.h"
 #include "qps/entity/clause/PredicateUtils.h"
+#include "ExtractorFactory.h"
 
 class AttrRef {
 private:
@@ -16,10 +17,11 @@ private:
 
     bool isValidAttributeType();
 
+
 public:
     // Updated constructor to accept a shared_ptr<Synonym>
-    //AttrRef(std::shared_ptr<Synonym> synonym, AttributeType attributeType, std::shared_ptr<AttributeExtractor> extractor);
-    AttrRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap);
+    AttrRef(std::shared_ptr<Synonym> synonym, AttributeType attributeType);
+//    AttrRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap);
 
     // Method to get the synonym
     std::shared_ptr<Synonym> getSynonym() const;
