@@ -102,14 +102,31 @@ Ref PredicateFactory::stringToRef(const std::string& token, const std::unordered
     size_t len = token.size();
 	if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
 		return Ref(token.substr(1, len - 2));
-	}
-	else if (QueryValidator::isInteger(token)) {
+	} else if (QueryValidator::isInteger(token)) {
 		return Ref(stoi(token));
-	}
-	else if (QueryValidator::isAttrRef(token)) {
-        return Ref(AttrRef(token, synonymMap));
-	}
+	} else if (QueryValidator::isAttrRef(token)) {
+        return Ref(*createAttrRef(token, synonymMap));
+	} else {
+        throw QPSEvaluationException("PredicateFactory::stringToRef: Invalid token.");
+    }
 }
+
+shared_ptr<AttrRef> PredicateFactory::createAttrRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
+    std::shared_ptr<Synonym> synonymPtr;
+    AttributeType attributeType;
+    if (QueryValidator::isAttrRef(token)) {
+        size_t pos = token.find('.');
+        Synonym synonym(token.substr(0, pos), synonymMap);
+        attributeType = getAttributeTypeFromString(token.substr(pos + 1));
+        synonymPtr = std::make_shared<Synonym>(synonym);
+    } else {
+        Synonym synonym(token, synonymMap);
+        attributeType = AttributeType::Name;
+        synonymPtr = std::make_shared<Synonym>(synonym);
+    }
+    return make_shared<AttrRef>(synonymPtr, attributeType);
+}
+
 
 std::shared_ptr<Predicate> PredicateFactory::parsePatternPredicate(const std::vector<std::string>& tokens, const std::unordered_map<std::string, EntityType>& synonymMap) {
     Synonym syn = Synonym(tokens[1], synonymMap);
