@@ -1,6 +1,5 @@
 #include "VarNameExtractor.h"
 
-// TODO: Potential code smell: else-if chain is too long
 AttributeValue VarNameExtractor::extract(const Entity& entity) const {
     if (const auto* variable = dynamic_cast<const Variable*>(&entity)) {
         return {variable->getName()};
@@ -11,7 +10,7 @@ AttributeValue VarNameExtractor::extract(const Entity& entity) const {
     else if (const auto* print = dynamic_cast<const PrintStatement*>(&entity)) {
         return {print->getVariable()->getName()};
     }
-    else {
-        throw QPSEvaluationException("VarNameExtractor::extract called with an entity that does not have a varName");
-    }
+
+    throw QPSEvaluationException("VarNameExtractor::extract called with an entity that does not have a varName");
+
 }

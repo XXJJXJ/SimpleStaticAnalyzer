@@ -1,5 +1,6 @@
 #include "SelectionsParser.h"
 #include "common/EntityType.h"
+#include "PredicateFactory.h"
 #include <memory>
 
 SelectionsParser::SelectionsParser() = default;
@@ -13,7 +14,8 @@ SelectionsParser::parse(const std::vector<std::string>& tokens,
 
     if (!isBoolean(tokens, synonymMap)) {
         for (const auto& token : tokens) {
-            std::shared_ptr<AttrRef> selection = std::make_shared<AttrRef>(token, synonymMap);
+            auto selection = PredicateFactory::createAttrRef(token, synonymMap);
+            // convert to shared ptr
             selections.push_back(selection);
         }
     }

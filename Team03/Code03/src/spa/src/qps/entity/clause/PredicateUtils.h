@@ -51,7 +51,7 @@ enum class AttributeType {
     VarName,
     Value,
     StmtNumber,
-    NoAttribute,
+    Name,
     Invalid
 };
 
@@ -75,6 +75,15 @@ const unordered_set<EntityType> VALID_DESIGN_ENTITY_TYPES = {EntityType::Stmt, E
                                                              EntityType::Assign, EntityType::Variable,
                                                              EntityType::Constant,
                                                              EntityType::Procedure};
+
+static const std::unordered_map<AttributeType, unordered_set<EntityType>> VALID_ENTITY_TYPES_FOR_ATTRIBUTE = {
+        {AttributeType::ProcName, {EntityType::Procedure, EntityType::Call}},
+        {AttributeType::VarName, {EntityType::Variable, EntityType::Read, EntityType::Print}},
+        {AttributeType::Value, {EntityType::Constant}},
+        {AttributeType::StmtNumber, VALID_STATEMENT_TYPES},
+        {AttributeType::Name, VALID_DESIGN_ENTITY_TYPES}
+};
+
 const string WILDCARD = "_";
 
 template<class... Ts>
