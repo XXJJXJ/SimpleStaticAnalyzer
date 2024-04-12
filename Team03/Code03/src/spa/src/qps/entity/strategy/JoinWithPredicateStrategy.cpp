@@ -6,59 +6,55 @@
 JoinWithPredicateStrategy::JoinWithPredicateStrategy(std::shared_ptr<Predicate> pred)
         : predicate(std::move(pred)) {}
 
-// TODO: reduce function length
-void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
+void JoinWithPredicateStrategy::handleNoSynonyms(QueryEvaluationContext& context) {
+    auto table = predicate->getResultTable(context);
+    if (table->isEmpty()) {
+        context.setResultToFalse();
+    }
+}
 
-    if (context.isCurrentResultEmpty()) {
-        // short-circuit if the result is already empty
+void JoinWithPredicateStrategy::initializeTable(QueryEvaluationContext& context, const std::vector<shared_ptr<Synonym>>& synonyms) {
+    auto targetTable = std::dynamic_pointer_cast<HeaderTable>(predicate->getResultTable(context));
+    if (targetTable && targetTable->isEmpty()) {
+        context.setResultToFalse();
         return;
     }
+    context.putTableForSynonymGroup(*synonyms[0], targetTable);
+}
 
-    auto synonyms = predicate->getSynonyms();
-
-    if (synonyms.empty()) {
-        // No synonym involved in the predicate, returns boolean table
-        auto table = predicate->getResultTable(context);
-        if (table->isEmpty()) {
-            context.setResultToFalse();
-        }
-        return;
-    }
-
-    // Check if the table is initialized for the synonyms
-    // Check one synonym is enough as all synonyms in the group share the same table
-    bool isTableInitialized = context.isTableInitialized(*synonyms[0]);
-
-    if (!isTableInitialized) {
-        // If no table is initialized, fetch the table for the predicate and initialize for the group
-        auto targetTable =
-                std::dynamic_pointer_cast<HeaderTable>(predicate->getResultTable(context));
-        if (targetTable) {
-            if (targetTable->isEmpty()) {
+void JoinWithPredicateStrategy::updateTable(QueryEvaluationContext& context, const std::vector<shared_ptr<Synonym>>& synonyms) {
+    for (const auto& synonym : synonyms) {
+        auto currentTable = context.getTableForSynonym(*synonym);
+        auto targetTable = std::dynamic_pointer_cast<HeaderTable>(predicate->getResultTable(context));
+        if (currentTable && targetTable) {
+            auto updatedTable = std::dynamic_pointer_cast<HeaderTable>(currentTable->join(*targetTable));
+            if (updatedTable->isEmpty()) {
                 context.setResultToFalse();
-                return;
             }
-            // Initialize the table for the first synonym, which implicitly covers the whole group
-            context.putTableForSynonymGroup(*synonyms[0], targetTable);
-        }
-    } else {
-        // If the table is already initialized, update the table for the corresponding group
-        for (const auto& synonym : synonyms) {
-            auto currentTable = context.getTableForSynonym(*synonym);
-            auto targetTable =
-                    std::dynamic_pointer_cast<HeaderTable>(predicate->getResultTable(context));
-            if (currentTable && targetTable) {
-                auto updatedTable =
-                        std::dynamic_pointer_cast<HeaderTable>(currentTable->join(*targetTable));
-                if (updatedTable->isEmpty()) {
-                    context.setResultToFalse();
-                }
-                // Update the table for the entire synonym group
-                context.putTableForSynonymGroup(*synonym, updatedTable);
-                break; // Once updated, no need to process further synonyms in the group
-            }
+            context.putTableForSynonymGroup(*synonym, updatedTable);
+            break; // Once updated, no need to process further synonyms in the group
         }
     }
 }
+
+void JoinWithPredicateStrategy::execute(QueryEvaluationContext& context) {
+    if (context.isCurrentResultEmpty()) {
+        return; // Short-circuit if the result is already empty
+    }
+
+    auto synonyms = predicate->getSynonyms();
+    if (synonyms.empty()) {
+        handleNoSynonyms(context);
+        return;
+    }
+
+    bool isTableInitialized = context.isTableInitialized(*synonyms[0]);
+    if (!isTableInitialized) {
+        initializeTable(context, synonyms);
+    } else {
+        updateTable(context, synonyms);
+    }
+}
+
 
 // ai-gen end
