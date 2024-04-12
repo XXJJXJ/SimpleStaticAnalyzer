@@ -23,6 +23,8 @@ public:
     UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~UsesPredicate() override = default;
     PredicateType getType() const override;
+    std::size_t hash() const override;
+    bool operator==(const Predicate &other) const override;
 };
 
 #endif // USESPREDICATE_H

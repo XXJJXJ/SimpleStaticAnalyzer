@@ -20,3 +20,14 @@ PredicateType IfPatternPredicate::getType() const {
     return PredicateType::IfPattern;
 }
 
+bool IfPatternPredicate::operator==(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const IfPatternPredicate&>(other);
+    return this->ifSyn == castedOther.ifSyn && this->entRef == castedOther.entRef;
+}
+size_t IfPatternPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<Synonym>()(ifSyn) << 1) 
+            ^ (std::hash<EntityRef>()(entRef) >> 1);
+}

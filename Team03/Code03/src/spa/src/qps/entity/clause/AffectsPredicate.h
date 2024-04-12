@@ -13,6 +13,8 @@ protected:
 public:
     AffectsPredicate(StatementRef lhs, StatementRef rhs);
     [[nodiscard]] PredicateType getType() const override;
+    bool operator==(const Predicate &other) const override;
+    std::size_t hash() const override;
 };
 
 

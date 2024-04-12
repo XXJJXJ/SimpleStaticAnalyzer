@@ -23,7 +23,15 @@ std::shared_ptr<BaseTable> ModifiesPredicate::getFullTable(QueryManager& qm) {
 PredicateType ModifiesPredicate::getType() const {
     return PredicateType::Modifies;
 }
-
-
-
 // ai-gen end
+bool ModifiesPredicate::operator==(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const ModifiesPredicate&>(other);
+    return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
+}
+size_t ModifiesPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<ProcAndStmtRef>()(lhs) << 1) 
+            ^ (std::hash<EntityRef>()(rhs) >> 1);
+}

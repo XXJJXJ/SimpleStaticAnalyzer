@@ -41,7 +41,24 @@ public:
     [[nodiscard]] vector<shared_ptr<Synonym>> getSynonyms() const { return synonyms; }
     [[nodiscard]] virtual shared_ptr<BaseTable> getResultTable(QueryEvaluationContext &qec);
     [[nodiscard]] virtual PredicateType getType() const;
+    virtual std::size_t hash() const;
+    virtual bool operator==(const Predicate& other) const;
 };
+
+namespace std {
+	template<>
+    struct hash<shared_ptr<Predicate>> {
+        std::size_t operator()(const shared_ptr<Predicate>& pred) const {
+            return pred->hash();
+        }
+    };
+    template <>
+    struct equal_to<shared_ptr<Predicate>> {
+        bool operator()(const shared_ptr<Predicate>& lhs, const shared_ptr<Predicate>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
+}
 
 #endif // RELATIONSHIPPREDICATE_H
 // ai-gen end

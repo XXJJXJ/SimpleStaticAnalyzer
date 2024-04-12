@@ -13,7 +13,8 @@ public:
     WhilePatternPredicate(Synonym whileSyn, EntityRef entRef);
     ~WhilePatternPredicate() override = default;
     PredicateType getType() const override;
+    std::size_t hash() const override;
+    bool operator==(const Predicate &other) const override;
 };
-
 
 #endif //SPA_WHILEPATTERNPREDICATE_H

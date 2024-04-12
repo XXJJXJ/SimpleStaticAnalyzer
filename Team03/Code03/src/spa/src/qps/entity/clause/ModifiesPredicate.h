@@ -21,6 +21,8 @@ public:
     ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~ModifiesPredicate() override = default;
     PredicateType getType() const override;
+    bool operator==(const Predicate &other) const override;
+    std::size_t hash() const override;
 };
 
 #endif // MODIFIESPREDICATE_H

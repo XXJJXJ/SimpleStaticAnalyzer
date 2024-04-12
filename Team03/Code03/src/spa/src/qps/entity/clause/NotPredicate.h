@@ -16,7 +16,8 @@ public:
     explicit NotPredicate(shared_ptr<Predicate> predicate);
     std::shared_ptr<BaseTable> getResultTable(QueryEvaluationContext &qec) override;
     PredicateType getType() const override;
+    bool operator==(const Predicate &other) const override;
+    std::size_t hash() const override;
 };
-
 
 #endif //SPA_NOTPREDICATE_H

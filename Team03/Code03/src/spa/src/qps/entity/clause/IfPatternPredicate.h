@@ -14,6 +14,8 @@ public:
     IfPatternPredicate(Synonym ifSyn, EntityRef entRef);
     ~IfPatternPredicate() override = default;
     PredicateType getType() const override;
+    bool operator==(const Predicate &other) const override;
+    std::size_t hash() const override;
 };
 
 

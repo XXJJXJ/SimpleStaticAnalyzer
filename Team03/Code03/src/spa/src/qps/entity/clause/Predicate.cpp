@@ -97,3 +97,11 @@ PredicateType Predicate::getType() const {
 void Predicate::addRowFilter(RowFilter &rowFilter) {
     this->rowFilters.push_back(std::make_shared<RowFilter>(rowFilter));
 }
+
+size_t Predicate::hash() const {
+    return 0; // not used
+}
+
+bool Predicate::operator==(const Predicate& other) const {
+    return true; // not used
+}

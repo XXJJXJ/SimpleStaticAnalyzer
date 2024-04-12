@@ -76,6 +76,16 @@ std::shared_ptr<RowFilter> WithPredicate::getRowFilter() {
         }
         return true;
     });
+}
 
-
+bool WithPredicate::operator==(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const WithPredicate&>(other);
+    return this->ref1 == castedOther.ref1 && this->ref2 == castedOther.ref2;
+}
+size_t WithPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (ref1.hash() << 1) 
+            ^ (ref2.hash() >> 1);
 }

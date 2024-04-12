@@ -18,3 +18,17 @@ AffectsPredicate::AffectsPredicate(StatementRef lhs, StatementRef rhs) {
 PredicateType AffectsPredicate::getType() const {
     return PredicateType::Affects;
 }
+
+
+bool AffectsPredicate::operator==(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const AffectsPredicate&>(other);
+    return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
+}
+
+size_t AffectsPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
+            ^ (std::hash<StatementRef>()(rhs) >> 1);
+}

@@ -23,6 +23,8 @@ public:
     ParentTPredicate(StatementRef lhs, StatementRef rhs);
     ~ParentTPredicate() override = default;
     PredicateType getType() const override;
+    std::size_t hash() const override;
+    bool operator==(const Predicate &other) const override;
 };
 
 #endif // PARENTTPREDICATE_H

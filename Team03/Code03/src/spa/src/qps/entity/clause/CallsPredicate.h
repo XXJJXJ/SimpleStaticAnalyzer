@@ -20,6 +20,8 @@ public:
     CallsPredicate(EntityRef lhs, EntityRef rhs);
     ~CallsPredicate() override = default;
     PredicateType getType() const override;
+    std::size_t hash() const override;
+    bool operator==(const Predicate &other) const override;
 };
 
 #endif // CALLSPREDICATE_H

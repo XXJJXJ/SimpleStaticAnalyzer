@@ -22,5 +22,16 @@ std::shared_ptr<BaseTable> FollowsTPredicate::getFullTable(QueryManager &qm) {
 PredicateType FollowsTPredicate::getType() const {
     return PredicateType::FollowsT;
 }
-
 // ai-gen end
+
+bool FollowsTPredicate::operator==(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const FollowsTPredicate&>(other);
+    return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
+}
+size_t FollowsTPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
+            ^ (std::hash<StatementRef>()(rhs) >> 1);
+}

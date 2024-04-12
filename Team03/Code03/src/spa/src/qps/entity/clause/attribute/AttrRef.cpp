@@ -95,3 +95,10 @@ bool AttrRef::isValidAttributeType() {
 shared_ptr<AttributeExtractor> AttrRef::getExtractor() const {
     return extractor;
 }
+
+bool AttrRef::operator==(const AttrRef &other) const {
+    return this->synonym == other.getSynonym() && this->getAttributeType() == other.getAttributeType();
+}
+std::size_t AttrRef::hash() const {
+    return std::hash<Synonym>()(*synonym) ^ std::hash<AttributeType>()(attributeType);
+}

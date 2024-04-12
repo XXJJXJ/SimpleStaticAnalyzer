@@ -25,7 +25,7 @@ std::shared_ptr<Query>
 QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     std::vector<std::shared_ptr<Synonym>> declarations;
     std::vector<std::shared_ptr<AttrRef>> selections;
-    std::vector<std::shared_ptr<Predicate>> predicates;
+    std::unordered_set<std::shared_ptr<Predicate>> predSet;
 
     std::unordered_map<std::string, EntityType> synonymMap;
 
@@ -52,10 +52,11 @@ QueryParser::parse(std::vector<std::vector<std::vector<std::string>>> tokens) {
     // Create predicate objects for clauses
     for (auto tokens: predicateTokens) {
         std::shared_ptr<Predicate> predicate = PredicateFactory::createPredicate(tokens, synonymMap);
-        predicates.push_back(predicate);
+        predSet.insert(predicate);
     }
 
     //Query query(declarations, selections, clauses);
+    std::vector<std::shared_ptr<Predicate>> predicates(predSet.begin(), predSet.end());
     Query query(declarations, selections, predicates);
     std::shared_ptr<Query> sharedQueryObj = std::make_shared<Query>(query);
 

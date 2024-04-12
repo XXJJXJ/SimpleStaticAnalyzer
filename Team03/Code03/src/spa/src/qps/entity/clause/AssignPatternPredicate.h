@@ -23,7 +23,8 @@ public:
 	AssignPatternPredicate(Synonym assignSyn, EntityRef lhs, std::string rhs);
 	~AssignPatternPredicate() override = default;
     [[nodiscard]] PredicateType getType() const override;
-
+	std::size_t hash() const override;
+	bool operator==(const Predicate &other) const override;
 };
 
 #endif // ASSIGNPATTERNPREDICATE_H

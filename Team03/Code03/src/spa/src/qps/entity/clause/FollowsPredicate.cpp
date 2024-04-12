@@ -23,3 +23,15 @@ PredicateType FollowsPredicate::getType() const {
     return PredicateType::Follows;
 }
 // ai-gen end
+
+bool FollowsPredicate::operator==(const Predicate &other) const {
+    if (getType() != other.getType()) {
+        return false;
+    }
+    auto castedOther = static_cast<const FollowsPredicate&>(other);
+    return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
+}
+size_t FollowsPredicate::hash() const {
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
+            ^ (std::hash<StatementRef>()(rhs) >> 1);
+}
