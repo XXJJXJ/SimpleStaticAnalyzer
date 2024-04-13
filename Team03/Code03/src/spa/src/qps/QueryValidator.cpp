@@ -64,7 +64,6 @@ std::vector<std::vector<std::vector<std::string>>> QueryValidator::splitTokens(c
     for (const auto& token : tokens) {
         currentList.push_back(token);
         size_t currSize = currentList.size();
-
         if (token == ")" || (currSize > 2 && currentList[currSize - 2] == "=")) {
             if (!isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
@@ -113,9 +112,8 @@ std::vector<std::string> QueryValidator::validateDeclaration(const std::vector<s
     std::vector<std::string> validatedTokens;
 
     EntityType entityType = EntityTypeConverter::getEnumFromString(tokens[0]);
-
     if (entityType == EntityType::Unknown) {
-        throw SyntaxErrorException("Syntax Error: Invalid Entity Type");
+        throw SyntaxErrorException("Syntax Error: Invalid Entity Type " + tokens[0]);
     }
 
     validatedTokens.push_back(tokens[0]);
@@ -359,13 +357,13 @@ std::vector<std::string> QueryValidator::validateWithPredicate(const std::vector
 }
 
 bool QueryValidator::isNotPredicate(const std::vector<std::string>& tokens) { 
-    return tokens.size() >2 && tokens[0] == "not" && tokens[1] != "(";
+    return tokens.size() > 2 && tokens[0] == "not" && tokens[1] != "(" && (tokens[2] == "(" || tokens[2] == "=");
 }
 
 // Validate that the predicate has the correct number of arguments
 bool QueryValidator::isValidPredicateArgsNum(const std::vector<std::string>& tokens, int numOfArgs) {
     int expectedSize = numOfArgs * 2 + 2;
-    int tokensLen = tokens.size();
+    size_t tokensLen = tokens.size();
     
     if (tokensLen == expectedSize && tokens[1] == "(" && tokens[tokensLen - 1] == ")") {
         for (int i = 0; i < numOfArgs - 1; i++) {
