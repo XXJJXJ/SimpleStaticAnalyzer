@@ -11,11 +11,12 @@
 #include <vector>
 #include <memory>
 
-
 class Query {
 public:
 
-    Query(vector<shared_ptr<Synonym>> declarations, vector<shared_ptr<AttrRef>> selections, vector<shared_ptr<Predicate>> predicates);
+    Query(vector<shared_ptr<Synonym>> declarations,
+          vector<shared_ptr<AttrRef>> selections,
+          vector<shared_ptr<Predicate>> predicates);
 
     vector<shared_ptr<Synonym>> declarations;  // declared synonyms
     vector<shared_ptr<AttrRef>> selections;  // selected synonym
@@ -25,6 +26,5 @@ public:
     vector<shared_ptr<Synonym>> getSelectedSynonyms() const;
     vector<shared_ptr<Synonym>> getDeclarations() const;
 };
-
 
 #endif //SPA_QUERY_H

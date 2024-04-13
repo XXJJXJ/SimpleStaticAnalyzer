@@ -12,10 +12,10 @@
 #include "SynonymFilter.h"
 #include "WildcardFilter.h"
 
-std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef);
-std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef& entRef);
-std::shared_ptr<CellFilter> getFilterForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef);
-std::shared_ptr<CellFilter> getFilterForRef(const Ref& ref);
+std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef &stmtRef);
+std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef &entRef);
+std::shared_ptr<CellFilter> getFilterForProcAndStmtRef(const ProcAndStmtRef &procAndStmtRef);
+std::shared_ptr<CellFilter> getFilterForRef(const Ref &ref);
 
 #endif //SPA_FILTERUTILS_H
 

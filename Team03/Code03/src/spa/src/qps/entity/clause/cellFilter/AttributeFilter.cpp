@@ -8,4 +8,4 @@ bool AttributeFilter::passFilter(const shared_ptr<Entity> &entity) const {
 }
 
 AttributeFilter::AttributeFilter(AttributeValue expectedValue, std::shared_ptr<AttributeExtractor> extractor)
-        : expectedValue(std::move(expectedValue)), extractor(std::move(extractor)) {}
+    : expectedValue(std::move(expectedValue)), extractor(std::move(extractor)) {}

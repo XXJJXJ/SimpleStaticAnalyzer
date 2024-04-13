@@ -4,23 +4,23 @@
 // ai-gen start(copilot, 2, e)
 
 // Check if token is a single letter
-bool QueryTokenValidator::isLetter(const std::string& token) {
+bool QueryTokenValidator::isLetter(const std::string &token) {
     return token.length() == 1 && std::isalpha(token[0]);
 }
 
 // Check if token is a single digit from 0-9
-bool QueryTokenValidator::isDigit(const std::string& token) {
+bool QueryTokenValidator::isDigit(const std::string &token) {
     return token.length() == 1 && isdigit(token[0]);
 }
 
 // Check if token is a single non-zero digit from 1-9
-bool QueryTokenValidator::isNzDigit(const std::string& token) {
+bool QueryTokenValidator::isNzDigit(const std::string &token) {
     return isDigit(token) && token[0] >= '1';
 }
 
 // Check if token is a number (can be multiple digits)
 // Definition of integer: 0 | NZDIGIT ( DIGIT )* - no leading zero
-bool QueryTokenValidator::isInteger(const std::string& token) {
+bool QueryTokenValidator::isInteger(const std::string &token) {
     if (token.empty()) {
         return false;
     }
@@ -36,7 +36,7 @@ bool QueryTokenValidator::isInteger(const std::string& token) {
 
 // Check if token is a valid identifier
 // Definition of identifier: LETTER ( LETTER | DIGIT )*
-bool QueryTokenValidator::isIdent(const std::string& token) {
+bool QueryTokenValidator::isIdent(const std::string &token) {
 
     if (token.empty()) {
         return false;
@@ -60,36 +60,37 @@ bool QueryTokenValidator::isIdent(const std::string& token) {
 
 // Check if token is a valid name
 // Definition of name: LETTER ( LETTER | DIGIT )*
-bool QueryTokenValidator::isName(const std::string& token) { return isIdent(token); }
+bool QueryTokenValidator::isName(const std::string &token) { return isIdent(token); }
 
 // Check if token is a valid synonym
 // Definition of synonym: IDENT
-bool QueryTokenValidator::isSynonym(const std::string& token) { return isIdent(token); }
+bool QueryTokenValidator::isSynonym(const std::string &token) { return isIdent(token); }
 
-bool QueryTokenValidator::isWildcard(const std::string& token) {
+bool QueryTokenValidator::isWildcard(const std::string &token) {
     return token == "_";
 }
 
 // Check if token is a valid statement reference
 // Definition of stmtRef: synonym | '_' | INTEGER
-bool QueryTokenValidator::isStmtRef(const std::string& token) {
+bool QueryTokenValidator::isStmtRef(const std::string &token) {
     return isSynonym(token) || isWildcard(token) || isInteger(token);
 }
 
 // Check if token is a valid entity reference
 // Definition of entRef: synonym | '_' | '"' IDENT '"'
-bool QueryTokenValidator::isEntRef(const std::string& token) {
+bool QueryTokenValidator::isEntRef(const std::string &token) {
     return isSynonym(token) || isWildcard(token) ||
-           (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
+        (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
             isIdent(token.substr(1, token.length() - 2)));
 }
 
 // Definition of expressionSpec :  '"' expr'"' | '_' '"' expr '"' '_' | '_'
-bool QueryTokenValidator::isExpressionSpec(const std::string& token) {
+bool QueryTokenValidator::isExpressionSpec(const std::string &token) {
     size_t len = token.length();
-    return (len > 2 && token[0] == '"' && token[len - 1] == '"' && isExpr(token.substr(1, len-2)))||
-           (len > 4 && token[0] == '_' && token[1] == '"' && token[len - 2] == '"' && token[len - 1] == '_' && isExpr(token.substr(2, len-4)))||
-           isWildcard(token);
+    return (len > 2 && token[0] == '"' && token[len - 1] == '"' && isExpr(token.substr(1, len - 2))) ||
+        (len > 4 && token[0] == '_' && token[1] == '"' && token[len - 2] == '"' && token[len - 1] == '_'
+            && isExpr(token.substr(2, len - 4))) ||
+        isWildcard(token);
 }
 
 bool QueryTokenValidator::isExpr(std::string token) {
@@ -104,7 +105,7 @@ bool QueryTokenValidator::isExpr(std::string token) {
     return isTerm(token);
 }
 
-bool QueryTokenValidator::isTerm(const std::string& token) {
+bool QueryTokenValidator::isTerm(const std::string &token) {
     for (size_t i = 0; i < token.size(); i++) {
         if (token[i] == '*' || token[i] == '/' || token[i] == '%') {
             if (isTerm(token.substr(0, i)) && isFactor(token.substr(i + 1))) {
@@ -115,7 +116,7 @@ bool QueryTokenValidator::isTerm(const std::string& token) {
     return isFactor(token);
 }
 
-bool QueryTokenValidator::isFactor(const std::string& token) {
+bool QueryTokenValidator::isFactor(const std::string &token) {
     if (token.size() >= 2 && token.front() == '(' && token.back() == ')') {
         return isExpr(token.substr(1, token.size() - 2));
     } else {
@@ -125,7 +126,7 @@ bool QueryTokenValidator::isFactor(const std::string& token) {
 
 // ai-gen end
 
-bool QueryTokenValidator::isAttrRef(const std::string& token) {
+bool QueryTokenValidator::isAttrRef(const std::string &token) {
     size_t pos = token.find('.');
     if (pos != std::string::npos) {
         return isSynonym(token.substr(0, pos)) && isAttrName(token.substr(pos + 1));
@@ -133,13 +134,13 @@ bool QueryTokenValidator::isAttrRef(const std::string& token) {
     return false;
 }
 
-bool QueryTokenValidator::isAttrName(const std::string& token) {
+bool QueryTokenValidator::isAttrName(const std::string &token) {
     AttributeType attributeType = getAttributeTypeFromString(token);
     return attributeType != AttributeType::Invalid;
 }
 
-bool QueryTokenValidator::isRef(const std::string& token) {
+bool QueryTokenValidator::isRef(const std::string &token) {
     return isInteger(token) || isAttrRef(token) ||
-           (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
+        (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
             isIdent(token.substr(1, token.length() - 2)));
 }

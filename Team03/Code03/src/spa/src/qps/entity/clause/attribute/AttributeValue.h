@@ -18,7 +18,7 @@ public:
     AttributeValue(std::string stringValue);
     AttributeValueType getAttributeValueType() const;
 
-    [[nodiscard]] bool equals(const AttributeValue& other) const;
+    [[nodiscard]] bool equals(const AttributeValue &other) const;
     [[nodiscard]] std::string toString() const;
     std::size_t hash() const;
 };

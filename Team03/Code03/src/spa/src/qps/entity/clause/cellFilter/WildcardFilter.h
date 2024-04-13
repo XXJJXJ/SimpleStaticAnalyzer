@@ -5,5 +5,5 @@
 class WildcardFilter : public CellFilter {
 public:
     WildcardFilter() = default;
-    bool passFilter(const std::shared_ptr<Entity>& entity) const override;
+    bool passFilter(const std::shared_ptr<Entity> &entity) const override;
 };

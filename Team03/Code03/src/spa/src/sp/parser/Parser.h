@@ -6,6 +6,6 @@
 #include "../tokenizer/Token/Token.h"
 
 class Parser {
- public:
-  shared_ptr<Program> parseSource(Tokens &tokens);
+public:
+    shared_ptr<Program> parseSource(Tokens &tokens);
 };

@@ -8,6 +8,6 @@ class SynonymFilter : public CellFilter {
     EntityType expectedType;
 
 public:
-    explicit SynonymFilter(const Synonym& synonym);
-    bool passFilter(const std::shared_ptr<Entity>& entity) const override;
+    explicit SynonymFilter(const Synonym &synonym);
+    bool passFilter(const std::shared_ptr<Entity> &entity) const override;
 };

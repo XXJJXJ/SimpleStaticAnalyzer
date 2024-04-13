@@ -4,16 +4,16 @@
 // prompt: https://chat.openai.com/share/c3d59194-4f71-41b5-b045-642450edca7a
 
 std::unordered_map<std::string, EntityType> EntityTypeConverter::stringToEntityTypeMap = {
-        {"stmt",      EntityType::Stmt},
-        {"read",      EntityType::Read},
-        {"print",     EntityType::Print},
-        {"call",      EntityType::Call},
-        {"while",     EntityType::While},
-        {"if",        EntityType::If},
-        {"assign",    EntityType::Assign},
-        {"variable",  EntityType::Variable},
-        {"constant",  EntityType::Constant},
-        {"procedure", EntityType::Procedure}
+    {"stmt", EntityType::Stmt},
+    {"read", EntityType::Read},
+    {"print", EntityType::Print},
+    {"call", EntityType::Call},
+    {"while", EntityType::While},
+    {"if", EntityType::If},
+    {"assign", EntityType::Assign},
+    {"variable", EntityType::Variable},
+    {"constant", EntityType::Constant},
+    {"procedure", EntityType::Procedure}
 };
 
 std::unordered_map<EntityType, std::string> EntityTypeConverter::entityTypeToStringMap;
@@ -21,7 +21,7 @@ std::unordered_map<EntityType, std::string> EntityTypeConverter::entityTypeToStr
 bool EntityTypeConverter::initialized = initialize();
 
 bool EntityTypeConverter::initialize() {
-    for (const auto &pair: stringToEntityTypeMap) {
+    for (const auto &pair : stringToEntityTypeMap) {
         entityTypeToStringMap[pair.second] = pair.first;
     }
     return true;

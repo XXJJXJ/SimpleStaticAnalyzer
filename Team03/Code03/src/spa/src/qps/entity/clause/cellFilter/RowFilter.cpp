@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 // Constructor implementation
-RowFilter::RowFilter(std::function<bool(const TableRow&)> func) : filterFunction(std::move(func)) {}
+RowFilter::RowFilter(std::function<bool(const TableRow &)> func) : filterFunction(std::move(func)) {}
 
 //// Initialize the row filter with a list of cell filters
 //RowFilter::RowFilter(vector<shared_ptr<CellFilter>> filters) {
@@ -21,7 +21,7 @@ RowFilter::RowFilter(std::function<bool(const TableRow&)> func) : filterFunction
 
 
 // Filters a table row implementation
-bool RowFilter::filterRow(const TableRow& row) const {
+bool RowFilter::filterRow(const TableRow &row) const {
     return filterFunction(row);
 }
 

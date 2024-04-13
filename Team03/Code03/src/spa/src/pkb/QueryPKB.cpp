@@ -260,7 +260,7 @@ vector<shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityT
     vector<shared_ptr<Entity>> baseClassEntities;
 
     auto addEntities = [&](auto &&entities) {
-      baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+        baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
     };
 
     switch (entityType) {

@@ -4,6 +4,6 @@
 #include "common/expression/Variable.h"
 
 class VariableParser : public ExpressionParser {
- public:
-  shared_ptr<Expression> parseEntity(Tokens &tokens) override;
+public:
+    shared_ptr<Expression> parseEntity(Tokens &tokens) override;
 };

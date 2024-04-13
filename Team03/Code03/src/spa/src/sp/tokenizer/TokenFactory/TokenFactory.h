@@ -8,6 +8,6 @@
 #include "../Token/Token.h"
 
 class TokenFactory {
- public:
-  static std::shared_ptr<Token> createToken(string value);
+public:
+    static std::shared_ptr<Token> createToken(string value);
 };

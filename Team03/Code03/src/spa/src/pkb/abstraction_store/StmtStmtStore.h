@@ -17,7 +17,8 @@ protected:
     vector<vector<shared_ptr<Entity>>> transitiveCache;
 public:
     // helper function
-    static vector<vector<shared_ptr<Entity>>> getStmtPairs(const unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>>& table);
+    static vector<vector<shared_ptr<Entity>>> getStmtPairs(const unordered_map<shared_ptr<Statement>,
+                                                                               unordered_set<shared_ptr<Statement>>> &table);
     virtual bool add(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2);
     virtual void clear();
     // using stmt - vector to accomodate parent

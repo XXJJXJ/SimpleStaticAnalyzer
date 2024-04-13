@@ -38,7 +38,7 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens &
     tokens.erase(tokens.begin(), tokens.begin() + 2);
 
     auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token> &token) {
-      return token->getType() == TokenType::LEFT_BRACE;
+        return token->getType() == TokenType::LEFT_BRACE;
     });
     if (end == tokens.end()) {
         throw SyntaxErrorException("Missing { token in While statement");

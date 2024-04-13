@@ -9,7 +9,7 @@
 
 class VarNameExtractor : public AttributeExtractor {
 public:
-    [[nodiscard]] AttributeValue extract(const Entity& entity) const override;
+    [[nodiscard]] AttributeValue extract(const Entity &entity) const override;
 };
 
 #endif // VAR_NAME_EXTRACTOR_H

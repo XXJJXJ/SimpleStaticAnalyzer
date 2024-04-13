@@ -79,7 +79,7 @@ void IfStatementParser::checkStartOfIfStatement(Tokens &tokens) const {
 
 Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens &tokens) const {
     auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token> &token) {
-      return token->getType() == TokenType::LEFT_BRACE;
+        return token->getType() == TokenType::LEFT_BRACE;
     });
 
     if (end == tokens.end()) {

@@ -12,7 +12,7 @@ AttributeValueType AttributeValue::getAttributeValueType() const {
     return valueType;
 }
 
-bool AttributeValue::equals(const AttributeValue& other) const {
+bool AttributeValue::equals(const AttributeValue &other) const {
     return value == other.value;
 }
 

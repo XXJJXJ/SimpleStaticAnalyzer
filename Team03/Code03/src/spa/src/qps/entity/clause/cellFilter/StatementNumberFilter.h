@@ -9,5 +9,5 @@ class StatementNumberFilter : public CellFilter {
 
 public:
     explicit StatementNumberFilter(int expectedNumber);
-    bool passFilter(const std::shared_ptr<Entity>& entity) const override;
+    bool passFilter(const std::shared_ptr<Entity> &entity) const override;
 };
