@@ -16,43 +16,23 @@ string infixToPostfix(std::string expression) {
     precedence['*'] = precedence['/'] = precedence['%'] = 2;
 
     for (size_t i = 0; i < expression.length(); ++i) {
-        if (isdigit(expression[i])) {
-            while (i < expression.length() && isdigit(expression[i])) {
-                result += expression[i];
-                ++i;
-            }
-            --i;
-            result += " ";
-        } else if (expression[i] == '(') {
+        if (expression[i] == '(') {
             int count = 1;
             i++;
             string temp;
             // Find the proper end
             while (i < expression.length() && count > 0) {
-                if (expression[i] == '(') {
-                    count++;
-                }
-                if (expression[i] == ')') {
-                    count--;
-                    if (count > 0) {
-                        temp += expression[i];
-                    }
-                    // no need brackets if 0
-                } else {
-                    // normal
-                    temp += expression[i];
-                }
+                if (expression[i] == '(') count++;
+                if (expression[i] == ')') count--;
+                if (count > 0) temp += expression[i];
                 i++;
             }
-            // QPS checked the pattern, should have matching ")"
             i--;
-            // recurse sub-expression
             string res = infixToPostfix(temp);
             result += res;
-        } else if (!isOperator(expression[i])) {
+        } else if (!isOperator(expression[i]) || isdigit(expression[i])) {
             // is a synonym: assumes no spaces and no random '(' or ')' characters
             // reads in until the next operator
-            // validation should be already done in QPS
             while (i < expression.length() && !isOperator(expression[i])) {
                 result += expression[i];
                 ++i;
