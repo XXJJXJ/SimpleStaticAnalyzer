@@ -15,12 +15,12 @@ using namespace std;
 // For each case just need to check direct uses of the if/while statements
 
 class IfWhilePatternStore {
- private:
-  unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> stmtToVar;
-  vector<vector<shared_ptr<Entity>>> cache;
- public:
-  void add(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
-  vector<vector<shared_ptr<Entity>>> getPattern();
-  void clear();
-  ~IfWhilePatternStore();
+private:
+    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> stmtToVar;
+    vector<vector<shared_ptr<Entity>>> cache;
+public:
+    void add(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
+    vector<vector<shared_ptr<Entity>>> getPattern();
+    void clear();
+    ~IfWhilePatternStore();
 };

@@ -6,8 +6,8 @@ shared_ptr<Expression> ArithmeticOperationParser::parse() {
 
 bool ArithmeticOperationParser::checkTermFactorOperators(bool isTerm, TokenType tokenType) {
     return isTerm ?
-           termOperators.find(tokenType) != termOperators.end() :
-           factorOperators.find(tokenType) != factorOperators.end();
+            termOperators.find(tokenType) != termOperators.end() :
+            factorOperators.find(tokenType) != factorOperators.end();
 }
 
 shared_ptr<Expression> ArithmeticOperationParser::parseTermExpression() {
@@ -39,10 +39,12 @@ shared_ptr<Expression> ArithmeticOperationParser::parseFactorExpression() {
         tokenType = getTokenType();
         if (tokenType == TokenType::RIGHT_PARANTHESIS) {
             manageParentheses(tokenType);
-        } else {
+        }
+        else {
             throw SyntaxErrorException("Missing ) token in Arithmetic operation");
         }
-    } else {
+    }
+    else {
         leafNode = parseLeafExpression(tokenType);
     }
 
@@ -53,9 +55,11 @@ shared_ptr<Expression> ArithmeticOperationParser::parseFactorExpression() {
 shared_ptr<Expression> ArithmeticOperationParser::parseLeafExpression(TokenType tokenType) {
     if (tokenType == TokenType::INTEGER) {
         return make_shared<Constant>(getTokenValue());
-    } else if (tokenType == TokenType::NAME) {
+    }
+    else if (tokenType == TokenType::NAME) {
         return make_shared<Variable>(getTokenValue());
-    } else {
+    }
+    else {
         return nullptr;
     }
 }

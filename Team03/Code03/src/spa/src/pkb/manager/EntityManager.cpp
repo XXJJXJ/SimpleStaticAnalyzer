@@ -8,11 +8,12 @@ shared_ptr<EntityManager> EntityManager::instance = nullptr;
 // Implementation of EntityManager methods
 shared_ptr<EntityManager> EntityManager::getInstance() {
     if (!instance) {
-        EntityManager *em = new EntityManager();
+        EntityManager* em = new EntityManager();
         instance = make_shared<EntityManager>(*em);
     }
     return instance;
 }
+
 
 EntityManager::~EntityManager() {}
 
@@ -94,6 +95,7 @@ vector<shared_ptr<WhileStatement>> EntityManager::getAllWhileStatements() {
     return stmtStore.getAllWhile();
 }
 
+
 // Call
 bool EntityManager::addCallStatement(shared_ptr<CallStatement> callStmt) {
     return stmtStore.addCall(callStmt);
@@ -102,9 +104,10 @@ vector<shared_ptr<CallStatement>> EntityManager::getAllCallStatements() {
     return stmtStore.getAllCall();
 }
 
-shared_ptr<Procedure> EntityManager::getProcByName(const string &procName) {
+shared_ptr<Procedure> EntityManager::getProcByName(const string& procName) {
     return procStore.get(procName);
 }
+
 
 void EntityManager::clear() {
     if (!instance) {

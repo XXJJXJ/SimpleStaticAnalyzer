@@ -5,7 +5,7 @@
 #include "common/statement/CallStatement.h"
 
 class CallStatementParser : public StatementParser {
- public:
-  shared_ptr<Statement> parseEntity(Tokens &tokens) override;
-  string extractProcedureName(Tokens &tokens) const;
+public:
+	shared_ptr<Statement> parseEntity(Tokens& tokens) override;
+	string extractProcedureName(Tokens& tokens) const;
 };

@@ -14,7 +14,8 @@ bool Sp::ProcessSIMPLE(string fileName) {
         std::ifstream inputfile(fileName);
         if (!inputfile.is_open()) {
             std::cerr << "Error opening file" << std::endl;
-        } else {
+        }
+        else {
             shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
             shared_ptr<Tokenizer> tokenizer = make_shared<Tokenizer>();
             Tokens tokens = tokenizer->tokenize(inputfile);
@@ -25,7 +26,7 @@ bool Sp::ProcessSIMPLE(string fileName) {
             return true;
         }
     }
-    catch (SpaException &e) {
+    catch (SpaException& e) {
         std::cout << e.what() << std::endl;
         return false;
     }

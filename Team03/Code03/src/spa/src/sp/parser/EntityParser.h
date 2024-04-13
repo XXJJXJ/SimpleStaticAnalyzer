@@ -6,6 +6,6 @@
 
 template<typename Entity>
 class EntityParser {
- public:
-  virtual shared_ptr<Entity> parseEntity(Tokens &tokens) = 0;
+public:
+	virtual shared_ptr<Entity> parseEntity(Tokens& tokens) = 0;
 };

@@ -2,7 +2,7 @@
 
 #include "ProcedureParser.h"
 
-shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens &tokens) {
+shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens& tokens) {
     string procedureName = extractProcedureName(tokens);
     tokens.erase(tokens.begin(), tokens.begin() + 3);
     shared_ptr<Procedure> procedure = make_shared<Procedure>(procedureName);
@@ -19,13 +19,14 @@ shared_ptr<Procedure> ProcedureParser::parseEntity(Tokens &tokens) {
 
     if (isEndOfProcedure(tokens)) {
         tokens.erase(tokens.begin());
-    } else {
+    }
+    else {
         throw SyntaxErrorException("Missing } token in Procedure");
     }
     return procedure;
 }
 
-string ProcedureParser::extractProcedureName(Tokens &tokens) {
+string ProcedureParser::extractProcedureName(Tokens& tokens) {
     if (tokens.size() < 3) {
         throw SyntaxErrorException("Insufficient number of tokens");
     }
@@ -35,19 +36,23 @@ string ProcedureParser::extractProcedureName(Tokens &tokens) {
 
     if (token0->getValue() != "procedure") {
         throw SyntaxErrorException("Missing procedure name token");
-    } else if (token1->getType() != TokenType::NAME) {
+    }
+    else if (token1->getType() != TokenType::NAME) {
         throw SyntaxErrorException("Missing name token");
-    } else if (token2->getType() != TokenType::LEFT_BRACE) {
+    }
+    else if (token2->getType() != TokenType::LEFT_BRACE) {
         throw SyntaxErrorException("Missing { token in Procedure");
-    } else {
+    }
+    else {
         return token1->getValue();
     }
 }
 
-bool ProcedureParser::isEndOfProcedure(Tokens &tokens) {
+bool ProcedureParser::isEndOfProcedure(Tokens& tokens) {
     if (tokens.size() > 0) {
         return tokens[0]->getType() == TokenType::RIGHT_BRACE;
-    } else {
+    }
+    else {
         return false;
     }
 }

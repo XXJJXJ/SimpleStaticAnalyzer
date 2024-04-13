@@ -4,7 +4,7 @@ shared_ptr<AbstractionManager> AbstractionManager::instance = nullptr;
 
 shared_ptr<AbstractionManager> AbstractionManager::getInstance() {
     if (!instance) {
-        AbstractionManager *em = new AbstractionManager();
+        AbstractionManager* em = new AbstractionManager();
         instance = make_shared<AbstractionManager>(*em);
     }
     return instance;
@@ -51,11 +51,11 @@ bool AbstractionManager::addNext(shared_ptr<Statement> stmt1, shared_ptr<Stateme
 }
 
 // Private helper function
-void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore &store) {
+void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore& store) {
     auto childToParent = parentStore.getChildToParentMap();
     auto allRelations = store.getAllMap();
-    for (auto &_pair : allRelations) {
-        for (auto &_var : _pair.second) {
+    for (auto & _pair : allRelations) {
+        for (auto & _var : _pair.second) {
             auto ancestor = _pair.first;
             while (childToParent.find(ancestor) != childToParent.end()) {
                 // Can modify first, because the first statement is already stored
@@ -66,38 +66,38 @@ void AbstractionManager::tabulateContainerStmtVarRelation(SPVStore &store) {
     }
 }
 
-void AbstractionManager::tabulateByCallStatements(SPVStore &store, vector<shared_ptr<CallStatement>> &callStmts) {
+void AbstractionManager::tabulateByCallStatements(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts) {
     auto procVarMap = store.getByProcedureMap();
     auto callMap = callStore.getTransitiveMap();
     unordered_map<string, unordered_set<string>> callMapString;
-    for (auto &_pair : callMap) {
-        for (auto &callee : _pair.second) {
+    for (auto & _pair : callMap) {
+        for (auto & callee : _pair.second) {
             callMapString[_pair.first->getName()].insert(callee->getName());
         }
     }
     // get each callStmt - find out the chain/all procedures invoked by the target procedure
-    for (auto &stmt : callStmts) {
+    for (auto & stmt : callStmts) {
         // Potential to bugs / slowness
         // **** Order of adding very important ****
         // This gets all the transitive procedures under the called procedures and adds all possible
         // modifies / uses variables to this statement
         // This way the order of adding shouldn't matter anymore
         auto allProcsCalled = callMapString[stmt->getTargetProcedureName()];
-        for (auto &proc : allProcsCalled) {
+        for (auto & proc : allProcsCalled) {
             auto setOfVar = procVarMap[proc];
-            for (auto &var : setOfVar) {
+            for (auto & var : setOfVar) {
                 store.add(stmt, var);
             }
         }
         // dont forget the targetProcedure itself might have uses / modifies
         auto setOfVar = procVarMap[stmt->getTargetProcedureName()];
-        for (auto &var : setOfVar) {
+        for (auto & var : setOfVar) {
             store.add(stmt, var);
         }
     }
 }
 
-void AbstractionManager::tabulate(vector<shared_ptr<CallStatement>> &callStmts) {
+void AbstractionManager::tabulate(vector<shared_ptr<CallStatement>>& callStmts) {
     // tabulate call store first
     callStore.tabulate();
     tabulateByCallStatements(useStore, callStmts);
@@ -105,6 +105,7 @@ void AbstractionManager::tabulate(vector<shared_ptr<CallStatement>> &callStmts) 
     tabulateContainerStmtVarRelation(useStore);
     tabulateContainerStmtVarRelation(modifyStore);
 }
+
 
 vector<vector<shared_ptr<Entity>>> AbstractionManager::getFollowS() {
     return followStore.getDirect();
@@ -180,6 +181,7 @@ unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> Abstra
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> AbstractionManager::getModifyByReadMap() {
     return modifyStore.getReadMap();
 }
+
 
 AbstractionManager::~AbstractionManager() {
     clear();

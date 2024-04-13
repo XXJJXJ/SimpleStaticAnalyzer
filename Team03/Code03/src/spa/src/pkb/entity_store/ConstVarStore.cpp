@@ -12,14 +12,14 @@ bool ConstVarStore::add(shared_ptr<Entity> item) {
 vector<shared_ptr<Entity>> ConstVarStore::getAll() {
     if (allItems.size() != items.size()) {  // some unit tests modifies and queries midway
         allItems.clear();
-        for (const auto &item : items) {
+        for (const auto& item : items) {
             allItems.push_back(item.second);
         }
     }
     return allItems;
 }
 
-shared_ptr<Entity> ConstVarStore::get(const string &name) {
+shared_ptr<Entity> ConstVarStore::get(const string& name) {
     if (items.find(name) != items.end()) {
         return items[name];
     }
@@ -30,6 +30,7 @@ void ConstVarStore::clear() {
     items.clear();
     allItems.clear();
 }
+
 
 ConstVarStore::~ConstVarStore() {
     clear();
