@@ -98,13 +98,13 @@ procedure p; variable v;
 Select p such that Calls*(p, "notSoScary4") with not p.procName = "notSoScary4"
 absoluteTerrorism,simpleTerrorism,ifTerrorism
 5000
-21 - Get procedure that calls* notSoScary4 with double not with clause - empty result
+21 - Get procedure that calls* notSoScary4 with double not with clause - SyntaxError
 procedure p; variable v;
 Select p such that Calls*(p, "notSoScary4") with not not p.procName = "notSoScary4"
-
+SyntaxError
 5000
-22 - Get procedure that calls* notSoScary4 with triple not with clause - full result
+22 - Get procedure that calls* notSoScary4 with triple not with clause - SyntaxError
 procedure p; variable v;
 Select p such that Calls*(p, "notSoScary4") with not not not p.procName = "notSoScary4"
-absoluteTerrorism,simpleTerrorism,ifTerrorism
+SyntaxError
 5000
