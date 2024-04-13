@@ -1,3 +1,4 @@
+
 #include "ExtractorFactory.h"
 
 shared_ptr<AttributeExtractor> ExtractorFactory::createExtractor(AttributeType attributeType) {

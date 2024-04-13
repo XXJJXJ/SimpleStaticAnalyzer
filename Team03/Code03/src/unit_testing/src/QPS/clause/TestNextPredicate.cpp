@@ -6,6 +6,7 @@
 
 #include "../fakeEntities/FakeQueryManager.cpp"
 
+
 TEST_CASE("Test next table retrieval", "[NextPredicate]") {
     // Set up fake data
     QueryEvaluationContext qec = QueryEvaluationContext();
@@ -32,19 +33,22 @@ TEST_CASE("Test next table retrieval", "[NextPredicate]") {
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }SECTION("Next(2, 3) is true") {
+        }
+        SECTION("Next(2, 3) is true") {
             NextPredicate followsPred(2, 3);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }SECTION("Next(3, 4) is true") {
+        }
+        SECTION("Next(3, 4) is true") {
             NextPredicate followsPred(3, 4);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }SECTION("Next(4, 5) is true") {
+        }
+        SECTION("Next(4, 5) is true") {
             NextPredicate followsPred(4, 5);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());

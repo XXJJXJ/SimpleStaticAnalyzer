@@ -22,7 +22,7 @@ std::shared_ptr<BaseTable> WithPredicate::getFullTable(QueryManager &qm) {
 
     HeaderTable resultTable;
     bool isTableSet = false;
-    for (const auto &synonym : synonyms) {
+    for (const auto& synonym : synonyms) {
         auto allEntities = qm.getAllEntitiesByType(synonym->getType());
         HeaderTable result = HeaderTable(synonym, allEntities);
         if (!isTableSet) {
@@ -35,9 +35,10 @@ std::shared_ptr<BaseTable> WithPredicate::getFullTable(QueryManager &qm) {
     return std::make_shared<HeaderTable>(resultTable);
 }
 
+
 std::shared_ptr<RowFilter> WithPredicate::getRowFilter() {
     WithPredicate self = *this;
-    return std::make_shared<RowFilter>([self](const TableRow &row) -> bool {
+    return std::make_shared<RowFilter>([self](const TableRow& row) -> bool {
         shared_ptr<AttributeValue> expectedValue = nullptr;
         bool isValueSet = false;
         vector<Ref> attrRefs;
@@ -81,9 +82,10 @@ bool WithPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
-    auto castedOther = static_cast<const WithPredicate &>(other);
+    auto castedOther = static_cast<const WithPredicate&>(other);
     return this->ref1 == castedOther.ref1 && this->ref2 == castedOther.ref2;
 }
 size_t WithPredicate::hash() const {
-    return std::hash<PredicateType>()(getType()) ^ (ref1.hash() << 1) ^ (ref2.hash() >> 1);
+    return std::hash<PredicateType>()(getType()) ^ (ref1.hash() << 1) 
+            ^ (ref2.hash() >> 1);
 }

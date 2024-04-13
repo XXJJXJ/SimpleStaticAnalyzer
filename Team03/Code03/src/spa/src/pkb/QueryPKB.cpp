@@ -130,7 +130,8 @@ bool QueryManager::checkLayer(
     shared_ptr<Variable> targetVar,
     vector<shared_ptr<Statement>> &nextLayer,
     unordered_set<shared_ptr<Statement>> &visited,
-    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap) {
+    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap
+) {
     auto nextSMap = am->getNextSMap();
     auto modifyStore = am->getModifyAllMap();
     vector<shared_ptr<Statement>> newLayer;

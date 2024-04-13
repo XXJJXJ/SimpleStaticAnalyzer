@@ -26,26 +26,27 @@ private:
     std::shared_ptr<PredicateResultCache> predicateResultCache;
     std::vector<shared_ptr<AttributeExtractor>> selectedAttributes;
 
+
 public:
     QueryEvaluationContext();
-    void addTableForSynonym(const Synonym &synonym, const std::shared_ptr<HeaderTable> &table);
+    void addTableForSynonym(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table);
     void clearTables();
-    [[nodiscard]] std::shared_ptr<HeaderTable> getTableForSynonym(const Synonym &synonym);
-    [[nodiscard]] bool containsSynonym(const Synonym &synonym) const;
-    [[nodiscard]] bool isTableInitialized(const Synonym &synonym) const;
-    void putTableForSynonymGroup(const Synonym &synonym, const std::shared_ptr<HeaderTable> &table);
+    [[nodiscard]] std::shared_ptr<HeaderTable> getTableForSynonym(const Synonym& synonym);
+    [[nodiscard]] bool containsSynonym(const Synonym& synonym) const;
+    [[nodiscard]] bool isTableInitialized(const Synonym& synonym) const;
+    void putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table);
     [[nodiscard]] std::vector<Synonym> getSynonyms() const;
     [[nodiscard]] std::shared_ptr<QueryManager> getQueryManager() const;
-    void setQueryManager(const std::shared_ptr<QueryManager> &queryManager);
+    void setQueryManager(const std::shared_ptr<QueryManager>& queryManager);
     [[nodiscard]] std::vector<std::string> getResults() const;
-    void setResultTable(const std::shared_ptr<BaseTable> &_resultTable);
+    void setResultTable(const std::shared_ptr<BaseTable>& _resultTable);
     [[nodiscard]] std::shared_ptr<BaseTable> getResultTable() const;
     [[nodiscard]] bool isCurrentResultEmpty() const;
-    void setSynonymGroups(const std::vector<SynonymPtrSet> &synonymGroups);
+    void setSynonymGroups(const std::vector<SynonymPtrSet>& synonymGroups);
     [[nodiscard]] std::vector<SynonymPtrSet> getSynonymGroups() const;
     void setResultToFalse();
     [[nodiscard]] std::shared_ptr<PredicateResultCache> getCache() const;
-    void setSelectedAttributes(const std::vector<shared_ptr<AttributeExtractor>> &selectedAttributes);
+    void setSelectedAttributes(const std::vector<shared_ptr<AttributeExtractor>>& selectedAttributes);
 };
 
 #endif // QUERY_EVALUATION_CONTEXT_H

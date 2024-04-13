@@ -1,9 +1,11 @@
 #include "Operation.h"
 
-Operation::Operation(string name, EntityType operationType, PairOfArguments arguments_) : Expression(std::move(name),
-                                                                                                     std::move(
-                                                                                                         operationType)) {
-    arguments = std::move(arguments_);
+Operation::Operation(
+    string name, 
+    EntityType operationType, 
+    PairOfArguments arguments_)
+    : Expression(std::move(name), std::move(operationType)) {
+        arguments = std::move(arguments_);
 }
 
 string Operation::getName() const {

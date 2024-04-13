@@ -6,7 +6,10 @@
 
 class IfStatement : public Statement {
 public:
-    IfStatement(int statementNumber, shared_ptr<ConditionalOperation> condition, string procedureName);
+    IfStatement(
+        int statementNumber,
+        shared_ptr<ConditionalOperation> condition,
+        string procedureName);
     void accept(shared_ptr<Visitor> visitor) override;
     void addThenStatement(shared_ptr<Statement> statement);
     void addElseStatement(shared_ptr<Statement> statement);
@@ -23,17 +26,17 @@ private:
 };
 
 namespace std {
-template<>
-struct hash<shared_ptr<IfStatement>> {
-    std::size_t operator()(const shared_ptr<IfStatement> &obj) const {
-        return obj->hash();
-    }
-};
+    template <>
+    struct hash<shared_ptr<IfStatement>> {
+        std::size_t operator()(const shared_ptr<IfStatement>& obj) const {
+            return obj->hash();
+        }
+    };
 
-template<>
-struct equal_to<shared_ptr<IfStatement>> {
-    bool operator()(const shared_ptr<IfStatement> &lhs, const shared_ptr<IfStatement> &rhs) const {
-        return *lhs == *rhs;
-    }
-};
+    template <>
+    struct equal_to<shared_ptr<IfStatement>> {
+        bool operator()(const shared_ptr<IfStatement>& lhs, const shared_ptr<IfStatement>& rhs) const {
+            return *lhs == *rhs;
+        }
+    };
 }

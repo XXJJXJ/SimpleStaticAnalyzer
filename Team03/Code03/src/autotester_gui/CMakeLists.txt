@@ -3,22 +3,22 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Gui REQUIRED)
+find_package( Qt5Core REQUIRED )
+find_package( Qt5Widgets REQUIRED )
+find_package( Qt5Gui REQUIRED )
 
 file(GLOB srcs
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*.cpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.cpp"
 )
 file(GLOB headers
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.h"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*.h"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*/*/*/*.h"
 )
 
 
@@ -34,7 +34,7 @@ macro(qt5_copy_dll APP DLL)
     get_target_property(Qt5_${DLL}LocationDebug Qt5::${DLL} IMPORTED_LOCATION_DEBUG)
 
     add_custom_command(TARGET ${APP} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different $<$<CONFIG:Debug>:${Qt5_${DLL}LocationDebug}> $<$<NOT:$<CONFIG:Debug>>:${Qt5_${DLL}Location}> $<TARGET_FILE_DIR:${APP}>)
+       COMMAND ${CMAKE_COMMAND} -E copy_if_different $<$<CONFIG:Debug>:${Qt5_${DLL}LocationDebug}> $<$<NOT:$<CONFIG:Debug>>:${Qt5_${DLL}Location}> $<TARGET_FILE_DIR:${APP}>)
 endmacro()
 
 qt5_copy_dll(autotester_gui Core)

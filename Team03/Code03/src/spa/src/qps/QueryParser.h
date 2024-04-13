@@ -5,7 +5,7 @@
 #include "qps/entity/query/Query.h"
 
 class QueryParser {
-public:
+  public:
     QueryParser();
     ~QueryParser();
 

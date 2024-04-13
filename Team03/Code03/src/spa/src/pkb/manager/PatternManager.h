@@ -27,6 +27,7 @@ public:
     // While related
     vector<vector<shared_ptr<Entity>>> getWhilePattern();
     vector<vector<shared_ptr<Entity>>> getAssignPattern(string &expr, bool hasWildcard);
-    vector<vector<shared_ptr<Entity>>> findAssignPattern(
-        vector<shared_ptr<AssignStatement>> &allAssign, string &expr, bool hasWildcard);
+    vector<vector<shared_ptr<Entity>>> findAssignPattern(vector<shared_ptr<AssignStatement>> &allAssign,
+                                                         string &expr,
+                                                         bool hasWildcard);
 };

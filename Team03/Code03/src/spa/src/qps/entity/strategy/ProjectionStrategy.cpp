@@ -6,8 +6,7 @@
 #include <algorithm>
 #include "qps/entity/evaluation/HeaderTable.h"
 
-ProjectionStrategy::ProjectionStrategy(vector<std::shared_ptr<Synonym>> synonyms)
-    : targetSynonyms(std::move(synonyms)) {}
+ProjectionStrategy::ProjectionStrategy(vector<std::shared_ptr<Synonym>> synonyms) : targetSynonyms(std::move(synonyms)) {}
 
 void ProjectionStrategy::execute(QueryEvaluationContext &context) {
     // Select boolean case
@@ -42,7 +41,7 @@ void ProjectionStrategy::execute(QueryEvaluationContext &context) {
     context.setResultTable(resultHeaderTable);
 }
 
-vector<SynonymPtrSet> ProjectionStrategy::groupTargetSynonyms(QueryEvaluationContext &context) const {
+vector<SynonymPtrSet> ProjectionStrategy::groupTargetSynonyms(QueryEvaluationContext& context) const {
     // Get the synonym groups from the context
     auto synonymGroups = context.getSynonymGroups();
 
@@ -55,7 +54,7 @@ vector<SynonymPtrSet> ProjectionStrategy::groupTargetSynonyms(QueryEvaluationCon
     }
 
     // Iterate over each target synonym
-    for (const auto &targetSynonym : targetSynonyms) {
+    for (const auto& targetSynonym : targetSynonyms) {
         // Check which group this synonym belongs to
         for (size_t i = 0; i < synonymGroups.size(); ++i) {
             if (synonymGroups[i].find(targetSynonym) != synonymGroups[i].end()) {
@@ -68,14 +67,14 @@ vector<SynonymPtrSet> ProjectionStrategy::groupTargetSynonyms(QueryEvaluationCon
     return groupsToTargetSynonyms;
 }
 
-std::vector<shared_ptr<HeaderTable>> ProjectionStrategy::getProjectedTables(QueryEvaluationContext &context) {
+std::vector<shared_ptr<HeaderTable>> ProjectionStrategy::getProjectedTables(QueryEvaluationContext& context) {
     // First, group the target synonyms using the helper function
     auto groupsToTargetSynonyms = groupTargetSynonyms(context);
 
     std::vector<shared_ptr<HeaderTable>> projectedTables;
 
     // Iterate over each group
-    for (const auto &group : groupsToTargetSynonyms) {
+    for (const auto& group : groupsToTargetSynonyms) {
         // Skip empty groups
         if (group.empty()) continue;
 

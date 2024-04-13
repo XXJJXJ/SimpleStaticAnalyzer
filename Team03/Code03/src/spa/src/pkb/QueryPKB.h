@@ -42,16 +42,15 @@ private:
     virtual vector<shared_ptr<CallStatement>> getAllCallStatements();
     virtual vector<shared_ptr<IfStatement>> getAllIfStatements();
     virtual vector<shared_ptr<WhileStatement>> getAllWhileStatements();
-    virtual bool checkLayer(
-        shared_ptr<AssignStatement> a2,
-        shared_ptr<Variable> targetVar,
-        vector<shared_ptr<Statement>> &nextLayer,
-        unordered_set<shared_ptr<Statement>> &visited,
-        unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap);
-    virtual bool hasNotModifiedPath(
-        shared_ptr<AssignStatement> a1,
-        shared_ptr<AssignStatement> a2,
-        unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap);
+    virtual bool checkLayer(shared_ptr<AssignStatement> a2,
+                            shared_ptr<Variable> targetVar,
+                            vector<shared_ptr<Statement>> &nextLayer,
+                            unordered_set<shared_ptr<Statement>> &visited,
+                            unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap);
+    virtual bool hasNotModifiedPath(shared_ptr<AssignStatement> a1,
+                                    shared_ptr<AssignStatement> a2,
+                                    unordered_map<shared_ptr<Statement>,
+                                                  unordered_set<shared_ptr<Statement>>> &nextTMap);
 public:
     QueryManager();
     // Entity Related API

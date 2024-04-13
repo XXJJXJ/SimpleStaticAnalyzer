@@ -4,7 +4,10 @@ shared_ptr<Statement> PrintStatementParser::parseEntity(Tokens &tokens) {
     string variableName = extractVariableName(tokens);
     shared_ptr<Variable> variable = make_shared<Variable>(variableName);
     shared_ptr<PrintStatement> printStatement =
-        make_shared<PrintStatement>(Program::getAndIncrementStatementNumber(), variable, getProcedureName());
+        make_shared<PrintStatement>(
+            Program::getAndIncrementStatementNumber(),
+            variable,
+            getProcedureName());
     return printStatement;
 }
 

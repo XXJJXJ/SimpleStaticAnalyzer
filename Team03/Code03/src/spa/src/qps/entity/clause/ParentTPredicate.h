@@ -10,6 +10,7 @@
 #include "qps/entity/evaluation/HeaderTable.h"
 #include "common/spa_exception/QPSEvaluationException.h"
 
+
 class Strategy;
 
 class ParentTPredicate : public Predicate {
@@ -17,7 +18,7 @@ private:
     StatementRef lhs; // Ancestor statement reference
     StatementRef rhs; // Descendant statement reference
 protected:
-    std::shared_ptr<BaseTable> getFullTable(QueryManager &qm) override;
+    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
 public:
     ParentTPredicate(StatementRef lhs, StatementRef rhs);
     ~ParentTPredicate() override = default;

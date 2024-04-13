@@ -4,14 +4,14 @@
 QueryTokenizer::QueryTokenizer() {}
 QueryTokenizer::~QueryTokenizer() {}
 
-std::vector<std::string> QueryTokenizer::tokenize(const std::string &query) {
+std::vector<std::string> QueryTokenizer::tokenize(const std::string& query) { 
     std::vector<std::string> tokens = getTokens(query);
     std::vector<std::string> collapsedTokens = collapseTokens(tokens);
 
     return collapsedTokens;
 }
 
-std::vector<std::string> QueryTokenizer::getTokens(const std::string &query) {
+std::vector<std::string> QueryTokenizer::getTokens(const std::string& query) { 
     std::vector<std::string> tokens = {};
     std::string currToken;
 
@@ -37,7 +37,7 @@ std::vector<std::string> QueryTokenizer::getTokens(const std::string &query) {
     return tokens;
 }
 
-std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::string> &tokens) {
+std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::string>& tokens) { 
     std::vector<std::string> collapsedTokens = {};
     std::string currToken;
 
@@ -62,12 +62,7 @@ std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::s
     return collapsedTokens;
 }
 
-void QueryTokenizer::handleWithinQuotes(
-    std::string &t,
-    std::string &currToken,
-    std::vector<std::string> &collapsedTokens,
-    bool &isWithinQuotes,
-    bool &isPrevSyn) {
+void QueryTokenizer::handleWithinQuotes(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinQuotes, bool& isPrevSyn) {
     if (t == "\"") {
         currToken.append(t);
         collapsedTokens.push_back(currToken);
@@ -79,12 +74,7 @@ void QueryTokenizer::handleWithinQuotes(
     }
 }
 
-void QueryTokenizer::handleWithinWildcard(
-    std::string &t,
-    std::string &currToken,
-    std::vector<std::string> &collapsedTokens,
-    bool &isWithinWildcard,
-    bool &isPrevSyn) {
+void QueryTokenizer::handleWithinWildcard(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinWildcard, bool& isPrevSyn) {
     if ((t == ")" || t == ",") && currToken == "_") {
         collapsedTokens.push_back(currToken);
         collapsedTokens.push_back(t);
@@ -101,12 +91,7 @@ void QueryTokenizer::handleWithinWildcard(
     }
 }
 
-void QueryTokenizer::handleNormalToken(
-    std::string &t,
-    std::string &currToken,
-    std::vector<std::string> &collapsedTokens,
-    bool &isWithinQuotes,
-    bool &isWithinWildcard) {
+void QueryTokenizer::handleNormalToken(std::string& t, std::string& currToken, std::vector<std::string>& collapsedTokens, bool& isWithinQuotes, bool& isWithinWildcard) {
     if (t == "_") {
         isWithinWildcard = true;
         currToken.append(t);
@@ -118,9 +103,9 @@ void QueryTokenizer::handleNormalToken(
     }
 }
 
-void QueryTokenizer::handleCollapsingTokens(std::string &t, std::string &currToken, bool &isPrevSyn) {
+void QueryTokenizer::handleCollapsingTokens(std::string& t, std::string& currToken, bool& isPrevSyn) {
     if (QueryTokenValidator::isIdent(t)) {
-        if (isPrevSyn) {
+        if (isPrevSyn){
             currToken.append(" ");
         }
         isPrevSyn = true;

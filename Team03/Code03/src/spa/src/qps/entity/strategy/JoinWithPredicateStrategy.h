@@ -10,13 +10,13 @@ class JoinWithPredicateStrategy : public Strategy {
 private:
     std::shared_ptr<Predicate> predicate;
 
-    void handleNoSynonyms(QueryEvaluationContext &context);
-    void initializeTable(QueryEvaluationContext &context, const std::vector<shared_ptr<Synonym>> &synonyms);
-    void updateTable(QueryEvaluationContext &context, const std::vector<shared_ptr<Synonym>> &synonyms);
+    void handleNoSynonyms(QueryEvaluationContext& context);
+    void initializeTable(QueryEvaluationContext& context, const std::vector<shared_ptr<Synonym>>& synonyms);
+    void updateTable(QueryEvaluationContext& context, const std::vector<shared_ptr<Synonym>>& synonyms);
 
 public:
     explicit JoinWithPredicateStrategy(std::shared_ptr<Predicate> pred);
-    void execute(QueryEvaluationContext &context) override;
+    void execute(QueryEvaluationContext& context) override;
 };
 
 #endif // JOIN_WITH_PREDICATE_STRATEGY_H

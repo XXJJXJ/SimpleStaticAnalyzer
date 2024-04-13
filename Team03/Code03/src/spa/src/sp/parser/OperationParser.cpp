@@ -68,10 +68,9 @@ void OperationParser::setIsSubExpression(bool isSubExpression) {
     *isSubExpressionPointer = isSubExpression;
 }
 
-void OperationParser::setPairOfArguments(
-    shared_ptr<bool> isSubExpressionPointer_,
-    shared_ptr<int> indexPointer_,
-    shared_ptr<bool> isProcessedTokenPointer_) {
+void OperationParser::setPairOfArguments(shared_ptr<bool> isSubExpressionPointer_,
+                                         shared_ptr<int> indexPointer_,
+                                         shared_ptr<bool> isProcessedTokenPointer_) {
     *isSetPairOfArgumentsPointer = true;
     isSubExpressionPointer = isSubExpressionPointer_;
     indexPointer = indexPointer_;

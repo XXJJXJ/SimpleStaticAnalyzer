@@ -11,7 +11,8 @@ Synonym::Synonym(const std::string &synonymName, const std::unordered_map<std::s
         EntityType synonymType = synonymMap.at(synonymName);
         this->type = synonymType;
         this->name = synonymName;
-    } catch (const std::out_of_range &e) {
+    }
+    catch (const std::out_of_range &e) {
         throw SemanticErrorException("Selected synonym '" + synonymName + "' has not been declared");
     }
 }

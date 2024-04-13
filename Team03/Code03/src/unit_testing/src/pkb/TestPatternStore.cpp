@@ -6,10 +6,12 @@
 #include "sp/parser/AssignStatementParser.h"
 #include "sp/tokenizer/Tokenizer.h"
 
+
 using namespace std;
 
-TEST_CASE("Store detect pattern in assignment") {
 
+TEST_CASE("Store detect pattern in assignment") {
+    
     AssignStatementParser parser;
     Tokenizer tker;
     // abb = 3 + 5 - x * 9109 + 111 * 10 / 5 % 3;
@@ -24,8 +26,7 @@ TEST_CASE("Store detect pattern in assignment") {
                                     /   \
                                    111  10
     */
-    vector<string>
-        tok1 = {"abb", "=", "3", "+", "5", "-", "x", "*", "9109", "+", "111", "*", "10", "/", "5", "%", "3", ";"};
+    vector<string> tok1 = {"abb", "=", "3", "+", "5", "-", "x", "*", "9109", "+", "111", "*", "10", "/", "5", "%", "3", ";"};
     Tokens tokens1;
     for (auto t : tok1) {
         tokens1.push_back(tker.stringToToken(t));
@@ -38,7 +39,7 @@ TEST_CASE("Store detect pattern in assignment") {
                     /  \
                    3    5  
     */
-    vector<string> tok2 = {"ak", "=", "3", "+", "5", "-", "x", ";"};
+    vector<string> tok2 = {"ak", "=", "3", "+", "5", "-", "x",";"};
     Tokens tokens2;
     for (auto t : tok2) {
         tokens2.push_back(tker.stringToToken(t));
@@ -49,7 +50,7 @@ TEST_CASE("Store detect pattern in assignment") {
                       /   \
                      5     x  
     */
-    vector<string> tok3 = {"a", "=", "5", "-", "x", ";"};
+    vector<string> tok3 = {"a", "=", "5", "-", "x",";"};
     Tokens tokens3;
     for (auto t : tok3) {
         tokens3.push_back(tker.stringToToken(t));
@@ -150,7 +151,7 @@ TEST_CASE("Store detect pattern in assignment") {
         // All 3 statements
         REQUIRE((qm.getAssignPattern("( 5 )", true).size() == 3));
     }
-
+    
     qm.clear();
     // Check cleared
 }
@@ -231,7 +232,7 @@ TEST_CASE("Check clear") {
         qm.clear();
         REQUIRE((qm.getIfPattern().size() == 0));
     }
-
+    
     SECTION("Clears While Pattern Store properly") {
         shared_ptr<WhileStatement> whileStmt = make_shared<WhileStatement>(1, cond, "main");
         pop.addWhileStatement(whileStmt);

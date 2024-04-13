@@ -145,7 +145,7 @@ TEST_CASE("Store duplicate statements") {
     shared_ptr<Variable> y = make_shared<Variable>("y");
     shared_ptr<PrintStatement> printX = make_shared<PrintStatement>(1, x, "main");
     shared_ptr<ReadStatement> readY = make_shared<ReadStatement>(2, y, "main");
-
+    
     REQUIRE(populator.addPrintStatement(printX));
     REQUIRE(populator.addReadStatement(readY));
 
@@ -214,7 +214,6 @@ TEST_CASE("Test Store duplicate constants") {
     populator.addConstant(c3);
     constStore = queryM.getAllEntitiesByType(EntityType::Constant);
     REQUIRE(constStore.size() == 2);
-    REQUIRE((constStore[1]->getName() == "3"
-        || constStore[0]->getName() == "3")); // it is unordered, so the vector is unordered
+    REQUIRE((constStore[1]->getName() == "3" || constStore[0]->getName() == "3")); // it is unordered, so the vector is unordered
     populator.clear();
 }

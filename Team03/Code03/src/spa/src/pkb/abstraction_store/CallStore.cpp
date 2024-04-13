@@ -39,8 +39,8 @@ void CallStore::tabulate() {
 }
 
 // Transitive map used as memoized map
-unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(
-    shared_ptr<Procedure> proc, unordered_set<shared_ptr<Procedure>> &visited) {
+unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> proc,
+                                                       unordered_set<shared_ptr<Procedure>> &visited) {
     if (transitiveMap.find(proc) != transitiveMap.end()) {
         return transitiveMap[proc];
     }
@@ -61,8 +61,8 @@ unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(
     return res;
 }
 
-vector<vector<shared_ptr<Entity>>> getProcPairs(
-    const unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>> &table) {
+vector<vector<shared_ptr<Entity>>> getProcPairs(const unordered_map<shared_ptr<Procedure>,
+                                                                    unordered_set<shared_ptr<Procedure>>> &table) {
     vector<vector<shared_ptr<Entity>>> res;
     for (auto &v : table) {
         auto stmt1 = v.first;

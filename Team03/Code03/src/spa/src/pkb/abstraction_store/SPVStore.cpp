@@ -25,7 +25,8 @@ bool SPVStore::add(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
 };
 
 vector<vector<shared_ptr<Entity>>> SPVStore::getStmtVarPairs(
-    const unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> &table, EntityType type) {
+    const unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> &table,
+    EntityType type) {
     if (cache.find(type) != cache.end()) {
         return cache[type];
     }
@@ -70,8 +71,8 @@ unordered_map<string, unordered_set<shared_ptr<Variable>>> SPVStore::getByProced
     return procedureToVar;
 }
 
-vector<vector<shared_ptr<Entity>>> SPVStore::getProcVarPairs(
-    unordered_map<string, unordered_set<shared_ptr<Variable>>> map) {
+vector<vector<shared_ptr<Entity>>> SPVStore::getProcVarPairs(unordered_map<string,
+                                                                           unordered_set<shared_ptr<Variable>>> map) {
     if (procVarCache.size() == 0) {
         for (auto &v : map) {
             auto procName = v.first;

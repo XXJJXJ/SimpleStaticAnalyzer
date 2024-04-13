@@ -1,6 +1,7 @@
 #ifndef SPA_EVALUATIONPLANNER_H
 #define SPA_EVALUATIONPLANNER_H
 
+
 #include "qps/entity/query/Query.h"
 #include "qps/QueryEvaluator.h"
 
@@ -15,5 +16,6 @@ public:
 private:
     void setSynonymGroups();
 };
+
 
 #endif //SPA_EVALUATIONPLANNER_H

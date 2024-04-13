@@ -4,6 +4,7 @@
 
 #include "TableRow.h"
 
+
 // Implementation of TableRow
 TableRow::TableRow(const vector<shared_ptr<Entity>> &values) : values(values) {}
 
@@ -16,7 +17,8 @@ bool TableRow::operator==(const TableRow &other) const {
         return false;
     }
     for (size_t i = 0; i < values.size(); ++i) {
-        if (values[i]->getName() != other.values[i]->getName() || values[i]->getType() != other.values[i]->getType()) {
+        if (values[i]->getName() != other.values[i]->getName() ||
+            values[i]->getType() != other.values[i]->getType()) {
             return false;
         }
     }
@@ -42,9 +44,9 @@ std::shared_ptr<Entity> TableRow::getByIndex(int index) const {
     throw std::out_of_range("Index out of range in TableRow::getByIndex");
 }
 
-bool TableRow::operator<(const TableRow &other) const {
-    const auto &valuesA = getValues();
-    const auto &valuesB = other.getValues();
+bool TableRow::operator<(const TableRow& other) const {
+    const auto& valuesA = getValues();
+    const auto& valuesB = other.getValues();
     if (valuesA.size() != valuesB.size()) {
         return valuesA.size() < valuesB.size();
     }
@@ -56,11 +58,10 @@ bool TableRow::operator<(const TableRow &other) const {
     return false; // Rows are equal
 }
 
-string TableRow::toAttributeString(vector<shared_ptr<AttributeExtractor>> &extractors) const {
+string TableRow::toAttributeString(vector<shared_ptr<AttributeExtractor>>& extractors) const {
     // First verify size of extractors matches size of values
     if (extractors.size() != values.size()) {
-        throw QPSEvaluationException(
-            "TableRow::toAttributeString: Number of extractors does not match number of values.");
+        throw QPSEvaluationException("TableRow::toAttributeString: Number of extractors does not match number of values.");
     }
     ostringstream oss;
     for (auto it = values.begin(); it != values.end(); ++it) {

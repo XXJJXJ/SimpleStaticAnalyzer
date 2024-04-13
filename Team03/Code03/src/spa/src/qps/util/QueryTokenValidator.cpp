@@ -79,16 +79,18 @@ bool QueryTokenValidator::isStmtRef(const std::string &token) {
 // Check if token is a valid entity reference
 // Definition of entRef: synonym | '_' | '"' IDENT '"'
 bool QueryTokenValidator::isEntRef(const std::string &token) {
-    return isSynonym(token) || isWildcard(token) || (token.length() > 2 && token.front() == '"' && token.back() == '"'
-        && isIdent(token.substr(1, token.length() - 2)));
+    return isSynonym(token) || isWildcard(token) ||
+        (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
+            isIdent(token.substr(1, token.length() - 2)));
 }
 
 // Definition of expressionSpec :  '"' expr'"' | '_' '"' expr '"' '_' | '_'
 bool QueryTokenValidator::isExpressionSpec(const std::string &token) {
     size_t len = token.length();
-    return (len > 2 && token[0] == '"' && token[len - 1] == '"' && isExpr(token.substr(1, len - 2)))
-        || (len > 4 && token[0] == '_' && token[1] == '"' && token[len - 2] == '"' && token[len - 1] == '_'
-            && isExpr(token.substr(2, len - 4))) || isWildcard(token);
+    return (len > 2 && token[0] == '"' && token[len - 1] == '"' && isExpr(token.substr(1, len - 2))) ||
+        (len > 4 && token[0] == '_' && token[1] == '"' && token[len - 2] == '"' && token[len - 1] == '_'
+            && isExpr(token.substr(2, len - 4))) ||
+        isWildcard(token);
 }
 
 bool QueryTokenValidator::isExpr(std::string token) {
@@ -138,6 +140,7 @@ bool QueryTokenValidator::isAttrName(const std::string &token) {
 }
 
 bool QueryTokenValidator::isRef(const std::string &token) {
-    return isInteger(token) || isAttrRef(token) || (token.length() > 2 && token.front() == '"' && token.back() == '"'
-        && isIdent(token.substr(1, token.length() - 2)));
+    return isInteger(token) || isAttrRef(token) ||
+        (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
+            isIdent(token.substr(1, token.length() - 2)));
 }

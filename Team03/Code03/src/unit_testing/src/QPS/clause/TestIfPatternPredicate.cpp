@@ -107,7 +107,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
             REQUIRE(result == expected);
         }
 
-            // Test with wildcard, expecting all if statements to be included
+        // Test with wildcard, expecting all if statements to be included
         SECTION("EntityRef as wildcard") {
             EntityRef wildcard = "_";
             IfPatternPredicate ifPatternPredWildcard(ifSyn, wildcard);
@@ -118,7 +118,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
             REQUIRE(result == expected);
         }
 
-            // Test with a synonym of type Variable, which should include all variables associated with if statements
+        // Test with a synonym of type Variable, which should include all variables associated with if statements
         SECTION("EntityRef as synonym of type Variable 'v'") {
             Synonym varSyn(EntityType::Variable, "v");
             IfPatternPredicate ifPatternPredSyn(ifSyn, varSyn);
@@ -129,7 +129,7 @@ TEST_CASE("IfPatternPredicate comprehensive test suite", "[IfPatternPredicate]")
             REQUIRE(result == expected);
         }
 
-            // Test with a specific variable name 'z', expecting to filter only if statements that use 'z'
+        // Test with a specific variable name 'z', expecting to filter only if statements that use 'z'
         SECTION("EntityRef as specific variable name 'z'") {
             EntityRef varRef = std::string("z");
             IfPatternPredicate ifPatternPred(ifSyn, varRef);

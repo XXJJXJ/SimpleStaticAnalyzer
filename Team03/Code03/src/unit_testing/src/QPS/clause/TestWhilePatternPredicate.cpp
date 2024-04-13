@@ -107,7 +107,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
             REQUIRE(result == expected);
         }
 
-            // Test with wildcard, expecting all while statements to be included
+        // Test with wildcard, expecting all while statements to be included
         SECTION("EntityRef as wildcard") {
             EntityRef wildcard = "_";
             WhilePatternPredicate whilePatternPredWildcard(whileSyn, wildcard);
@@ -118,7 +118,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
             REQUIRE(result == expected);
         }
 
-            // Test with a synonym of type Variable, which should include all variables associated with while statements
+        // Test with a synonym of type Variable, which should include all variables associated with while statements
         SECTION("EntityRef as synonym of type Variable 'v'") {
             Synonym varSyn(EntityType::Variable, "v");
             WhilePatternPredicate whilePatternPredSyn(whileSyn, varSyn);
@@ -129,7 +129,7 @@ TEST_CASE("WhilePatternPredicate comprehensive test suite", "[WhilePatternPredic
             REQUIRE(result == expected);
         }
 
-            // Test with a specific variable name 'z', expecting to filter only while statements that use 'z'
+        // Test with a specific variable name 'z', expecting to filter only while statements that use 'z'
         SECTION("EntityRef as specific variable name 'z'") {
             EntityRef varRef = std::string("z");
             WhilePatternPredicate whilePatternPred(whileSyn, varRef);

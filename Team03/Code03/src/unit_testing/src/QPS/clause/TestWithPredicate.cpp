@@ -6,6 +6,7 @@
 #include "qps/entity/evaluation/HeaderTable.h"
 #include "../fakeEntities/FakeQueryManager.cpp"
 
+
 TEST_CASE("Test WithPredicate") {
     QueryEvaluationContext qec = QueryEvaluationContext();
     shared_ptr<FakeQueryManager> qm = make_shared<FakeQueryManager>();
@@ -45,14 +46,13 @@ TEST_CASE("Test WithPredicate") {
         SECTION("Valid with procedure name and string") {
             REQUIRE_NOTHROW(WithPredicate(Ref(stmt2->getProcedureName()), Ref(std::string("main"))));
         }
-
+        
         SECTION("Invalid with procedure name and integer") {
             REQUIRE_THROWS_AS(WithPredicate(Ref(stmt2->getProcedureName()), Ref(1)), SemanticErrorException);
         }
 
         SECTION("Invalid with statement number and string") {
-            REQUIRE_THROWS_AS(WithPredicate(Ref(stmt1->getStatementNumber()), Ref(std::string("1"))),
-                              SemanticErrorException);
+            REQUIRE_THROWS_AS(WithPredicate(Ref(stmt1->getStatementNumber()), Ref(std::string("1"))), SemanticErrorException);
         }
     }
     /*

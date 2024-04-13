@@ -15,10 +15,11 @@ private:
 
 public:
     QueryEvaluator();
-    void setStrategies(const std::vector<std::shared_ptr<Strategy>> &strategies);
-    std::vector<std::string> evaluate(const std::shared_ptr<Query> &query);
+    void setStrategies(const std::vector<std::shared_ptr<Strategy>>& strategies);
+    std::vector<std::string> evaluate(const std::shared_ptr<Query>& query);
     std::shared_ptr<QueryEvaluationContext> getContext() const;
 };
+
 
 #endif //SPA_QUERYEVALUATOR_H
 

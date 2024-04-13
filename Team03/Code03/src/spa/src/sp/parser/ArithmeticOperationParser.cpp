@@ -5,8 +5,9 @@ shared_ptr<Expression> ArithmeticOperationParser::parse() {
 }
 
 bool ArithmeticOperationParser::checkTermFactorOperators(bool isTerm, TokenType tokenType) {
-    return isTerm ? termOperators.find(tokenType) != termOperators.end() : factorOperators.find(tokenType)
-        != factorOperators.end();
+    return isTerm ?
+           termOperators.find(tokenType) != termOperators.end() :
+           factorOperators.find(tokenType) != factorOperators.end();
 }
 
 shared_ptr<Expression> ArithmeticOperationParser::parseTermExpression() {

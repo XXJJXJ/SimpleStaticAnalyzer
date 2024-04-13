@@ -6,6 +6,7 @@
 
 #include "../fakeEntities/FakeQueryManager.cpp"
 
+
 TEST_CASE("Test table retrieval for Calls*") {
     // Set up fake data
     QueryEvaluationContext qec;
@@ -39,7 +40,7 @@ TEST_CASE("Test table retrieval for Calls*") {
     qm->addFakeCallsT(fifth, sixth);
     qm->addFakeCallsT(fifth, seventh);
     qm->addFakeCallsT(sixth, seventh);
-
+    
 
     SECTION("Using synonyms only") {
         SECTION("Using procedure synonym type - gets all") {
@@ -82,7 +83,8 @@ TEST_CASE("Test table retrieval for Calls*") {
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getRows().size() == 3);
         }
-    }SECTION("Using partial wildcards") {
+    }
+    SECTION("Using partial wildcards") {
         Synonym procSyn(EntityType::Procedure, "p");
         SECTION("Calls*(_, p) -- gets 5") {
             CallsTPredicate callsTPred("_", procSyn);
@@ -97,7 +99,8 @@ TEST_CASE("Test table retrieval for Calls*") {
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getSize() == 6);
         }
-    }SECTION("Using pure wildcards") {
+    }
+    SECTION("Using pure wildcards") {
         SECTION("Calls*(_, _) -- gets true") {
             CallsTPredicate callsTPred("_", "_");
             auto table = callsTPred.getResultTable(qec);

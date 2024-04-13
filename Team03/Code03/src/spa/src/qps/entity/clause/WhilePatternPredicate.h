@@ -8,7 +8,7 @@ private:
     Synonym whileSyn;
     EntityRef entRef;
 protected:
-    std::shared_ptr<BaseTable> getFullTable(QueryManager &qm) override;
+    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
 public:
     WhilePatternPredicate(Synonym whileSyn, EntityRef entRef);
     ~WhilePatternPredicate() override = default;

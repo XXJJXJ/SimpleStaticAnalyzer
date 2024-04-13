@@ -5,7 +5,10 @@
 
 class CallStatement : public Statement {
 public:
-    CallStatement(int statementNumber, shared_ptr<Procedure> procedure, string procedureName);
+    CallStatement(
+        int statementNumber,
+        shared_ptr<Procedure> procedure,
+        string procedureName);
     void accept(shared_ptr<Visitor> visitor) override;
     string getTargetProcedureName() const;
     [[nodiscard]] EntityType getType() const override;

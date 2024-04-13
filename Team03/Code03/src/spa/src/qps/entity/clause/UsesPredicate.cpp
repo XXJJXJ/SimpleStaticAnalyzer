@@ -4,7 +4,8 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
-UsesPredicate::UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs) : lhs(std::move(lhs)), rhs(std::move(rhs)) {
+UsesPredicate::UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
+        : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidProcAndStmtRef(this->lhs) || !isValidVariable(this->rhs)) {
         throw SemanticErrorException("Invalid arguments for UsesPredicate constructor");
     }
@@ -30,10 +31,10 @@ bool UsesPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
-    auto castedOther = static_cast<const UsesPredicate &>(other);
+    auto castedOther = static_cast<const UsesPredicate&>(other);
     return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
 }
 size_t UsesPredicate::hash() const {
-    return std::hash<PredicateType>()(getType()) ^ (std::hash<ProcAndStmtRef>()(lhs) << 1)
-        ^ (std::hash<EntityRef>()(rhs) >> 1);
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<ProcAndStmtRef>()(lhs) << 1) 
+            ^ (std::hash<EntityRef>()(rhs) >> 1);
 }

@@ -2,14 +2,14 @@
 #include "HeaderTable.h" // Include this if you need to specifically handle HeaderTable
 #include <stdexcept> // For std::dynamic_pointer_cast
 
-BooleanTable::BooleanTable(const BaseTable &table) : BaseTable() {
+BooleanTable::BooleanTable(const BaseTable& table) : BaseTable() {
     // If the input table is not empty, store false; otherwise, store true
     this->value = !table.isEmpty();
 }
 
-std::shared_ptr<BaseTable> BooleanTable::join(BaseTable &other) {
+std::shared_ptr<BaseTable> BooleanTable::join(BaseTable& other) {
     // Try to cast 'other' to BooleanTable
-    auto otherBoolTable = dynamic_cast<BooleanTable *>(&other);
+    auto otherBoolTable = dynamic_cast<BooleanTable*>(&other);
     if (otherBoolTable != nullptr) {
         // If 'other' is a BooleanTable, return a new BooleanTable based on the logical AND of both tables' values
         return std::make_shared<BooleanTable>(BaseTable()); // Placeholder, set the correct boolean value
@@ -42,7 +42,7 @@ bool BooleanTable::isBoolean() const {
 
 bool BooleanTable::operator==(const BaseTable &other) const {
     // Try to cast 'other' to BooleanTable
-    auto otherBoolTable = dynamic_cast<const BooleanTable *>(&other);
+    auto otherBoolTable = dynamic_cast<const BooleanTable*>(&other);
     if (otherBoolTable != nullptr) {
         // If 'other' is a BooleanTable, compare the values of both tables
         return this->value == otherBoolTable->value;
