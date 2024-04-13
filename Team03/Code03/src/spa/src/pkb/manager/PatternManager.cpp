@@ -6,33 +6,36 @@ shared_ptr<PatternManager> PatternManager::instance = nullptr;
 
 shared_ptr<PatternManager> PatternManager::getInstance() {
     if (!instance) {
-        PatternManager* pm = new PatternManager();
+        PatternManager *pm = new PatternManager();
         instance = make_shared<PatternManager>(*pm);
     }
     return instance;
 }
 
-bool PatternManager::hasAssignPattern(string& expr, bool hasWildcard) {
+bool PatternManager::hasAssignPattern(string &expr, bool hasWildcard) {
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
     return assignPatternStore.hasAssignPattern(expr, hasWildcard);
 }
-vector<vector<shared_ptr<Entity>>> PatternManager::getAssignPattern(string& expr, bool hasWildcard) {
+vector<vector<shared_ptr<Entity>>> PatternManager::getAssignPattern(string &expr, bool hasWildcard) {
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
     return assignPatternStore.getAssignPattern(expr, hasWildcard);
 }
-vector<vector<shared_ptr<Entity>>> PatternManager::findAssignPattern(vector<shared_ptr<AssignStatement>>& allAssign, string& expr, bool hasWildcard) {
+vector<vector<shared_ptr<Entity>>> PatternManager::findAssignPattern(vector<shared_ptr<AssignStatement>> &allAssign,
+                                                                     string &expr,
+                                                                     bool hasWildcard) {
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
     return assignPatternStore.findAssignPattern(allAssign, expr, hasWildcard);
 }
 
 void PatternManager::addIfWhileUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var) {
-    switch (stmt->getType())
-    {
-    case EntityType::While: whilePatternStore.add(stmt, var); return;
-    case EntityType::If: ifPatternStore.add(stmt, var); return;
-    default:
-        // Nothing happens
-        return;
+    switch (stmt->getType()) {
+        case EntityType::While: whilePatternStore.add(stmt, var);
+            return;
+        case EntityType::If: ifPatternStore.add(stmt, var);
+            return;
+        default:
+            // Nothing happens
+            return;
     }
 }
 // If related

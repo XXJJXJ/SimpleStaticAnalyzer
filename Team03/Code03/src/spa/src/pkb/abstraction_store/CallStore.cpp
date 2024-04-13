@@ -7,13 +7,12 @@ bool CallStore::add(shared_ptr<Procedure> caller, shared_ptr<Procedure> callee) 
     return true;
 }
 
-
 void CallStore::tabulate() {
     // Prep: Toposort the procedures
     unordered_set<shared_ptr<Procedure>> nonRoots;
     unordered_set<shared_ptr<Procedure>> roots;
-    for (auto & _pair : directMap) {
-        for (auto & callee : _pair.second) {
+    for (auto &_pair : directMap) {
+        for (auto &callee : _pair.second) {
             nonRoots.insert(callee);
             // if a root is now called, remove
             if (roots.find(callee) != roots.end()) {
@@ -33,14 +32,15 @@ void CallStore::tabulate() {
     }
     // Cannot use entity here since comparator for entity not established
     unordered_set<shared_ptr<Procedure>> visited;
-    for (auto & r : roots) {
+    for (auto &r : roots) {
         dfsAdd(r, visited);
     }
     visited.clear();
 }
 
 // Transitive map used as memoized map
-unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> proc, unordered_set<shared_ptr<Procedure>>& visited) {
+unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> proc,
+                                                       unordered_set<shared_ptr<Procedure>> &visited) {
     if (transitiveMap.find(proc) != transitiveMap.end()) {
         return transitiveMap[proc];
     }
@@ -51,7 +51,7 @@ unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> pro
     unordered_set<shared_ptr<Procedure>> res;
     if (directMap.find(proc) != directMap.end()) {
         auto calledByThis = directMap[proc];
-        for (auto & c : calledByThis) {
+        for (auto &c : calledByThis) {
             auto cRes = dfsAdd(c, visited);
             res.insert(cRes.begin(), cRes.end());
             res.insert(c); // add target
@@ -61,8 +61,8 @@ unordered_set<shared_ptr<Procedure>> CallStore::dfsAdd(shared_ptr<Procedure> pro
     return res;
 }
 
-
-vector<vector<shared_ptr<Entity>>> getProcPairs(const unordered_map<shared_ptr<Procedure>, unordered_set<shared_ptr<Procedure>>>& table) {
+vector<vector<shared_ptr<Entity>>> getProcPairs(const unordered_map<shared_ptr<Procedure>,
+                                                                    unordered_set<shared_ptr<Procedure>>> &table) {
     vector<vector<shared_ptr<Entity>>> res;
     for (auto &v : table) {
         auto stmt1 = v.first;

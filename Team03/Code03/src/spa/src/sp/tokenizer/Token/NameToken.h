@@ -3,6 +3,6 @@
 #include "Token.h"
 
 class NameToken : public Token {
-public:
-	NameToken(std::string value);
+ public:
+  NameToken(std::string value);
 };

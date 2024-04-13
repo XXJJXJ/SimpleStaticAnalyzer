@@ -1,6 +1,6 @@
 #include "QueryPKB.h"
 
-QueryManager::QueryManager () {
+QueryManager::QueryManager() {
     am = AbstractionManager::getInstance();
     em = EntityManager::getInstance();
     pm = PatternManager::getInstance();
@@ -71,7 +71,7 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getParentS() {
 vector<vector<shared_ptr<Entity>>> QueryManager::getParentT() {
     return am->getParentT();
 }
-vector<vector<shared_ptr<Entity>>>QueryManager::getUseByType(EntityType entType) {
+vector<vector<shared_ptr<Entity>>> QueryManager::getUseByType(EntityType entType) {
     return am->getUseByType(entType);
 }
 vector<vector<shared_ptr<Entity>>> QueryManager::getUseByProcedure() {
@@ -83,7 +83,7 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getUseByProcedure() {
     vector<vector<shared_ptr<Entity>>> res;
     for (auto &_pair : procUseMap) {
         auto proc = em->getProcByName(_pair.first);
-        for (auto & var : _pair.second) {
+        for (auto &var : _pair.second) {
             res.push_back({proc, var});
         }
     }
@@ -103,7 +103,7 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getModifyByProcedure() {
     vector<vector<shared_ptr<Entity>>> res;
     for (auto &_pair : procModifyMap) {
         auto proc = em->getProcByName(_pair.first);
-        for (auto & var : _pair.second) {
+        for (auto &var : _pair.second) {
             res.push_back({proc, var});
         }
     }
@@ -126,11 +126,11 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getNextT() {
 }
 
 bool QueryManager::checkLayer(
-    shared_ptr<AssignStatement> a2, 
+    shared_ptr<AssignStatement> a2,
     shared_ptr<Variable> targetVar,
-    vector<shared_ptr<Statement>>& nextLayer,
-    unordered_set<shared_ptr<Statement>>& visited,
-    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>>& nextTMap
+    vector<shared_ptr<Statement>> &nextLayer,
+    unordered_set<shared_ptr<Statement>> &visited,
+    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap
 ) {
     auto nextSMap = am->getNextSMap();
     auto modifyStore = am->getModifyAllMap();
@@ -163,9 +163,8 @@ bool QueryManager::checkLayer(
 // Helper function for affects
 bool QueryManager::hasNotModifiedPath(
     shared_ptr<AssignStatement> a1,
-    shared_ptr<AssignStatement> a2, 
-    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>>& nextTMap)
-{
+    shared_ptr<AssignStatement> a2,
+    unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap) {
     // do a bfs traverse, initialize starting layer
     vector<shared_ptr<Statement>> nextLayer = {a1};
     shared_ptr<Variable> targetVar = a1->getVariable();
@@ -189,27 +188,25 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getAffects() {
         and a2 uses v
     */
     vector<vector<shared_ptr<AssignStatement>>> filteredForRelatedAssigns;
-    for (auto & _p : nextT) {
+    for (auto &_p : nextT) {
         if (_p[0]->isOfType(EntityType::Assign) && _p[1]->isOfType(EntityType::Assign)) {
             auto a1 = dynamic_pointer_cast<AssignStatement>(_p[0]);
             auto a2 = dynamic_pointer_cast<AssignStatement>(_p[1]);
             if (useStore[a2].find(a1->getVariable()) != useStore[a2].end()) {
                 filteredForRelatedAssigns.push_back({a1, a2});
             }
-            
+
         }
     }
     // if there exist a path from a1 to a2 such that v is not modified, insert into results
     vector<vector<shared_ptr<Entity>>> results;
     for (auto _ap : filteredForRelatedAssigns) {
-        if (hasNotModifiedPath(_ap[0],_ap[1], nextTMap)) {
+        if (hasNotModifiedPath(_ap[0], _ap[1], nextTMap)) {
             results.push_back({_ap[0], _ap[1]});
         }
     }
     return results;
 }
-
-
 
 unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> QueryManager::getFollowSMap() {
     return am->getFollowSMap();
@@ -242,7 +239,6 @@ unordered_map<string, unordered_set<shared_ptr<Variable>>> QueryManager::getModi
     return am->getModifyByProcedureMap();
 }
 
-
 vector<vector<shared_ptr<Entity>>> QueryManager::getAssignPattern(string expr, bool hasWildcard) {
     if (pm->hasAssignPattern(expr, hasWildcard)) {
         return pm->getAssignPattern(expr, hasWildcard);
@@ -263,21 +259,31 @@ vector<vector<shared_ptr<Entity>>> QueryManager::getWhilePattern() {
 vector<shared_ptr<Entity>> QueryManager::getAllEntitiesByType(EntityType entityType) {
     vector<shared_ptr<Entity>> baseClassEntities;
 
-    auto addEntities = [&](auto&& entities) {
-        baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
+    auto addEntities = [&](auto &&entities) {
+      baseClassEntities.insert(baseClassEntities.end(), entities.begin(), entities.end());
     };
 
     switch (entityType) {
-        case EntityType::Procedure: addEntities(getAllProcedures()); break;
-        case EntityType::Stmt: addEntities(getAllStatements()); break;
-        case EntityType::Assign: addEntities(getAllAssignStatements()); break;
-        case EntityType::Print: addEntities(getAllPrintStatements()); break;
-        case EntityType::Read: addEntities(getAllReadStatements()); break;
-        case EntityType::Call: addEntities(getAllCallStatements()); break;
-        case EntityType::If: addEntities(getAllIfStatements()); break;
-        case EntityType::While: addEntities(getAllWhileStatements()); break;
-        case EntityType::Variable: addEntities(getAllVariables()); break;
-        case EntityType::Constant: addEntities(getAllConstants()); break;
+        case EntityType::Procedure: addEntities(getAllProcedures());
+            break;
+        case EntityType::Stmt: addEntities(getAllStatements());
+            break;
+        case EntityType::Assign: addEntities(getAllAssignStatements());
+            break;
+        case EntityType::Print: addEntities(getAllPrintStatements());
+            break;
+        case EntityType::Read: addEntities(getAllReadStatements());
+            break;
+        case EntityType::Call: addEntities(getAllCallStatements());
+            break;
+        case EntityType::If: addEntities(getAllIfStatements());
+            break;
+        case EntityType::While: addEntities(getAllWhileStatements());
+            break;
+        case EntityType::Variable: addEntities(getAllVariables());
+            break;
+        case EntityType::Constant: addEntities(getAllConstants());
+            break;
         default: throw std::invalid_argument("Unknown entity type");
     }
 

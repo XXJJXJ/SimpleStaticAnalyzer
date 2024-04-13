@@ -6,8 +6,8 @@
 #include "StatementParserFactory.h"
 
 class ProcedureParser : public EntityParser<Procedure> {
-public:
-	shared_ptr<Procedure> parseEntity(Tokens& tokens) override;
-	static string extractProcedureName(Tokens& tokens);
-	static bool isEndOfProcedure(Tokens& tokens);
+ public:
+  shared_ptr<Procedure> parseEntity(Tokens &tokens) override;
+  static string extractProcedureName(Tokens &tokens);
+  static bool isEndOfProcedure(Tokens &tokens);
 };

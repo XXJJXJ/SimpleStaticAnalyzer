@@ -3,8 +3,8 @@
 #include "Token.h"
 
 class RelationalToken : public Token {
-public:
-	RelationalToken(std::string value);
-private:
-	TokenType getTokenTypeFromValue(std::string value);
+ public:
+  RelationalToken(std::string value);
+ private:
+  TokenType getTokenTypeFromValue(std::string value);
 };
