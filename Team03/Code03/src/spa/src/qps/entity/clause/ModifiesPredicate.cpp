@@ -4,8 +4,7 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "qps/entity/evaluation/HeaderTable.h"
 
-ModifiesPredicate::ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
-        : lhs(std::move(lhs)), rhs(std::move(rhs)) {
+ModifiesPredicate::ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs) : lhs(std::move(lhs)), rhs(std::move(rhs)) {
     if (!isValidProcAndStmtRef(this->lhs) || !isValidVariable(this->rhs)) {
         throw SemanticErrorException("Invalid arguments for ModifiesPredicate constructor");
     }
@@ -13,7 +12,7 @@ ModifiesPredicate::ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs)
     addEntityRef(this->rhs);
 }
 
-std::shared_ptr<BaseTable> ModifiesPredicate::getFullTable(QueryManager& qm) {
+std::shared_ptr<BaseTable> ModifiesPredicate::getFullTable(QueryManager &qm) {
     auto procTable = std::make_shared<BaseTable>(qm.getModifyByProcedure(), 2);
     auto stmtTable = std::make_shared<BaseTable>(qm.getModifyByType(EntityType::Stmt), 2);
     procTable->append(*stmtTable);
@@ -28,10 +27,10 @@ bool ModifiesPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
-    auto castedOther = static_cast<const ModifiesPredicate&>(other);
+    auto castedOther = static_cast<const ModifiesPredicate &>(other);
     return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
 }
 size_t ModifiesPredicate::hash() const {
-    return std::hash<PredicateType>()(getType()) ^ (std::hash<ProcAndStmtRef>()(lhs) << 1) 
-            ^ (std::hash<EntityRef>()(rhs) >> 1);
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<ProcAndStmtRef>()(lhs) << 1)
+        ^ (std::hash<EntityRef>()(rhs) >> 1);
 }

@@ -1,4 +1,3 @@
-
 #pragma once
 #include "CellFilter.h"
 #include "qps/entity/query/Synonym.h" // Make sure this path is correct

@@ -104,13 +104,12 @@ TEST_CASE("Synonyms Grouped by Connected Predicates", "[JoinWithPredicateStrateg
 
     auto expectedTableForGroup2 = std::make_shared<HeaderTable>(headersGroup2, entitiesGroup2);
 
-    auto actualTableForGroup2 = context.getTableForSynonym(
-            *stmtSyn2Ptr); // This fetches the table for the group containing s2 and s3
+    auto actualTableForGroup2 =
+        context.getTableForSynonym(*stmtSyn2Ptr); // This fetches the table for the group containing s2 and s3
 
     REQUIRE(actualTableForGroup2 != nullptr);
     REQUIRE(*actualTableForGroup2 == *expectedTableForGroup2);
 }
-
 
 TEST_CASE("Mix of Constant Predicates and Predicates with Synonyms", "[JoinWithPredicateStrategy]") {
     auto fakeQueryManager = std::make_shared<FakeQueryManager>();
@@ -157,7 +156,6 @@ TEST_CASE("Mix of Constant Predicates and Predicates with Synonyms", "[JoinWithP
     REQUIRE(*actualTableForSynonym == *expectedTable);
 }
 
-
 TEST_CASE("Predicates Affecting the Same Group Multiple Times", "[JoinWithPredicateStrategy]") {
     auto fakeQueryManager = std::make_shared<FakeQueryManager>();
     QueryEvaluationContext context;
@@ -178,8 +176,8 @@ TEST_CASE("Predicates Affecting the Same Group Multiple Times", "[JoinWithPredic
 
     // Predicates setup
     auto predicate1 = std::make_shared<FollowsPredicate>(*stmtSyn1Ptr, *stmtSyn2Ptr);
-    auto predicate2 = std::make_shared<FollowsPredicate>(*stmtSyn2Ptr,
-                                                         *stmtSyn1Ptr); // For the sake of example, assume it's valid
+    auto predicate2 =
+        std::make_shared<FollowsPredicate>(*stmtSyn2Ptr, *stmtSyn1Ptr); // For the sake of example, assume it's valid
 
     // Execute strategies
     JoinWithPredicateStrategy strategy1(predicate1);
@@ -247,10 +245,8 @@ TEST_CASE("Comprehensive Test: Single Group, Multiple Predicates", "[JoinWithPre
     REQUIRE(std::find(resultRows.begin(), resultRows.end(), "3 4 3 4") != resultRows.end());
 }
 
-
-void
-populateRandomFollowsData(std::shared_ptr<FakeQueryManager> fakeQueryManager, int numberOfStatements, int maxFollows,
-                          unsigned int seed) {
+void populateRandomFollowsData(
+    std::shared_ptr<FakeQueryManager> fakeQueryManager, int numberOfStatements, int maxFollows, unsigned int seed) {
     std::vector<std::shared_ptr<Statement>> statements;
     statements.reserve(numberOfStatements);
 
@@ -279,7 +275,6 @@ populateRandomFollowsData(std::shared_ptr<FakeQueryManager> fakeQueryManager, in
     }
 }
 
-
 TEST_CASE("Comprehensive Test: Multiple Group, Multiple Predicates, Changing Evaluation Order",
           "[JoinWithPredicateStrategy]") {
     auto fakeQueryManager = std::make_shared<FakeQueryManager>();
@@ -298,9 +293,7 @@ TEST_CASE("Comprehensive Test: Multiple Group, Multiple Predicates, Changing Eva
     auto stmtSyn5Ptr = std::make_shared<Synonym>(EntityType::Stmt, "s5");
     auto stmtSyn6Ptr = std::make_shared<Synonym>(EntityType::Stmt, "s6");
 
-    vector<SynonymPtrSet> groups{{stmtSyn1Ptr, stmtSyn2Ptr, stmtSyn5Ptr},
-                                 {stmtSyn3Ptr, stmtSyn6Ptr},
-                                 {stmtSyn4Ptr}};
+    vector<SynonymPtrSet> groups{{stmtSyn1Ptr, stmtSyn2Ptr, stmtSyn5Ptr}, {stmtSyn3Ptr, stmtSyn6Ptr}, {stmtSyn4Ptr}};
     context.setSynonymGroups(groups); // All synonyms in one group due to their connections
 
     // Predicates setup, demonstrating different types of relationships
@@ -318,25 +311,22 @@ TEST_CASE("Comprehensive Test: Multiple Group, Multiple Predicates, Changing Eva
     // Group 3: s4
     auto predicate8 = std::make_shared<FollowsPredicate>(*stmtSyn4Ptr, "_");
 
-    auto strategies = std::vector<JoinWithPredicateStrategy>{
-            JoinWithPredicateStrategy(predicate1),
-            JoinWithPredicateStrategy(predicate2),
-            JoinWithPredicateStrategy(predicate3),
-            JoinWithPredicateStrategy(predicate4),
-            JoinWithPredicateStrategy(predicate5),
-            JoinWithPredicateStrategy(predicate6),
-            JoinWithPredicateStrategy(predicate7),
-            JoinWithPredicateStrategy(predicate8)
-    };
+    auto strategies = std::vector<JoinWithPredicateStrategy>{JoinWithPredicateStrategy(predicate1),
+                                                             JoinWithPredicateStrategy(predicate2),
+                                                             JoinWithPredicateStrategy(predicate3),
+                                                             JoinWithPredicateStrategy(predicate4),
+                                                             JoinWithPredicateStrategy(predicate5),
+                                                             JoinWithPredicateStrategy(predicate6),
+                                                             JoinWithPredicateStrategy(predicate7),
+                                                             JoinWithPredicateStrategy(predicate8)};
     auto result_initialized = false;
     int table1Size, table2Size, table3Size;
     for (int i = 0; i < 30; i++) {
         // Randomize the order of strategies
         std::shuffle(strategies.begin(), strategies.end(), std::mt19937(std::random_device()()));
-        for (auto &strategy: strategies) {
+        for (auto &strategy : strategies) {
             strategy.execute(context);
         }
-
 
         auto resultTable1 = context.getTableForSynonym(*stmtSyn1Ptr);
         auto resultTable2 = context.getTableForSynonym(*stmtSyn3Ptr);
@@ -361,7 +351,6 @@ TEST_CASE("Comprehensive Test: Multiple Group, Multiple Predicates, Changing Eva
         }
 
     }
-
 
 }
 

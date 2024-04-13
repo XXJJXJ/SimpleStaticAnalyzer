@@ -1,12 +1,7 @@
 #include "Statement.h"
 
-Statement::Statement(
-    int statementNumber_,
-    EntityType statementType,
-    string procedureName_)
-    : statementNumber(std::move(statementNumber_)),
-      statementType(std::move(statementType)),
-      procedureName(std::move(procedureName_)) {
+Statement::Statement(int statementNumber_, EntityType statementType, string procedureName_) : statementNumber(std::move(
+    statementNumber_)), statementType(std::move(statementType)), procedureName(std::move(procedureName_)) {
 }
 
 int Statement::getStatementNumber() const {
@@ -30,7 +25,7 @@ std::size_t Statement::hash() const {
     return hasher(getStatementNumber());
 }
 
-bool Statement::operator==(const Statement& other) const {
+bool Statement::operator==(const Statement &other) const {
     return getStatementNumber() == other.getStatementNumber();
 }
 

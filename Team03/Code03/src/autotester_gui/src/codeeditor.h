@@ -11,9 +11,7 @@ class QWidget;
 
 class LineNumberArea;
 
-
-class CodeEditor : public QPlainTextEdit
-{
+class CodeEditor : public QPlainTextEdit {
     Q_OBJECT
 
 public:
@@ -25,8 +23,9 @@ public:
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
-private slots:
-    void updateLineNumberAreaWidth(int newBlockCount);
+private
+    slots: void updateLineNumberAreaWidth(int
+    newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &, int);
 
@@ -34,9 +33,7 @@ private:
     QWidget *lineNumberArea;
 };
 
-
-class LineNumberArea : public QWidget
-{
+class LineNumberArea : public QWidget {
 public:
     LineNumberArea(CodeEditor *editor) : QWidget(editor) {
         codeEditor = editor;
@@ -54,6 +51,5 @@ protected:
 private:
     CodeEditor *codeEditor;
 };
-
 
 #endif

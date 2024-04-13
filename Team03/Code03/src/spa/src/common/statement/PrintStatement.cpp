@@ -1,14 +1,8 @@
 #include "PrintStatement.h"
 
-PrintStatement::PrintStatement(
-    int statementNumber,
-    shared_ptr<Variable> variable_,
-    string procedureName) 
+PrintStatement::PrintStatement(int statementNumber, shared_ptr<Variable> variable_, string procedureName)
     : variable(std::move(variable_)),
-    Statement(
-        std::move(statementNumber),
-        EntityType::Print,
-        std::move(procedureName)) {}
+      Statement(std::move(statementNumber), EntityType::Print, std::move(procedureName)) {}
 
 shared_ptr<Variable> PrintStatement::getVariable() const {
     return variable;

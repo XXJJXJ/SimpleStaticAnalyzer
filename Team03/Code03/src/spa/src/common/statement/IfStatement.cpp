@@ -1,13 +1,8 @@
 #include "IfStatement.h"
 
-IfStatement::IfStatement(
-    int statementNumber,
-    shared_ptr<ConditionalOperation> condition,
-    string procedureName) 
-    : Statement(
-        std::move(statementNumber),
-        EntityType::If,
-        std::move(procedureName)), condition(std::move(condition)) {}
+IfStatement::IfStatement(int statementNumber, shared_ptr<ConditionalOperation> condition, string procedureName)
+    : Statement(std::move(statementNumber), EntityType::If, std::move(procedureName)),
+      condition(std::move(condition)) {}
 
 void IfStatement::addThenStatement(shared_ptr<Statement> statement) {
     thenStatementList.push_back(statement);

@@ -6,7 +6,6 @@
 
 #include "../fakeEntities/FakeQueryManager.cpp"
 
-
 TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
     // Set up fake data
     QueryEvaluationContext qec = QueryEvaluationContext();
@@ -33,22 +32,19 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("Follows(2, 3) is true") {
+        }SECTION("Follows(2, 3) is true") {
             FollowsPredicate followsPred(2, 3);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("Follows(3, 4) is true") {
+        }SECTION("Follows(3, 4) is true") {
             FollowsPredicate followsPred(3, 4);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("Follows(4, 5) is true") {
+        }SECTION("Follows(4, 5) is true") {
             FollowsPredicate followsPred(4, 5);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
@@ -56,39 +52,39 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
             REQUIRE(boolTable->isTrue());
         }
 
-         SECTION("Follows(5, 4) is false") {
-             FollowsPredicate followsPred(5, 4);
-             auto table = followsPred.getResultTable(qec);
-             REQUIRE(table->isBoolean());
-             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
-             REQUIRE(!boolTable->isTrue());
-         }
+        SECTION("Follows(5, 4) is false") {
+            FollowsPredicate followsPred(5, 4);
+            auto table = followsPred.getResultTable(qec);
+            REQUIRE(table->isBoolean());
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(!boolTable->isTrue());
+        }
 
-         SECTION("Follows(4, 3) is false") {
-             FollowsPredicate followsPred(4, 3);
-             auto table = followsPred.getResultTable(qec);
-             REQUIRE(table->isBoolean());
-             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
-             REQUIRE(!boolTable->isTrue());
-         }
+        SECTION("Follows(4, 3) is false") {
+            FollowsPredicate followsPred(4, 3);
+            auto table = followsPred.getResultTable(qec);
+            REQUIRE(table->isBoolean());
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(!boolTable->isTrue());
+        }
 
-         SECTION("Follows(3, 2) is false") {
-             FollowsPredicate followsPred(3, 2);
-             auto table = followsPred.getResultTable(qec);
-             REQUIRE(table->isBoolean());
-             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
-             REQUIRE(!boolTable->isTrue());
-         }
+        SECTION("Follows(3, 2) is false") {
+            FollowsPredicate followsPred(3, 2);
+            auto table = followsPred.getResultTable(qec);
+            REQUIRE(table->isBoolean());
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(!boolTable->isTrue());
+        }
 
-         SECTION("Follows(2, 1) is false") {
-             FollowsPredicate followsPred(2, 1);
-             auto table = followsPred.getResultTable(qec);
-             REQUIRE(table->isBoolean());
-             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
-             REQUIRE(!boolTable->isTrue());
-         }
+        SECTION("Follows(2, 1) is false") {
+            FollowsPredicate followsPred(2, 1);
+            auto table = followsPred.getResultTable(qec);
+            REQUIRE(table->isBoolean());
+            auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
+            REQUIRE(!boolTable->isTrue());
+        }
     }
-    
+
     SECTION("Using synonyms only") {
         SECTION("Using stmt synonym type - gets all") {
             Synonym stmtSyn(EntityType::Stmt, "s1");
@@ -133,8 +129,7 @@ TEST_CASE("Test table retrieval", "[FollowsPredicate]") {
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->getColumnCount() == 2);
             REQUIRE(table->getRows().size() == 1);
-        }
-        SECTION("Using same synonyms - gets 0") {
+        }SECTION("Using same synonyms - gets 0") {
             Synonym stmtSyn(EntityType::Stmt, "s1");
             FollowsPredicate followsPred(stmtSyn, stmtSyn);
             auto table = followsPred.getResultTable(qec);

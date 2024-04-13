@@ -13,7 +13,7 @@ public:
     EntityType getExpressionType() const;
     string getName() const override;
     virtual inline bool isLeafNode() { return false; }
-    virtual bool operator==(const Expression& other) const;
+    virtual bool operator==(const Expression &other) const;
     [[nodiscard]] EntityType getType() const override;
     [[nodiscard]] bool isOfType(EntityType type) const override;
 

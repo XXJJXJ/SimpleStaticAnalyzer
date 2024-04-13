@@ -3,15 +3,14 @@
 
 #include "QueryEvaluator.h"
 
-
 QueryEvaluator::QueryEvaluator() : context(std::make_shared<QueryEvaluationContext>()) {}
 
-void QueryEvaluator::setStrategies(const std::vector<std::shared_ptr<Strategy>>& newStrategies) {
+void QueryEvaluator::setStrategies(const std::vector<std::shared_ptr<Strategy>> &newStrategies) {
     strategies = newStrategies;
 }
 
-std::vector<std::string> QueryEvaluator::evaluate(const std::shared_ptr<Query>& query) {
-    for (const auto& strategy : strategies) {
+std::vector<std::string> QueryEvaluator::evaluate(const std::shared_ptr<Query> &query) {
+    for (const auto &strategy : strategies) {
         strategy->execute(*context);
     }
     return context->getResults();

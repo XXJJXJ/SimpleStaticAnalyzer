@@ -1,7 +1,6 @@
 #include "Variable.h"
 
-Variable::Variable(string name) 
-    : Expression(std::move(name), EntityType::Variable) {}
+Variable::Variable(string name) : Expression(std::move(name), EntityType::Variable) {}
 
 void Variable::accept(shared_ptr<Visitor> visitor) {
     visitor->visitVariable(make_shared<Variable>(*this));
@@ -20,7 +19,7 @@ std::size_t Variable::hash() const {
     return hasher(getName());
 }
 
-bool Variable::operator==(const Variable& other) const {
+bool Variable::operator==(const Variable &other) const {
     return (getName() == other.getName());
 }
 

@@ -39,7 +39,7 @@ bool NotPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
-    auto castedOther = static_cast<const NotPredicate&>(other);
+    auto castedOther = static_cast<const NotPredicate &>(other);
     return *predicate == *castedOther.predicate;
 }
 

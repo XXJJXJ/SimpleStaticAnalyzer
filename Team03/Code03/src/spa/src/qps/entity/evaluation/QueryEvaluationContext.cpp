@@ -6,13 +6,12 @@
 #include <string>
 #include <sstream>
 
-
 QueryEvaluationContext::QueryEvaluationContext() {
     queryManager = std::make_shared<QueryManager>();
     predicateResultCache = std::make_shared<PredicateResultCache>();
 }
 
-void QueryEvaluationContext::addTableForSynonym(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table) {
+void QueryEvaluationContext::addTableForSynonym(const Synonym &synonym, const std::shared_ptr<HeaderTable> &table) {
     synonymToTableMap[synonym] = table;
 }
 
@@ -20,7 +19,7 @@ void QueryEvaluationContext::clearTables() {
     synonymToTableMap.clear();
 }
 
-std::shared_ptr<HeaderTable> QueryEvaluationContext::getTableForSynonym(const Synonym& synonym) {
+std::shared_ptr<HeaderTable> QueryEvaluationContext::getTableForSynonym(const Synonym &synonym) {
     // If synonym is not in the context, report error
     if (!containsSynonym(synonym)) {
         throw QPSEvaluationException("QEC: Trying to access table for a nonexistent synonym.");
@@ -33,7 +32,7 @@ std::shared_ptr<HeaderTable> QueryEvaluationContext::getTableForSynonym(const Sy
     auto entities = queryManager->getAllEntitiesByType(synonym.getType());
     HeaderTable newTable;
     newTable.setHeaders({std::make_shared<Synonym>(synonym)});
-    for (const auto& entity : entities) {
+    for (const auto &entity : entities) {
         newTable.addRow(TableRow({entity}));
     }
     // Store the table in context
@@ -41,9 +40,9 @@ std::shared_ptr<HeaderTable> QueryEvaluationContext::getTableForSynonym(const Sy
     return std::make_shared<HeaderTable>(newTable);
 }
 
-bool QueryEvaluationContext::containsSynonym(const Synonym& synonym) const {
+bool QueryEvaluationContext::containsSynonym(const Synonym &synonym) const {
     // Loop through synonym ptr sets to check if the synonym is present
-    for (const auto& group : synonymGroups) {
+    for (const auto &group : synonymGroups) {
         if (group.find(std::make_shared<Synonym>(synonym)) != group.end()) {
             return true;
         }
@@ -53,7 +52,7 @@ bool QueryEvaluationContext::containsSynonym(const Synonym& synonym) const {
 
 std::vector<Synonym> QueryEvaluationContext::getSynonyms() const {
     std::vector<Synonym> synonyms;
-    for (const auto& pair : synonymToTableMap) {
+    for (const auto &pair : synonymToTableMap) {
         synonyms.push_back(pair.first);
     }
     return synonyms;
@@ -63,7 +62,7 @@ std::shared_ptr<QueryManager> QueryEvaluationContext::getQueryManager() const {
     return queryManager;
 }
 
-void QueryEvaluationContext::setQueryManager(const std::shared_ptr<QueryManager>& queryManager) {
+void QueryEvaluationContext::setQueryManager(const std::shared_ptr<QueryManager> &queryManager) {
     this->queryManager = queryManager;
 }
 
@@ -90,7 +89,7 @@ bool QueryEvaluationContext::isCurrentResultEmpty() const {
     if (resultMustBeEmpty) {
         return true;
     }
-    for (const auto& pair : synonymToTableMap) {
+    for (const auto &pair : synonymToTableMap) {
         if (pair.second->isEmpty()) {
             return true;
         }
@@ -102,8 +101,7 @@ std::shared_ptr<BaseTable> QueryEvaluationContext::getResultTable() const {
     return resultTable;
 }
 
-void QueryEvaluationContext::setSynonymGroups(
-        const vector<SynonymPtrSet> &synonymGroups) {
+void QueryEvaluationContext::setSynonymGroups(const vector<SynonymPtrSet> &synonymGroups) {
     this->synonymGroups = synonymGroups;
 }
 
@@ -111,16 +109,17 @@ void QueryEvaluationContext::setSynonymGroups(
 
 // ai-gen start(gpt, 0, e)
 // prompt: https://chat.openai.com/share/7c590366-8e0e-40e2-863f-2862fa1ae192
-bool QueryEvaluationContext::isTableInitialized(const Synonym& synonym) const {
+bool QueryEvaluationContext::isTableInitialized(const Synonym &synonym) const {
     return synonymToTableMap.find(synonym) != synonymToTableMap.end();
 }
 
-void QueryEvaluationContext::putTableForSynonymGroup(const Synonym& synonym, const std::shared_ptr<HeaderTable> &table) {
+void QueryEvaluationContext::putTableForSynonymGroup(
+    const Synonym &synonym, const std::shared_ptr<HeaderTable> &table) {
     // Find the synonym group for the given synonym
-    for (const auto& group : synonymGroups) {
+    for (const auto &group : synonymGroups) {
         if (group.find(std::make_shared<Synonym>(synonym)) != group.end()) {
             // For each synonym in the group, initialize the table
-            for (const auto& syn : group) {
+            for (const auto &syn : group) {
                 synonymToTableMap[*syn] = table;
             }
             break;

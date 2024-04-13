@@ -6,7 +6,6 @@
 
 #include "../fakeEntities/FakeQueryManager.cpp"
 
-
 TEST_CASE("Test parentT table retrieval", "[ParentTPredicate]") {
     // Set up fake data
     QueryEvaluationContext qec = QueryEvaluationContext();
@@ -33,22 +32,19 @@ TEST_CASE("Test parentT table retrieval", "[ParentTPredicate]") {
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("ParentT(2, 3) is true") {
+        }SECTION("ParentT(2, 3) is true") {
             ParentTPredicate followsPred(2, 3);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("ParentT(3, 4) is true") {
+        }SECTION("ParentT(3, 4) is true") {
             ParentTPredicate followsPred(3, 4);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("ParentT(4, 5) is true") {
+        }SECTION("ParentT(4, 5) is true") {
             ParentTPredicate followsPred(4, 5);
             auto table = followsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());

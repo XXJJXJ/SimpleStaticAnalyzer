@@ -36,53 +36,40 @@ struct PredicateTypeHash {
     }
 };
 
-PredicateType getPredicateType(const std::string& keyword);
+PredicateType getPredicateType(const std::string &keyword);
 
 enum class ClauseType {
-    SuchThat,
-    Pattern,
-    With,
-    And,
-    Invalid
+    SuchThat, Pattern, With, And, Invalid
 };
 
 enum class AttributeType {
-    ProcName,
-    VarName,
-    Value,
-    StmtNumber,
-    Name,
-    Invalid
+    ProcName, VarName, Value, StmtNumber, Name, Invalid
 };
 
-AttributeType getAttributeTypeFromString(const std::string& attribute);
+AttributeType getAttributeTypeFromString(const std::string &attribute);
 
 enum class AttributeValueType {
     Name, Integer
 };
 
 // We cannot do subtype check without initializing the Entity and call .isOfType(), let's get back to something simple.
-const unordered_set<EntityType> VALID_STATEMENT_TYPES = {EntityType::Stmt, EntityType::Assign, EntityType::Call,
-                                                         EntityType::While, EntityType::If, EntityType::Read,
-                                                         EntityType::Print};
+const unordered_set<EntityType> VALID_STATEMENT_TYPES =
+    {EntityType::Stmt, EntityType::Assign, EntityType::Call, EntityType::While, EntityType::If, EntityType::Read,
+     EntityType::Print};
 
 const unordered_set<EntityType> VALID_PROCEDURE_TYPES = {EntityType::Procedure};
 
 // design-entity : 'stmt' | 'read' | 'print' | 'call' | 'while' |
 //                'if' | 'assign' | 'variable' | 'constant' | 'procedure'
-const unordered_set<EntityType> VALID_DESIGN_ENTITY_TYPES = {EntityType::Stmt, EntityType::Read, EntityType::Print,
-                                                             EntityType::Call, EntityType::While, EntityType::If,
-                                                             EntityType::Assign, EntityType::Variable,
-                                                             EntityType::Constant,
-                                                             EntityType::Procedure};
+const unordered_set<EntityType> VALID_DESIGN_ENTITY_TYPES =
+    {EntityType::Stmt, EntityType::Read, EntityType::Print, EntityType::Call, EntityType::While, EntityType::If,
+     EntityType::Assign, EntityType::Variable, EntityType::Constant, EntityType::Procedure};
 
-static const std::unordered_map<AttributeType, unordered_set<EntityType>> VALID_ENTITY_TYPES_FOR_ATTRIBUTE = {
-        {AttributeType::ProcName, {EntityType::Procedure, EntityType::Call}},
-        {AttributeType::VarName, {EntityType::Variable, EntityType::Read, EntityType::Print}},
-        {AttributeType::Value, {EntityType::Constant}},
-        {AttributeType::StmtNumber, VALID_STATEMENT_TYPES},
-        {AttributeType::Name, VALID_DESIGN_ENTITY_TYPES}
-};
+static const std::unordered_map<AttributeType, unordered_set<EntityType>> VALID_ENTITY_TYPES_FOR_ATTRIBUTE =
+    {{AttributeType::ProcName, {EntityType::Procedure, EntityType::Call}},
+     {AttributeType::VarName, {EntityType::Variable, EntityType::Read, EntityType::Print}},
+     {AttributeType::Value, {EntityType::Constant}}, {AttributeType::StmtNumber, VALID_STATEMENT_TYPES},
+     {AttributeType::Name, VALID_DESIGN_ENTITY_TYPES}};
 
 const string WILDCARD = "_";
 
@@ -99,12 +86,12 @@ using ProcAndStmtRef = std::variant<int, Synonym, std::string>; // procAndStmtRe
 
 bool isValidStatementRef(const StatementRef &ref);
 bool isValidEntityRef(const EntityRef &ref);
-bool isValidProcAndStmtRef(const ProcAndStmtRef& ref);
-bool isValidVariable(const EntityRef& ref);
-bool isValidProcedure(const EntityRef& ref);
-bool isWildcard(StatementRef& ref);
-bool isWildcard(EntityRef & ref);
-bool hasWildcard(std::string& expr);
-std::string stripWildcard(std::string& expr);
-bool isValidEntityRefWithType(const EntityRef& ref, EntityType type);
+bool isValidProcAndStmtRef(const ProcAndStmtRef &ref);
+bool isValidVariable(const EntityRef &ref);
+bool isValidProcedure(const EntityRef &ref);
+bool isWildcard(StatementRef &ref);
+bool isWildcard(EntityRef &ref);
+bool hasWildcard(std::string &expr);
+std::string stripWildcard(std::string &expr);
+bool isValidEntityRefWithType(const EntityRef &ref, EntityType type);
 

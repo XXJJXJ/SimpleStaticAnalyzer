@@ -7,14 +7,14 @@
 #include "catch.hpp"
 #include "../fakeEntities/FakeQueryManager.cpp"
 
-
 TEST_CASE("HeaderTable Join Functionality", "[HeaderTable]") {
     using std::make_shared;
     using std::dynamic_pointer_cast;
 
     SECTION("Empty table with headers joins empty table") {
         HeaderTable table1;
-        table1.setHeaders({make_shared<Synonym>(EntityType::Variable, "A"), make_shared<Synonym>(EntityType::Variable, "B")});
+        table1.setHeaders({make_shared<Synonym>(EntityType::Variable, "A"),
+                           make_shared<Synonym>(EntityType::Variable, "B")});
         HeaderTable table2; // Empty table
 
         auto resultBaseTable = table1.join(table2);
@@ -26,10 +26,12 @@ TEST_CASE("HeaderTable Join Functionality", "[HeaderTable]") {
 
     SECTION("Empty table without rows joins non-empty table") {
         HeaderTable table1;
-        table1.setHeaders({make_shared<Synonym>(EntityType::Variable, "A"), make_shared<Synonym>(EntityType::Variable, "B")});
+        table1.setHeaders({make_shared<Synonym>(EntityType::Variable, "A"),
+                           make_shared<Synonym>(EntityType::Variable, "B")});
 
         HeaderTable table2;
-        table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B"), make_shared<Synonym>(EntityType::Variable, "C")});
+        table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B"),
+                           make_shared<Synonym>(EntityType::Variable, "C")});
         table2.addRow(TableRow({make_shared<MockEntity>("Entity2B"), make_shared<MockEntity>("Entity2C")}));
 
         auto resultBaseTable = table1.join(table2);
@@ -43,7 +45,8 @@ TEST_CASE("HeaderTable Join Functionality", "[HeaderTable]") {
         HeaderTable table1; // Completely empty table
 
         HeaderTable table2;
-        table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B"), make_shared<Synonym>(EntityType::Variable, "C")});
+        table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B"),
+                           make_shared<Synonym>(EntityType::Variable, "C")});
         table2.addRow(TableRow({make_shared<MockEntity>("Entity2B"), make_shared<MockEntity>("Entity2C")}));
 
         auto resultBaseTable = table1.join(table2);
@@ -55,11 +58,13 @@ TEST_CASE("HeaderTable Join Functionality", "[HeaderTable]") {
 
     SECTION("Normal join") {
         HeaderTable table1;
-        table1.setHeaders({make_shared<Synonym>(EntityType::Variable, "A"), make_shared<Synonym>(EntityType::Variable, "B")});
+        table1.setHeaders({make_shared<Synonym>(EntityType::Variable, "A"),
+                           make_shared<Synonym>(EntityType::Variable, "B")});
         table1.addRow(TableRow({make_shared<MockEntity>("Entity1A"), make_shared<MockEntity>("Entity1B")}));
 
         HeaderTable table2;
-        table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B"), make_shared<Synonym>(EntityType::Variable, "C")});
+        table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B"),
+                           make_shared<Synonym>(EntityType::Variable, "C")});
         table2.addRow(TableRow({make_shared<MockEntity>("Entity1B"), make_shared<MockEntity>("Entity2C")}));
 
         auto resultBaseTable = table1.join(table2);
@@ -71,8 +76,10 @@ TEST_CASE("HeaderTable Join Functionality", "[HeaderTable]") {
 
     SECTION("The table to be joined with current one is a subset of current table") {
         HeaderTable table1;
-        table1.setHeaders({make_shared<Synonym>(EntityType::Stmt, "A"), make_shared<Synonym>(EntityType::Variable, "B"), make_shared<Synonym>(EntityType::Procedure, "C")});
-        table1.addRow(TableRow({make_shared<MockEntity>("Entity1A"), make_shared<MockEntity>("Entity1B"), make_shared<MockEntity>("Entity1C")}));
+        table1.setHeaders({make_shared<Synonym>(EntityType::Stmt, "A"), make_shared<Synonym>(EntityType::Variable, "B"),
+                           make_shared<Synonym>(EntityType::Procedure, "C")});
+        table1.addRow(TableRow({make_shared<MockEntity>("Entity1A"), make_shared<MockEntity>("Entity1B"),
+                                make_shared<MockEntity>("Entity1C")}));
 
         HeaderTable table2;
         table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B")});
@@ -103,12 +110,14 @@ TEST_CASE("HeaderTable Join Functionality", "[HeaderTable]") {
 
     SECTION("Tables with multiple rows and common column") {
         HeaderTable table1;
-        table1.setHeaders({make_shared<Synonym>(EntityType::Stmt, "A"), make_shared<Synonym>(EntityType::Variable, "B")});
+        table1.setHeaders({make_shared<Synonym>(EntityType::Stmt, "A"),
+                           make_shared<Synonym>(EntityType::Variable, "B")});
         table1.addRow(TableRow({make_shared<MockEntity>("Entity1A"), make_shared<MockEntity>("Entity1B")}));
         table1.addRow(TableRow({make_shared<MockEntity>("Entity2A"), make_shared<MockEntity>("Entity2B")}));
 
         HeaderTable table2;
-        table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B"), make_shared<Synonym>(EntityType::Call, "C")});
+        table2.setHeaders({make_shared<Synonym>(EntityType::Variable, "B"),
+                           make_shared<Synonym>(EntityType::Call, "C")});
         table2.addRow(TableRow({make_shared<MockEntity>("Entity1B"), make_shared<MockEntity>("Entity2C")}));
         table2.addRow(TableRow({make_shared<MockEntity>("Entity2B"), make_shared<MockEntity>("Entity3C")}));
 
@@ -128,13 +137,11 @@ TEST_CASE("HeaderTable getComplement Functionality", "[HeaderTable]") {
     // Setup mock data for testing
     shared_ptr<Synonym> synonymA = make_shared<Synonym>(EntityType::Stmt, "A");
     shared_ptr<Synonym> synonymB = make_shared<Synonym>(EntityType::Variable, "B");
-    vector<shared_ptr<Entity>> allEntitiesA = {
-            make_shared<MockEntity>("1", EntityType::Stmt),
-            make_shared<MockEntity>("2", EntityType::Stmt),
-            make_shared<MockEntity>("3", EntityType::Stmt)};
-    vector<shared_ptr<Entity>> allEntitiesB = {
-            make_shared<MockEntity>("x", EntityType::Variable),
-            make_shared<MockEntity>("y", EntityType::Variable)};
+    vector<shared_ptr<Entity>> allEntitiesA =
+        {make_shared<MockEntity>("1", EntityType::Stmt), make_shared<MockEntity>("2", EntityType::Stmt),
+         make_shared<MockEntity>("3", EntityType::Stmt)};
+    vector<shared_ptr<Entity>> allEntitiesB =
+        {make_shared<MockEntity>("x", EntityType::Variable), make_shared<MockEntity>("y", EntityType::Variable)};
     qm.addFakeResponse(EntityType::Stmt, allEntitiesA);
     qm.addFakeResponse(EntityType::Variable, allEntitiesB);
 
@@ -160,8 +167,8 @@ TEST_CASE("HeaderTable getComplement Functionality", "[HeaderTable]") {
         HeaderTable table;
         table.setHeaders({synonymA, synonymB});
         // Add all possible rows to simulate a full table
-        for (const auto& entityA : allEntitiesA) {
-            for (const auto& entityB : allEntitiesB) {
+        for (const auto &entityA : allEntitiesA) {
+            for (const auto &entityB : allEntitiesB) {
                 table.addRow(TableRow({entityA, entityB}));
             }
         }
@@ -182,7 +189,6 @@ TEST_CASE("HeaderTable getComplement Functionality", "[HeaderTable]") {
     }
 }
 
-
 TEST_CASE("Complete HeaderTable getComplement Functionality Tests", "[HeaderTable]") {
     using std::make_shared;
     using std::shared_ptr;
@@ -194,16 +200,13 @@ TEST_CASE("Complete HeaderTable getComplement Functionality Tests", "[HeaderTabl
     shared_ptr<Synonym> synonymA = make_shared<Synonym>(EntityType::Stmt, "A");
     shared_ptr<Synonym> synonymB = make_shared<Synonym>(EntityType::Variable, "B");
     shared_ptr<Synonym> synonymC = make_shared<Synonym>(EntityType::Procedure, "C");
-    vector<shared_ptr<Entity>> allEntitiesA = {
-            make_shared<MockEntity>("1", EntityType::Stmt),
-            make_shared<MockEntity>("2", EntityType::Stmt),
-            make_shared<MockEntity>("3", EntityType::Stmt)};
-    vector<shared_ptr<Entity>> allEntitiesB = {
-            make_shared<MockEntity>("x", EntityType::Variable),
-            make_shared<MockEntity>("y", EntityType::Variable)};
-    vector<shared_ptr<Entity>> allEntitiesC = {
-            make_shared<MockEntity>("alpha", EntityType::Procedure),
-            make_shared<MockEntity>("beta", EntityType::Procedure)};
+    vector<shared_ptr<Entity>> allEntitiesA =
+        {make_shared<MockEntity>("1", EntityType::Stmt), make_shared<MockEntity>("2", EntityType::Stmt),
+         make_shared<MockEntity>("3", EntityType::Stmt)};
+    vector<shared_ptr<Entity>> allEntitiesB =
+        {make_shared<MockEntity>("x", EntityType::Variable), make_shared<MockEntity>("y", EntityType::Variable)};
+    vector<shared_ptr<Entity>> allEntitiesC = {make_shared<MockEntity>("alpha", EntityType::Procedure),
+                                               make_shared<MockEntity>("beta", EntityType::Procedure)};
     qm.addFakeResponse(EntityType::Stmt, allEntitiesA);
     qm.addFakeResponse(EntityType::Variable, allEntitiesB);
     qm.addFakeResponse(EntityType::Procedure, allEntitiesC);
@@ -225,7 +228,8 @@ TEST_CASE("Complete HeaderTable getComplement Functionality Tests", "[HeaderTabl
 
         // This test depends on your system's handling of zero headers:
         // If an exception is expected:
-        REQUIRE_THROWS_AS(table.getComplement(qm), std::exception); // Replace std::exception with your specific exception type
+        REQUIRE_THROWS_AS(table.getComplement(qm),
+                          std::exception); // Replace std::exception with your specific exception type
         // If a specific behavior is defined without throwing, adjust the test accordingly.
     }
 
@@ -245,7 +249,8 @@ TEST_CASE("Complete HeaderTable getComplement Functionality Tests", "[HeaderTabl
         HeaderTable table;
         table.setHeaders({synonymA, synonymB});
         // Add a row that does not match any possible combinations (e.g., using entities not in the mock responses)
-        table.addRow(TableRow({make_shared<MockEntity>("4", EntityType::Stmt), make_shared<MockEntity>("z", EntityType::Variable)}));
+        table.addRow(TableRow({make_shared<MockEntity>("4", EntityType::Stmt),
+                               make_shared<MockEntity>("z", EntityType::Variable)}));
 
         auto complementTable = table.getComplement(qm);
         // Since the unrelated row doesn't match possible combinations, the full complement should match all valid combinations

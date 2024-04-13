@@ -10,7 +10,8 @@
 // ai-gen start(gpt, 1, e)
 // prompt: https://chat.openai.com/share/69b2d8ce-dffd-44f8-b7ab-48a128e89a6a
 // prompt: https://chat.openai.com/share/7c590366-8e0e-40e2-863f-2862fa1ae192
-TEST_CASE("QueryEvaluationContext::getResults throws when multiple tables are present and one is empty", "[QueryEvaluationContext]") {
+TEST_CASE("QueryEvaluationContext::getResults throws when multiple tables are present and one is empty",
+          "[QueryEvaluationContext]") {
     QueryEvaluationContext qec;
 
     auto synonym1 = std::make_shared<Synonym>(EntityType::Stmt, "s1");
@@ -32,7 +33,8 @@ TEST_CASE("QueryEvaluationContext::getResults throws when no tables are present"
     REQUIRE_THROWS_AS(qec.getResults(), std::runtime_error);
 }
 
-TEST_CASE("QueryEvaluationContext::getResults returns empty vector for context with empty tables", "[QueryEvaluationContext]") {
+TEST_CASE("QueryEvaluationContext::getResults returns empty vector for context with empty tables",
+          "[QueryEvaluationContext]") {
     QueryEvaluationContext qec;
     auto synonym = std::make_shared<Synonym>(EntityType::Stmt, "s");
     auto table = std::make_shared<HeaderTable>(); // Empty table

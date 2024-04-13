@@ -1,13 +1,7 @@
 #include "WhileStatement.h"
 
-WhileStatement::WhileStatement(
-    int statementNumber,
-    shared_ptr<ConditionalOperation> condition_,
-    string procedureName) 
-    : Statement(
-        statementNumber,
-        EntityType::While,
-        std::move(procedureName)), condition(std::move(condition_)) {}
+WhileStatement::WhileStatement(int statementNumber, shared_ptr<ConditionalOperation> condition_, string procedureName)
+    : Statement(statementNumber, EntityType::While, std::move(procedureName)), condition(std::move(condition_)) {}
 
 void WhileStatement::accept(shared_ptr<Visitor> visitor) {
     visitor->visitWhileStatement(make_shared<WhileStatement>(*this));

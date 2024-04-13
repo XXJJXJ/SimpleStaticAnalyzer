@@ -10,12 +10,9 @@
 class PredicateResultCache {
 private:
     std::unordered_map<PredicateType, std::shared_ptr<BaseTable>, PredicateTypeHash> cache;
-    const std::unordered_set<PredicateType> unCacheableTypes = {PredicateType::Not,
-                                                               PredicateType::Invalid,
-                                                               PredicateType::Unknown,
-                                                               PredicateType::AssignPattern,
-                                                               PredicateType::Pattern,
-                                                               PredicateType::With};
+    const std::unordered_set<PredicateType> unCacheableTypes =
+        {PredicateType::Not, PredicateType::Invalid, PredicateType::Unknown, PredicateType::AssignPattern,
+         PredicateType::Pattern, PredicateType::With};
 
 public:
     void storeResult(PredicateType predicateType, std::shared_ptr<BaseTable> table);

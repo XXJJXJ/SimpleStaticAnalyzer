@@ -24,8 +24,7 @@ bool Sp::ProcessSIMPLE(string fileName) {
             designExtractor->extractDesign(program);
             return true;
         }
-    }
-    catch (SpaException &e) {
+    } catch (SpaException &e) {
         std::cout << e.what() << std::endl;
         return false;
     }
@@ -33,8 +32,8 @@ bool Sp::ProcessSIMPLE(string fileName) {
 
 // FOR TESTING PURPOSES
 shared_ptr<Program> Sp::triggerTokenizerAndParser(std::string simple_string) {
-    std::regex token_regex(
-        R"(\bprocedure\b|\bwhile\b|\bif\b|\bthen\b|\belse\b|\bcall\b|\bread\b|\bprint\b|\btrue\b|\bfalse\b|\+|-|\*|/|%|==|!=|<|<=|>|>=|\(|\)|\{|\}|;|\=|\"|&&|\|\||!|((?!;)[a-zA-Z0-9]+))");
+    std::regex token_regex
+        (R"(\bprocedure\b|\bwhile\b|\bif\b|\bthen\b|\belse\b|\bcall\b|\bread\b|\bprint\b|\btrue\b|\bfalse\b|\+|-|\*|/|%|==|!=|<|<=|>|>=|\(|\)|\{|\}|;|\=|\"|&&|\|\||!|((?!;)[a-zA-Z0-9]+))");
     std::sregex_iterator iter(simple_string.begin(), simple_string.end(), token_regex);
     std::sregex_iterator end;
     Tokens tokens;

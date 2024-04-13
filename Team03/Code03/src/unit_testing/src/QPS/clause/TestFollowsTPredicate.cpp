@@ -6,8 +6,6 @@
 
 #include "../fakeEntities/FakeQueryManager.cpp"
 
-
-
 TEST_CASE("Test FollowsTPredicate with statement numbers", "[FollowsTPredicate]") {
     // Initializing all data
     shared_ptr<Variable> x = make_shared<Variable>("x");

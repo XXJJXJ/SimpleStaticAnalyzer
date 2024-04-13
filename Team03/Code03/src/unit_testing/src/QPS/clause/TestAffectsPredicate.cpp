@@ -6,7 +6,6 @@
 
 #include "../fakeEntities/FakeQueryManager.cpp"
 
-
 TEST_CASE("[AffectsPredicate] Test next table retrieval") {
     // Set up fake data
     QueryEvaluationContext qec;
@@ -33,22 +32,19 @@ TEST_CASE("[AffectsPredicate] Test next table retrieval") {
             REQUIRE(table->isBoolean()); // True
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("Affects(2, 3) is true") {
+        }SECTION("Affects(2, 3) is true") {
             AffectsPredicate affectsPred(2, 3);
             auto table = affectsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("Affects(3, 4) is true") {
+        }SECTION("Affects(3, 4) is true") {
             AffectsPredicate affectsPred(3, 4);
             auto table = affectsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());
             auto boolTable = dynamic_pointer_cast<BooleanTable>(table);
             REQUIRE(boolTable->isTrue());
-        }
-        SECTION("Affects(4, 5) is true") {
+        }SECTION("Affects(4, 5) is true") {
             AffectsPredicate affectsPred(4, 5);
             auto table = affectsPred.getResultTable(qec);
             REQUIRE(table->isBoolean());

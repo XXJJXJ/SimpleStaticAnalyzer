@@ -8,11 +8,9 @@ shared_ptr<Program> Parser::parseSource(Tokens &tokens) {
         try {
             shared_ptr<Procedure> procedure = procedureParser->parseEntity(tokens);
             program->addToProcedureList(procedure);
-        }
-        catch (SyntaxErrorException &e) {
+        } catch (SyntaxErrorException &e) {
             throw SyntaxErrorException(e.what());
-        }
-        catch (SemanticErrorException &e) {
+        } catch (SemanticErrorException &e) {
             throw SemanticErrorException(e.what());
         }
     }

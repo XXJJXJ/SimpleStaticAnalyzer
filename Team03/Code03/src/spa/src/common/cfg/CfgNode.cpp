@@ -10,12 +10,8 @@ void CfgNode::addStatement(shared_ptr<Statement> statement) {
 
 void CfgNode::addNextNode(bool condition, shared_ptr<CfgNode> node) {
     if (nextNodes.find(condition) != nextNodes.end()) {
-        throw SemanticErrorException(
-            "Node for condition " + 
-            to_string(condition) + 
-            "already exists");
-    }
-    else {
+        throw SemanticErrorException("Node for condition " + to_string(condition) + "already exists");
+    } else {
         nextNodes[condition] = move(node);
     }
 }

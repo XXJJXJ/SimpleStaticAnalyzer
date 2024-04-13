@@ -20,7 +20,7 @@ void EvaluationPlanner::plan() {
     // Grouping and ordering within group not implemented yet, but it should work fine (just less efficient).
     vector<shared_ptr<Strategy>> strategies;
     vector<shared_ptr<Strategy>> otherStrategies;
-    for (auto& predicate : query->getPredicates()) {
+    for (auto &predicate : query->getPredicates()) {
         // prioritise with
         auto strategy = make_shared<JoinWithPredicateStrategy>(predicate);
         if (predicate->getType() == PredicateType::With) {

@@ -6,7 +6,6 @@
 
 #include "../fakeEntities/FakeQueryManager.cpp"
 
-
 TEST_CASE("Test table retrieval for Calls") {
     // Set up fake data
     QueryEvaluationContext qec;
@@ -93,8 +92,7 @@ TEST_CASE("Test table retrieval for Calls") {
             REQUIRE(table->getColumnCount() == 1);
             REQUIRE(table->getSize() == 6);
         }
-    }
-    SECTION("Using pure wildcards") {
+    }SECTION("Using pure wildcards") {
         SECTION("Calls*(_, _) -- gets true") {
             CallsPredicate callsPred("_", "_");
             auto table = callsPred.getResultTable(qec);

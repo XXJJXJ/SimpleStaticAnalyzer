@@ -7,12 +7,12 @@
 // Must specify columnCount as entities could be empty.
 BaseTable::BaseTable(const std::vector<std::vector<std::shared_ptr<Entity>>> &entities, int columnCount) {
     this->columnCount = columnCount;
-    for (const auto& rowEntities : entities) {
+    for (const auto &rowEntities : entities) {
         this->addRow(TableRow(rowEntities));
     }
 }
 
-void BaseTable::addRow(const TableRow& row) {
+void BaseTable::addRow(const TableRow &row) {
     if (!isValidRow(row)) {
         // Handle error: row does not match columnCount
         throw QPSEvaluationException("BaseTable::addRow: Row size does not match column count in table.");
@@ -41,7 +41,7 @@ std::unordered_set<std::string> BaseTable::toStrings() {
     makeRowsUnique();
     std::unordered_set<std::string> rowStrings;
     rowStrings.reserve(rows.size());
-    for (const auto& row : rows) {
+    for (const auto &row : rows) {
         auto result = rowStrings.insert(row.toString());
     }
     return rowStrings;
@@ -57,16 +57,16 @@ std::unordered_set<std::string> BaseTable::toAttributeStrings(vector<shared_ptr<
     makeRowsUnique();
     std::unordered_set<std::string> rowStrings;
     rowStrings.reserve(rows.size());
-    for (const auto &row: rows) {
+    for (const auto &row : rows) {
         auto result = rowStrings.insert(row.toAttributeString(extractors));
     }
     return rowStrings;
 }
 
-shared_ptr<BaseTable> BaseTable::filter(std::function<bool(const std::vector<std::shared_ptr<Entity>>&)> predicate) const {
+shared_ptr<BaseTable> BaseTable::filter(std::function<bool(const std::vector<std::shared_ptr<Entity>> &)> predicate) const {
     std::vector<std::vector<std::shared_ptr<Entity>>> filteredEntities;
 
-    for (const auto& row : rows) {
+    for (const auto &row : rows) {
         if (predicate(row.getValues())) {
             filteredEntities.push_back(row.getValues());
         }
@@ -77,7 +77,7 @@ shared_ptr<BaseTable> BaseTable::filter(std::function<bool(const std::vector<std
 
 shared_ptr<BaseTable> BaseTable::filter(RowFilter &filter) const {
     vector<shared_ptr<TableRow>> filteredRows;
-    for (const auto& row : rows) {
+    for (const auto &row : rows) {
         if (filter.filterRow(row)) {
             filteredRows.push_back(std::make_shared<TableRow>(row));
         }
@@ -86,7 +86,7 @@ shared_ptr<BaseTable> BaseTable::filter(RowFilter &filter) const {
 }
 
 // This should return either Boolean or BaseTable, depending on the columnMask
-shared_ptr<BaseTable> BaseTable::project(const std::vector<bool>& columnMask) const {
+shared_ptr<BaseTable> BaseTable::project(const std::vector<bool> &columnMask) const {
     if (columnMask.size() != columnCount) {
         throw QPSEvaluationException("BaseTable::project: Column mask size does not match column count in table.");
     }
@@ -100,7 +100,7 @@ shared_ptr<BaseTable> BaseTable::project(const std::vector<bool>& columnMask) co
 
     // else return a HeaderTable
     std::vector<std::vector<std::shared_ptr<Entity>>> projectedEntities;
-    for (const auto& row : rows) {
+    for (const auto &row : rows) {
         std::vector<std::shared_ptr<Entity>> newRow;
         for (size_t i = 0; i < columnMask.size(); ++i) {
             if (columnMask[i]) {
@@ -140,7 +140,6 @@ shared_ptr<BaseTable> BaseTable::join(BaseTable &other) {
     throw QPSEvaluationException("BaseTable::join: Join operation not supported for BaseTable.");
 }
 
-
 const vector<TableRow> BaseTable::getRows() const {
     return rows;
 }
@@ -151,7 +150,7 @@ bool BaseTable::operator==(const BaseTable &other) const {
 
 void BaseTable::makeRowsUnique() {
     // Sort rows to bring duplicates together
-    std::sort(rows.begin(), rows.end(), [](const TableRow& a, const TableRow& b) {
+    std::sort(rows.begin(), rows.end(), [](const TableRow &a, const TableRow &b) {
         if (a.getValues().size() != b.getValues().size()) return a.getValues().size() < b.getValues().size();
         for (size_t i = 0; i < a.getValues().size(); ++i) {
             // Assuming Entity has a method to compare which defines a strict weak ordering
@@ -176,14 +175,14 @@ void BaseTable::append(const BaseTable &other) {
     if (columnCount != other.columnCount) {
         throw QPSEvaluationException("BaseTable::append: Column count does not match.");
     }
-    for (const auto& row : other.getRows()) {
+    for (const auto &row : other.getRows()) {
         addRow(row);
     }
 }
 
 BaseTable::BaseTable(const std::vector<shared_ptr<TableRow>> rows, int columnCount) {
     this->columnCount = columnCount;
-    for (const auto& row : rows) {
+    for (const auto &row : rows) {
         addRow(*row);
     }
 

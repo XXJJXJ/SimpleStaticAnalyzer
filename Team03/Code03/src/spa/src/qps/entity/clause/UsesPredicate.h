@@ -9,16 +9,14 @@
 #include <variant>
 #include "PredicateUtils.h"
 
-
 class Strategy;
-
 
 class UsesPredicate : public Predicate {
 private:
     ProcAndStmtRef lhs; // Directly holds int, Synonym, or std::string
     EntityRef rhs; // Can be a synonym of type variable, a variable name, or "_"
 protected:
-    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
+    std::shared_ptr<BaseTable> getFullTable(QueryManager &qm) override;
 public:
     UsesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~UsesPredicate() override = default;

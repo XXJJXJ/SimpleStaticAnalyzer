@@ -14,16 +14,16 @@
 #include "common/spa_exception/SemanticErrorException.h"
 
 class QpsManager {
-  public:
+public:
     QpsManager();
     ~QpsManager();
-    std::vector<std::string> processQuery(const std::string& query);
+    std::vector<std::string> processQuery(const std::string &query);
 
-  private:
-    std::vector<std::string> tokenizeQuery(const std::string& query);
+private:
+    std::vector<std::string> tokenizeQuery(const std::string &query);
     std::vector<std::vector<std::vector<std::string>>> validateQuery(std::vector<std::string> tokens);
     std::shared_ptr<Query> parseQuery(std::vector<std::vector<std::vector<std::string>>> tokens);
     vector<std::string> evaluateQuery(const std::shared_ptr<Query> validatedQuery);
-    void writeResults(const std::vector<std::string>& results, const std::string& outputFile);
+    void writeResults(const std::vector<std::string> &results, const std::string &outputFile);
 };
 #endif // QPSMANAGER_H

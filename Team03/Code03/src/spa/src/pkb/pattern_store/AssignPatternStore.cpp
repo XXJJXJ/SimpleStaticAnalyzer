@@ -79,8 +79,8 @@ string infixToPostfix(std::string expression) {
 // ai-gen end
 
 // Private functions
-vector<shared_ptr<AssignStatement>> AssignPatternStore::matchPartial(vector<shared_ptr<AssignStatement>> &allAssign,
-                                                                     string &rpn) {
+vector<shared_ptr<AssignStatement>> AssignPatternStore::matchPartial(
+    vector<shared_ptr<AssignStatement>> &allAssign, string &rpn) {
     vector<shared_ptr<AssignStatement>> res;
     for (auto &s : allAssign) {
         string curr;
@@ -91,8 +91,8 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::matchPartial(vector<shar
     return res;
 }
 
-vector<shared_ptr<AssignStatement>> AssignPatternStore::matchExact(vector<shared_ptr<AssignStatement>> &allAssign,
-                                                                   string &rpn) {
+vector<shared_ptr<AssignStatement>> AssignPatternStore::matchExact(
+    vector<shared_ptr<AssignStatement>> &allAssign, string &rpn) {
     vector<shared_ptr<AssignStatement>> res;
     for (auto &s : allAssign) {
         string curr;
@@ -167,8 +167,7 @@ vector<vector<shared_ptr<Entity>>> AssignPatternStore::getAssignPattern(string &
 }
 
 vector<vector<shared_ptr<Entity>>> AssignPatternStore::findAssignPattern(
-    vector<shared_ptr<AssignStatement>> &allAssign,
-    string &expr, bool hasWildcard) {
+    vector<shared_ptr<AssignStatement>> &allAssign, string &expr, bool hasWildcard) {
     string rpn = infixToPostfix(expr);
     if (expr == "" && hasWildcard) {
         wildMatch[expr] = allAssign;

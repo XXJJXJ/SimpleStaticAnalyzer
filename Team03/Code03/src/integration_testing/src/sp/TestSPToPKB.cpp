@@ -1,11 +1,12 @@
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <unordered_map>
 #include "catch.hpp"
 #include "sp/sp.h"
 #include "pkb/QueryPKB.h"
 
 TEST_CASE("1st SP-PKB Integration Test: entity store test") {
-    std::string simple_string = "procedure test {while (y < 3) {x = 1;read x;if (x < 10) then{z = ((x + 3) / 7) - (y + 11);}else {z = 0;}}print z;}";
+    std::string simple_string =
+        "procedure test {while (y < 3) {x = 1;read x;if (x < 10) then{z = ((x + 3) / 7) - (y + 11);}else {z = 0;}}print z;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -31,7 +32,8 @@ TEST_CASE("1st SP-PKB Integration Test: entity store test") {
 }
 
 TEST_CASE("2nd SP-PKB Integration Test: relation store test") {
-    std::string simple_string = "procedure test {while (y < 3) {x = 1;read x;if (x < 10) then{z = ((x + 3) / 7) - (y + 11);}else {z = 0;}}print z;}";
+    std::string simple_string =
+        "procedure test {while (y < 3) {x = 1;read x;if (x < 10) then{z = ((x + 3) / 7) - (y + 11);}else {z = 0;}}print z;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -210,7 +212,8 @@ TEST_CASE("9th SP-PKB Integration Test: entity store test") {
 }
 
 TEST_CASE("10th SP-PKB Integration Test: multiple procedure store test") {
-    std::string simple_string = "procedure first {z = ((x + 3) / 7) - (y + 11);} procedure second {a = b + c;} procedure third {read i; read j; print i; print j;}";
+    std::string simple_string =
+        "procedure first {z = ((x + 3) / 7) - (y + 11);} procedure second {a = b + c;} procedure third {read i; read j; print i; print j;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -227,7 +230,8 @@ TEST_CASE("10th SP-PKB Integration Test: multiple procedure store test") {
 }
 
 TEST_CASE("11th SP-PKB Integration Test: call store test") {
-    std::string simple_string = "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
+    std::string simple_string =
+        "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -242,7 +246,8 @@ TEST_CASE("11th SP-PKB Integration Test: call store test") {
 }
 
 TEST_CASE("12th SP-PKB Integration Test: calls relation test") {
-    std::string simple_string = "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
+    std::string simple_string =
+        "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -255,9 +260,9 @@ TEST_CASE("12th SP-PKB Integration Test: calls relation test") {
     REQUIRE(callsStore.size() == 2);
 
 
-  /*  for (vector<shared_ptr<Entity>> v : callsStore) {
-        std::cout << v[0]->getName() << ", " << v[1]->getName() << std::endl;
-    }*/
+    /*  for (vector<shared_ptr<Entity>> v : callsStore) {
+          std::cout << v[0]->getName() << ", " << v[1]->getName() << std::endl;
+      }*/
 
     /*vector<shared_ptr<Entity>> firstCalls = callsStore[0];
     bool result1 = firstCalls[0]->getName().compare("first") == 0 && firstCalls[1]->getName().compare("second") == 0;
@@ -270,7 +275,8 @@ TEST_CASE("12th SP-PKB Integration Test: calls relation test") {
 }
 
 TEST_CASE("13th SP-PKB Integration Test: transitive calls relation test") {
-    std::string simple_string = "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
+    std::string simple_string =
+        "procedure first {call second;} procedure second {call third;} procedure third {read i; read j; print i; print j;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -280,16 +286,17 @@ TEST_CASE("13th SP-PKB Integration Test: transitive calls relation test") {
 
     QueryManager qm;
     vector<vector<shared_ptr<Entity>>> callsStore = qm.getCallT();
-   /* for (vector<shared_ptr<Entity>> v : callsStore) {
-        std::cout << v[0]->getName() << ", " << v[1]->getName() << std::endl;
-    }*/
+    /* for (vector<shared_ptr<Entity>> v : callsStore) {
+         std::cout << v[0]->getName() << ", " << v[1]->getName() << std::endl;
+     }*/
     REQUIRE(callsStore.size() == 3);
     pkbPopulator->clear();
 }
 
 TEST_CASE("14th SP-PKB Integration Test: cyclic calls error detection test") {
     bool result = false;
-    std::string simple_string = "procedure first {call second;} procedure second {call third;} procedure third {call first;}";
+    std::string
+        simple_string = "procedure first {call second;} procedure second {call third;} procedure third {call first;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -297,8 +304,7 @@ TEST_CASE("14th SP-PKB Integration Test: cyclic calls error detection test") {
     try {
         shared_ptr<DesignExtractor> design_extractor = make_shared<DesignExtractor>(pkbPopulator);
         design_extractor->extractDesign(program);
-    }
-    catch (SemanticErrorException) {
+    } catch (SemanticErrorException) {
         result = true;
     }
     REQUIRE(result);
@@ -306,7 +312,8 @@ TEST_CASE("14th SP-PKB Integration Test: cyclic calls error detection test") {
 }
 
 TEST_CASE("15th SP-PKB Integration Test: container nested while condition uses relation test 1") {
-    std::string simple_string = "procedure test {while ((y < 3)  && ((b < c) || (d > e))) {z = ((x + 3) / 7) - (y + 11);}}";
+    std::string
+        simple_string = "procedure test {while ((y < 3)  && ((b < c) || (d > e))) {z = ((x + 3) / 7) - (y + 11);}}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -323,7 +330,8 @@ TEST_CASE("15th SP-PKB Integration Test: container nested while condition uses r
 }
 
 TEST_CASE("16th SP-PKB Integration Test: container nested while condition uses relation test 2") {
-    std::string simple_string = "procedure test {while (((y < 3) || (a > z)) && ((b < c) || (d > e))) {z = ((x + 3) / 7) - (y + 11);}}";
+    std::string simple_string =
+        "procedure test {while (((y < 3) || (a > z)) && ((b < c) || (d > e))) {z = ((x + 3) / 7) - (y + 11);}}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -340,7 +348,8 @@ TEST_CASE("16th SP-PKB Integration Test: container nested while condition uses r
 }
 
 TEST_CASE("17th SP-PKB Integration Test: container nested if condition uses relation test 1") {
-    std::string simple_string = "procedure test {if ((y < 3) && ((b < c) || (d > e))) then {z = ((x + 3) / 7) - (y + 11);} else {z = ((x + 3) / 7) - (y + 11);}}";
+    std::string simple_string =
+        "procedure test {if ((y < 3) && ((b < c) || (d > e))) then {z = ((x + 3) / 7) - (y + 11);} else {z = ((x + 3) / 7) - (y + 11);}}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -357,7 +366,8 @@ TEST_CASE("17th SP-PKB Integration Test: container nested if condition uses rela
 }
 
 TEST_CASE("18th SP-PKB Integration Test: container nested if condition uses relation test 2") {
-    std::string simple_string = "procedure test {if (((y < 3) || (a > z)) && ((b < c) || (d > e))) then {z = ((x + 3) / 7) - (y + 11);} else {z = ((x + 3) / 7) - (y + 11);}}";
+    std::string simple_string =
+        "procedure test {if (((y < 3) || (a > z)) && ((b < c) || (d > e))) then {z = ((x + 3) / 7) - (y + 11);} else {z = ((x + 3) / 7) - (y + 11);}}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -389,7 +399,8 @@ TEST_CASE("19th SP-PKB Integration Test: simple next relation test") {
 }
 
 TEST_CASE("20th SP-PKB Integration Test: if statement next relation test") {
-    std::string simple_string = "procedure test {read x; print x; if (x < 1) then {x = 560; y = x + 10;} else {y = x - 10; z = x + y; print z;} print y;}";
+    std::string simple_string =
+        "procedure test {read x; print x; if (x < 1) then {x = 560; y = x + 10;} else {y = x - 10; z = x + y; print z;} print y;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(simple_string);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -404,7 +415,8 @@ TEST_CASE("20th SP-PKB Integration Test: if statement next relation test") {
 }
 
 TEST_CASE("21st SP-PKB Integration Test: multiple procedures next relation test") {
-    string str = "procedure First { read x; read z; call Second; } procedure Second { x = 0;i = 5;while (i!=0) {x = x + 2*y;call Third;i = i - 1; }if (x==1) then {x = x+1; }else {z = 1; }z = z + x + i;y = z + 2;x = x * y + z; } procedure Third {z = 5;v = z;print v; }";
+    string str =
+        "procedure First { read x; read z; call Second; } procedure Second { x = 0;i = 5;while (i!=0) {x = x + 2*y;call Third;i = i - 1; }if (x==1) then {x = x+1; }else {z = 1; }z = z + x + i;y = z + 2;x = x * y + z; } procedure Third {z = 5;v = z;print v; }";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -419,7 +431,8 @@ TEST_CASE("21st SP-PKB Integration Test: multiple procedures next relation test"
 }
 
 TEST_CASE("22nd SP-PKB Integration Test: nested ifs next relation test") {
-    string str = "procedure test{if (x>1) then {if (x>1) then {if (x>1) then {x=1;} else {x=1;}x=1;} else {if (x>1) then {x=1;} else {x=1;}x=1;}x=1;} else {if (x>1) then {if (x>1) then {x=1;} else {x=1;}x=1;} else {if (x>1) then {x=1;} else {x=1;}x=1;}x=1;}x=1;}";
+    string str =
+        "procedure test{if (x>1) then {if (x>1) then {if (x>1) then {x=1;} else {x=1;}x=1;} else {if (x>1) then {x=1;} else {x=1;}x=1;}x=1;} else {if (x>1) then {if (x>1) then {x=1;} else {x=1;}x=1;} else {if (x>1) then {x=1;} else {x=1;}x=1;}x=1;}x=1;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -434,7 +447,8 @@ TEST_CASE("22nd SP-PKB Integration Test: nested ifs next relation test") {
 }
 
 TEST_CASE("23rd SP-PKB Integration Test: nested whiles next relation test") {
-    string str = "procedure test{while (x > 1) {x=1;while (x > 1) {x=1;while (x > 1) {x=1;while (x > 1) {x=1;while (x > 1) {x=1;}x=1;}x=1;}x=1;}x=1;}x=1;}";
+    string str =
+        "procedure test{while (x > 1) {x=1;while (x > 1) {x=1;while (x > 1) {x=1;while (x > 1) {x=1;while (x > 1) {x=1;}x=1;}x=1;}x=1;}x=1;}x=1;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -449,7 +463,8 @@ TEST_CASE("23rd SP-PKB Integration Test: nested whiles next relation test") {
 }
 
 TEST_CASE("24th SP-PKB Integration Test: nested whiles and ifs next relation test") {
-    string str = "procedure test{while (x>1) {if (x>1) then {while (x>1) {if (x>1) then {if (x>1) then {x=1;} else {x=1;}x=1;} else {if (x>1) then {x=1;} else {x=1;}x=1;}x=1;}x=1;} else {while (x>1) {if (x>1) then {if (x>1) then {x=1;} else {x=1;}x=1;} else {if (x>1) then {x=1;} else {x=1;}x=1;}x=1;}x=1;}x=1;}x=1;}";
+    string str =
+        "procedure test{while (x>1) {if (x>1) then {while (x>1) {if (x>1) then {if (x>1) then {x=1;} else {x=1;}x=1;} else {if (x>1) then {x=1;} else {x=1;}x=1;}x=1;}x=1;} else {while (x>1) {if (x>1) then {if (x>1) then {x=1;} else {x=1;}x=1;} else {if (x>1) then {x=1;} else {x=1;}x=1;}x=1;}x=1;}x=1;}x=1;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -464,7 +479,8 @@ TEST_CASE("24th SP-PKB Integration Test: nested whiles and ifs next relation tes
 }
 
 TEST_CASE("25th SP-PKB Integration Test: next* relation test") {
-    string str = "procedure test {read x; print x; read y; print y; call hello; call goodbye;} procedure hello {z = 11 + x * (x + y);} procedure goodbye {print z;}";
+    string str =
+        "procedure test {read x; print x; read y; print y; call hello; call goodbye;} procedure hello {z = 11 + x * (x + y);} procedure goodbye {print z;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -479,7 +495,8 @@ TEST_CASE("25th SP-PKB Integration Test: next* relation test") {
 }
 
 TEST_CASE("26th SP-PKB Integration Test: while next* relation test") {
-    string str = "procedure test {read x; print x; read y; while (z < 11) {print name; z = x + 1; print z;} read monkey; print monkey;}";
+    string str =
+        "procedure test {read x; print x; read y; while (z < 11) {print name; z = x + 1; print z;} read monkey; print monkey;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -494,7 +511,8 @@ TEST_CASE("26th SP-PKB Integration Test: while next* relation test") {
 }
 
 TEST_CASE("27th SP-PKB Integration Test: nested while next* relation test") {
-    string str = "procedure test {read x; print x; read y; while (z < 11) {print name; z = x + 1; while (x < 12) {read x; print x; while (y > 13) {read y; print y;} x = y + z; print x;} z = 11; print z;} read monkey; print monkey;}";
+    string str =
+        "procedure test {read x; print x; read y; while (z < 11) {print name; z = x + 1; while (x < 12) {read x; print x; while (y > 13) {read y; print y;} x = y + z; print x;} z = 11; print z;} read monkey; print monkey;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -509,7 +527,8 @@ TEST_CASE("27th SP-PKB Integration Test: nested while next* relation test") {
 }
 
 TEST_CASE("28th SP-PKB Integration Test: Basic Affects relation test") {
-    string str = "procedure rearChickens {eggs = 100000;chicks = 0;while ((chicks < 100000) && (eggs > 0)) {if (chicks > eggs) then {print eggs;read luck;if (luck > eggs) then {eggs = eggs - 1;chicks = chicks + 1;} else { read better;print luck;read next;print time;}} else { print more;print chicks;print than;print eggs;while (chicks > eggs) {chicks = chicks - 1;}print now;read i;print have;read less;print chicks;}}print chicks;}";
+    string str =
+        "procedure rearChickens {eggs = 100000;chicks = 0;while ((chicks < 100000) && (eggs > 0)) {if (chicks > eggs) then {print eggs;read luck;if (luck > eggs) then {eggs = eggs - 1;chicks = chicks + 1;} else { read better;print luck;read next;print time;}} else { print more;print chicks;print than;print eggs;while (chicks > eggs) {chicks = chicks - 1;}print now;read i;print have;read less;print chicks;}}print chicks;}";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();
@@ -524,7 +543,8 @@ TEST_CASE("28th SP-PKB Integration Test: Basic Affects relation test") {
 }
 
 TEST_CASE("29th SP-PKB Integration Test: Affects relation test with ms2_test1 source") {
-    string str = "procedure rearChickens { eggs = 100000; chicks = 0; while ((chicks < 100000) && (eggs > 0)) { if (chicks > eggs) then { call wiggle; print eggs; read luck; if (luck > eggs) then { call hatch; eggs = eggs - 1; chicks = chicks + 1; } else { read better; print luck; read next; print time;} } else { print more; print chicks; print than; print eggs; while (chicks > eggs) { call killChicks; chicks = chicks - 1;} print now; read i; print have; read less; print chicks;}} print chicks; } procedure wiggle { print something; read is; print shaking; print is; read it; read hatching; print questionMark; } procedure hatch { call wiggle; call wiggle; call wiggle; call makeNoise; call breakEgg; } procedure makeNoise { pok = 1; print pok; read pok; pok = 2; print pok; read pok; pok = pok + 1; print pok; read pok; pok = 1 * chicks; } procedure breakEgg { print prack; } procedure killChicks { read weapon; print how; print many; read times; read to; read smack; call screamInPain; } procedure screamInPain { print stop; print pls; read stop; print exclaimationMark; } procedure hen { call makeNoise; chicks = eggs + chicks + grow * 2 / times; noise = (chicks + eggs) * times * pok; while (alive < 2) { call layEggs; } chicks = chicks + pok; eggs = pok / chicks; } procedure layEggs { randNum = (read + print * call - statement / procedure + if) / while; if (randNum > 100000) then { print successfully; read laid; print eggs; } else { print randNum; read randNum; } }";
+    string str =
+        "procedure rearChickens { eggs = 100000; chicks = 0; while ((chicks < 100000) && (eggs > 0)) { if (chicks > eggs) then { call wiggle; print eggs; read luck; if (luck > eggs) then { call hatch; eggs = eggs - 1; chicks = chicks + 1; } else { read better; print luck; read next; print time;} } else { print more; print chicks; print than; print eggs; while (chicks > eggs) { call killChicks; chicks = chicks - 1;} print now; read i; print have; read less; print chicks;}} print chicks; } procedure wiggle { print something; read is; print shaking; print is; read it; read hatching; print questionMark; } procedure hatch { call wiggle; call wiggle; call wiggle; call makeNoise; call breakEgg; } procedure makeNoise { pok = 1; print pok; read pok; pok = 2; print pok; read pok; pok = pok + 1; print pok; read pok; pok = 1 * chicks; } procedure breakEgg { print prack; } procedure killChicks { read weapon; print how; print many; read times; read to; read smack; call screamInPain; } procedure screamInPain { print stop; print pls; read stop; print exclaimationMark; } procedure hen { call makeNoise; chicks = eggs + chicks + grow * 2 / times; noise = (chicks + eggs) * times * pok; while (alive < 2) { call layEggs; } chicks = chicks + pok; eggs = pok / chicks; } procedure layEggs { randNum = (read + print * call - statement / procedure + if) / while; if (randNum > 100000) then { print successfully; read laid; print eggs; } else { print randNum; read randNum; } }";
     Sp sp = Sp();
     shared_ptr<Program> program = sp.triggerTokenizerAndParser(str);
     shared_ptr<Populator> pkbPopulator = make_shared<Populator>();

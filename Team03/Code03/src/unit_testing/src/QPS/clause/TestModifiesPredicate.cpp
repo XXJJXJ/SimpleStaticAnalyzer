@@ -6,7 +6,6 @@
 #include "qps/entity/evaluation/HeaderTable.h"
 #include "../fakeEntities/FakeQueryManager.cpp"
 
-
 TEST_CASE("Test table retrieval 3", "[ModifiesPredicate]") {
     // Set up fake data
     QueryEvaluationContext qec = QueryEvaluationContext();
@@ -60,8 +59,7 @@ TEST_CASE("Test table retrieval 3", "[ModifiesPredicate]") {
         auto table = modifiesPred.getResultTable(qec);
         auto headerTable = dynamic_pointer_cast<HeaderTable>(table);
         REQUIRE(headerTable->getRows().size() == 2);
-    }
-    SECTION("Using partial wildcards") {
+    }SECTION("Using partial wildcards") {
         SECTION("Modifies(s1, _) - get 2 rows") {
             Synonym stmtSyn(EntityType::Stmt, "s1");
             ModifiesPredicate modifiesPred(stmtSyn, "_");

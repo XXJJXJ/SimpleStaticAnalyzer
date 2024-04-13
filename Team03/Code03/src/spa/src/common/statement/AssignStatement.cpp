@@ -1,11 +1,7 @@
 #include "AssignStatement.h"
 
-AssignStatement::AssignStatement(
-    int statementNumber, 
-    shared_ptr<Variable> variable_,
-    string procedureName)
-    : variable(variable_), expression(),
-    Statement(statementNumber, EntityType::Assign, std::move(procedureName)) {}
+AssignStatement::AssignStatement(int statementNumber, shared_ptr<Variable> variable_, string procedureName) : variable(
+    variable_), expression(), Statement(statementNumber, EntityType::Assign, std::move(procedureName)) {}
 
 void AssignStatement::accept(shared_ptr<Visitor> visitor) {
     expression->accept(visitor);

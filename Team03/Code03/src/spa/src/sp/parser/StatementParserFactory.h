@@ -15,10 +15,6 @@ public:
     static shared_ptr<StatementParser> getStatementParser(Tokens &tokens);
 
 private:
-    static bool checkKeywordType(
-        Tokens &tokens,
-        string statementType,
-        bool hasParenthesis);
-    static bool checkAssignment(
-        Tokens &tokens);
+    static bool checkKeywordType(Tokens &tokens, string statementType, bool hasParenthesis);
+    static bool checkAssignment(Tokens &tokens);
 };

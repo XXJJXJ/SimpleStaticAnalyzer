@@ -11,5 +11,4 @@ public:
     std::string_view what();
 };
 
-
 #endif //SPA_QPSEVALUATIONEXCEPTION_H

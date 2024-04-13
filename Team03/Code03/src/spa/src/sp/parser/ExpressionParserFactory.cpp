@@ -1,8 +1,6 @@
 #include "ExpressionParserFactory.h"
 
-shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(
-    Tokens &tokens,
-    EntityType statementType) {
+shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(Tokens &tokens, EntityType statementType) {
     if (tokens.size() == 1) {
         if (checkExpressionType(tokens.front(), EntityType::Variable)) {
             return make_shared<VariableParser>();
@@ -20,9 +18,7 @@ shared_ptr<ExpressionParser> ExpressionParserFactory::getExpressionParser(
     }
 }
 
-bool ExpressionParserFactory::checkExpressionType(
-    shared_ptr<Token> token,
-    EntityType statementType) {
+bool ExpressionParserFactory::checkExpressionType(shared_ptr<Token> token, EntityType statementType) {
     if (token->getType() == TokenType::NAME) {
         return statementType == EntityType::Variable;
     } else {

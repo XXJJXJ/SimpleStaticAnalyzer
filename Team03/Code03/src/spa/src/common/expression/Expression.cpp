@@ -11,7 +11,7 @@ string Expression::getName() const {
     return name;
 }
 
-bool Expression::operator==(const Expression& other) const {
+bool Expression::operator==(const Expression &other) const {
     return name == other.name && expressionType == other.expressionType;
 }
 

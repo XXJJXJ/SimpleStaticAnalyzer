@@ -6,10 +6,7 @@
 
 class AssignStatement : public Statement {
 public:
-    AssignStatement(
-        int statementNumber, 
-        shared_ptr<Variable> variable,
-        string procedureName);
+    AssignStatement(int statementNumber, shared_ptr<Variable> variable, string procedureName);
     void accept(shared_ptr<Visitor> visitor) override;
     void addExpression(shared_ptr<Expression> expression);
     shared_ptr<Variable> getVariable() const;
@@ -23,17 +20,17 @@ private:
 };
 
 namespace std {
-    template <>
-    struct hash<shared_ptr<AssignStatement>> {
-        std::size_t operator()(const shared_ptr<AssignStatement>& obj) const {
-            return obj->hash();
-        }
-    };
+template<>
+struct hash<shared_ptr<AssignStatement>> {
+    std::size_t operator()(const shared_ptr<AssignStatement> &obj) const {
+        return obj->hash();
+    }
+};
 
-    template <>
-    struct equal_to<shared_ptr<AssignStatement>> {
-        bool operator()(const shared_ptr<AssignStatement>& lhs, const shared_ptr<AssignStatement>& rhs) const {
-            return *lhs == *rhs;
-        }
-    };
+template<>
+struct equal_to<shared_ptr<AssignStatement>> {
+    bool operator()(const shared_ptr<AssignStatement> &lhs, const shared_ptr<AssignStatement> &rhs) const {
+        return *lhs == *rhs;
+    }
+};
 }

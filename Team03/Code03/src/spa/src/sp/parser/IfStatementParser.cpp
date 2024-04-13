@@ -8,9 +8,7 @@ shared_ptr<Statement> IfStatementParser::parseEntity(Tokens &tokens) {
     tokens.erase(tokens.begin(), tokens.begin() + 2);
     auto condition = extractCondition(tokens);
     auto ifStatement =
-        make_shared<IfStatement>(Program::getAndIncrementStatementNumber(),
-                                 condition,
-                                 getProcedureName());
+        make_shared<IfStatement>(Program::getAndIncrementStatementNumber(), condition, getProcedureName());
 
     parseBlock("then", ifStatement, tokens);
     if (ifStatement->getThenStatementList().size() == 0) {

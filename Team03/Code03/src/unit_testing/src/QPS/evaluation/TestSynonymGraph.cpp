@@ -9,7 +9,7 @@
 using namespace std;
 
 // Utility function to create a synonym
-shared_ptr<Synonym> makeSynonym(const string& name, EntityType type) {
+shared_ptr<Synonym> makeSynonym(const string &name, EntityType type) {
     return make_shared<Synonym>(type, name);
 }
 

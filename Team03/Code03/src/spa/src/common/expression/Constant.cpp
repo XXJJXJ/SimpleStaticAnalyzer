@@ -1,8 +1,6 @@
 #include "Constant.h"
 
-Constant::Constant(string value) 
-    : Expression(std::move(value),
-        EntityType::Constant) {}
+Constant::Constant(string value) : Expression(std::move(value), EntityType::Constant) {}
 
 void Constant::accept(shared_ptr<Visitor> visitor) {
     visitor->visitConstant(make_shared<Constant>(*this));
@@ -17,7 +15,7 @@ std::size_t Constant::hash() const {
     return hasher(getName());
 }
 
-bool Constant::operator==(const Constant& other) const {
+bool Constant::operator==(const Constant &other) const {
     return getName() == other.getName();
 }
 

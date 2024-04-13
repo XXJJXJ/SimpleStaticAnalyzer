@@ -10,12 +10,8 @@
 class ExpressionParserFactory {
     typedef Tokens Tokens;
 public:
-    static shared_ptr<ExpressionParser> getExpressionParser(
-        Tokens &tokens,
-        EntityType statementType);
+    static shared_ptr<ExpressionParser> getExpressionParser(Tokens &tokens, EntityType statementType);
 
 private:
-    static inline bool checkExpressionType(
-        shared_ptr<Token> token,
-        EntityType statementType);
+    static inline bool checkExpressionType(shared_ptr<Token> token, EntityType statementType);
 };

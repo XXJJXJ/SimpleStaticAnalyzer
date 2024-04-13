@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 TEST_CASE("Store and retrieve FollowS and FollowT") {
     Populator pop;
     pop.clear();
@@ -38,7 +37,6 @@ TEST_CASE("Store and retrieve FollowS and FollowT") {
     REQUIRE(!pop.addFollow(stmt4, stmt1));
     REQUIRE(!pop.addFollow(stmt4, stmt3));
 
-
     QueryManager qm;
     auto followS = qm.getFollowSMap();
     REQUIRE((followS[stmt1].find(stmt2) != followS[stmt1].end()));
@@ -65,7 +63,7 @@ TEST_CASE("Store and retrieve ParentS and ParentT") {
     shared_ptr<Variable> y = make_shared<Variable>("y");
     shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
     shared_ptr<WhileStatement> stmt1 = make_shared<WhileStatement>(1, cond, "main");
-    shared_ptr<IfStatement> stmt2 = make_shared<IfStatement>(2, cond,"main");
+    shared_ptr<IfStatement> stmt2 = make_shared<IfStatement>(2, cond, "main");
     // then
     shared_ptr<PrintStatement> stmt3 = make_shared<PrintStatement>(3, y, "main");
     shared_ptr<ReadStatement> stmt4 = make_shared<ReadStatement>(4, x, "main");
@@ -174,7 +172,7 @@ TEST_CASE("Test container stmt Uses and Modifies") {
     shared_ptr<Variable> y = make_shared<Variable>("y");
     shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
     shared_ptr<WhileStatement> stmt1 = make_shared<WhileStatement>(1, cond, "main");
-    shared_ptr<IfStatement> stmt2 = make_shared<IfStatement>(2, cond,"main");
+    shared_ptr<IfStatement> stmt2 = make_shared<IfStatement>(2, cond, "main");
     // then
     shared_ptr<PrintStatement> stmt3 = make_shared<PrintStatement>(3, y, "main");
     shared_ptr<ReadStatement> stmt4 = make_shared<ReadStatement>(4, x, "main");
@@ -183,7 +181,6 @@ TEST_CASE("Test container stmt Uses and Modifies") {
     shared_ptr<ReadStatement> stmt6 = make_shared<ReadStatement>(6, y, "main");
     // Random while loop in outermost layer and has nothing inside (not allowed, but used for the sake of negative testcases)
     shared_ptr<WhileStatement> stmt7 = make_shared<WhileStatement>(7, cond, "main");
-
 
     pop.addParent(stmt1, stmt2);
     pop.addParent(stmt2, stmt3);
@@ -210,13 +207,13 @@ TEST_CASE("Test container stmt Uses and Modifies") {
             REQUIRE((useAllStmt[stmt5].find(x) != useAllStmt[stmt5].end()));
             REQUIRE((useAllStmt[stmt5].find(y) == useAllStmt[stmt5].end()));
         }
-        
-        // if statement have both
+
+            // if statement have both
         SECTION("Parent if statement uses both x and y") {
             REQUIRE((useAllStmt[stmt2].find(x) != useAllStmt[stmt2].end()));
             REQUIRE((useAllStmt[stmt2].find(y) != useAllStmt[stmt2].end()));
         }
-        
+
         SECTION("Parent while statement uses both x and y") {
             REQUIRE((useAllStmt[stmt1].find(x) != useAllStmt[stmt1].end()));
             REQUIRE((useAllStmt[stmt1].find(y) != useAllStmt[stmt1].end()));
@@ -227,7 +224,7 @@ TEST_CASE("Test container stmt Uses and Modifies") {
             REQUIRE((useAllStmt[stmt7].find(y) == useAllStmt[stmt7].end()));
         }
     }
-    
+
     SECTION("Test stmt container modifies") {
         auto modifiesAllStmt = qm.getModifyAllMap();
 
@@ -238,13 +235,13 @@ TEST_CASE("Test container stmt Uses and Modifies") {
             REQUIRE((modifiesAllStmt[stmt6].find(x) == modifiesAllStmt[stmt6].end()));
             REQUIRE((modifiesAllStmt[stmt6].find(y) != modifiesAllStmt[stmt6].end()));
         }
-        
-        // if statement have both
+
+            // if statement have both
         SECTION("Parent if statement modifies both x and y") {
             REQUIRE((modifiesAllStmt[stmt2].find(x) != modifiesAllStmt[stmt2].end()));
             REQUIRE((modifiesAllStmt[stmt2].find(y) != modifiesAllStmt[stmt2].end()));
         }
-        
+
         SECTION("Parent while statement modifies both x and y") {
             REQUIRE((modifiesAllStmt[stmt1].find(x) != modifiesAllStmt[stmt1].end()));
             REQUIRE((modifiesAllStmt[stmt1].find(y) != modifiesAllStmt[stmt1].end()));
@@ -316,11 +313,11 @@ TEST_CASE("Test Uses and Modifies with Call Statement") {
         REQUIRE(qm.getCallS().size() == 3);
         REQUIRE(qm.getCallT().size() == 5);
     }
-    /* ==== Expected relations ====
-    Uses(c, _): {
-        (1, x)
-    }
-    */
+        /* ==== Expected relations ====
+        Uses(c, _): {
+            (1, x)
+        }
+        */
     SECTION("Uses with call statement") {
         auto res = qm.getUseByType(EntityType::Call);
         REQUIRE(res.size() == 1);
@@ -328,18 +325,18 @@ TEST_CASE("Test Uses and Modifies with Call Statement") {
         REQUIRE(res[0][0]->getName() == "1");
         REQUIRE(res[0][1]->getName() == "x");
     }
-    /* ==== Expected relations ====
-    Modifies(c, _): {
-        (1, y), (1, z)
-        (3, y),
-        (4, z)
-    }
-    */
+        /* ==== Expected relations ====
+        Modifies(c, _): {
+            (1, y), (1, z)
+            (3, y),
+            (4, z)
+        }
+        */
     SECTION("Modifies with call statement") {
         auto res = qm.getModifyByType(EntityType::Call);
         REQUIRE(res.size() == 4);
         unordered_map<string, unordered_set<string>> resMap;
-        for (auto & p : res) {
+        for (auto &p : res) {
             resMap[p[0]->getName()].insert(p[1]->getName());
         }
         REQUIRE(resMap["1"].size() == 2);
@@ -376,7 +373,7 @@ TEST_CASE("Store and retrieve NextS and NextT") {
     shared_ptr<ConditionalOperation> cond = make_shared<ConditionalOperation>("test_expression", make_pair<>(x, y));
     shared_ptr<AssignStatement> stmt0 = make_shared<AssignStatement>(1, x, "main");
     shared_ptr<WhileStatement> stmt1 = make_shared<WhileStatement>(2, cond, "main");
-    shared_ptr<IfStatement> stmt2 = make_shared<IfStatement>(3, cond,"main");
+    shared_ptr<IfStatement> stmt2 = make_shared<IfStatement>(3, cond, "main");
     shared_ptr<PrintStatement> stmt3 = make_shared<PrintStatement>(4, y, "main");
     shared_ptr<ReadStatement> stmt4 = make_shared<ReadStatement>(5, x, "main");
     shared_ptr<PrintStatement> stmt5 = make_shared<PrintStatement>(6, x, "main");
@@ -414,13 +411,13 @@ TEST_CASE("Store and retrieve NextS and NextT") {
     SECTION("Check NextS") {
         REQUIRE(nextS.size() == 14);
         unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> directMap;
-        for (auto & p : nextS) {
+        for (auto &p : nextS) {
             auto castedStmt1 = dynamic_pointer_cast<Statement>(p[0]);
             auto castedStmt2 = dynamic_pointer_cast<Statement>(p[1]);
             directMap[castedStmt1].insert(castedStmt2);
         }
         // check next(p, _) at most 2 for any p
-        for (auto & p : directMap) {
+        for (auto &p : directMap) {
             // size at most 2
             REQUIRE(directMap[p.first].size() <= 2);
         }
@@ -450,7 +447,7 @@ TEST_CASE("Store and retrieve NextS and NextT") {
 
         REQUIRE(directMap[stmt7].size() == 1);
         REQUIRE(directMap[stmt7].find(stmt8) != directMap[stmt7].end());
-        
+
         REQUIRE(directMap[stmt8].size() == 2);
         REQUIRE(directMap[stmt8].find(stmt9) != directMap[stmt8].end());
         REQUIRE(directMap[stmt8].find(stmt10) != directMap[stmt8].end());
@@ -466,7 +463,7 @@ TEST_CASE("Store and retrieve NextS and NextT") {
 
     SECTION("Check NextT") {
         unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> transitiveMap;
-        for (auto & p : nextT) {
+        for (auto &p : nextT) {
             auto castedStmt1 = dynamic_pointer_cast<Statement>(p[0]);
             auto castedStmt2 = dynamic_pointer_cast<Statement>(p[1]);
             transitiveMap[castedStmt1].insert(castedStmt2);
