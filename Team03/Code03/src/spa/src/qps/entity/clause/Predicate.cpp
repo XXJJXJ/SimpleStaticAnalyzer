@@ -15,10 +15,11 @@ std::shared_ptr<BaseTable> Predicate::getFullTable(QueryManager &qm) {
     return {};
 }
 
-bool Predicate::isValidRow(const vector<shared_ptr<Entity>>& row) const {
+bool Predicate::isValidRow(const vector<shared_ptr<Entity>> &row) const {
     if (row.size() != cellFilters.size()) {
-        throw QPSEvaluationException("Predicate: mismatch between row size and row filter size, row size: "
-        + to_string(row.size()) + ", row filter size: " + to_string(cellFilters.size()));
+        throw QPSEvaluationException(
+            "Predicate: mismatch between row size and row filter size, row size: " + to_string(row.size())
+                + ", row filter size: " + to_string(cellFilters.size()));
     }
     for (int i = 0; i < row.size(); i++) {
         if (!cellFilters[i]->passFilter(row[i])) {
@@ -39,7 +40,6 @@ void Predicate::addStmtRef(StatementRef &stmtRef) {
     }
 }
 
-
 std::shared_ptr<BaseTable> Predicate::getResultTable(QueryEvaluationContext &qec) {
 
     auto qm = qec.getQueryManager();
@@ -55,11 +55,11 @@ std::shared_ptr<BaseTable> Predicate::getResultTable(QueryEvaluationContext &qec
     }
 
     // Step 2: Filter based on the cellFilters / rowFilters
-    auto filteredTable = fullTable->filter([this](const std::vector<std::shared_ptr<Entity>>& row) {
+    auto filteredTable = fullTable->filter([this](const std::vector<std::shared_ptr<Entity>> &row) {
         return isValidRow(row);
     });
 
-    for (const auto& rowFilter : rowFilters) {
+    for (const auto &rowFilter : rowFilters) {
         filteredTable = filteredTable->filter(*rowFilter);
     }
 
@@ -102,6 +102,6 @@ size_t Predicate::hash() const {
     return 0; // not used
 }
 
-bool Predicate::operator==(const Predicate& other) const {
+bool Predicate::operator==(const Predicate &other) const {
     return true; // not used
 }

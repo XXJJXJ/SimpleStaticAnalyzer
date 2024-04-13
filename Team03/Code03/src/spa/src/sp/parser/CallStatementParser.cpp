@@ -4,10 +4,7 @@ shared_ptr<Statement> CallStatementParser::parseEntity(Tokens &tokens) {
     string procedureName = extractProcedureName(tokens);
     shared_ptr<Procedure> procedure = make_shared<Procedure>(procedureName);
     shared_ptr<CallStatement> callStatement =
-        make_shared<CallStatement>(
-            Program::getAndIncrementStatementNumber(),
-            procedure,
-            getProcedureName());
+        make_shared<CallStatement>(Program::getAndIncrementStatementNumber(), procedure, getProcedureName());
     return callStatement;
 }
 

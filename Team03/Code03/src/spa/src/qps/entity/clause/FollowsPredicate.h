@@ -9,7 +9,6 @@
 #include <variant>
 #include "PredicateUtils.h"
 
-
 // Forward declaration of Strategy to avoid circular dependency
 class Strategy;
 
@@ -18,7 +17,7 @@ private:
     StatementRef lhs; // Left-hand side can be an int, Synonym, or "_"
     StatementRef rhs; // Right-hand side can be a Synonym or "_"
 protected:
-    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
+    std::shared_ptr<BaseTable> getFullTable(QueryManager &qm) override;
 public:
     FollowsPredicate(StatementRef lhs, StatementRef rhs);
     ~FollowsPredicate() override = default;

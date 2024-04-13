@@ -5,8 +5,8 @@ shared_ptr<Statement> WhileStatementParser::parseEntity(Tokens &tokens) {
     checkStartOfWhileStatement(tokens);
 
     shared_ptr<ConditionalOperation> condition = extractCondition(tokens);
-    shared_ptr<WhileStatement> whileStatement = make_shared<WhileStatement>(Program::getAndIncrementStatementNumber(),
-                                                                            condition, getProcedureName());
+    shared_ptr<WhileStatement> whileStatement =
+        make_shared<WhileStatement>(Program::getAndIncrementStatementNumber(), condition, getProcedureName());
 
     // Erase '{' from tokens
     tokens.erase(tokens.begin());
@@ -56,10 +56,9 @@ shared_ptr<ConditionalOperation> WhileStatementParser::extractCondition(Tokens &
     // Erasing all condition tokens and ) from tokens
     tokens.erase(tokens.begin(), end);
 
-    shared_ptr<ExpressionParser> expressionParser =
-        ExpressionParserFactory::getExpressionParser(conditionTokens, EntityType::While);
-    shared_ptr<Expression> condition =
-        (expressionParser->parseEntity(conditionTokens));
+    shared_ptr<ExpressionParser>
+        expressionParser = ExpressionParserFactory::getExpressionParser(conditionTokens, EntityType::While);
+    shared_ptr<Expression> condition = (expressionParser->parseEntity(conditionTokens));
     if (!condition) {
         throw SyntaxErrorException("Invalid condition in While statement");
     }

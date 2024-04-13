@@ -14,7 +14,6 @@ public:
 private:
     shared_ptr<Populator> pkbPopulator;
     void extractNextRelation(shared_ptr<Cfg>);
-    void nodeTraversalHelper(shared_ptr<CfgNode> currNode,
-                             vector<shared_ptr<CfgNode>> visited,
-                             shared_ptr<Statement> prevNodeStatement);
+    void nodeTraversalHelper(
+        shared_ptr<CfgNode> currNode, vector<shared_ptr<CfgNode>> visited, shared_ptr<Statement> prevNodeStatement);
 };

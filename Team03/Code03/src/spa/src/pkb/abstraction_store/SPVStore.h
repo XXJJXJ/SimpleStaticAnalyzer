@@ -23,9 +23,8 @@ private:
     vector<vector<shared_ptr<Entity>>> procVarCache;
     // string or procedure object?
     unordered_map<string, unordered_set<shared_ptr<Variable>>> procedureToVar;
-    vector<vector<shared_ptr<Entity>>> getStmtVarPairs(const unordered_map<shared_ptr<Statement>,
-                                                                           unordered_set<shared_ptr<Variable>>> &table,
-                                                       EntityType type);
+    vector<vector<shared_ptr<Entity>>> getStmtVarPairs(
+        const unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Variable>>> &table, EntityType type);
     vector<vector<shared_ptr<Entity>>> getProcVarPairs(unordered_map<string, unordered_set<shared_ptr<Variable>>> map);
 public:
     virtual bool add(shared_ptr<Statement> stmt, shared_ptr<Variable> var);

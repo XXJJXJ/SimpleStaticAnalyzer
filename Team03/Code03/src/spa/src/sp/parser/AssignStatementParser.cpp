@@ -6,12 +6,10 @@ shared_ptr<Statement> AssignStatementParser::parseEntity(Tokens &tokens) {
     tokens.erase(tokens.begin(), tokens.begin() + 2);
     shared_ptr<Variable> variable = make_shared<Variable>(variableName);
     shared_ptr<AssignStatement> assignStatement =
-        make_shared<AssignStatement>(Program::getAndIncrementStatementNumber(),
-                                     variable,
-                                     getProcedureName());
+        make_shared<AssignStatement>(Program::getAndIncrementStatementNumber(), variable, getProcedureName());
     Tokens expressionTokens = extractExpression(tokens);
-    shared_ptr<ExpressionParser> expressionParser =
-        ExpressionParserFactory::getExpressionParser(expressionTokens, EntityType::Assign);
+    shared_ptr<ExpressionParser>
+        expressionParser = ExpressionParserFactory::getExpressionParser(expressionTokens, EntityType::Assign);
     shared_ptr<Expression> expression = expressionParser->parseEntity(expressionTokens);
     assignStatement->addExpression(expression);
     checkEndOfStatement(tokens);

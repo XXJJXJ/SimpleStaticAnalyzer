@@ -4,10 +4,7 @@ shared_ptr<Statement> ReadStatementParser::parseEntity(Tokens &tokens) {
     string variableName = extractVariableName(tokens);
     shared_ptr<Variable> variable = make_shared<Variable>(variableName);
     shared_ptr<ReadStatement> readStatement =
-        make_shared<ReadStatement>(
-            Program::getAndIncrementStatementNumber(),
-            variable,
-            getProcedureName());
+        make_shared<ReadStatement>(Program::getAndIncrementStatementNumber(), variable, getProcedureName());
     return readStatement;
 }
 

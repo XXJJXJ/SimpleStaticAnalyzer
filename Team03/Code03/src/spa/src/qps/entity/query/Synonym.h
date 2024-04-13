@@ -33,8 +33,7 @@ template<>
 struct hash<Synonym> {
     size_t operator()(const Synonym &synonym) const {
         // Combine the hash of the name and the type for the Synonym
-        return hash<string>()(synonym.getName())
-            ^ (hash<int>()(static_cast<int>(synonym.getType())) << 1);
+        return hash<string>()(synonym.getName()) ^ (hash<int>()(static_cast<int>(synonym.getType())) << 1);
     }
 };
 }

@@ -12,9 +12,8 @@ DeclarationsParser::DeclarationsParser() = default;
 
 DeclarationsParser::~DeclarationsParser() = default;
 
-std::vector<std::shared_ptr<Synonym>>
-DeclarationsParser::parse(const std::vector<std::string> &tokens,
-                          std::unordered_map<std::string, EntityType> &synonymMap) {
+std::vector<std::shared_ptr<Synonym>> DeclarationsParser::parse(
+    const std::vector<std::string> &tokens, std::unordered_map<std::string, EntityType> &synonymMap) {
 
     std::vector<std::shared_ptr<Synonym>> declarations;
 

@@ -24,20 +24,15 @@ shared_ptr<StatementParser> StatementParserFactory::getStatementParser(Tokens &t
 }
 
 bool StatementParserFactory::checkKeywordType(
-    Tokens &tokens,
-    string statementType,
-    bool hasParenthesis) {
+    Tokens &tokens, string statementType, bool hasParenthesis) {
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
-    return
-        (hasParenthesis && token0->getValue() == statementType && token1->getType() == TokenType::LEFT_PARANTHESIS) ||
-            (!hasParenthesis && token0->getValue() == statementType && token1->getType() == TokenType::NAME);
+    return (hasParenthesis && token0->getValue() == statementType && token1->getType() == TokenType::LEFT_PARANTHESIS)
+        || (!hasParenthesis && token0->getValue() == statementType && token1->getType() == TokenType::NAME);
 }
 
 bool StatementParserFactory::checkAssignment(Tokens &tokens) {
     shared_ptr<Token> token0 = tokens[0];
     shared_ptr<Token> token1 = tokens[1];
-    return
-        token0->getType() == TokenType::NAME &&
-            token1->getType() == TokenType::SINGLE_EQUAL;
+    return token0->getType() == TokenType::NAME && token1->getType() == TokenType::SINGLE_EQUAL;
 }

@@ -16,9 +16,7 @@ public:
 
 private:
     static bool checkKeywordType(
-        Tokens &tokens,
-        string statementType,
-        bool hasParenthesis);
+        Tokens &tokens, string statementType, bool hasParenthesis);
     static bool checkAssignment(
         Tokens &tokens);
 };

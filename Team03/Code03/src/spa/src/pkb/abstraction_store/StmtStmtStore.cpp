@@ -1,7 +1,7 @@
 #include "StmtStmtStore.h"
 
-vector<vector<shared_ptr<Entity>>> StmtStmtStore::getStmtPairs(const unordered_map<shared_ptr<Statement>,
-                                                                                   unordered_set<shared_ptr<Statement>>> &table) {
+vector<vector<shared_ptr<Entity>>> StmtStmtStore::getStmtPairs(
+    const unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &table) {
     vector<vector<shared_ptr<Entity>>> res;
     for (auto &v : table) {
         auto stmt1 = v.first;

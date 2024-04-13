@@ -17,7 +17,7 @@ private:
     StatementRef lhs; // Left-hand statement reference
     StatementRef rhs; // Right-hand statement reference
 protected:
-    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
+    std::shared_ptr<BaseTable> getFullTable(QueryManager &qm) override;
 
 public:
     FollowsTPredicate(StatementRef lhs, StatementRef rhs);
@@ -26,7 +26,6 @@ public:
     std::size_t hash() const override;
     bool operator==(const Predicate &other) const override;
 };
-
 
 #endif // FOLLOWSTPREDICATE_H
 

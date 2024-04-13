@@ -20,9 +20,8 @@ vector<vector<shared_ptr<Entity>>> PatternManager::getAssignPattern(string &expr
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
     return assignPatternStore.getAssignPattern(expr, hasWildcard);
 }
-vector<vector<shared_ptr<Entity>>> PatternManager::findAssignPattern(vector<shared_ptr<AssignStatement>> &allAssign,
-                                                                     string &expr,
-                                                                     bool hasWildcard) {
+vector<vector<shared_ptr<Entity>>> PatternManager::findAssignPattern(
+    vector<shared_ptr<AssignStatement>> &allAssign, string &expr, bool hasWildcard) {
     expr.erase(remove_if(expr.begin(), expr.end(), ::isspace), expr.end());
     return assignPatternStore.findAssignPattern(allAssign, expr, hasWildcard);
 }

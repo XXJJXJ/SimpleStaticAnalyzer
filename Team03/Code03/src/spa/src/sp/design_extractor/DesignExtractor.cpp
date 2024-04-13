@@ -33,9 +33,8 @@ void DesignExtractor::extractNextRelation(shared_ptr<Cfg> cfg) {
     }
 }
 
-void DesignExtractor::nodeTraversalHelper(shared_ptr<CfgNode> currNode,
-                                          vector<shared_ptr<CfgNode>> visited,
-                                          shared_ptr<Statement> prevNodeStatement) {
+void DesignExtractor::nodeTraversalHelper(
+    shared_ptr<CfgNode> currNode, vector<shared_ptr<CfgNode>> visited, shared_ptr<Statement> prevNodeStatement) {
     auto statementList = currNode->getStatementList();
     shared_ptr<Statement> currNodeLastStatement = NULL;
     if (count(visited.begin(), visited.end(), currNode) <= 0) {
