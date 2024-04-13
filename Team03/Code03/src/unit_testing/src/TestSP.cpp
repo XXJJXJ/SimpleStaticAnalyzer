@@ -550,10 +550,10 @@ TEST_CASE("32nd SP Unit Test: AssignStatementParser Missing = token in Assign st
 
 TEST_CASE("33rd SP Unit Test: Test ConditionalTokenFactory") {
     try {
-        shared_ptr<Token> token = ConditionalTokenFactory::createToken("if");
-        REQUIRE(token->getValue() == "if");
-        shared_ptr<Token> token2 = ConditionalTokenFactory::createToken("while");
-        REQUIRE(token2->getValue() == "while");
+        shared_ptr<Token> token = ConditionalTokenFactory::createToken("&&");
+        REQUIRE(token->getValue() == "&&");
+        shared_ptr<Token> token2 = ConditionalTokenFactory::createToken("||");
+        REQUIRE(token2->getValue() == "||");
     }
     catch (SpaException& e) {
         FAIL();
