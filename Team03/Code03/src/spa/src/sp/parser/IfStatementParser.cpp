@@ -1,7 +1,7 @@
 #include "IfStatementParser.h"
 #include <algorithm>
 
-shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
+shared_ptr<Statement> IfStatementParser::parseEntity(Tokens &tokens) {
     checkStartOfIfStatement(tokens);
 
     // Erase 'if' and '(' from tokens
@@ -9,8 +9,8 @@ shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
     auto condition = extractCondition(tokens);
     auto ifStatement =
         make_shared<IfStatement>(Program::getAndIncrementStatementNumber(),
-            condition,
-            getProcedureName());
+                                 condition,
+                                 getProcedureName());
 
     parseBlock("then", ifStatement, tokens);
     if (ifStatement->getThenStatementList().size() == 0) {
@@ -24,7 +24,7 @@ shared_ptr<Statement> IfStatementParser::parseEntity(Tokens& tokens) {
     return ifStatement;
 }
 
-void IfStatementParser::parseBlock(string value, shared_ptr<IfStatement> ifStatement, Tokens& tokens) {
+void IfStatementParser::parseBlock(string value, shared_ptr<IfStatement> ifStatement, Tokens &tokens) {
     checkStartOfBlock(value, tokens);
     // Erase 'then'/'else' and '{' from tokens
     tokens.erase(tokens.begin(), tokens.begin() + 2);
@@ -35,8 +35,7 @@ void IfStatementParser::parseBlock(string value, shared_ptr<IfStatement> ifState
         auto statement = statementParser->parseEntity(tokens);
         if (value == "then") {
             ifStatement->addThenStatement(statement);
-        } 
-        else {
+        } else {
             ifStatement->addElseStatement(statement);
         }
     }
@@ -44,13 +43,12 @@ void IfStatementParser::parseBlock(string value, shared_ptr<IfStatement> ifState
     if (isEndOfStatement(tokens)) {
         // Erase '}' from tokens
         tokens.erase(tokens.begin());
-    }
-    else {
+    } else {
         throw SyntaxErrorException("Missing } token in If statement's " + value + " block");
     }
 }
 
-shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tokens) {
+shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens &tokens) {
     Tokens conditionTokens;
     auto end = checkConditionOfIfStatement(tokens);
 
@@ -69,7 +67,7 @@ shared_ptr<ConditionalOperation> IfStatementParser::extractCondition(Tokens& tok
     return dynamic_pointer_cast<ConditionalOperation>(condition);
 }
 
-void IfStatementParser::checkStartOfIfStatement(Tokens& tokens) const {
+void IfStatementParser::checkStartOfIfStatement(Tokens &tokens) const {
     if (tokens[0]->getValue() != "if") {
         throw SyntaxErrorException("Missing if name token in If statement");
     }
@@ -79,10 +77,10 @@ void IfStatementParser::checkStartOfIfStatement(Tokens& tokens) const {
     }
 }
 
-Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens& tokens) const {
-    auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token>& token) {
-        return token->getType() == TokenType::LEFT_BRACE;
-        });
+Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens &tokens) const {
+    auto end = find_if(tokens.begin(), tokens.end(), [](const shared_ptr<Token> &token) {
+      return token->getType() == TokenType::LEFT_BRACE;
+    });
 
     if (end == tokens.end()) {
         throw SyntaxErrorException("Missing { token in If statement");
@@ -99,7 +97,7 @@ Tokens::iterator IfStatementParser::checkConditionOfIfStatement(Tokens& tokens) 
     return end;
 }
 
-void IfStatementParser::checkStartOfBlock(string value, Tokens& tokens) const {
+void IfStatementParser::checkStartOfBlock(string value, Tokens &tokens) const {
     if (tokens[0]->getValue() != value) {
         throw SyntaxErrorException("Missing " + value + " name token in If statement's " + value + " block");
     }
@@ -109,11 +107,10 @@ void IfStatementParser::checkStartOfBlock(string value, Tokens& tokens) const {
     }
 }
 
-bool IfStatementParser::isEndOfStatement(Tokens& tokens) const {
+bool IfStatementParser::isEndOfStatement(Tokens &tokens) const {
     if (tokens.size() > 0) {
         return tokens[0]->getType() == TokenType::RIGHT_BRACE;
-    }
-    else {
+    } else {
         return false;
     }
 }

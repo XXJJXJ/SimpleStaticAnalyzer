@@ -14,7 +14,7 @@ void Populator::clear() {
 bool Populator::addVariable(shared_ptr<Variable> var) {
     return em->addVariable(var);
 }
-bool Populator::addProcedure(shared_ptr<Procedure>  proc) {
+bool Populator::addProcedure(shared_ptr<Procedure> proc) {
     return em->addProcedure(proc);
 }
 bool Populator::addPrintStatement(shared_ptr<PrintStatement> stmt) {
@@ -61,7 +61,7 @@ bool Populator::addNext(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2
 }
 
 void Populator::tabulate() {
-    for (auto & _pair : callTempStore) {
+    for (auto &_pair : callTempStore) {
         auto calledProcedure = em->getProcByName(_pair.second);
         if (calledProcedure == nullptr) {
             throw SemanticErrorException("Called procedure not found: " + _pair.second);

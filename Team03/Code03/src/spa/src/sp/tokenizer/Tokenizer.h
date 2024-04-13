@@ -18,7 +18,7 @@
 #include "common/spa_exception/SyntaxErrorException.h"
 
 class Tokenizer {
-public:
-	Tokens tokenize(std::ifstream& file);
-	shared_ptr<Token> stringToToken(std::string value);
+ public:
+  Tokens tokenize(std::ifstream &file);
+  shared_ptr<Token> stringToToken(std::string value);
 };

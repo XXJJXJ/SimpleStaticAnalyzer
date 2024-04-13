@@ -79,7 +79,8 @@ string infixToPostfix(std::string expression) {
 // ai-gen end
 
 // Private functions
-vector<shared_ptr<AssignStatement>> AssignPatternStore::matchPartial(vector<shared_ptr<AssignStatement>>& allAssign, string& rpn) {
+vector<shared_ptr<AssignStatement>> AssignPatternStore::matchPartial(vector<shared_ptr<AssignStatement>> &allAssign,
+                                                                     string &rpn) {
     vector<shared_ptr<AssignStatement>> res;
     for (auto &s : allAssign) {
         string curr;
@@ -90,7 +91,8 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::matchPartial(vector<shar
     return res;
 }
 
-vector<shared_ptr<AssignStatement>> AssignPatternStore::matchExact(vector<shared_ptr<AssignStatement>>& allAssign, string& rpn) {
+vector<shared_ptr<AssignStatement>> AssignPatternStore::matchExact(vector<shared_ptr<AssignStatement>> &allAssign,
+                                                                   string &rpn) {
     vector<shared_ptr<AssignStatement>> res;
     for (auto &s : allAssign) {
         string curr;
@@ -101,7 +103,7 @@ vector<shared_ptr<AssignStatement>> AssignPatternStore::matchExact(vector<shared
     return res;
 }
 
-bool AssignPatternStore::partialMatch(shared_ptr<Expression> exprS, string& curr, string& rpn) {
+bool AssignPatternStore::partialMatch(shared_ptr<Expression> exprS, string &curr, string &rpn) {
     string val = exprS->getName();
     if (exprS->isLeafNode()) {
         curr.append(val).append(" ");
@@ -123,7 +125,7 @@ bool AssignPatternStore::partialMatch(shared_ptr<Expression> exprS, string& curr
     }
 }
 
-bool AssignPatternStore::fullMatch(shared_ptr<Expression> exprS, string& curr, string& rpn) {
+bool AssignPatternStore::fullMatch(shared_ptr<Expression> exprS, string &curr, string &rpn) {
     string val = exprS->getName();
     if (exprS->isLeafNode()) {
         curr.append(val).append(" ");
@@ -140,7 +142,7 @@ bool AssignPatternStore::fullMatch(shared_ptr<Expression> exprS, string& curr, s
 }
 
 // Public functions
-bool AssignPatternStore::hasAssignPattern(string& expr, bool hasWildcard) {
+bool AssignPatternStore::hasAssignPattern(string &expr, bool hasWildcard) {
     string rpn = infixToPostfix(expr);
     if (hasWildcard) {
         return wildMatch.find(rpn) != wildMatch.end();
@@ -149,7 +151,7 @@ bool AssignPatternStore::hasAssignPattern(string& expr, bool hasWildcard) {
     }
 }
 
-vector<vector<shared_ptr<Entity>>> AssignPatternStore::getAssignPattern(string& expr, bool hasWildcard) {
+vector<vector<shared_ptr<Entity>>> AssignPatternStore::getAssignPattern(string &expr, bool hasWildcard) {
     string rpn = infixToPostfix(expr);
     vector<vector<shared_ptr<Entity>>> res;
     if (hasWildcard) {
@@ -165,9 +167,8 @@ vector<vector<shared_ptr<Entity>>> AssignPatternStore::getAssignPattern(string& 
 }
 
 vector<vector<shared_ptr<Entity>>> AssignPatternStore::findAssignPattern(
-    vector<shared_ptr<AssignStatement>>& allAssign, 
-    string& expr, bool hasWildcard) 
-{
+    vector<shared_ptr<AssignStatement>> &allAssign,
+    string &expr, bool hasWildcard) {
     string rpn = infixToPostfix(expr);
     if (expr == "" && hasWildcard) {
         wildMatch[expr] = allAssign;

@@ -7,7 +7,7 @@
 #include "EntityParser.h"
 
 class ExpressionParser : public EntityParser<Expression> {
-public:
-	typedef Tokens Tokens;
-	virtual shared_ptr<Expression> parseEntity(Tokens& tokens) = 0;
+ public:
+  typedef Tokens Tokens;
+  virtual shared_ptr<Expression> parseEntity(Tokens &tokens) = 0;
 };
