@@ -1,7 +1,3 @@
-//
-// Created by ZHENGTAO JIANG on 6/2/24.
-//
-
 #ifndef QUERYPARSER_H
 #define QUERYPARSER_H
 

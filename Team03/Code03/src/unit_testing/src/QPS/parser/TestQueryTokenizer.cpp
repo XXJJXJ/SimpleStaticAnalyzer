@@ -1,6 +1,5 @@
 #include "catch.hpp"
 #include "qps/QueryTokenizer.h"
-#include <iostream>
 
 TEST_CASE("QueryTokenizer::tokenize should remove trailing whitespaces") {
 	std::string testQuery1 = "variable a      ;";
@@ -61,15 +60,19 @@ TEST_CASE("QueryTokenizer::tokenize should correctly tokenize patterns") {
 TEST_CASE("Test QueryTokenizer::collapseTokens") {
     std::vector<std::string> tokens1 = {"_", "\"", "a", "b", "c", "\"", "_"};
     std::vector<std::string> tokens2 = {"_", "\"", "a", "+", "b", "*", "c", "d", "\"", "_"};
+    std::vector<std::string> tokens3 = {"\"", "a", "+", "b", "*", "c", "d", "\""};
 
     std::vector<std::string> results1 = QueryTokenizer::collapseTokens(tokens1);
     std::vector<std::string> results2 = QueryTokenizer::collapseTokens(tokens2);
+    std::vector<std::string> results3 = QueryTokenizer::collapseTokens(tokens3);
 
     std::vector<std::string> expectedResults1 = {"_\"a b c\"_"};
     std::vector<std::string> expectedResults2 = {"_\"a+b*c d\"_"};
+    std::vector<std::string> expectedResults3 = {"\"a+b*c d\""};
 
     REQUIRE(results1 == expectedResults1);
     REQUIRE(results2 == expectedResults2);
+    REQUIRE(results3 == expectedResults3);
 }
 
 TEST_CASE("Testing tokenizing attrRefs") {

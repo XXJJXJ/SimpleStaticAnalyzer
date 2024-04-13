@@ -1,5 +1,5 @@
 #include "PredicateFactory.h"
-#include "qps/QueryValidator.h"
+#include "qps/util/QueryTokenValidator.h"
 #include "qps/entity/clause/AffectsPredicate.h"
 #include "qps/entity/clause/AssignPatternPredicate.h"
 #include "qps/entity/clause/FollowsPredicate.h"
@@ -16,9 +16,6 @@
 #include "qps/entity/clause/WhilePatternPredicate.h"
 #include "qps/entity/clause/WithPredicate.h"
 #include "qps/entity/clause/NotPredicate.h"
-#include "qps/entity/clause/attribute/ProcNameExtractor.h"
-#include "qps/entity/clause/attribute/VarNameExtractor.h"
-#include "qps/entity/clause/attribute/ValueExtractor.h"
 #include "qps/entity/clause/attribute/StmtNumberExtractor.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
@@ -77,10 +74,10 @@ std::variant<int, Synonym, std::string> PredicateFactory::stringToStatementRef(c
 	else if (token == "_") {
 		return token;
 	}
-	else if (QueryValidator::isInteger(token)) {
+	else if (QueryTokenValidator::isInteger(token)) {
 		return stoi(token);
 	}
-	else if (QueryValidator::isSynonym(token)) {
+	else if (QueryTokenValidator::isSynonym(token)) {
 		return Synonym(token, synonymMap);
 	}
 }
@@ -93,7 +90,7 @@ std::variant<Synonym, std::string> PredicateFactory::stringToEntityRef(const std
 	else if (token == "_") {
 		return token;
 	}
-	else if (QueryValidator::isSynonym(token)) {
+	else if (QueryTokenValidator::isSynonym(token)) {
 		return Synonym(token, synonymMap);
 	}
 }
@@ -102,9 +99,9 @@ Ref PredicateFactory::stringToRef(const std::string& token, const std::unordered
     size_t len = token.size();
 	if (len >= 2 && token[0] == '"' && token[len - 1] == '"') {
 		return Ref(token.substr(1, len - 2));
-	} else if (QueryValidator::isInteger(token)) {
+	} else if (QueryTokenValidator::isInteger(token)) {
 		return Ref(stoi(token));
-	} else if (QueryValidator::isAttrRef(token)) {
+	} else if (QueryTokenValidator::isAttrRef(token)) {
         return Ref(*createAttrRef(token, synonymMap));
 	} else {
         throw QPSEvaluationException("PredicateFactory::stringToRef: Invalid token.");
@@ -114,7 +111,7 @@ Ref PredicateFactory::stringToRef(const std::string& token, const std::unordered
 shared_ptr<AttrRef> PredicateFactory::createAttrRef(const std::string& token, const std::unordered_map<std::string, EntityType>& synonymMap) {
     std::shared_ptr<Synonym> synonymPtr;
     AttributeType attributeType;
-    if (QueryValidator::isAttrRef(token)) {
+    if (QueryTokenValidator::isAttrRef(token)) {
         size_t pos = token.find('.');
         Synonym synonym(token.substr(0, pos), synonymMap);
         attributeType = getAttributeTypeFromString(token.substr(pos + 1));
