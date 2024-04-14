@@ -59,7 +59,8 @@ TEST_CASE("Debugging whole strings") {
     std::string string15 = "assign a, b; Select a pattern a(_, _\"aaa bbb ccc\"_)";
     std::string string16 = "assign a; Select <a, a.varName> with a.stmt#=8 and a.varName=\"varName\" such that Follows(a, _)";
 	std::string string17 = "assign a; Select <a, a.stmt#> with not a.stmt#=8 and not a.stmt#=9 such that Follows(a, _)";
-
+    std::string string18 = "assign a; Select a such that not not not Modifies(a, _)";
+    std::string string19 = "assign a, b, c, d; Select a with a . stmt# = 1 and b.stmt# = 2 and c. stmt# = 3 and d .stmt# = 4";
 
     std::vector<std::string> result1 = qm.processQuery(string1);
     std::vector<std::string> result2 = qm.processQuery(string2);
@@ -78,6 +79,8 @@ TEST_CASE("Debugging whole strings") {
     std::vector<std::string> result15 = qm.processQuery(string15);
 	std::vector<std::string> result16 = qm.processQuery(string16);
 	std::vector<std::string> result17 = qm.processQuery(string17);
+    std::vector<std::string> result18 = qm.processQuery(string18);
+    std::vector<std::string> result19 = qm.processQuery(string19);
 
     std::vector<std::string> expectedSyntaxError = { "SyntaxError" };
     std::vector<std::string> expectedSemanticError = { "SemanticError" };
@@ -106,5 +109,8 @@ TEST_CASE("Debugging whole strings") {
     REQUIRE(result16 == expectedSemanticError);
     REQUIRE(result17 != expectedSyntaxError);
     REQUIRE(result17 != expectedSemanticError);
+    REQUIRE(result18 == expectedSyntaxError);
+    REQUIRE(result19 != expectedSyntaxError);
+    REQUIRE(result19 != expectedSemanticError);
 }
 
