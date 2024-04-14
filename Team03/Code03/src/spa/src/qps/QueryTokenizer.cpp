@@ -1,6 +1,5 @@
 #include "QueryTokenizer.h"
-#include "QueryValidator.h"
-#include "common/spa_exception/SyntaxErrorException.h"
+#include "qps/util/QueryTokenValidator.h"
 
 QueryTokenizer::QueryTokenizer() {}
 QueryTokenizer::~QueryTokenizer() {}
@@ -40,64 +39,78 @@ std::vector<std::string> QueryTokenizer::getTokens(const std::string& query) {
 
 std::vector<std::string> QueryTokenizer::collapseTokens(const std::vector<std::string>& tokens) { 
     std::vector<std::string> collapsedTokens = {};
-    std::string currToken;
 
     bool isWithinWildcard = false;
     bool isWithinQuotes = false;
     bool isPrevSyn = false;
+    bool isAttrRef = false;
 
     for (std::string t : tokens) {
         if (isWithinQuotes) {
-            if (t == "\"") {
-                currToken.append(t);
-                collapsedTokens.push_back(currToken);
-                currToken.clear();
-                isWithinQuotes = false;
-            } else {
-                currToken.append(t);
-            }
+            handleWithinQuotes(t, collapsedTokens, isWithinQuotes, isPrevSyn);
         } else if (isWithinWildcard) {
-            if ((t == ")" || t == ",") && currToken == "_") {
-                collapsedTokens.push_back(currToken);
-                collapsedTokens.push_back(t);
-                isWithinWildcard = false;
-                currToken.clear();
-            } else if (t == "_") {
-                currToken.append(t);
-                collapsedTokens.push_back(currToken);
-                currToken.clear();
-                isWithinWildcard = false;
-            } else {
-                if (QueryValidator::isIdent(t)) {
-                    if (isPrevSyn){
-                        currToken.append(" ");
-                    }
-                    isPrevSyn = true;
-                } else {
-                    isPrevSyn = false;
-                }
-                currToken.append(t);
-            }
+            handleWithinWildcard(t, collapsedTokens, isWithinWildcard, isPrevSyn);
+        } else if (isAttrRef) {
+            collapsedTokens.back().append(t);
+            isAttrRef = false;
         } else {
-            if (t == "_") {
-                isWithinWildcard = true;
-                currToken.append(t);
-            } else if (t == "\"") {
-                isWithinQuotes = true;
-                currToken.append(t);
-            } else {
-                collapsedTokens.push_back(t);
-            }
+            handleNormalToken(t, collapsedTokens, isWithinQuotes, isWithinWildcard, isAttrRef);
         }
-    }
-    if (!currToken.empty()) {
-        collapsedTokens.push_back(currToken);
     }
 
     return collapsedTokens;
 }
 
+void QueryTokenizer::handleWithinQuotes(std::string& t, std::vector<std::string>& collapsedTokens, bool& isWithinQuotes, bool& isPrevSyn) {
+    if (t == "\"") {
+        collapsedTokens.back().append(t);
+        isWithinQuotes = false;
+        isPrevSyn = false;
+    } else {
+        handleCollapsingTokens(t, collapsedTokens, isPrevSyn);
+    }
+}
+
+void QueryTokenizer::handleWithinWildcard(std::string& t, std::vector<std::string>& collapsedTokens, bool& isWithinWildcard, bool& isPrevSyn) {
+    if ((t == ")" || t == ",") && collapsedTokens.back() == "_") {
+        collapsedTokens.push_back(t);
+        isWithinWildcard = false;
+    } else if (t == "_") {
+        collapsedTokens.back().append(t);
+        isWithinWildcard = false;
+        isPrevSyn = false;
+    } else {
+        handleCollapsingTokens(t, collapsedTokens, isPrevSyn);
+    }
+}
+
+void QueryTokenizer::handleNormalToken(std::string& t, std::vector<std::string>& collapsedTokens, bool& isWithinQuotes, bool& isWithinWildcard, bool& isAttrRef) {
+    if (t == "_") {
+        isWithinWildcard = true;
+        collapsedTokens.push_back(t);
+    } else if (t == "\"") {
+        isWithinQuotes = true;
+        collapsedTokens.push_back(t);
+    } else if (t == ".") {
+        collapsedTokens.back().append(t);
+        isAttrRef = true;
+    } else {
+        collapsedTokens.push_back(t);
+    }
+}
+
+void QueryTokenizer::handleCollapsingTokens(std::string& t, std::vector<std::string>& collapsedTokens, bool& isPrevSyn) {
+    if (QueryTokenValidator::isIdent(t)) {
+        if (isPrevSyn){
+            collapsedTokens.back().append(" ");
+        }
+        isPrevSyn = true;
+    } else {
+        isPrevSyn = false;
+    }
+    collapsedTokens.back().append(t);
+}
 
 bool QueryTokenizer::isPunctuation(char c) {
-    return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>' || c == '_' || c == '"' || c == '=';
+    return c == ',' || c == ';' || c == '(' || c == ')' || c == '<' || c == '>' || c == '_' || c == '"' || c == '=' || c == '.';
 }

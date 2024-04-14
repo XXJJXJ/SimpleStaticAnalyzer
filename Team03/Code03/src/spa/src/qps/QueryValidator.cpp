@@ -1,14 +1,10 @@
-/*
- * Created by ZHENGTAO JIANG on 8/2/24.
- */
-
 #include "QueryValidator.h"
 #include <algorithm>
 #include "common/spa_exception/SyntaxErrorException.h"
 #include "common/EntityType.h"
 #include "qps/util/EntityTypeConverter.h"
+#include "qps/util/QueryTokenValidator.h"
 #include "qps/entity/clause/PredicateUtils.h"
-
 
 QueryValidator::QueryValidator() = default;
 QueryValidator::~QueryValidator() = default;
@@ -68,7 +64,6 @@ std::vector<std::vector<std::vector<std::string>>> QueryValidator::splitTokens(c
     for (const auto& token : tokens) {
         currentList.push_back(token);
         size_t currSize = currentList.size();
-
         if (token == ")" || (currSize > 2 && currentList[currSize - 2] == "=")) {
             if (!isClause) {
                 throw SyntaxErrorException("Incorrect order in query");
@@ -117,9 +112,8 @@ std::vector<std::string> QueryValidator::validateDeclaration(const std::vector<s
     std::vector<std::string> validatedTokens;
 
     EntityType entityType = EntityTypeConverter::getEnumFromString(tokens[0]);
-
     if (entityType == EntityType::Unknown) {
-        throw SyntaxErrorException("Syntax Error: Invalid Entity Type");
+        throw SyntaxErrorException("Syntax Error: Invalid Entity Type " + tokens[0]);
     }
 
     validatedTokens.push_back(tokens[0]);
@@ -138,7 +132,7 @@ std::vector<std::string> QueryValidator::validateDeclaration(const std::vector<s
             }
             const std::string& name = tokens[i];
 
-            if (!isName(name)) { // Validate synonym name more rigorously
+            if (!QueryTokenValidator::isName(name)) { // Validate synonym name more rigorously
                 throw SyntaxErrorException("Invalid synonym name " + name);
             }
 
@@ -170,7 +164,7 @@ std::vector<std::string> QueryValidator::validateSelection(const std::vector<std
         for (size_t i = 2; i < len - 1; i++) {
             const std::string &token = tokens[i];
             if (isSyn) {
-                if (!isName(token) && !isAttrRef(token)) {
+                if (!QueryTokenValidator::isName(token) && !QueryTokenValidator::isAttrRef(token)) {
                     throw SyntaxErrorException("Invalid synonym name " + token);
                 }
                 validatedTokens.push_back(token);
@@ -183,7 +177,7 @@ std::vector<std::string> QueryValidator::validateSelection(const std::vector<std
         }
     } else if (len == 2) {
         const std::string &token = tokens[1];
-        if (!isName(token) && !isAttrRef(token)) {
+        if (!QueryTokenValidator::isName(token) && !QueryTokenValidator::isAttrRef(token)) {
             throw SyntaxErrorException("Invalid synonym name " + token);
         }
         validatedTokens.push_back(token);
@@ -280,7 +274,7 @@ std::vector<std::string> QueryValidator::validateStatementStatementPredicate(con
 
     if (isValidPredicateArgsNum(tokens, 2)) {
         std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
-        if (!isStmtRef(validatedTokens[1]) || !isStmtRef(validatedTokens[2])) {
+        if (!QueryTokenValidator::isStmtRef(validatedTokens[1]) || !QueryTokenValidator::isStmtRef(validatedTokens[2])) {
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
         return validatedTokens;
@@ -295,7 +289,7 @@ std::vector<std::string> QueryValidator::validateStmtEntEntityPredicate(const st
 
     if (isValidPredicateArgsNum(tokens, 2)) {
         std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
-        if (!isStmtRef(validatedTokens[1]) && !isEntRef(validatedTokens[1]) || !isEntRef(validatedTokens[2])) {
+        if (!QueryTokenValidator::isStmtRef(validatedTokens[1]) && !QueryTokenValidator::isEntRef(validatedTokens[1]) || !QueryTokenValidator::isEntRef(validatedTokens[2])) {
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
         return validatedTokens;
@@ -310,7 +304,7 @@ std::vector<std::string> QueryValidator::validateEntityEntityPredicate(const std
 
     if (isValidPredicateArgsNum(tokens, 2)) {
         std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
-        if (!isEntRef(validatedTokens[1]) || !isEntRef(validatedTokens[2])) {
+        if (!QueryTokenValidator::isEntRef(validatedTokens[1]) || !QueryTokenValidator::isEntRef(validatedTokens[2])) {
             throw SyntaxErrorException("Invalid " + predicateType + " clause arguments");
         }
         return validatedTokens;
@@ -329,14 +323,14 @@ std::vector<std::string> QueryValidator::validatePatternPredicate(const std::vec
 
     if (isValidPredicateArgsNum(tokens, 2)) {
         std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 2);
-        if (!isSynonym(validatedTokens[0]) || !isEntRef(validatedTokens[1]) || !isExpressionSpec(validatedTokens[2])) {
+        if (!QueryTokenValidator::isSynonym(validatedTokens[0]) || !QueryTokenValidator::isEntRef(validatedTokens[1]) || !QueryTokenValidator::isExpressionSpec(validatedTokens[2])) {
             throw SyntaxErrorException("Invalid pattern clause arguments");
         }
         validatedTokens.insert(validatedTokens.begin(), "pattern");
         return validatedTokens;
     } else if (isValidPredicateArgsNum(tokens, 3)) {
         std::vector<std::string> validatedTokens = getPredicateArgs(tokens, 3);
-        if (!isSynonym(validatedTokens[0]) || !isEntRef(validatedTokens[1]) || !isWildcard(validatedTokens[2]) || !isWildcard(validatedTokens[3])) {
+        if (!QueryTokenValidator::isSynonym(validatedTokens[0]) || !QueryTokenValidator::isEntRef(validatedTokens[1]) || !QueryTokenValidator::isWildcard(validatedTokens[2]) || !QueryTokenValidator::isWildcard(validatedTokens[3])) {
             throw SyntaxErrorException("Invalid pattern clause arguments");
         }
         validatedTokens.insert(validatedTokens.begin(), "pattern");
@@ -354,7 +348,7 @@ std::vector<std::string> QueryValidator::validateWithPredicate(const std::vector
         return validatedTokens;
     }
 
-    if (tokens.size() == 3 && isRef(tokens[0]) && tokens[1] == "=" && isRef(tokens[2])) {
+    if (tokens.size() == 3 && QueryTokenValidator::isRef(tokens[0]) && tokens[1] == "=" && QueryTokenValidator::isRef(tokens[2])) {
         std::vector<std::string> validatedTokens = {"with", tokens[0], tokens[2]};
         return validatedTokens;
     }
@@ -363,13 +357,13 @@ std::vector<std::string> QueryValidator::validateWithPredicate(const std::vector
 }
 
 bool QueryValidator::isNotPredicate(const std::vector<std::string>& tokens) { 
-    return tokens.size() >2 && tokens[0] == "not" && tokens[1] != "(";
+    return tokens.size() > 2 && tokens[0] == "not" && tokens[1] != "(" && (tokens[2] == "(" || tokens[2] == "=");
 }
 
 // Validate that the predicate has the correct number of arguments
 bool QueryValidator::isValidPredicateArgsNum(const std::vector<std::string>& tokens, int numOfArgs) {
     int expectedSize = numOfArgs * 2 + 2;
-    int tokensLen = tokens.size();
+    size_t tokensLen = tokens.size();
     
     if (tokensLen == expectedSize && tokens[1] == "(" && tokens[tokensLen - 1] == ")") {
         for (int i = 0; i < numOfArgs - 1; i++) {
@@ -392,147 +386,4 @@ std::vector<std::string> QueryValidator::getPredicateArgs(const std::vector<std:
     }
 
     return results;
-}
-
-// ai-gen start(copilot, 2, e)
-
-// Check if token is a single letter
-bool QueryValidator::isLetter(const std::string& token) {
-    return token.length() == 1 && std::isalpha(token[0]);
-}
-
-// Check if token is a single digit from 0-9
-bool QueryValidator::isDigit(const std::string& token) {
-    return token.length() == 1 && isdigit(token[0]);
-}
-
-// Check if token is a single non-zero digit from 1-9
-bool QueryValidator::isNzDigit(const std::string& token) {
-    return isDigit(token) && token[0] >= '1';
-}
-
-// Check if token is a number (can be multiple digits)
-// Definition of integer: 0 | NZDIGIT ( DIGIT )* - no leading zero
-bool QueryValidator::isInteger(const std::string& token) {
-    if (token.empty()) {
-        return false;
-    }
-
-    // If single digit, check if it is digit
-    if (token.length() == 1) {
-        return isDigit(token);
-    }
-
-    // If multiple digits, check if first digit is non-zero and rest are digits
-    return isNzDigit(token.substr(0, 1)) && std::all_of(token.begin() + 1, token.end(), ::isdigit);
-}
-
-// Check if token is a valid identifier
-// Definition of identifier: LETTER ( LETTER | DIGIT )*
-bool QueryValidator::isIdent(const std::string& token) {
-
-    if (token.empty()) {
-        return false;
-    }
-
-    // Check if first character is a letter
-    if (!isLetter(token.substr(0, 1))) {
-        return false;
-    }
-
-    // Check if rest of the characters are letters or digits
-    for (size_t i = 1; i < token.length(); i++) {
-        if (!isalnum(token[i])) {
-            return false;
-        }
-    }
-
-    // Token is not empty, starts with letter, and rest are letters or digits
-    return true;
-}
-
-// Check if token is a valid name
-// Definition of name: LETTER ( LETTER | DIGIT )*
-bool QueryValidator::isName(const std::string& token) { return isIdent(token); }
-
-// Check if token is a valid synonym
-// Definition of synonym: IDENT
-bool QueryValidator::isSynonym(const std::string& token) { return isIdent(token); }
-
-bool QueryValidator::isWildcard(const std::string& token) {
-    return token == "_";
-}
-
-// Check if token is a valid statement reference
-// Definition of stmtRef: synonym | '_' | INTEGER
-bool QueryValidator::isStmtRef(const std::string& token) {
-    return isSynonym(token) || isWildcard(token) || isInteger(token);
-}
-
-// Check if token is a valid entity reference
-// Definition of entRef: synonym | '_' | '"' IDENT '"'
-bool QueryValidator::isEntRef(const std::string& token) {
-    return isSynonym(token) || isWildcard(token) ||
-           (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
-            isIdent(token.substr(1, token.length() - 2)));
-}
-
-// Definition of expressionSpec :  '"' expr'"' | '_' '"' expr '"' '_' | '_'
-bool QueryValidator::isExpressionSpec(const std::string& token) {
-    size_t len = token.length();
-    return (len > 2 && token[0] == '"' && token[len - 1] == '"' && isExpr(token.substr(1, len-2)))||
-           (len > 4 && token[0] == '_' && token[1] == '"' && token[len - 2] == '"' && token[len - 1] == '_' && isExpr(token.substr(2, len-4)))||
-           isWildcard(token);
-}
-
-bool QueryValidator::isExpr(std::string token) {
-    for (size_t i = 0; i < token.size(); ++i) {
-        if (token[i] == '+' || token[i] == '-') {
-            if (isExpr(token.substr(0, i)) && isTerm(token.substr(i + 1))) {
-                return true;
-            }
-        }
-    }
-
-    return isTerm(token);
-}
-
-bool QueryValidator::isTerm(const std::string& token) {
-    for (size_t i = 0; i < token.size(); i++) {
-        if (token[i] == '*' || token[i] == '/' || token[i] == '%') {
-            if (isTerm(token.substr(0, i)) && isFactor(token.substr(i + 1))) {
-                return true;
-            }
-        }
-    }
-    return isFactor(token);
-}
-
-bool QueryValidator::isFactor(const std::string& token) {
-    if (token.size() >= 2 && token.front() == '(' && token.back() == ')') {
-        return isExpr(token.substr(1, token.size() - 2));
-    } else {
-        return isName(token) || isInteger(token);
-    }
-}
-
-// ai-gen end
-
-bool QueryValidator::isAttrRef(const std::string& token) { 
-    size_t pos = token.find('.');
-    if (pos != std::string::npos) {
-        return isSynonym(token.substr(0, pos)) && isAttrName(token.substr(pos + 1));
-    }
-    return false;
-}
-
-bool QueryValidator::isAttrName(const std::string& token) {
-    AttributeType attributeType = getAttributeTypeFromString(token);
-    return attributeType != AttributeType::Invalid;
-}
-
-bool QueryValidator::isRef(const std::string& token) {
-    return isInteger(token) || isAttrRef(token) ||
-           (token.length() > 2 && token.front() == '"' && token.back() == '"' &&
-            isIdent(token.substr(1, token.length() - 2)));
 }

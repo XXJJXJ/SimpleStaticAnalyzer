@@ -1,9 +1,5 @@
 #include "AttrRef.h"
-#include "qps/QueryValidator.h"
 #include "qps/entity/clause/PredicateUtils.h"
-#include "qps/entity/clause/attribute/ProcNameExtractor.h"
-#include "qps/entity/clause/attribute/VarNameExtractor.h"
-#include "qps/entity/clause/attribute/ValueExtractor.h"
 #include "qps/entity/clause/attribute/StmtNumberExtractor.h"
 #include "common/spa_exception/SemanticErrorException.h"
 
