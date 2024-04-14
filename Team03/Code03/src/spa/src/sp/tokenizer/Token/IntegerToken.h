@@ -4,5 +4,5 @@
 
 class IntegerToken : public Token {
 public:
-	IntegerToken(std::string value);
+    IntegerToken(std::string value);
 };

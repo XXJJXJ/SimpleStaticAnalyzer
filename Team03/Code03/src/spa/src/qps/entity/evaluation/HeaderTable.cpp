@@ -10,15 +10,19 @@
 #include "common/spa_exception/QPSEvaluationException.h"
 #include "BooleanTable.h"
 
-bool rowsAreCompatible(const TableRow &row1, const TableRow &row2,
-                       const HeaderTable &table1, const HeaderTable &table2,
-                       const std::vector<shared_ptr<Synonym>> &commonHeaders);
+bool rowsAreCompatible(
+    const TableRow &row1,
+    const TableRow &row2,
+    const HeaderTable &table1,
+    const HeaderTable &table2,
+    const std::vector<shared_ptr<Synonym>> &commonHeaders);
 
-
-std::vector<std::shared_ptr<Entity>> createJoinedRow(const TableRow &row1, const TableRow &row2,
-                                                     const HeaderTable &table1, const HeaderTable &table2,
-                                                     const std::vector<shared_ptr<Synonym>> &newHeaders);
-
+std::vector<std::shared_ptr<Entity>> createJoinedRow(
+    const TableRow &row1,
+    const TableRow &row2,
+    const HeaderTable &table1,
+    const HeaderTable &table2,
+    const std::vector<shared_ptr<Synonym>> &newHeaders);
 
 bool HeaderTable::isValidRow(const TableRow &row) const {
     if (row.getValues().size() == headers.size()) {
@@ -38,7 +42,7 @@ void HeaderTable::setHeaders(const vector<shared_ptr<Synonym>> &headers) {
     updateHeaderIndexMap();
 }
 
-const vector<shared_ptr<Synonym>>& HeaderTable::getHeaders() const {
+const vector<shared_ptr<Synonym>> &HeaderTable::getHeaders() const {
     return headers;
 }
 
@@ -48,7 +52,7 @@ HeaderTable HeaderTable::selectColumns(const vector<shared_ptr<Synonym>> &synony
     vector<int> indices;
 
     // Find the indices of the selected synonyms in the current headers
-    for (const auto &syn: synonyms) {
+    for (const auto &syn : synonyms) {
         for (size_t i = 0; i < headers.size(); ++i) {
             if (*headers[i] == *syn) {
                 newHeaders.push_back(syn);
@@ -61,9 +65,9 @@ HeaderTable HeaderTable::selectColumns(const vector<shared_ptr<Synonym>> &synony
     newTable.setHeaders(newHeaders);
 
     // Project rows to new table based on selected columns
-    for (const auto &row: getRows()) {
+    for (const auto &row : getRows()) {
         vector<shared_ptr<Entity>> newRowValues;
-        for (int idx: indices) {
+        for (int idx : indices) {
             newRowValues.push_back(row.getValues()[idx]);
         }
         newTable.addRow(TableRow(newRowValues));
@@ -85,8 +89,8 @@ std::shared_ptr<HeaderTable> HeaderTable::crossJoin(BaseTable &other) {
         resultTable->setHeaders(newHeaders);
 
         // Cross join rows
-        for (auto& row1 : this->getRows()) {
-            for (auto& row2 : other.getRows()) {
+        for (auto &row1 : this->getRows()) {
+            for (auto &row2 : other.getRows()) {
                 auto newValues = row1.getValues();
                 newValues.insert(newValues.end(), row2.getValues().begin(), row2.getValues().end());
                 resultTable->addRow(TableRow(newValues));
@@ -112,7 +116,8 @@ std::shared_ptr<BaseTable> HeaderTable::join(BaseTable &other) {
     auto otherHeader = dynamic_cast<HeaderTable *>(&other);
 
     if (otherHeader) {
-        std::unordered_set<std::shared_ptr<Synonym>, SynonymPtrHash, SynonymPtrEqual> headersSet1(this->headers.begin(), this->headers.end());
+        std::unordered_set<std::shared_ptr<Synonym>, SynonymPtrHash, SynonymPtrEqual>
+            headersSet1(this->headers.begin(), this->headers.end());
         std::vector<std::shared_ptr<Synonym>> newHeaders(this->headers);
         std::vector<std::shared_ptr<Synonym>> commonHeaders;
 
@@ -128,8 +133,8 @@ std::shared_ptr<BaseTable> HeaderTable::join(BaseTable &other) {
         resultTable->setHeaders(newHeaders);
 
         // Join rows based on common headers
-        for (auto& row1 : this->getRows()) {
-            for (auto& row2 : other.getRows()) {
+        for (auto &row1 : this->getRows()) {
+            for (auto &row2 : other.getRows()) {
                 if (rowsAreCompatible(row1, row2, *this, *otherHeader, commonHeaders)) {
                     auto newValues = createJoinedRow(row1, row2, *this, *otherHeader, newHeaders);
                     resultTable->addRow(TableRow(newValues));
@@ -152,11 +157,13 @@ std::shared_ptr<BaseTable> HeaderTable::join(BaseTable &other) {
     return resultTable;
 }
 
-
-bool rowsAreCompatible(const TableRow &row1, const TableRow &row2,
-                       const HeaderTable &table1, const HeaderTable &table2,
-                       const std::vector<shared_ptr<Synonym>> &commonHeaders) {
-    for (const auto &commonHeader: commonHeaders) {
+bool rowsAreCompatible(
+    const TableRow &row1,
+    const TableRow &row2,
+    const HeaderTable &table1,
+    const HeaderTable &table2,
+    const std::vector<shared_ptr<Synonym>> &commonHeaders) {
+    for (const auto &commonHeader : commonHeaders) {
         int pos1 = table1.indexOf(*commonHeader);
         int pos2 = table2.indexOf(*commonHeader);
         if (*row1.getByIndex(pos1) != *row2.getByIndex(pos2)) {
@@ -166,11 +173,14 @@ bool rowsAreCompatible(const TableRow &row1, const TableRow &row2,
     return true;
 }
 
-std::vector<std::shared_ptr<Entity>> createJoinedRow(const TableRow &row1, const TableRow &row2,
-                                                     const HeaderTable &table1, const HeaderTable &table2,
-                                                     const std::vector<shared_ptr<Synonym>> &newHeaders) {
+std::vector<std::shared_ptr<Entity>> createJoinedRow(
+    const TableRow &row1,
+    const TableRow &row2,
+    const HeaderTable &table1,
+    const HeaderTable &table2,
+    const std::vector<shared_ptr<Synonym>> &newHeaders) {
     std::vector<std::shared_ptr<Entity>> newValues;
-    for (const auto &header: newHeaders) {
+    for (const auto &header : newHeaders) {
         if (table1.hasHeader(*header)) {
             newValues.push_back(row1.getByIndex(table1.indexOf(*header)));
         } else {
@@ -181,7 +191,6 @@ std::vector<std::shared_ptr<Entity>> createJoinedRow(const TableRow &row1, const
     }
     return newValues;
 }
-
 
 void HeaderTable::updateHeaderIndexMap() {
     headerIndexMap.clear();
@@ -202,10 +211,12 @@ bool HeaderTable::hasHeader(const Synonym &synonym) const {
     return headerIndexMap.find(synonym) != headerIndexMap.end();
 }
 
-HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, const vector<vector<shared_ptr<Entity>>> &entities) {
+HeaderTable::HeaderTable(
+    const vector<shared_ptr<Synonym>> &headers,
+    const vector<vector<shared_ptr<Entity>>> &entities) {
     this->headers = headers;
     setColumnCount(headers.size());
-    for (const auto &row: entities) {
+    for (const auto &row : entities) {
         this->addRow(TableRow(row));
     }
     updateHeaderIndexMap();
@@ -217,7 +228,7 @@ HeaderTable::HeaderTable(const vector<shared_ptr<Synonym>> &headers, shared_ptr<
     }
     this->headers = headers;
     setColumnCount(headers.size());
-    for (const auto &row: baseTable->getRows()) {
+    for (const auto &row : baseTable->getRows()) {
         this->addRow(row);
     }
     updateHeaderIndexMap();
@@ -243,7 +254,9 @@ bool HeaderTable::operator==(const BaseTable &other) const {
  * - Filters rows where duplicated columns have mismatched values
  * - Merges duplicated columns into a single column
  */
-std::shared_ptr<HeaderTable> HeaderTable::fromBaseTable(const BaseTable& baseTable, const vector<shared_ptr<Synonym>>& synonyms) {
+std::shared_ptr<HeaderTable> HeaderTable::fromBaseTable(
+    const BaseTable &baseTable,
+    const vector<shared_ptr<Synonym>> &synonyms) {
     // Maps to track synonym occurrences and construct the projection mask
     std::unordered_map<std::shared_ptr<Synonym>, std::vector<int>, SynonymPtrHash, SynonymPtrEqual> synonymIndices;
     std::vector<shared_ptr<Synonym>> uniqueSynonyms;
@@ -262,9 +275,9 @@ std::shared_ptr<HeaderTable> HeaderTable::fromBaseTable(const BaseTable& baseTab
     }
 
     // Filter rows where duplicated columns have mismatched values
-    auto filteredTable = baseTable.filter([&](const std::vector<std::shared_ptr<Entity>>& row) -> bool {
-        for (const auto& pair : synonymIndices) {
-            const auto& indices = pair.second;
+    auto filteredTable = baseTable.filter([&](const std::vector<std::shared_ptr<Entity>> &row) -> bool {
+        for (const auto &pair : synonymIndices) {
+            const auto &indices = pair.second;
             if (indices.size() > 1) { // Only check duplicates
                 std::shared_ptr<Entity> firstEntity = row[indices[0]];
                 for (size_t i = 1; i < indices.size(); ++i) {
@@ -285,7 +298,7 @@ std::shared_ptr<HeaderTable> HeaderTable::fromBaseTable(const BaseTable& baseTab
     return headerTable;
 }
 
-shared_ptr<BaseTable> HeaderTable::getComplement(QueryManager& qm) {
+shared_ptr<BaseTable> HeaderTable::getComplement(QueryManager &qm) {
     // Get the full table of synonyms
     auto fullTable = getFullTable(this->headers, qm);
 
@@ -295,7 +308,7 @@ shared_ptr<BaseTable> HeaderTable::getComplement(QueryManager& qm) {
     std::unordered_set<TableRow> complementRowSet;
 
     // Find the set difference
-    for (const auto& row : fullRowSet) {
+    for (const auto &row : fullRowSet) {
         if (currentRowSet.find(row) == currentRowSet.end()) {
             complementRowSet.insert(row);
         }
@@ -304,20 +317,20 @@ shared_ptr<BaseTable> HeaderTable::getComplement(QueryManager& qm) {
     // Create a new HeaderTable from the complement row set
     auto complementTable = std::make_shared<HeaderTable>();
     complementTable->setHeaders(this->headers);
-    for (const auto& row : complementRowSet) {
+    for (const auto &row : complementRowSet) {
         complementTable->addRow(row);
     }
     return complementTable;
 
 }
 
-shared_ptr<HeaderTable> HeaderTable::getFullTable(const vector<shared_ptr<Synonym>>& synonyms, QueryManager &qm) {
+shared_ptr<HeaderTable> HeaderTable::getFullTable(const vector<shared_ptr<Synonym>> &synonyms, QueryManager &qm) {
     if (synonyms.empty()) {
         throw QPSEvaluationException("HeaderTable::getFullTable: Synonyms list is empty");
     }
     // Get the full table of synonyms
     vector<shared_ptr<HeaderTable>> fullTables;
-    for (const auto &synonym: synonyms) {
+    for (const auto &synonym : synonyms) {
         auto table = make_shared<HeaderTable>(synonym, qm.getAllEntitiesByType(synonym->getType()));
         fullTables.push_back(table);
     }
@@ -338,7 +351,7 @@ shared_ptr<HeaderTable> HeaderTable::getFullTable(const vector<shared_ptr<Synony
 HeaderTable::HeaderTable(const shared_ptr<Synonym> &header, const vector<shared_ptr<Entity>> &entities) {
     this->headers = {header};
     setColumnCount(1);
-    for (const auto &entity: entities) {
+    for (const auto &entity : entities) {
         this->addRow(TableRow({entity}));
     }
     updateHeaderIndexMap();

@@ -7,5 +7,5 @@
 
 class Parser {
 public:
-	shared_ptr<Program> parseSource(Tokens& tokens);
+    shared_ptr<Program> parseSource(Tokens &tokens);
 };

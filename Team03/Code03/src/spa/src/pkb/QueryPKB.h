@@ -33,7 +33,7 @@ private:
     // Private helpers
     virtual vector<shared_ptr<Entity>> getAllConstants();
     virtual vector<shared_ptr<Entity>> getAllVariables();
-    
+
     virtual vector<shared_ptr<Procedure>> getAllProcedures();
     virtual vector<shared_ptr<Statement>> getAllStatements();
     virtual vector<shared_ptr<AssignStatement>> getAllAssignStatements();
@@ -42,12 +42,20 @@ private:
     virtual vector<shared_ptr<CallStatement>> getAllCallStatements();
     virtual vector<shared_ptr<IfStatement>> getAllIfStatements();
     virtual vector<shared_ptr<WhileStatement>> getAllWhileStatements();
-    virtual bool checkLayer(shared_ptr<AssignStatement> a2, shared_ptr<Variable> targetVar, vector<shared_ptr<Statement>>& nextLayer,unordered_set<shared_ptr<Statement>>& visited, unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>>& nextTMap);
-    virtual bool hasNotModifiedPath(shared_ptr<AssignStatement> a1, shared_ptr<AssignStatement> a2, unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>>& nextTMap);
+    virtual bool checkLayer(
+        shared_ptr<AssignStatement> a2,
+        shared_ptr<Variable> targetVar,
+        vector<shared_ptr<Statement>> &nextLayer,
+        unordered_set<shared_ptr<Statement>> &visited,
+        unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap);
+    virtual bool hasNotModifiedPath(
+        shared_ptr<AssignStatement> a1,
+        shared_ptr<AssignStatement> a2,
+        unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> &nextTMap);
 public:
-    QueryManager ();
+    QueryManager();
     // Entity Related API
-    
+
     virtual shared_ptr<Entity> getVariableByName(string var);
     virtual vector<shared_ptr<Entity>> getAllEntitiesByType(EntityType entityType);
 
@@ -77,7 +85,6 @@ public:
     // slightly different from assign pattern because if and while pattern may have multiple variables
     virtual vector<vector<shared_ptr<Entity>>> getIfPattern();
     virtual vector<vector<shared_ptr<Entity>>> getWhilePattern();
-    
 
     virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
     virtual unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();

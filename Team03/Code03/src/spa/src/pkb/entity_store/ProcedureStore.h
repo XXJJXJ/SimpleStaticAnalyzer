@@ -14,7 +14,7 @@ private:
 public:
     bool add(shared_ptr<Procedure> procedure) override;
     vector<shared_ptr<Procedure>> getAll() override;
-    shared_ptr<Procedure> get(const string& name) override;
+    shared_ptr<Procedure> get(const string &name) override;
     void clear() override;
     ~ProcedureStore();
 };

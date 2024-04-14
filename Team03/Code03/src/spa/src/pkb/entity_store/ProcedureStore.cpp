@@ -11,14 +11,14 @@ bool ProcedureStore::add(shared_ptr<Procedure> procedure) {
 
 vector<shared_ptr<Procedure>> ProcedureStore::getAll() {
     if (allProcedures.size() == 0) {
-        for (const auto& pair : nameToProcMap) {
+        for (const auto &pair : nameToProcMap) {
             allProcedures.push_back(pair.second);
         }
     }
     return allProcedures;
 }
 
-shared_ptr<Procedure> ProcedureStore::get(const string& name) {
+shared_ptr<Procedure> ProcedureStore::get(const string &name) {
     if (nameToProcMap.find(name) != nameToProcMap.end()) {
         return nameToProcMap[name];
     }

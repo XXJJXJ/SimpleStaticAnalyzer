@@ -1,4 +1,3 @@
-
 #pragma once
 #include "CellFilter.h" // Ensure this path is correct
 #include "common/statement/Statement.h" // Ensure this path is correct
@@ -9,5 +8,5 @@ class StatementNumberFilter : public CellFilter {
 
 public:
     explicit StatementNumberFilter(int expectedNumber);
-    bool passFilter(const std::shared_ptr<Entity>& entity) const override;
+    bool passFilter(const std::shared_ptr<Entity> &entity) const override;
 };

@@ -14,5 +14,4 @@ public:
     static shared_ptr<AttributeExtractor> createExtractor(AttributeType attributeType);
 };
 
-
 #endif //SPA_EXTRACTORFACTORY_H

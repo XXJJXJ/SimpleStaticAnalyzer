@@ -4,7 +4,7 @@
 
 class RelationalToken : public Token {
 public:
-	RelationalToken(std::string value);
+    RelationalToken(std::string value);
 private:
-	TokenType getTokenTypeFromValue(std::string value);
+    TokenType getTokenTypeFromValue(std::string value);
 };

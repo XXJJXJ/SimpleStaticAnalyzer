@@ -4,7 +4,7 @@
 
 class ConditionalToken : public Token {
 public:
-	ConditionalToken(std::string value);
+    ConditionalToken(std::string value);
 private:
-	TokenType getTokenTypeFromValue(std::string value);
+    TokenType getTokenTypeFromValue(std::string value);
 };

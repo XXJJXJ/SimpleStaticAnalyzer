@@ -1,7 +1,7 @@
 #include "ValueExtractor.h"
 
-AttributeValue ValueExtractor::extract(const Entity& entity) const {
-    const auto* constant = dynamic_cast<const Constant*>(&entity);
+AttributeValue ValueExtractor::extract(const Entity &entity) const {
+    const auto *constant = dynamic_cast<const Constant *>(&entity);
     if (constant) {
         return {constant->getValue()};
     } else {

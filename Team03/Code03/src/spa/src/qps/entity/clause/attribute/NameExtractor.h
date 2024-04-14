@@ -7,8 +7,7 @@
 // The default extractor, that extracts the name of the entity
 class NameExtractor : public AttributeExtractor {
 public:
-    [[nodiscard]] AttributeValue extract(const Entity& entity) const override;
+    [[nodiscard]] AttributeValue extract(const Entity &entity) const override;
 };
-
 
 #endif //SPA_NAMEEXTRACTOR_H

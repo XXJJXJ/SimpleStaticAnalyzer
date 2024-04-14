@@ -1,7 +1,7 @@
 #include "filterUtils.h"
 
-std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef) {
-    return std::visit([](auto&& arg) -> std::shared_ptr<CellFilter> {
+std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef &stmtRef) {
+    return std::visit([](auto &&arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, int>) {
             return std::make_shared<StatementNumberFilter>(arg);
@@ -17,7 +17,7 @@ std::shared_ptr<CellFilter> getFilterForStatementRef(const StatementRef& stmtRef
     }, stmtRef);
 }
 
-std::shared_ptr<CellFilter> getFilterForRef(const Ref& ref) {
+std::shared_ptr<CellFilter> getFilterForRef(const Ref &ref) {
     // If ref contains synonym, return synonym filter
     if (ref.holdsSynonym()) {
         return std::make_shared<SynonymFilter>(*ref.getSynonym());
@@ -27,8 +27,8 @@ std::shared_ptr<CellFilter> getFilterForRef(const Ref& ref) {
     throw QPSEvaluationException("filterUtils::getFilterForRef Unsupported Ref type for cellFilter creation.");
 }
 
-std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef& entRef) {
-    return std::visit([](auto&& arg) -> std::shared_ptr<CellFilter> {
+std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef &entRef) {
+    return std::visit([](auto &&arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Synonym>) {
             return std::make_shared<SynonymFilter>(arg);
@@ -44,8 +44,8 @@ std::shared_ptr<CellFilter> getFilterForEntityRef(const EntityRef& entRef) {
     }, entRef);
 }
 
-std::shared_ptr<CellFilter> getFilterForProcAndStmtRef(const ProcAndStmtRef& procAndStmtRef) {
-    return std::visit([&](auto&& arg) -> std::shared_ptr<CellFilter> {
+std::shared_ptr<CellFilter> getFilterForProcAndStmtRef(const ProcAndStmtRef &procAndStmtRef) {
+    return std::visit([&](auto &&arg) -> std::shared_ptr<CellFilter> {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, int>) {
             // Directly treat as StatementRef and fetch its cell filter

@@ -19,6 +19,6 @@
 
 class Tokenizer {
 public:
-	Tokens tokenize(std::ifstream& file);
-	shared_ptr<Token> stringToToken(std::string value);
+    Tokens tokenize(std::ifstream &file);
+    shared_ptr<Token> stringToToken(std::string value);
 };

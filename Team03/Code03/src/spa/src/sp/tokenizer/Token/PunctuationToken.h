@@ -4,7 +4,7 @@
 
 class PunctuationToken : public Token {
 public:
-	PunctuationToken(std::string value);
+    PunctuationToken(std::string value);
 private:
-	TokenType getTokenTypeFromValue(std::string value);
+    TokenType getTokenTypeFromValue(std::string value);
 };

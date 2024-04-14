@@ -2,7 +2,6 @@
 // prompt: https://chat.openai.com/share/4018fd98-2d4f-488f-a857-7769d6a30be0
 #include "ParentPredicate.h"
 
-
 ParentPredicate::ParentPredicate(StatementRef lhs, StatementRef rhs) {
     if (!isValidStatementRef(lhs) || !isValidStatementRef(rhs)) {
         throw SemanticErrorException("Invalid argument for ParentPredicate constructor");
@@ -26,10 +25,10 @@ bool ParentPredicate::operator==(const Predicate &other) const {
     if (getType() != other.getType()) {
         return false;
     }
-    auto castedOther = static_cast<const ParentPredicate&>(other);
+    auto castedOther = static_cast<const ParentPredicate &>(other);
     return this->lhs == castedOther.lhs && this->rhs == castedOther.rhs;
 }
 size_t ParentPredicate::hash() const {
-    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1) 
-            ^ (std::hash<StatementRef>()(rhs) >> 1);
+    return std::hash<PredicateType>()(getType()) ^ (std::hash<StatementRef>()(lhs) << 1)
+        ^ (std::hash<StatementRef>()(rhs) >> 1);
 }

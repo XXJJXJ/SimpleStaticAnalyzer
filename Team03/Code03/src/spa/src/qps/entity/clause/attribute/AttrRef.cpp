@@ -5,7 +5,7 @@
 
 // Constructor definition
 AttrRef::AttrRef(std::shared_ptr<Synonym> synonym, AttributeType attributeType)
-        : synonym(std::move(synonym)), attributeType(attributeType) {
+    : synonym(std::move(synonym)), attributeType(attributeType) {
     if (!isValidAttributeType()) {
         throw SemanticErrorException("Invalid attribute type for the synonym used");
     }
@@ -27,18 +27,17 @@ AttributeValueType AttrRef::getAttributeValueType() const {
     return AttributeValueType::Integer;
 }
 
-
-AttributeValue AttrRef::extractAttribute(const Entity& entity) const {
+AttributeValue AttrRef::extractAttribute(const Entity &entity) const {
     return extractor->extract(entity);
 }
-
 
 bool AttrRef::isValidAttributeType() {
     EntityType entityType = synonym->getType();
     if (VALID_ENTITY_TYPES_FOR_ATTRIBUTE.find(attributeType) == VALID_ENTITY_TYPES_FOR_ATTRIBUTE.end()) {
         return false;
     }
-    return VALID_ENTITY_TYPES_FOR_ATTRIBUTE.at(attributeType).find(entityType) != VALID_ENTITY_TYPES_FOR_ATTRIBUTE.at(attributeType).end();
+    return VALID_ENTITY_TYPES_FOR_ATTRIBUTE.at(attributeType).find(entityType)
+        != VALID_ENTITY_TYPES_FOR_ATTRIBUTE.at(attributeType).end();
 }
 
 shared_ptr<AttributeExtractor> AttrRef::getExtractor() const {

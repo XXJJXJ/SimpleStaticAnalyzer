@@ -13,8 +13,7 @@ private:
     shared_ptr<AttributeExtractor> extractor;
 public:
     AttributeFilter(AttributeValue expectedValue, shared_ptr<AttributeExtractor> extractor);
-    bool passFilter(const std::shared_ptr<Entity>& entity) const override;
+    bool passFilter(const std::shared_ptr<Entity> &entity) const override;
 };
-
 
 #endif //SPA_ATTRIBUTEFILTER_H

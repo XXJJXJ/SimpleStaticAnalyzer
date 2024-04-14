@@ -6,6 +6,6 @@
 
 class CallStatementParser : public StatementParser {
 public:
-	shared_ptr<Statement> parseEntity(Tokens& tokens) override;
-	string extractProcedureName(Tokens& tokens) const;
+    shared_ptr<Statement> parseEntity(Tokens &tokens) override;
+    string extractProcedureName(Tokens &tokens) const;
 };

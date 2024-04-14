@@ -16,7 +16,7 @@ private:
 public:
     ConstVarStore();
     bool add(shared_ptr<Entity> item) override;
-    shared_ptr<Entity> get(const string& name) override;
+    shared_ptr<Entity> get(const string &name) override;
     vector<shared_ptr<Entity>> getAll() override;
     void clear() override;
     ~ConstVarStore();

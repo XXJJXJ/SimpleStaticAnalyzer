@@ -9,5 +9,5 @@
 
 class TokenFactory {
 public:
-	static std::shared_ptr<Token> createToken(string value);
+    static std::shared_ptr<Token> createToken(string value);
 };

@@ -8,7 +8,6 @@
 #include "../entity_store/ProcedureStore.h"
 #include "../entity_store/StatementStore.h"
 
-
 using namespace std;
 
 class EntityManager {
@@ -57,7 +56,7 @@ public:
 
     vector<shared_ptr<Statement>> getAllStatements();
 
-    shared_ptr<Procedure> getProcByName(const string& procName);
+    shared_ptr<Procedure> getProcByName(const string &procName);
 
     static void clear();
     ~EntityManager();

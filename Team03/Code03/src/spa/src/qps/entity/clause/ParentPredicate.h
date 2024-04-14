@@ -14,7 +14,7 @@ private:
     StatementRef lhs;
     StatementRef rhs;
 protected:
-    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
+    std::shared_ptr<BaseTable> getFullTable(QueryManager &qm) override;
 
 public:
     ParentPredicate(StatementRef lhs, StatementRef rhs);

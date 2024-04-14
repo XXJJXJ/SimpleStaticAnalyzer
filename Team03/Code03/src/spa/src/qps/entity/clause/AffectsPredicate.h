@@ -2,13 +2,12 @@
 #define SPA_AFFECTSPREDICATE_H
 #include "Predicate.h"
 
-
 class AffectsPredicate : public Predicate {
 private:
     StatementRef lhs;
     StatementRef rhs;
 protected:
-    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
+    std::shared_ptr<BaseTable> getFullTable(QueryManager &qm) override;
 
 public:
     AffectsPredicate(StatementRef lhs, StatementRef rhs);
@@ -16,6 +15,5 @@ public:
     bool operator==(const Predicate &other) const override;
     std::size_t hash() const override;
 };
-
 
 #endif //SPA_AFFECTSPREDICATE_H

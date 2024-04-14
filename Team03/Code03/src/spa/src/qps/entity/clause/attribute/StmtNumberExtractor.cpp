@@ -1,7 +1,7 @@
 #include "StmtNumberExtractor.h"
 
-AttributeValue StmtNumberExtractor::extract(const Entity& entity) const {
-    const auto* statement = dynamic_cast<const Statement*>(&entity);
+AttributeValue StmtNumberExtractor::extract(const Entity &entity) const {
+    const auto *statement = dynamic_cast<const Statement *>(&entity);
     if (statement) {
         return {statement->getStatementNumber()};
     } else {

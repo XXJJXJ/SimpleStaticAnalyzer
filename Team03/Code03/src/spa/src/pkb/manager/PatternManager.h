@@ -14,18 +14,19 @@ private:
     AssignPatternStore assignPatternStore;
     IfWhilePatternStore ifPatternStore;
     IfWhilePatternStore whilePatternStore;
-    
+
 public:
     static shared_ptr<PatternManager> getInstance();
     void clearStore();
     static void clear();
     // Assign related
-    bool hasAssignPattern(string& expr, bool hasWildcard);
+    bool hasAssignPattern(string &expr, bool hasWildcard);
     void addIfWhileUses(shared_ptr<Statement> stmt, shared_ptr<Variable> var);
     // If related
     vector<vector<shared_ptr<Entity>>> getIfPattern();
     // While related
     vector<vector<shared_ptr<Entity>>> getWhilePattern();
-    vector<vector<shared_ptr<Entity>>> getAssignPattern(string& expr, bool hasWildcard);
-    vector<vector<shared_ptr<Entity>>> findAssignPattern(vector<shared_ptr<AssignStatement>>& allAssign, string& expr, bool hasWildcard);
+    vector<vector<shared_ptr<Entity>>> getAssignPattern(string &expr, bool hasWildcard);
+    vector<vector<shared_ptr<Entity>>> findAssignPattern(
+        vector<shared_ptr<AssignStatement>> &allAssign, string &expr, bool hasWildcard);
 };

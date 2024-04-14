@@ -10,13 +10,13 @@ using namespace std;
 
 class ConditionalOperationParser : public OperationParser {
 public:
-	shared_ptr<Expression> parse() override;
+    shared_ptr<Expression> parse() override;
 
 private:
-	bool isSubExpression;
-	bool isProcessedToken; 
-	shared_ptr<Expression> parseRelationalExpression();
-	shared_ptr<Expression> parseExpression(int index, TokenType tokenType);
-	shared_ptr<Expression> parseSubExpression(string operation, shared_ptr<Expression> subExpression);
-	shared_ptr<Expression> parseAndOrSubExpression();
+    bool isSubExpression;
+    bool isProcessedToken;
+    shared_ptr<Expression> parseRelationalExpression();
+    shared_ptr<Expression> parseExpression(int index, TokenType tokenType);
+    shared_ptr<Expression> parseSubExpression(string operation, shared_ptr<Expression> subExpression);
+    shared_ptr<Expression> parseAndOrSubExpression();
 };

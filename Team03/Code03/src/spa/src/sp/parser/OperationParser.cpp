@@ -26,7 +26,7 @@ shared_ptr<Tokens> OperationParser::getTokens() {
     return make_shared<Tokens>(tokens);
 }
 
-shared_ptr<Expression> OperationParser::parseEntity(Tokens& tokens) {
+shared_ptr<Expression> OperationParser::parseEntity(Tokens &tokens) {
     if (*indexPointer == 0) {
         initialiseTokens(tokens);
     }
@@ -57,11 +57,9 @@ void OperationParser::setNextToken() {
 void OperationParser::manageParentheses(TokenType tokenType) {
     if (tokenType == TokenType::LEFT_PARANTHESIS) {
         parentheses.push(tokenType);
-    } 
-    else if (!parentheses.empty() && tokenType == TokenType::RIGHT_PARANTHESIS) {
+    } else if (!parentheses.empty() && tokenType == TokenType::RIGHT_PARANTHESIS) {
         parentheses.pop();
-    }
-    else {
+    } else {
         throw SyntaxErrorException("Unbalanced parenthesis in procedure");
     }
 }
@@ -70,7 +68,10 @@ void OperationParser::setIsSubExpression(bool isSubExpression) {
     *isSubExpressionPointer = isSubExpression;
 }
 
-void OperationParser::setPairOfArguments(shared_ptr<bool> isSubExpressionPointer_, shared_ptr<int> indexPointer_,  shared_ptr<bool> isProcessedTokenPointer_) {
+void OperationParser::setPairOfArguments(
+    shared_ptr<bool> isSubExpressionPointer_,
+    shared_ptr<int> indexPointer_,
+    shared_ptr<bool> isProcessedTokenPointer_) {
     *isSetPairOfArgumentsPointer = true;
     isSubExpressionPointer = isSubExpressionPointer_;
     indexPointer = indexPointer_;
@@ -89,12 +90,12 @@ void OperationParser::markTokenAsProcessed() {
     *isProcessedTokenPointer = true;
 }
 
-void OperationParser::initialiseTokens(Tokens& tokens_) {
+void OperationParser::initialiseTokens(Tokens &tokens_) {
     tokens = tokens_;
     nextToken();
 }
 
-void OperationParser::setTokens(Tokens& tokens_) {
+void OperationParser::setTokens(Tokens &tokens_) {
     tokens = tokens_;
     setNextToken();
 }

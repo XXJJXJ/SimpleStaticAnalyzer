@@ -34,8 +34,7 @@ shared_ptr<CfgNode> CfgExtractor::addNewNode() {
     shared_ptr<CfgNode> newNode = make_shared<CfgNode>();
     if (!node->getStatementList().empty()) {
         addNextNode(true, newNode);
-    }
-    else {
+    } else {
         newNode = node;
     }
     return newNode;
@@ -55,13 +54,14 @@ void CfgExtractor::visitWhileStatement(shared_ptr<WhileStatement> whileStatement
     processWhileBlock(whileStatement, whileNode);
 }
 
-void CfgExtractor::processIfBlocks(bool isThenBlock, shared_ptr<IfStatement> ifStatement, shared_ptr<CfgNode> ifNode, shared_ptr<CfgNode> dummyNode) {
+void CfgExtractor::processIfBlocks(
+    bool isThenBlock, shared_ptr<IfStatement> ifStatement, shared_ptr<CfgNode> ifNode, shared_ptr<CfgNode> dummyNode) {
     shared_ptr<CfgNode> blockNode = make_shared<CfgNode>();
     addNextNode(isThenBlock, blockNode);
     processStatements(isThenBlock ? ifStatement->getThenStatementList() : ifStatement->getElseStatementList());
     addNextNode(true, dummyNode);
     if (isThenBlock) {
-        node = ifNode; 
+        node = ifNode;
     }
 }
 

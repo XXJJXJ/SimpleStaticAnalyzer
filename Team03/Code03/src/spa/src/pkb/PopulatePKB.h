@@ -23,8 +23,8 @@ private:
     vector<pair<string, string>> callTempStore;
 public:
     Populator();
-    bool addConstant(shared_ptr<Constant>  c);
-    bool addVariable(shared_ptr<Variable>  var);
+    bool addConstant(shared_ptr<Constant> c);
+    bool addVariable(shared_ptr<Variable> var);
     bool addProcedure(shared_ptr<Procedure> proc);
     bool addPrintStatement(shared_ptr<PrintStatement> stmt);
     bool addReadStatement(shared_ptr<ReadStatement> stmt);

@@ -4,5 +4,5 @@
 
 class NameToken : public Token {
 public:
-	NameToken(std::string value);
+    NameToken(std::string value);
 };

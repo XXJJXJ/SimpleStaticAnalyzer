@@ -17,7 +17,6 @@ private:
 
     bool isValidAttributeType();
 
-
 public:
     // Updated constructor to accept a shared_ptr<Synonym>
     AttrRef(std::shared_ptr<Synonym> synonym, AttributeType attributeType);
@@ -25,11 +24,11 @@ public:
 
     // Method to get the synonym
     std::shared_ptr<Synonym> getSynonym() const;
-    
+
     AttributeType getAttributeType() const;
     AttributeValueType getAttributeValueType() const;
 
-    AttributeValue extractAttribute(const Entity& entity) const;
+    AttributeValue extractAttribute(const Entity &entity) const;
     [[nodiscard]] shared_ptr<AttributeExtractor> getExtractor() const;
     bool operator==(const AttrRef &other) const;
     std::size_t hash() const;

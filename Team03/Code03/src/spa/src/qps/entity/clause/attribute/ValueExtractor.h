@@ -7,7 +7,7 @@
 
 class ValueExtractor : public AttributeExtractor {
 public:
-    [[nodiscard]] AttributeValue extract(const Entity& entity) const override;
+    [[nodiscard]] AttributeValue extract(const Entity &entity) const override;
 };
 
 #endif // VALUE_EXTRACTOR_H

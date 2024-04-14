@@ -8,7 +8,7 @@
 
 class ProcNameExtractor : public AttributeExtractor {
 public:
-    AttributeValue extract(const Entity& entity) const override;
+    AttributeValue extract(const Entity &entity) const override;
 };
 
 #endif // PROC_NAME_EXTRACTOR_H

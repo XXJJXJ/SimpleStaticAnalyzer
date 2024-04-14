@@ -11,7 +11,7 @@
 using namespace std;
 
 class Sp {
-  public:
+public:
     Sp();
     bool ProcessSIMPLE(string fileName);
 

@@ -8,8 +8,7 @@
 class AttributeExtractor {
 public:
     virtual ~AttributeExtractor() = default;
-    [[nodiscard]] virtual AttributeValue extract(const Entity& entity) const = 0;
+    [[nodiscard]] virtual AttributeValue extract(const Entity &entity) const = 0;
 };
-
 
 #endif // ATTRIBUTE_EXTRACTOR_H

@@ -25,8 +25,8 @@ private:
     NextStore nextStore;
 
     // Helper
-    void tabulateContainerStmtVarRelation(SPVStore& store);
-    void tabulateByCallStatements(SPVStore& store, vector<shared_ptr<CallStatement>>& callStmts);
+    void tabulateContainerStmtVarRelation(SPVStore &store);
+    void tabulateByCallStatements(SPVStore &store, vector<shared_ptr<CallStatement>> &callStmts);
 public:
     static shared_ptr<AbstractionManager> getInstance();
 
@@ -37,7 +37,7 @@ public:
     bool addCalls(shared_ptr<Procedure> proc1, shared_ptr<Procedure> proc2);
     bool addNext(shared_ptr<Statement> stmt1, shared_ptr<Statement> stmt2);
 
-    void tabulate(vector<shared_ptr<CallStatement>>& callStmts);
+    void tabulate(vector<shared_ptr<CallStatement>> &callStmts);
 
     vector<vector<shared_ptr<Entity>>> getFollowS();
     vector<vector<shared_ptr<Entity>>> getFollowT();
@@ -58,7 +58,6 @@ public:
     vector<vector<shared_ptr<Entity>>> getNextT();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getNextSMap();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getNextTMap();
-
 
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowSMap();
     unordered_map<shared_ptr<Statement>, unordered_set<shared_ptr<Statement>>> getFollowTMap();

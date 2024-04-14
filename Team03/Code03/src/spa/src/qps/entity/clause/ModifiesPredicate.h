@@ -8,7 +8,6 @@
 #include <variant>
 #include "PredicateUtils.h"
 
-
 class Strategy;
 
 class ModifiesPredicate : public Predicate {
@@ -16,7 +15,7 @@ private:
     ProcAndStmtRef lhs; // Directly holds int, Synonym, or std::string
     EntityRef rhs; // Can be a synonym of type variable, a variable name, or "_"
 protected:
-    std::shared_ptr<BaseTable> getFullTable(QueryManager& qm) override;
+    std::shared_ptr<BaseTable> getFullTable(QueryManager &qm) override;
 public:
     ModifiesPredicate(ProcAndStmtRef lhs, EntityRef rhs);
     ~ModifiesPredicate() override = default;
