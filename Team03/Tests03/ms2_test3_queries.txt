@@ -148,52 +148,52 @@ procedure p;
 Select p pattern p(p, p)
 SyntaxError
 5000
-32
+31 - Invalid syntax no "or"
 assign a;
 Select a such that Uses(a, "x") or Modifies(a, "x")
 SyntaxError
 5000
-33
+32 - Invalid syntax for parent
 if ifs;
 Select ifs such that Parent(ifs)
 SyntaxError
 5000
-34
+33 - Invalid syntax for pattern - blank
 assign a;
 Select a pattern a("x", )
 SyntaxError
 5000
-35
+34 - Invalid syntax for pattern
 assign a;
 Select a pattern a("x", _"1"+_)
 SyntaxError
 5000
-36
+35 - No such procedure
 procedure p;
 Select p such that Calls(p, "Nonexistentprocedure")
 none
 5000
-37
+36 - Invalid semantics for select
 variable v;
 Select var
 SemanticError
 5000
-38
+37 - Invalid syntax for call
 procedure p;
 Select p such that Calls(p, _
 SyntaxError
 5000
-39
+38 - Whitespaces test 1
 variable v;
 Select                                                                 v
 a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,result,s,t,u,v,w,x,y,z
 5000
-40
+39 - Whitespaces test 2
 procedure p;
 Select p such that Calls(p,                                                                      _                                               )
 eight,eleven,five,four,multipleWhiles,nine,one,seven,simulateRecursion,six,ten,thirteen,three,twelve,two
 5000
-41
+40 - Whitespaces test 3
 assign a; 
 Select a pattern a("                    x                          ",                                          _)
 1,30,34,46,52,6,8
