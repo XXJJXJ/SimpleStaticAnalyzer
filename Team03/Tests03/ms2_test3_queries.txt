@@ -1,204 +1,199 @@
-1
+1 - Get all call statements which call procedure "incrementX"
 procedure p;
 Select p such that Calls(p, "incrementX")
 multipleWhiles,thirteen
 5000
-2
+2 - Select all variables which appears on the left hand side of assign statements in procedure "complexMath"
 variable v;
 Select v such that Modifies("complexMath", v)
 a,n
 5000
-3
+3 - Select assign statements with complex arithmetic operations
 assign a;
 Select a pattern a("result", _"((a + b) * (c - d)) / ((e % f) + (g * h))"_)
 103,106,114,117,130,133,141,144,157,160,168,171,184,187,195,198,211,214,222,225,238,241,249,252,265,268,276,279,292,295,303,306,319,322,330,333,346,349,357,360,373,376,384,387,400,403,410,413,76,79,87,90
 5000
-4
+4 - Select all procedures
 procedure p; 
 Select p
 combinedLogic,complexAssignments,complexConditionAssign,complexIfElse,complexMath,decrementX,eight,eleven,five,four,incrementA,incrementX,loopWithNesting,multipleWhiles,nestedIfs,nestedLoopsArithmetic,nine,one,seven,simulateRecursion,six,ten,thirteen,three,twelve,two
 5000
-5
+5 - Select all variables
 variable v; 
 Select v
 a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,result,s,t,u,v,w,x,y,z
 5000
-6
+6 - Select while statements which are parent* of if statements
 while w; if i; 
 Select w such that Parent*(w, i)
 126,153,180,207,234,25,261,288,31,315,342,369,396,53,61,72,99
 5000
-7
+7 Select procedures which call on another procedure
 call c; procedure p; 
 Select p such that Calls(p, p)
 none
 5000
-8
+8 - Select statements which is right before an assign statement and modifies "x"
 stmt s; assign a; variable v; 
 Select s such that Follows(s, a) and Modifies(a, "x")
 49
 5000
-9
-variable v; 
-Select v such that Modifies("complexMath", v)
-a,n
-5000
-10
+9 - Select variables which is used in procedure "nestedIfs"
 variable v; 
 Select v such that Uses("nestedIfs", v)
 a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u
 5000
-11
+10 - Select assign statements where while statements are parent* and that the assign statements modifies "a"
 assign a; while w; 
 Select a such that Parent*(w, a) and Modifies(a, "a")
 29,38,59,69
 5000
-12
+11 - Select call statements which have while statements as parent*
 call c; while w;
 Select c such that Parent*(w, c)
 109,120,136,147,163,174,190,201,217,228,244,255,271,282,298,3,309,325,336,352,363,37,379,390,416,417,418,5,82,93
 5000
-13
+12 - Select procedures which calls* procedure "incrementX"
 procedure p; 
 Select p such that Calls*(p, "incrementX")
 multipleWhiles,thirteen,twelve
 5000
-14
+13 - Select procedures which calls another procedure
 procedure p; call c;
 Select p such that not Calls(p, _)
 combinedLogic,complexAssignments,complexConditionAssign,complexIfElse,complexMath,decrementX,incrementA,incrementX,loopWithNesting,nestedIfs,nestedLoopsArithmetic
 5000
-15
+14 - Select assign statements which uses "b"
 assign a; 
 Select a such that Uses(a, "b")
 10,103,106,114,117,124,130,133,141,144,151,157,160,168,171,178,184,187,195,198,205,211,214,222,225,232,238,241,249,252,259,265,268,276,279,286,292,295,303,306,313,319,322,330,333,340,346,349,357,360,367,373,376,384,387,394,400,403,41,410,413,45,70,76,79,87,90,97
 5000
-16
+15 - Select assign statements which have while statements as parent* and modifies "result"
 assign a; while w; 
 Select a such that Parent*(w, a) and Modifies(a, "result")
 103,106,114,117,130,133,141,144,157,160,168,171,184,187,195,198,211,214,222,225,238,241,249,252,265,268,276,279,292,295,303,306,319,322,330,333,346,349,357,360,373,376,384,387,400,403,410,413,76,79,87,90
 5000
-17
+16 - Select if statements which are parent* of assign statements which modifies "a" and uses "b"
 if i; assign a; 
 Select i such that Parent*(i, a) and Modifies(a, "a") and Uses(i, "b")
 42
 5000
-18
+17 - Select procedures which modifies "v" but not uses "v"
 procedure p; variable v; 
 Select p such that Modifies(p, v) and not Uses(p, v)
 complexAssignments,complexConditionAssign,complexMath
 5000
-19
+18 - Select while statements which are parent* of call statements which modifies v and w respectively
 while w; call c; variable v; 
 Select w such that Parent*(w, c) and Modifies(c, v) and Modifies(w, v)
 102,105,108,113,116,119,126,129,132,135,140,143,146,153,156,159,162,167,170,173,180,183,186,189,194,197,2,200,207,210,213,216,221,224,227,234,237,240,243,248,251,254,261,264,267,270,275,278,281,288,291,294,297,302,305,308,315,318,321,324,329,332,335,342,345,348,351,356,359,36,362,369,372,375,378,383,386,389,396,4,409,412,415,72,75,78,81,86,89,92,99
 5000
-20
+19 - Select assign statements with "h*i" in the AST
 assign a;
 Select a pattern a(_, _"h*i"_)
 125,152,179,206,233,260,287,314,341,368,395,71,98
 5000
-21 
+20 - Select tuples of 2 where procedure calls on another procedure 
 procedure p1, p2;
 Select <p1, p2> such that Calls(p1, p2)
 eight loopWithNesting,eight nine,eleven complexAssignments,eleven loopWithNesting,five incrementA,five six,four complexMath,four five,multipleWhiles decrementX,multipleWhiles incrementX,nine nestedIfs,nine ten,one two,seven combinedLogic,seven eight,simulateRecursion incrementA,six seven,six simulateRecursion,ten eleven,ten loopWithNesting,thirteen complexIfElse,thirteen decrementX,thirteen incrementX,three four,three nestedLoopsArithmetic,twelve multipleWhiles,twelve thirteen,two complexConditionAssign,two three
 5000
-22
+21 - Select tuples of 2 where procedure calls* on another procedure
 procedure p1, p2;
 Select <p1, p2> such that Calls*(p1, p2)
 eight complexAssignments,eight eleven,eight loopWithNesting,eight nestedIfs,eight nine,eight ten,eleven complexAssignments,eleven loopWithNesting,five combinedLogic,five complexAssignments,five eight,five eleven,five incrementA,five loopWithNesting,five nestedIfs,five nine,five seven,five simulateRecursion,five six,five ten,four combinedLogic,four complexAssignments,four complexMath,four eight,four eleven,four five,four incrementA,four loopWithNesting,four nestedIfs,four nine,four seven,four simulateRecursion,four six,four ten,multipleWhiles decrementX,multipleWhiles incrementX,nine complexAssignments,nine eleven,nine loopWithNesting,nine nestedIfs,nine ten,one combinedLogic,one complexAssignments,one complexConditionAssign,one complexMath,one eight,one eleven,one five,one four,one incrementA,one loopWithNesting,one nestedIfs,one nestedLoopsArithmetic,one nine,one seven,one simulateRecursion,one six,one ten,one three,one two,seven combinedLogic,seven complexAssignments,seven eight,seven eleven,seven loopWithNesting,seven nestedIfs,seven nine,seven ten,simulateRecursion incrementA,six combinedLogic,six complexAssignments,six eight,six eleven,six incrementA,six loopWithNesting,six nestedIfs,six nine,six seven,six simulateRecursion,six ten,ten complexAssignments,ten eleven,ten loopWithNesting,thirteen complexIfElse,thirteen decrementX,thirteen incrementX,three combinedLogic,three complexAssignments,three complexMath,three eight,three eleven,three five,three four,three incrementA,three loopWithNesting,three nestedIfs,three nestedLoopsArithmetic,three nine,three seven,three simulateRecursion,three six,three ten,twelve complexIfElse,twelve decrementX,twelve incrementX,twelve multipleWhiles,twelve thirteen,two combinedLogic,two complexAssignments,two complexConditionAssign,two complexMath,two eight,two eleven,two five,two four,two incrementA,two loopWithNesting,two nestedIfs,two nestedLoopsArithmetic,two nine,two seven,two simulateRecursion,two six,two ten,two three
 5000
-23
+22 - Select tuples of 2 where call statement is followed by a statement
 stmt s; call c;
 Select <c, s> such that Next(c, s)
 109 110,120 121,136 137,147 148,163 164,174 175,190 191,201 202,217 218,228 229,244 245,255 256,271 272,282 283,298 299,3 4,309 310,325 326,336 337,352 353,363 364,37 38,379 380,390 391,416 417,417 418,418 419,5 4,82 83,93 94
 5000
-24
+23 - Select tuples of 2 where call statement is followed by a statement at some point in the CFG
 stmt s; call c;
 Select <c, s> such that Next*(c, s)
 109 100,109 101,109 102,109 103,109 104,109 105,109 106,109 107,109 108,109 109,109 110,109 111,109 112,109 113,109 114,109 115,109 116,109 117,109 118,109 119,109 120,109 121,109 122,109 123,109 99,120 100,120 101,120 102,120 103,120 104,120 105,120 106,120 107,120 108,120 109,120 110,120 111,120 112,120 113,120 114,120 115,120 116,120 117,120 118,120 119,120 120,120 121,120 122,120 123,120 99,136 126,136 127,136 128,136 129,136 130,136 131,136 132,136 133,136 134,136 135,136 136,136 137,136 138,136 139,136 140,136 141,136 142,136 143,136 144,136 145,136 146,136 147,136 148,136 149,136 150,147 126,147 127,147 128,147 129,147 130,147 131,147 132,147 133,147 134,147 135,147 136,147 137,147 138,147 139,147 140,147 141,147 142,147 143,147 144,147 145,147 146,147 147,147 148,147 149,147 150,163 153,163 154,163 155,163 156,163 157,163 158,163 159,163 160,163 161,163 162,163 163,163 164,163 165,163 166,163 167,163 168,163 169,163 170,163 171,163 172,163 173,163 174,163 175,163 176,163 177,174 153,174 154,174 155,174 156,174 157,174 158,174 159,174 160,174 161,174 162,174 163,174 164,174 165,174 166,174 167,174 168,174 169,174 170,174 171,174 172,174 173,174 174,174 175,174 176,174 177,190 180,190 181,190 182,190 183,190 184,190 185,190 186,190 187,190 188,190 189,190 190,190 191,190 192,190 193,190 194,190 195,190 196,190 197,190 198,190 199,190 200,190 201,190 202,190 203,190 204,201 180,201 181,201 182,201 183,201 184,201 185,201 186,201 187,201 188,201 189,201 190,201 191,201 192,201 193,201 194,201 195,201 196,201 197,201 198,201 199,201 200,201 201,201 202,201 203,201 204,217 207,217 208,217 209,217 210,217 211,217 212,217 213,217 214,217 215,217 216,217 217,217 218,217 219,217 220,217 221,217 222,217 223,217 224,217 225,217 226,217 227,217 228,217 229,217 230,217 231,228 207,228 208,228 209,228 210,228 211,228 212,228 213,228 214,228 215,228 216,228 217,228 218,228 219,228 220,228 221,228 222,228 223,228 224,228 225,228 226,228 227,228 228,228 229,228 230,228 231,244 234,244 235,244 236,244 237,244 238,244 239,244 240,244 241,244 242,244 243,244 244,244 245,244 246,244 247,244 248,244 249,244 250,244 251,244 252,244 253,244 254,244 255,244 256,244 257,244 258,255 234,255 235,255 236,255 237,255 238,255 239,255 240,255 241,255 242,255 243,255 244,255 245,255 246,255 247,255 248,255 249,255 250,255 251,255 252,255 253,255 254,255 255,255 256,255 257,255 258,271 261,271 262,271 263,271 264,271 265,271 266,271 267,271 268,271 269,271 270,271 271,271 272,271 273,271 274,271 275,271 276,271 277,271 278,271 279,271 280,271 281,271 282,271 283,271 284,271 285,282 261,282 262,282 263,282 264,282 265,282 266,282 267,282 268,282 269,282 270,282 271,282 272,282 273,282 274,282 275,282 276,282 277,282 278,282 279,282 280,282 281,282 282,282 283,282 284,282 285,298 288,298 289,298 290,298 291,298 292,298 293,298 294,298 295,298 296,298 297,298 298,298 299,298 300,298 301,298 302,298 303,298 304,298 305,298 306,298 307,298 308,298 309,298 310,298 311,298 312,3 2,3 3,3 4,3 5,309 288,309 289,309 290,309 291,309 292,309 293,309 294,309 295,309 296,309 297,309 298,309 299,309 300,309 301,309 302,309 303,309 304,309 305,309 306,309 307,309 308,309 309,309 310,309 311,309 312,325 315,325 316,325 317,325 318,325 319,325 320,325 321,325 322,325 323,325 324,325 325,325 326,325 327,325 328,325 329,325 330,325 331,325 332,325 333,325 334,325 335,325 336,325 337,325 338,325 339,336 315,336 316,336 317,336 318,336 319,336 320,336 321,336 322,336 323,336 324,336 325,336 326,336 327,336 328,336 329,336 330,336 331,336 332,336 333,336 334,336 335,336 336,336 337,336 338,336 339,352 342,352 343,352 344,352 345,352 346,352 347,352 348,352 349,352 350,352 351,352 352,352 353,352 354,352 355,352 356,352 357,352 358,352 359,352 360,352 361,352 362,352 363,352 364,352 365,352 366,363 342,363 343,363 344,363 345,363 346,363 347,363 348,363 349,363 350,363 351,363 352,363 353,363 354,363 355,363 356,363 357,363 358,363 359,363 360,363 361,363 362,363 363,363 364,363 365,363 366,37 36,37 37,37 38,379 369,379 370,379 371,379 372,379 373,379 374,379 375,379 376,379 377,379 378,379 379,379 380,379 381,379 382,379 383,379 384,379 385,379 386,379 387,379 388,379 389,379 390,379 391,379 392,379 393,390 369,390 370,390 371,390 372,390 373,390 374,390 375,390 376,390 377,390 378,390 379,390 380,390 381,390 382,390 383,390 384,390 385,390 386,390 387,390 388,390 389,390 390,390 391,390 392,390 393,416 396,416 397,416 398,416 399,416 400,416 401,416 402,416 403,416 404,416 405,416 406,416 407,416 408,416 409,416 410,416 411,416 412,416 413,416 414,416 415,416 416,416 417,416 418,416 419,416 420,416 421,417 396,417 397,417 398,417 399,417 400,417 401,417 402,417 403,417 404,417 405,417 406,417 407,417 408,417 409,417 410,417 411,417 412,417 413,417 414,417 415,417 416,417 417,417 418,417 419,417 420,417 421,418 396,418 397,418 398,418 399,418 400,418 401,418 402,418 403,418 404,418 405,418 406,418 407,418 408,418 409,418 410,418 411,418 412,418 413,418 414,418 415,418 416,418 417,418 418,418 419,418 420,418 421,5 2,5 3,5 4,5 5,82 72,82 73,82 74,82 75,82 76,82 77,82 78,82 79,82 80,82 81,82 82,82 83,82 84,82 85,82 86,82 87,82 88,82 89,82 90,82 91,82 92,82 93,82 94,82 95,82 96,93 72,93 73,93 74,93 75,93 76,93 77,93 78,93 79,93 80,93 81,93 82,93 83,93 84,93 85,93 86,93 87,93 88,93 89,93 90,93 91,93 92,93 93,93 94,93 95,93 96
 5000
-25
+24 - Select tuples of 2 where statement affects another statement
 stmt s1, s2;
 Select <s1, s2> such that Affects(s1, s2)
 10 11,124 125,124 130,124 133,124 141,124 144,125 130,125 133,125 141,125 144,151 152,151 157,151 160,151 168,151 171,152 157,152 160,152 168,152 171,178 179,178 184,178 187,178 195,178 198,179 184,179 187,179 195,179 198,205 206,205 211,205 214,205 222,205 225,206 211,206 214,206 222,206 225,232 233,232 238,232 241,232 249,232 252,233 238,233 241,233 249,233 252,259 260,259 265,259 268,259 276,259 279,260 265,260 268,260 276,260 279,286 287,286 292,286 295,286 303,286 306,287 292,287 295,287 303,287 306,30 34,313 314,313 319,313 322,313 330,313 333,314 319,314 322,314 330,314 333,34 34,340 341,340 346,340 349,340 357,340 360,341 346,341 349,341 357,341 360,367 368,367 373,367 376,367 384,367 387,368 373,368 376,368 384,368 387,394 395,394 400,394 403,394 410,394 413,395 400,395 403,395 410,395 413,46 52,48 51,51 51,52 52,60 63,60 67,60 69,69 63,69 67,69 69,70 71,70 76,70 79,70 87,70 90,71 76,71 79,71 87,71 90,97 103,97 106,97 114,97 117,97 98,98 103,98 106,98 114,98 117,28 28,29 29,59 59
 5000
-26
+25 - Invalid syntax for procedure
 procedur p;
 Select p;
 SyntaxError
 5000
-27
+26 - Invalid syntax for such that
 assign a; 
 Select a suchthat Modifies(a, "x")
 SyntaxError
 5000
-28
+27 - Invalid semantics for pattern
 assign a;
 Select a pattern b("x", _)
 SemanticError
 5000
-29
+28 - Invalid syntax for select
 var v; 
 Select v;
 SyntaxError
 5000
-30
+29 - Invalid syntax for pattern
 while w;
 Select w pattern w(_, none)
 SyntaxError
 5000
-31 
+30 - Invalid syntax for pattern
 procedure p;
 Select p pattern p(p, p)
 SyntaxError
 5000
-32
+31 - Invalid syntax no "or"
 assign a;
 Select a such that Uses(a, "x") or Modifies(a, "x")
 SyntaxError
 5000
-33
+32 - Invalid syntax for parent
 if ifs;
 Select ifs such that Parent(ifs)
 SyntaxError
 5000
-34
+33 - Invalid syntax for pattern - blank
 assign a;
 Select a pattern a("x", )
 SyntaxError
 5000
-35
+34 - Invalid syntax for pattern
 assign a;
 Select a pattern a("x", _"1"+_)
 SyntaxError
 5000
-36
+35 - No such procedure
 procedure p;
 Select p such that Calls(p, "Nonexistentprocedure")
 none
 5000
-37
+36 - Invalid semantics for select
 variable v;
 Select var
 SemanticError
 5000
-38
+37 - Invalid syntax for call
 procedure p;
 Select p such that Calls(p, _
 SyntaxError
 5000
-39
+38 - Whitespaces test 1
 variable v;
 Select                                                                 v
 a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,result,s,t,u,v,w,x,y,z
 5000
-40
+39 - Whitespaces test 2
 procedure p;
 Select p such that Calls(p,                                                                      _                                               )
 eight,eleven,five,four,multipleWhiles,nine,one,seven,simulateRecursion,six,ten,thirteen,three,twelve,two
 5000
-41
+40 - Whitespaces test 3
 assign a; 
 Select a pattern a("                    x                          ",                                          _)
 1,30,34,46,52,6,8
